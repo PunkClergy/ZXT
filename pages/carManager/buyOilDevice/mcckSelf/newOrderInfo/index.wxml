@@ -72,6 +72,30 @@
             </scroll-view>
           </view>
         </view>
+
+        <!-- detailed Card区域 -->
+        <view class="detailed-card">
+          <!-- detailed card 头部区域 -->
+          <view class="detailed-card-head">
+            <view class="detailed-card-head-title">明细</view>
+          </view>
+          <!-- detailed Card内容区域 -->
+          <view class="detailed-card-content">
+            待确认
+          </view>
+        </view>
+
+        <!-- total Card区域 -->
+        <view class="total-card">
+          <!-- total card 头部区域 -->
+          <view class="total-card-head">
+            <view class="total-card-head-title">合计</view>
+          </view>
+          <!-- total Card内容区域 -->
+          <view class="total-card-content">
+            待确认
+          </view>
+        </view>
       </view>
     </view>
   </scroll-view>

@@ -7,6 +7,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "pages/sublet/sublet",
+          "pathName": "pages/carManager/buyOilDevice/mcckSelf/newOrderInfo/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "pages/desk/desk",
           "pathName": "pages/desk/desk",
           "query": "scene=29C1E887924E494284F2EAA81EF9ECCD",
@@ -26,12 +33,6 @@
           "query": "query=29C1E887924E494284F2EAA81EF9ECCD",
           "launchMode": "default",
           "scene": 1011
-        },
-        {
-          "name": "pages/sublet/sublet",
-          "pathName": "pages/control/control",
-          "query": "scene=D5A94CE9CFDF4BADA6E225A873B190A0",
-          "scene": null
         }
       ]
     }
