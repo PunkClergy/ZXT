@@ -10,13 +10,14 @@
   position: relative;
   align-items: center;
 }
+
 /* 内容项 */
 .content-item {
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: fixed;
-width: 96%;
+  width: 96%;
 }
 
 .content-item-head {
@@ -47,22 +48,9 @@ width: 96%;
   height: 40rpx;
 }
 
-.left-brand {
-  font-family: PingFang SC;
-  font-weight: 500;
-  font-size: 24rpx;
-  color: #1B64B1;
-  background: #EEF7FF;
-  border-radius: 5rpx;
-  padding: 0 15rpx;
-}
 
-.left-model {
-  font-family: PingFang SC;
-  font-weight: 500;
-  font-size: 24rpx;
-  color: #333333;
-}
+
+
 
 .head-right {
   display: flex;
@@ -81,27 +69,10 @@ width: 96%;
   align-items: center;
   gap: 20rpx;
 }
-.right-history image{
+
+.right-history image {
   width: 30rpx;
   height: 30rpx;
-}
-
-.right-state {
-  font-family: PingFang SC;
-  font-weight: bold;
-  font-size: 26rpx;
-  color: #F56F48;
-
-}
-
-.right-special-state {
-  border-radius: 8rpx;
-  border: 1px solid #DD0B2D;
-  font-family: PingFang SC;
-  font-weight: bold;
-  font-size: 20rpx;
-  color: #DD0B2D;
-  padding: 0 15rpx;
 }
 
 .content-item-info {
@@ -109,8 +80,11 @@ width: 96%;
   flex-wrap: wrap;
   justify-content: flex-start;
   padding: 10rpx;
-  gap: 20rpx;
-  border-bottom: 1px solid #f0f0f0;
+  gap: 10rpx;
+  border: 1px solid #f0f0f0;
+  width: 98%;
+  background: #fff;
+  border-radius: 8rpx;
 }
 
 .info-item {
@@ -130,3 +104,29 @@ width: 96%;
   /* 长内容时占满整行 */
 }
 
+.car-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  width: 96%;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+
+
+.levitation-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx 0;
+  width: 40%;
+  background: linear-gradient(88deg, #1576DC, #1B64B1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 30rpx;
+  color: #FFFFFF;
+}

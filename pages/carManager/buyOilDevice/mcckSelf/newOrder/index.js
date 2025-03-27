@@ -15,21 +15,44 @@ Page({
   handleRefresh() {
     this.setData({
       g_triggered: false,
-
     });
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  initialiImageBaseConversion() {
+    const _this = this;
+    const imageMap = [{
+      path: '/assets/images/home/car-bg.png',
+      key: 's_background_picture_of_the_front_page'
+    }];
+    const promises = imageMap.map(item =>
+      new Promise((resolve, reject) => {
+        wx.getFileSystemManager().readFile({
+          filePath: item.path,
+          encoding: 'base64',
+          success: (res) => {
+            resolve({
+              [item.key]: `data:image/png;base64,${res.data}`
+            });
+          }
+        });
+      })
+    );
+
+    Promise.all(promises)
+      .then(results => {
+        const dataToUpdate = results.reduce((acc, curr) => ({
+          ...acc,
+          ...curr
+        }), {});
+        _this.setData(dataToUpdate);
+      });
+  },
+
   onLoad(options) {
 
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
   onReady() {
-
+    this.initialiImageBaseConversion()
   },
 
   /**
