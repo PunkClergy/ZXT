@@ -32,11 +32,17 @@ const u_buyMcckDevice = {
   URL: fin3plusUrl + "deviceBuyApi/buyMcckDevice",
   orderBO: 'orderBO'
 }
+// 自助取还设备购买表格上传
+const u_mcckFileUpload = {
+  URL: fin3plusUrl + "deviceBuyApi/mcckFileUpload",
+}
+
 module.exports = {
   u_blanceAndDeviceReport,
   u_payRecord,
   u_getCompanyInfo,
   u_buyCount,
   u_buyRecord,
-  u_buyMcckDevice
+  u_buyMcckDevice,
+  u_mcckFileUpload
 }

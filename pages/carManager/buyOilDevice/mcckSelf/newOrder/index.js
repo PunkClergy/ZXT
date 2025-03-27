@@ -8,10 +8,10 @@ const {
   showToast
 } = require('../../../../../utils/Inspect/tips')
 const {
-  u_buyMcckDevice
+  u_buyMcckDevice,
+  u_mcckFileUpload
 } = require('../../../../../utils/request/eqpmnt')
 const {
-  byPost,
   byPostJson
 } = require('../../../../../utils/request/http')
 Page({
@@ -71,15 +71,15 @@ Page({
     const formData = evt.detail.value;
     const items = _this?.data?.g_car_items
     const validations = [{
-        field: formData.vehicleSerialName,
+        field: formData.carserial,
         message: '请输入车系'
       },
       {
-        field: formData.personName,
+        field: formData.carmodel,
         message: '请输入车型'
       },
       {
-        field: formData.ccdate,
+        field: formData.carversion,
         message: '请输入年款'
       },
       {
@@ -87,7 +87,7 @@ Page({
         message: '请输入车架号'
       },
       {
-        field: formData.batterylift,
+        field: formData.runtype,
         message: '请选择启动方式'
       },
     ];
@@ -106,15 +106,6 @@ Page({
         c_add_car_show_momal: false
       })
     })
-    console.log(_this.data.g_car_items)
-
-
-
-
-
-
-
-
   },
   handleHideSengKeyModal() {
     this.setData({
@@ -156,27 +147,34 @@ Page({
       showToast('请先选择文件')
       return;
     }
-    _this.setData({
-      g_car_items: items.concat([{}, {}])
-    }, () => {
-      _this.setData({
-        c_import_car_show_momal: false
-      })
-    })
-    return
     const {
       path
     } = this.data.fileData;
+    const userInfo = getApp().data.userInfo;
+    const header = {
+      'content-type': 'multipart/form-data',
+      'username': userInfo?.username,
+      'token': userInfo.token,
+      'timestamp': Date.parse(new Date())
+    };
+
     wx.uploadFile({
-      url: 'https://example.com/upload',
+      url: getApp().data.k1swUrl + u_mcckFileUpload.URL,
       filePath: path,
       name: 'file',
-      success: (res) => {
-        const result = JSON.parse(res.data);
-        console.log('服务器返回数据:', result);
+      header: header,
+      formData: {
+        "companyid": getApp().data.userInfo.fin3CompanyId
       },
-      fail: (err) => {
-        showToast('上传失败');
+      success(res) {
+        const respone = JSON.parse(res.data)
+        _this.setData({
+          g_car_items: items.concat(respone?.content?.carList)
+        }, () => {
+          _this.setData({
+            c_import_car_show_momal: false
+          })
+        })
       }
     });
   },
