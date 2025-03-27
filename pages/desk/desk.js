@@ -291,13 +291,13 @@ Page({
     wx.hideTabBar();
     this.initialGetBanner()
     this.handleTermialList()
-    if (options?.scene) {
+    if (options?.scene||options?.query) {
       this.setData({
         sn_state: true,
-        sn_specific_value: options?.scene
+        sn_specific_value: options?.scene || options?.query
       }, () => {
-        if (options?.scene?.length < 6) {
-          wx.setStorageSync('scene', options?.scene);
+        if (options?.scene?.length < 6 || options?.query?.length < 6) {
+          wx.setStorageSync('scene', options?.scene || options?.query);
         } else {
           wx.removeStorage({
             key: 'scene',
