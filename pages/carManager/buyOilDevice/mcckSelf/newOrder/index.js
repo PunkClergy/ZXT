@@ -7,6 +7,12 @@ const {
   hideLoading,
   showToast
 } = require('../../../../../utils/Inspect/tips')
+const {
+  u_buyMcckDevice
+} = require('../../../../../utils/request/eqpmnt')
+const {
+  byPost
+} = require('../../../../../utils/request/http')
 Page({
   data: {
     s_background_picture_of_the_front_page: '', //全图背景
@@ -171,6 +177,26 @@ Page({
       fail: (err) => {
         showToast('上传失败');
       }
+    });
+  },
+
+  handleGenerateOrder() {
+    showLoading()
+    const _this = this
+    const items = _this.data.g_car_items
+    const param = {
+      carList: items,
+      customername: "string",
+      linkaddress: "string",
+      linkman: "string",
+      linkmobile: "string"
+    }
+    const params = {
+      orderBO: JSON.stringify(param)
+    }
+    byPost(getApp().data.k1swUrl + u_buyMcckDevice.URL, params, function (res) {
+      console.log(res)
+      hideLoading();
     });
   },
   onLoad(options) {

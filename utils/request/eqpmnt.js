@@ -19,18 +19,24 @@ const u_buyCount = {
   companyId: 'companyId',
 }
 // 购买记录
-const u_buyRecord= {
+const u_buyRecord = {
   URL: fin3plusUrl + "deviceBuyApi/buyRecord",
   num: 'num',
   page: 'page',
-  days:'days',
-  status:'status',
-  comParam:'comParam'
+  days: 'days',
+  status: 'status',
+  comParam: 'comParam'
+}
+// MCCK生成订单
+const u_buyMcckDevice = {
+  URL: fin3plusUrl + "deviceBuyApi/buyMcckDevice",
+  orderBO: 'orderBO'
 }
 module.exports = {
   u_blanceAndDeviceReport,
   u_payRecord,
   u_getCompanyInfo,
   u_buyCount,
-  u_buyRecord
+  u_buyRecord,
+  u_buyMcckDevice
 }

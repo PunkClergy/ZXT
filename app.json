@@ -120,6 +120,9 @@
   "permission": {
     "scope.userLocation": {
       "desc": "您的位置信息将用于获取您与车辆的距离"
+    },
+    "scope.address": {
+      "desc": "您的地址信息将用于填写收货地址"
     }
   },
   "sitemapLocation": "sitemap.json",

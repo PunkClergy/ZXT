@@ -50,7 +50,7 @@
         </view>
         <view style="display: flex;justify-content: flex-start;width: 100%;font-size: 24rpx;font-weight: bold;">
           <label>收货地址 ：</label>
-          <text>一键启动</text>
+          <text>获取微信地址</text>
         </view>
         <view style="display: flex;justify-content: flex-end;width: 100%;font-size: 24rpx;font-weight: bold;">
           <text>贾宝玉</text>
@@ -60,7 +60,7 @@
           <text>北京市丰台区总部基地6号楼1单元2层201室</text>
         </view>
         <view style="display: flex;justify-content: flex-end;width: 100%;font-size: 24rpx;font-weight: bold;">
-          <text class="levitation-button">生成订单</text>
+          <text class="levitation-button" bindtap="handleGenerateOrder">生成订单</text>
         </view>
       </view>
     </view>
