@@ -11,28 +11,24 @@
       <block wx:for="{{filter_aggregate}}" wx:key="index">
         <drop-filter-com data-id="{{item.id}}" range="{{item.filter_work}}" filter="{{item.name}}" bindTransmit="bindPickerChange" />
       </block>
-      <image class="search-box-date" src="/assets/images/home/date.png" bindtap="handleShowMask"/>
+      <image class="search-box-date" src="/assets/images/home/date.png" bindtap="handleShowMask" />
     </view>
     <view class="search-count">
-      <text>共有{{g_total}}个工单</text>
+      <text>共有{{g_total}}个订单</text>
     </view>
   </view>
-    <!-- 主要内容区域 -->
-    <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+  <!-- 主要内容区域 -->
+  <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
     <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
       <view class="content-item">
         <view class="content-item-head">
           <view class="head-left">
             <view class="left-category">
               <image src="/assets/images/home/01.png" />
-              <text>{{item.ordertypename}}</text>
+              <text>油量检测仪:{{item.carCount||0}}台</text>
             </view>
-            <view class="left-brand">
-              {{item.platenumber}}
-            </view>
-            <view class="left-model">
-              {{item.vehicleSerialName||'-'}}{{item.vehicleModeName||''}}
-            </view>
+
+
           </view>
           <view class="head-right">
             <view class="right-special-state" wx:if="{{item.timeout==1}}">超时</view>
@@ -40,7 +36,7 @@
               <view class="right-state">
                 <block wx:key="type" wx:for="{{c_status}}" wx:for-item="statusItem">
                   <block wx:if="{{item.status == statusItem.status}}">
-                    <text class="{{statusItem.colorClass}}">{{statusItem.text}}</text>
+                    <text style="color: {{statusItem.color}}">{{statusItem.text}}1</text>
                   </block>
                 </block>
               </view>
@@ -48,29 +44,43 @@
           </view>
         </view>
         <view class="content-item-info">
+          <view class="info-item  {{item.num.length > 15 ? 'long-info-item' : ''}}">
+            <label>订单编号 ：</label>
+            <text>{{item.num||'-'}}</text>
+          </view>
+          <view class="info-item  {{item.senddate.length > 15 ? 'long-info-item' : ''}}">
+            <label>发货时间 ：</label>
+            <text>{{item.senddate||'-'}}</text>
+          </view>
           <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
-            <label>下单时间 ：</label>
+            <label>订单时间 ：</label>
             <text>{{item.createdate||'-'}}</text>
           </view>
-
-          <view class="info-item  {{item.ispatchtype.length > 15 ? 'long-info-item' : ''}}">
-            <label>派单方式 ：</label>
-            <text>{{item.ispatchtype||'-'}}</text>
+          <view class="info-item  {{item.finishdate.length > 15 ? 'long-info-item' : ''}}">
+            <label>完成时间 ：</label>
+            <text>{{item.finishdate||'-'}}</text>
           </view>
-
-          <view class="info-item  {{item.carmanagername.length > 15 ? 'long-info-item' : ''}}">
-            <label>车务人员 ：</label>
-            <text>{{item.carmanagername||'-'}}</text>
+          <view class="info-item  {{item.linkman.length > 15 ? 'long-info-item' : ''}}">
+            <label>收货人 ：</label>
+            <text>{{item.linkman||'-'}}</text>
+          </view>
+          <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
+            <label>电话 ：</label>
+            <text>{{item.linkmobile||'-'}}</text>
+          </view>
+          <view class="info-item  {{item.linkaddress.length > 10 ? 'long-info-item' : ''}}">
+            <label>收货地址 ：</label>
+            <text>{{item.linkaddress||'-'}}</text>
           </view>
         </view>
         <view class="content-item-footer">
-          <view class="footer-left">要求完成时间: {{item.finishdate||'-'}}</view>
-          <view class="footer-right">
-            <block wx:if="{{item.paystatus != 1}}">待支付</block>
-            {{item.cost !== null ? '￥' + item.cost : (item.paystatus == 1 ? '' : '待协商')}}
-          </view>
+          <view class="footer-left">订单金额: {{item.cost||'-'}}</view>
         </view>
       </view>
     </block>
   </scroll-view>
+  <!-- 一键操作按钮 -->
+  <view class="levitation-button" bindtap="handleOneClickOrdering">
+    <text>一键下单</text>
+  </view>
 </view>

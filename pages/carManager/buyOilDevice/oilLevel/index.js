@@ -5,7 +5,7 @@ const {
 const {
   filterWorkStatus,
   filterWorkTime,
-  orderStatus
+  macckStatus
 } = require('../../../../utils/Inspect/filterColl').default
 const {
   showLoading,
@@ -26,7 +26,7 @@ Page({
     c_navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
     c_searchBarHeight: 70, // 搜索框高度，默认值
     c_totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
-    c_status: orderStatus, //订单状态
+    c_status: macckStatus, //订单状态
     g_page: 1, //列表页码
     g_comParam: '', //输入框内容
     g_items: [], //列表数据
@@ -81,7 +81,7 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
- 
+
   getOrderList() {
     showLoading("加载中...");
     const param = {
@@ -111,6 +111,70 @@ Page({
   handleLower() {
     this.setData({
       g_page: this.data.g_page + 1
+    }, () => {
+      this.getOrderList();
+    });
+  },
+  handleOneClickOrdering() {
+    wx.navigateTo({
+      url: '/pages/carManager/buyOilDevice/oilLevel/newOrder/index',
+    })
+  },
+  handleBlur(e) {
+    const resp = e.detail.value
+    if (resp == this.data.g_comParam) {
+      return
+    }
+    this.setData({
+      g_comParam: e.detail.value,
+      g_page: 1,
+      g_items: []
+    }, () => {
+      this.getOrderList();
+    })
+  },
+  bindPickerChange(e) {
+    const filterAggregate = this.data.filter_aggregate;
+    const {
+      id: targetId
+    } = e.currentTarget.dataset;
+    const {
+      key: selectedKey
+    } = e.detail;
+    const targetIndex = filterAggregate.findIndex(item => item.id === targetId);
+    if (targetIndex === -1) {
+      return;
+    }
+    const targetItem = {
+      ...filterAggregate[targetIndex]
+    };
+    const statusOptions = targetItem.filter_work || [];
+    if (selectedKey >= statusOptions.length) {
+      return;
+    }
+    const selectedStatus = statusOptions[selectedKey] || {};
+    const dynamicParams = {
+      [selectedStatus.params || targetItem.params]: selectedStatus.value ?? targetItem.value ?? ''
+    };
+    const updatedAggregate = filterAggregate.map((item, index) =>
+      index === targetIndex ? {
+        ...item,
+        name: selectedStatus.name || item.name
+      } : item
+    );
+    this.setData({
+      filter_aggregate: updatedAggregate,
+      g_items: [],
+      ...dynamicParams
+    }, () => {
+      this.getOrderList();
+    });
+  },
+  handleRefresh() {
+    this.setData({
+      g_triggered: false,
+      g_page: 1,
+      g_items: []
     }, () => {
       this.getOrderList();
     });

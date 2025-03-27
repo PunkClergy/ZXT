@@ -2,7 +2,8 @@
   "navigationBarTitleText": "购买和充值",
   "usingComponents": {
     "drop-filter-com": "/components/DropFilterCom/index",
-    "custom-header":"/components/CustomHeader/index"
+    "custom-header":"/components/CustomHeader/index",
+    "time-and-date-modal": "/components/TimeAndDateModal/index"
   },
   "navigationStyle": "custom",
   "disableScroll": true

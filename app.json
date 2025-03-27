@@ -3,7 +3,8 @@
     "custom": false,
     "color": "#8a8a8a",
     "selectedColor": "#ff4e00",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/desk/desk",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
@@ -103,7 +104,8 @@
     "pages/carManager/buyOilDevice/oilQuantity/index",
     "pages/carManager/buyOilDevice/oilQuantity/detailes",
     "pages/carManager/carListAdd/index",
-    "pages/carManager/buyOilDevice/mcckSelf/newOrder/index"
+    "pages/carManager/buyOilDevice/mcckSelf/newOrder/index",
+    "pages/carManager/buyOilDevice/oilLevel/newOrder/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
