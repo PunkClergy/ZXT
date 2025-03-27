@@ -1,0 +1,126 @@
+{
+  "tabBar": {
+    "custom": false,
+    "color": "#8a8a8a",
+    "selectedColor": "#ff4e00",
+    "list": [{
+        "pagePath": "pages/desk/desk",
+        "iconPath": "/assets/images/index/desk@2x.png",
+        "selectedIconPath": "/assets/images/index/desk_s@2x.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/stationDispatch/stationDispatch",
+        "iconPath": "/assets/images/index/sys@2x.png",
+        "selectedIconPath": "/assets/images/index/sys_s@2x.png",
+        "text": "热点位置"
+      },
+      {
+        "pagePath": "pages/oneClickOrdering/oneClickOrdering",
+        "iconPath": "/assets/images/index/work@2x.png",
+        "selectedIconPath": "/assets/images/index/work_s@2x.png",
+        "text": "一键下单"
+      },
+      {
+        "pagePath": "pages/carManager/buyOilDevice/buyOilDevice",
+        "iconPath": "/assets/images/index/purchase@2x.png",
+        "selectedIconPath": "/assets/images/index/purchase_s@2x.png",
+        "text": "购买和充值"
+      },
+      {
+        "pagePath": "pages/system/managerInfo/userinfo",
+        "iconPath": "/assets/images/index/setUp@2x.png",
+        "selectedIconPath": "/assets/images/index/setUp_s@2x.png",
+        "text": "系统"
+      }
+    ]
+  },
+  "useExtendedLib": {
+    "weui": true
+  },
+  "pages": [
+    "pages/desk/desk",
+    "pages/watchVideos/index",
+    "pages/carService/carService",
+    "pages/carService/oilCalculator/oilCalculator",
+    "pages/carManager/oilDeviceList/oilDeviceList",
+    "pages/mapSelection/map",
+    "pages/oneClickOrdering/oneClickOrdering",
+    "pages/workOrderList/workOrderList",
+    "pages/system/carManager/carManager",
+    "pages/carManager/carList/carList",
+    "pages/system/system",
+    "pages/control/control",
+    "custom-tab-bar/index",
+    "pages/system/loginView/loginView",
+    "pages/camera/camera",
+    "pages/camera-paper/camera",
+    "pages/system/registView/registView",
+    "pages/carManager/regDevice/regDevice",
+    "pages/system/managerLoginView/loginView",
+    "pages/system/managerInfo/userinfo",
+    "pages/system/forgetPasswordView/forgetPasswordView",
+    "pages/system/updatePasswordView/updatePasswordView",
+    "pages/riskControl/travelingtrack/travelingtrack",
+    "pages/oilList/oilList",
+    "pages/oilList/rentHistoryCom/historyDetail/historyDetail",
+    "pages/riskControl/riskControl",
+    "pages/riskControl/carDetail/carDetail",
+    "pages/riskControl/carWarnList/carWarnList",
+    "pages/rentControl/rentControl",
+    "pages/carManager/regCar/regCar",
+    "pages/carManager/batchRegCar/batchRegCar",
+    "pages/carManager/oilUseRecord/oilUseRecord",
+    "pages/carManager/buyRecord/buyRecord",
+    "pages/carManager/buyOilDevice/buyOilDevice",
+    "pages/oiltest/oiltest",
+    "pages/carService/oilPriceSet/oilPriceSet",
+    "pages/system/carManager/add/add",
+    "pages/carManager/buyCount/buyCount",
+    "pages/system/balance/balance",
+    "pages/system/balance/payRecord/payRecord",
+    "pages/carManager/buyCount/buyCountRecord/buyCountRecord",
+    "pages/system/registView2/registView2",
+    "components/mytree/mytree",
+    "pages/components/mytree/mytree",
+    "pages/user/user",
+    "pages/jump2359/jump2359",
+    "pages/stationDispatch/stationDispatch",
+    "pages/workOrderDetails/workOrderDetails",
+    "pages/agreementWebView/agreementWebView",
+    "pages/selfServicePickUpAndReturn/selfServicePickUpAndReturn",
+    "pages/workOrderEdit/workOrderEdit",
+    "pages/rentKeySend/rentKeySend",
+    "pages/rentKeySend/sending/sending",
+    "pages/slfSrvc/slfSrvc",
+    "pages/slfSrvc/slfSrvcAdd/add",
+    "pages/carManager/buyOilDevice/balance/index",
+    "pages/carManager/buyOilDevice/balance/detailes",
+    "pages/carManager/buyOilDevice/mcckSelf/index",
+    "pages/carManager/buyOilDevice/mcckSelf/detailes",
+    "pages/carManager/buyOilDevice/oilLevel/index",
+    "pages/carManager/buyOilDevice/oilLevel/detailes",
+    "pages/carManager/buyOilDevice/oilQuantity/index",
+    "pages/carManager/buyOilDevice/oilQuantity/detailes",
+    "pages/carManager/carListAdd/index",
+    "pages/carManager/buyOilDevice/mcckSelf/newOrder/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTextStyle": "black"
+  },
+  "networkTimeout": {
+    "request": 30000
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于获取您与车辆的距离"
+    }
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "__usePrivacyCheck__": true
+}

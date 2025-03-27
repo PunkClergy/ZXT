@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "发送钥匙",
+  "usingComponents": {
+    "mp-searchbar": "weui-miniprogram/searchbar/searchbar"
+  }
+}

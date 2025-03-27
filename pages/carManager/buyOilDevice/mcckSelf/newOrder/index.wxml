@@ -1,0 +1,74 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <!-- 自定义头部 -->
+  <custom-header title="MCCK自助取还设备购买" />
+  <!-- 设备区 -->
+  <view class="content-item" style="top:{{c_statusBarHeight + c_navBarHeight}}px;">
+    <view class="content-item-head">
+      <view class="head-left">
+        <view class="left-category">
+          <image src="/assets/images/home/01.png" />
+          <text>车辆信息</text>
+        </view>
+        <view class="left-category">
+          合计{{8}}台
+        </view>
+      </view>
+      <view class="head-right">
+        <view class="right-history">
+          <image src="/assets/images/home/mcck_add.png" />
+          <image src="/assets/images/home/mcck_Import.png" />
+        </view>
+      </view>
+    </view>
+    <scroll-view class="content-container" style="height: 300px;" scroll-y="true" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+    <view style="background: #f0f0f0;display: flex;flex-direction: column; gap: 20rpx;width: 96%;justify-content: center;align-items: center;margin: auto;">
+      <view class="content-item-info" style="width: 100%; background:red ;">
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>车系 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>车型 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>年款 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>默认配置 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>车架号 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+      </view>
+      <view class="content-item-info" style="background: red; width: 100%;">
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>车系 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>车型 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>年款 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>默认配置 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+          <label>车架号 ：</label>
+          <text>{{item.selfpayorder||'-'}}</text>
+        </view>
+      </view>
+    </view>
+
+    </scroll-view>
+
+  </view>
+</view>

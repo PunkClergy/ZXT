@@ -1,0 +1,77 @@
+page {
+ 
+    height: 100%;
+  }
+  .bg-img {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+  }
+  
+  .top-container {
+    width: 100%;
+    height: 100%;
+
+  }
+  .container
+  {
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+    border-radius: 10rpx;
+    background-color: var(--weui-BG-0);  
+  }
+  .input_item
+{
+  display: flex;
+  flex-direction: row;
+  margin-top: 20rpx;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  height: 90rpx;
+  background-color: var(--weui-BG-0);
+  border-radius: 10rpx;
+  align-items: center;
+}
+
+.input_title
+{
+  min-width: 150rpx;
+  width: 20%;
+  font-size: 30rpx;
+  margin-left: 5rpx;
+  color: #4a4a4a;
+}
+
+.time
+{
+  font-size: 30rpx;
+  color:#007bff;
+  text-align: left
+}
+
+.selectButton {
+    
+    height: 90rpx;
+    line-height: 90rpx;
+    color: white;
+    /* display:block;
+    margin:0 auto; */
+    background-color:#007BFD;
+    border-radius: 10rpx;
+    font-size: 32rpx;
+    text-align: center;
+    margin-top: 20rpx;
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+  }
+
+  .car-time-parent {
+    width: 110px;
+    right: 20rpx;
+    height: auto;
+    position: absolute;
+    margin-top: 20rpx;
+    background-color:gray;
+    opacity: 0.90;  filter: alpha(opacity=90);
+    border-radius: 6rpx;
+  }

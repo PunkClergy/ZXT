@@ -1,0 +1,49 @@
+
+ <privacy />
+    <view class='control-area'>
+    <view class='empty' ></view>
+    <button bindtap='oilButtonTap' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/desk/oil@2x.png" mode='aspectFit'></image>
+      <text>车务整备</text>
+    </button>
+    <view class='empty'></view>
+    <button bindtap='fengkong' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/desk/fengkong@2x.png" mode='aspectFit'></image>
+      <text>风控及远程控制</text>
+    </button>
+    </view>
+
+    <view class='control-area'>
+
+    <view class='empty'></view>
+    <button bindtap='carManagerTap' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/desk/rent@2x.png" mode='aspectFit'></image>
+      <text>车务管理</text>
+    </button>
+
+    <view class='empty'></view>
+    <button bindtap='oilDeviceTap' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/desk/workorder@2x.png" mode='aspectFit'></image>
+      <text>油量设备管理</text>
+    </button>
+    </view>
+
+    <view class='control-area'>
+    <view class='empty'></view>
+    <button bindtap='buyCount' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/desk/workorder@2x.png" mode='aspectFit'></image>
+      <text>设备次数购买</text>
+    </button>
+   
+    </view>
+  
+<!--
+    <view class='control-area'>
+    <view class='empty'></view>
+    <button bindtap='blue' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/desk/rent@2x.png" mode='aspectFit'></image>
+      <text>蓝牙demo</text>
+    </button>
+   
+    </view>
+    -->

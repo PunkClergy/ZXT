@@ -1,0 +1,36 @@
+<view class="outer-layer-of-card">
+  <view class="card-head">
+    <view class="card-head-plate">
+      <view class="card-head-plate-type">
+        <image src="/assets/images/home/01.png" />
+        <text>取车订单</text>
+      </view>
+      <view class="card-head-plate_number">
+        京A67546
+      </view>
+      <view class="card-head-plate_model">
+        大众帕萨特
+      </view>
+    </view>
+    <view class="card-head-state">
+      <view class="card-head-state-overtime">超时</view>
+      <view class="card-head-state-normal"> 待接单</view>
+    </view>
+  </view>
+  <view class="card-middle">
+      <view class="card-middle-train_operation">
+        <label>下单时间: </label>
+        <text>2025.01.01 15:00:00</text>
+      </view>
+      <view class="card-middle-train_operation">
+        <label>派单方式: </label>
+        <text>内部车务</text>
+      </view>
+      <view class="card-middle-train_operation">
+        <label>车务人员: </label>
+        <text>李丽丽</text>
+      </view>
+
+  </view>
+  <view class="card-lower"> 3</view>
+</view>

@@ -1,0 +1,96 @@
+/* pages/order/orderList.wxss */
+page {
+  background-color: var(--weui-BG-0);
+  height: 100%;
+}
+
+.giftListView {
+  width: 100%;
+  font-size: 26rpx;
+}
+
+.scroll-container {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  padding: 0 20rpx;
+}
+
+.item-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  border: 1rpx solid #ccc;
+  border-radius: 10rpx;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.head-container {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 15rpx;
+}
+
+.left-section,
+.right-section {
+  display: flex;
+  gap: 10rpx;
+}
+
+.label-item {
+  display: flex;
+  align-items: center;
+}
+
+.carImage {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.label {
+  margin-left: 5rpx;
+}
+
+/* border-box 样式 */
+.border-box {
+  display: flex;
+  flex-direction: column;
+  /* 确保多行布局 */
+  gap: 10rpx;
+  /* 行间距 */
+  /* border: 1px solid #ccc; */
+  padding: 10rpx;
+}
+
+/* 每行两个内容的容器 */
+.box-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 每个内容项的样式 */
+.box-item {
+  flex: 1;
+  padding: 10rpx;
+  box-sizing: border-box;
+  display: flex;
+  gap: 10rpx;
+}
+
+.footer {
+  display: flex;
+  padding: 15rpx;
+  justify-content: flex-end;
+  border-top: 1px solid #eee;
+}
+
+.footer text {
+  background: cornflowerblue;
+  padding: 5rpx 10rpx;
+  border-radius: 10rpx;
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: bold;
+}

@@ -1,0 +1,209 @@
+/* pages/system/loginView/loginView.wxss */
+
+page {
+    background-color: var(--weui-BG-0);
+      height: 100%;
+    }
+    
+    .bg-img{
+      width: 100%;
+      height: 100%;
+      position: fixed;
+    }
+    
+    .navigation-bar{
+      height: 140rpx;
+      width: 100%;
+      opacity:1;
+      position: relative;
+      text-align: center;
+      line-height: 140rpx;
+      background-color: #131313;
+      color: white;
+      font-size: 35rpx;
+    }
+    
+    .container{
+      width: 100%;
+      text-align: center;
+      position: relative;
+      font-weight: 200;
+    }
+    
+    .page_title
+    {
+      margin-top: 30rpx;
+      color: white;
+      font-family: "";
+      font-size: 65rpx;
+    }
+    
+    .input_views
+    {
+       width: 100%;
+    }
+    
+    .input_item
+    {
+      display: flex;
+      flex-direction: row;
+      margin-top: 20rpx;
+      margin-left: 40rpx;
+      margin-right: 40rpx;
+      height: 90rpx;
+      background-color: white;
+      border-radius: 10rpx;
+      align-items: center;
+    }
+    
+    .radio_item
+    {
+      display: flex;
+      flex-direction: row;
+      margin-top: 10rpx;
+      margin-left: 40rpx;
+      margin-right: 40rpx;
+      height: 90rpx;
+      color:white;
+      border-radius: 10rpx;
+      align-items: center;
+    }
+    
+    .reg_item
+    {
+      display: flex;
+      flex-direction: row;
+      margin-top: 10rpx;
+      margin-left: 40rpx;
+      margin-right: 40rpx;
+      height: 90rpx;
+      color:white;
+      border-radius: 10rpx;
+      align-items: center;
+    }
+    
+    .input_title
+    {
+      min-width: 180rpx;
+      width: 20%;
+      font-size: 26rpx;
+      margin-left: 5rpx;
+      color: #4a4a4a;
+    }
+    .input_v
+    {
+      margin-left: 10rpx;
+      width: 75%;
+      height: 100%;
+      text-align: left;
+      color: #4a4a4a;
+      font-size: 30rpx;
+    }
+    
+    .login_btn
+    {
+      margin-top: 100rpx;
+      margin-left: 40rpx;
+      margin-right: 40rpx;
+      background-color: #007BFD;
+      height: 90rpx;
+      color: white;
+      text-align: bottom;
+      font-size: 40rpx;
+      line-height: 90rpx;
+    }
+    
+    .regist_btn
+    {
+      margin-top: 70rpx;
+      margin-left: 40rpx;
+      margin-right: 40rpx;
+      height: 90rpx;
+      color: white;
+      text-align: bottom;
+      background-color:  rgba(255, 255, 255, 0.2);
+      font-size: 40rpx;
+      line-height: 90rpx;
+    }
+    .btn_tapcolor
+    {
+      background-color: #575757;
+    }
+    
+    .veri_v
+    {
+      display: flex;
+      flex-direction: row;
+      margin-top: 50rpx;
+      margin-left: 40rpx;
+      margin-right: 40rpx;
+      height: 90rpx;
+      align-items: center;
+    }
+    
+    .input_item1
+    {
+      display: flex;
+      flex-direction: row;
+      margin-right: 20rpx;
+      height: 90rpx;
+      background-color: white;
+      border-radius: 10rpx;
+      align-items: center;
+      width: 430rpx;
+    }
+    
+    .veri_btn
+    {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      height: 90rpx;
+      width: 220rpx;
+      font-size: 28rpx;
+      line-height: 90rpx;
+    }
+    
+    .btn_tapcolor
+    {
+      background-color: #575757;
+    }
+    
+    .arrowDown
+    {
+      width: 50rpx;
+      height: 40rpx;
+      margin-right: 20rpx;
+    }
+
+    .link {
+      text-align: left;
+      font-size: 26rpx;
+      line-height: 30rpx;
+      color:#007bff;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: 25rpx;
+      margin-left: 50rpx;
+      text-decoration:underline;
+    }
+    .g_agreement {
+      display: flex;
+      align-items: center;
+      margin-left: 40rpx;
+      font-size: 26rpx;
+      margin-top: 30rpx;
+      font-weight: bold;
+      color: #575757;
+    }
+    
+    .g_agreement checkbox {
+      transform: scale(0.7);
+    }
+    
+    .user_agreement {
+      color: orange;
+    }
+    
+    .privacy_agreement {
+      color: orange;
+    }

@@ -1,0 +1,50 @@
+.tree {
+  text-align: left;
+  padding-left: 8rpx;
+  padding-right: 8rpx;
+}
+
+.tree-outermost-layer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 3px;
+}
+
+.tree-outermost-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.tree-outermost-selected {
+  background-color: #1B64B1;
+  width: 5rpx;
+  height: 39rpx;
+  border-radius: 2rpx 2rpx 2rpx 3rpx;
+}
+
+.tree-outermost-not-selected {
+  width: 5rpx;
+  height: 39rpx;
+  border-radius: 2rpx 2rpx 2rpx 3rpx;
+}
+
+.tree-outermost-text-top-level {
+  font-size: 24rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.tree-outermost-text-secondary {
+  font-size: 22rpx;
+  color: #222222;
+  font-weight: 400;
+  margin-left: 1ch;
+}
+
+.tree-item-name-select {
+  background: #ECF7FA;
+  border-radius: 4rpx;
+}

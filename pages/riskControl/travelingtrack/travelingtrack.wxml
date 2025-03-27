@@ -1,0 +1,45 @@
+
+<view class='top-container'>
+    <view class="container" style="color: white;">
+        <view class='input_item'>
+            <view class='input_title'>开始时间</view>
+            <picker style="width: 100%;" mode="date" value="{{startDate}}" bindchange="bindStartDateChange">
+                <view class="time">
+                    {{startDate==''?'请选择日期':startDate}}
+                </view>
+            </picker>
+            <picker style="width: 100%;" mode="time" value="{{startTime}}" bindchange="bindStartTimeChange">
+                <view class="time">
+                    {{startTime==''?'请选择时间':startTime}}
+                </view>
+            </picker>
+        </view>
+        <view class='input_item'>
+            <view class='input_title'>结束时间</view>
+            <picker style="width: 100%;" mode="date" value="{{endDate}}" bindchange="bindEndDateChange">
+                <view class="time">
+                    {{endDate==''?'请选择日期':endDate}}
+                </view>
+            </picker>
+            <picker style="width: 100%;" mode="time" value="{{endTime}}" bindchange="bindEndTimeChange">
+                <view class="time">
+                    {{endTime==''?'请选择时间':endTime}}
+                </view>
+            </picker>
+        </view>  
+    </view>
+    <button  class="selectButton" bindtap="selectTap">查 询</button>
+    <map id="{{mapId}}" scale='{{scale}}' bindmarkertap='markertap' polyline="{{polyline}}" include-points="{{includePoints}}" markers="{{markers}}" longitude="{{longitude}}" latitude="{{latitude}}" show-scale="true" style="width:100%;height:{{mapHeight}}px;margin-top: 20rpx;">
+        <view class='car-time-parent'>
+            <radio-group bindchange="radioChange">
+                <block wx:for="{{items}}">
+        <view>
+            <radio value="{{item.sn}}" checked="{{index == 0}}" style="transform:scale(0.8)">{{item.platenumber}}</radio>
+        </view>
+               </block>
+           </radio-group>
+        </view>
+    </map>
+
+    
+</view>

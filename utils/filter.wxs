@@ -1,0 +1,45 @@
+var tagsfr ={
+    gettags: function(str){
+       
+        if(str == 0)
+        {
+            return '待取车';
+        } 
+        else if(str == 10)
+        {
+            return '已取车';
+        }
+        else if(str == 20)
+        {
+            return '已还车';
+        }
+        else if(str == 30)
+        {
+            return '待支付';
+        }
+        else if(str == 40)
+        {
+            return '已作废';
+        }
+        else if(str == 50)
+        {
+            return '已完成';
+        }
+    },
+    tx: function(str){
+       
+        if(str == 0)
+        {
+            return '未提现';
+        } 
+        else if(str == 1)
+        {
+            return '已提现';
+        }
+    }
+  }
+  module.exports = {
+    gettags: tagsfr.gettags,
+    txags: tagsfr.tx
+  }
+  

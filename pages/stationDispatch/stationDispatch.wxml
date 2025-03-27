@@ -1,0 +1,19 @@
+
+<view class='container'>
+
+<form>
+  <!--
+  <view class='page_title'>注册车辆</view>
+-->
+  <view class='input_views'>
+
+   
+
+    
+  </view>
+
+  开发中，请期待！
+
+</form>
+</view>
+<custom-tab-bar selectedtext='热点位置'/>

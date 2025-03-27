@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "车务宝wiselink",
+  "usingComponents": {
+    "privacy": "/pages/privacy/privacy"
+  } 
+}

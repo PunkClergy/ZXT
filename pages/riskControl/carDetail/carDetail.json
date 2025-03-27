@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "车辆详情",
+  "usingComponents": {
+    "custom-header":"/components/CustomHeader/index",
+    "map-com":"/components/MapCom/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}

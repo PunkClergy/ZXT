@@ -1,0 +1,67 @@
+/* 容器 */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+/* 列表标题 */
+.list-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* 滚动区域 */
+.scroll-view {
+  width: 100%;
+  height: 60vh;
+  /* 设置滚动区域高度 */
+}
+
+/* 列表项 */
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+/* 商品名称 */
+.item-name {
+  font-size: 16px;
+  color: #333;
+}
+
+/* 商品价格 */
+.item-price {
+  font-size: 22rpx;
+  color: #ccc;
+}
+
+/* 加载更多提示 */
+.loading-more {
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+  padding: 10px;
+}
+
+.no-more {
+  display: flex;
+  justify-content: center;
+}
+
+.add-button {
+  width: 100%;
+  background-color: #007BFD;
+  height: 90rpx;
+  color: white;
+  text-align: bottom;
+  font-size: 40rpx;
+  line-height: 90rpx;
+}

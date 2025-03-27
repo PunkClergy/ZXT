@@ -1,0 +1,80 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}')">
+  <!-- 顶部内容 -->
+  <view class="upper">
+    <view class="custom-header" style="margin-top: {{s_men_button_info.top}}px;margin-bottom: {{s_men_button_info.top/2}}px;">
+      <view style="width: {{s_men_button_info.height}}px;height: {{s_men_button_info.height}}px;">
+        <image class="logo" src="/assets/images/index/logo.png" mode="aspectFit"></image>
+      </view>
+      <view class="title">车务宝Wiselink·<text>客户端</text>
+        <picker bindchange="bindPickerChange" range="{{array}}">
+          <view class="picker" style="display: flex;align-items: center;">
+            <image src="/assets/images/home/xia.png" style="width: 30rpx;height: 30rpx;" />
+          </view>
+        </picker>
+      </view>
+    </view>
+    <view class="swiper-outer-container" style="background-image: url('{{s_background_image_of_the_banner}}')">
+      <swiper class="swiper" vertical="{{false}}" circular="{{false}}" autoplay="{{false}}" indicator-dots="{{false}}" autoplay="{{true}}" interval="3000" duration="500" style="transition: 'height 0.5s ease';height: {{s_banner_height}}px;">
+        <swiper-item wx:for="{{g_banner_image}}" wx:key="index">
+          <image src="{{c_link}}/img/{{item.img}}" class="slide-image" mode="widthFix" bindload="initialiOnImageLoad"></image>
+        </swiper-item>
+      </swiper>
+    </view>
+  </view>
+
+  <!-- 中间内容 -->
+  <view class="middle">
+    <swiper bindchange="handleQuickEntry" class="swiper" autoplay="{{false}}" interval="3000" duration="500" style="height: {{s_quick_entrance_height}}px;">
+      <swiper-item>
+        <view class="initialize-quick-entry">
+          <view class="initialize-quick-entry-item" wx:for="{{g_before_passing_by_icon}}" wx:key="index" data-item="{{item}}" bindtap="handleGetMenuList">
+            <image class="initialize-quick-entry-icon" src="{{c_link}}/img/{{item.icon}}" mode="aspectFit"></image>
+            <text class="initialize-quick-entry-text">{{item.name}}</text>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="slide-quick">
+          <view class="slide-quick-item" wx:for="{{g_after_crossing_over_icon}}" wx:key="index" data-item="{{item}}" bindtap="handleGetMenuList">
+            <image class="slide-quick-image" src="{{c_link}}/img/{{item.icon}}" mode="aspectFit"></image>
+            <text class="slide-quick-text">{{item.name}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+    <view class="dots-container">
+      <view wx:for="{{c_dots}}" wx:key="index" class="dot {{index === g_quickIndex ? 'active-dot' : ''}}"></view>
+    </view>
+  </view>
+
+  <!-- 底部内容 -->
+  <view class="lower">
+    <view class="lower-left" style="height: {{s_dynamic_lower_height-s_quick_entrance_height}}px;background-image: url('{{s_background_image_of_the_tree}}')">
+      <tree dataTree="{{g_tree_structure_data}}" selectKey="{{g_th_crrntly_slctd_tr_nd}}" bind:select="handleSwitchChild" isSelectLastNode="true"></tree>
+    </view>
+    <view class="lower-right" style="height: {{s_dynamic_lower_height-s_quick_entrance_height}}px">
+      <view class="classification-department">
+        <view class="classification-department-item {{item.isdevelop == 0 ? 'developed' : 'not-developed'}}" wx:for="{{RightSideData}}" wx:key="index" data-item="{{item}}" bindtap="handleJumpPage">
+          <image src="{{c_link}}/img/{{item.icon}}" />
+          <view class="classification-department-text">{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="dialog-mask" wx:if="{{is_moadl}}">
+  <view class="dialog-content">
+    <view class="dialog-title">{{title}}</view>
+    <view class="dialog-body" style="display: flex;flex-direction: column;justify-content: center;gap: 20rpx;">
+
+      <view style="display: flex;width: 100%;justify-content: center;" bindtap="handleSubmit">
+        <text style="font-weight: bold; background: #1576DC; border-radius: 8rpx; border: 1px solid #f0f0f0; padding: 10px 20rpx;font-size: 26rpx;color: #fff;">车务宝Wiselink·服务端</text>
+      </view>
+    </view>
+    <view class="dialog-footer" style="display: flex;justify-content: center;gap: 20rpx;border-top:1px solid #f0f0f0;">
+      <text bindtap="handleCancel" style="margin-top: 30rpx;border: 1px solid #f0f0f0;padding: 5rpx 20rpx;border-radius:8rpx; background: #fff;">取消</text>
+    </view>
+  </view>
+</view>
+<custom-tab-bar selectedtext='首页' />

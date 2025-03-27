@@ -1,0 +1,31 @@
+
+<view class='container'>
+
+<form>
+  <!--
+  <view class='page_title'>注册车辆</view>
+-->
+  <view class='input_views'>
+
+    <view class='input_item' >
+      <view class='input_title'>真实姓名</view>
+      <input class='input_v'  value="{{realname}}" placeholder='请输入' bindinput='realnameInput' ></input>
+    </view>
+
+      <view class='input_item' >
+        <view class='input_title'>手机号</view>
+        <input class='input_v'  value="{{mobile}}" placeholder='请输入' bindinput='mobileInput' ></input>
+      </view>
+
+      <view class='input_item'>
+        <view class='input_title'>用户名</view>
+        <input class='input_v' value="{{userName}}" placeholder='请输入' bindinput='userNameInput'></input>
+      </view>
+
+
+  </view>
+
+  <button class='login_btn' hover-class="btn_tapcolor" bindtap='regBtnTap'>保存</button>
+ 
+</form>
+</view>

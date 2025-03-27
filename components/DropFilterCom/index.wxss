@@ -1,0 +1,12 @@
+.picker {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  font-family: PingFang SC;
+}
+
+.picker-text {
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+}

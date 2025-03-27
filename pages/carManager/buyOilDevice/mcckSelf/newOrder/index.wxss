@@ -1,0 +1,132 @@
+.container {
+  width: 100%;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+  position: relative;
+  align-items: center;
+}
+/* 内容项 */
+.content-item {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+width: 96%;
+}
+
+.content-item-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 10rpx;
+}
+
+.head-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.left-category {
+  display: flex;
+  align-items: center;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.left-category image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.left-brand {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #1B64B1;
+  background: #EEF7FF;
+  border-radius: 5rpx;
+  padding: 0 15rpx;
+}
+
+.left-model {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.head-right {
+  display: flex;
+  flex-direction: row;
+  gap: 10rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-history {
+  color: #1B64B1;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+.right-history image{
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.right-state {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #F56F48;
+
+}
+
+.right-special-state {
+  border-radius: 8rpx;
+  border: 1px solid #DD0B2D;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 20rpx;
+  color: #DD0B2D;
+  padding: 0 15rpx;
+}
+
+.content-item-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 10rpx;
+  gap: 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item {
+  flex: 0 0 48%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  transition: all 0.3s;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+
+}
+
+.long-info-item {
+  flex-basis: 100% !important;
+  /* 长内容时占满整行 */
+}
+

@@ -1,0 +1,99 @@
+<privacy />
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <!-- 自定义头部 -->
+  <view class="custom-navbar" style="height:{{totalNavHeight}}px;">
+    <view class="status-bar" style="height:{{statusBarHeight}}px;"></view>
+    <view class="nav-bar" style="height:{{navBarHeight}}px;">
+      <view class="title-container">
+        <image src="/assets/images/login/logo.png" bindtap="handleJumpHome" />
+        <text class="title">智信通wiselink</text>
+      </view>
+    </view>
+  </view>
+  <!-- 轮播图部分 -->
+  <view class="swiper-outer-container" style="background-image: url('{{s_background_image_of_the_banner}}');margin-top: {{totalNavHeight}}px;height: {{s_banner_height}}px;">
+    <swiper class="banner-swiper" vertical="{{false}}" circular="{{false}}" autoplay="{{false}}" indicator-dots="{{false}}" autoplay="{{true}}" interval="3000" duration="500" style="transition: 'height 0.5s ease';height: {{s_banner_height}}px;">
+      <swiper-item wx:for="{{g_banner_image}}" wx:key="index">
+        <image src="{{c_link}}/img/{{item.img}}" class="slide-image" mode="widthFix" bindload="initialiOnImageLoad"></image>
+      </swiper-item>
+    </swiper>
+  </view>
+  <!-- 快捷入口部分 -->
+  <view class="middle" style="height: {{s_quick_entrance_height}}px;">
+    <swiper current="{{g_quickIndex}}" class="middle-swiper" bindchange="handleQuickEntry">
+      <swiper-item wx:for="{{g_before_passing_by_icon}}" wx:key="index">
+        <view class="middle-swiper-item">
+          <block wx:for="{{item}}" wx:key="index">
+            <view class="middle-swiper-container">
+              <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList">
+                <image src="{{!item.icon ? '/assets/images/index/icon5.png' : c_link + 'img/' + item.icon}}" />
+                <text>{{item.name}}</text>
+              </view>
+            </view>
+          </block>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+  <!-- 指示点部分 -->
+  <view class="dots-container">
+    <view wx:for="{{3}}" wx:key="index" class="dot {{index === g_quickIndex ? 'active-dot' : ''}}"></view>
+  </view>
+  <!-- 主要功能区 -->
+  <!-- 40为新增tabs高度；10为圆点高度;s_platform_height可能在苹果x以下异常 -->
+  <view class="main-content" style="height: {{(c_screen_height + (sn_state?60:0))-(totalNavHeight+s_banner_height+s_quick_entrance_height+s_platform_height+5+10)}}px;">
+    <block wx:if="{{sn_state}}">
+      <map-com multiple="false" source="desk" sn="{{sn_specific_value}}" style="width: 100%;" />
+    </block>
+    <block wx:else>
+      <view class="main-content-left" style="background-image: url('{{s_background_image_of_the_tree}}')">
+        <scroll-view class="scroll-view-container" scroll-y="true" show-scrollbar="{{false}}" enhanced="{{true}}">
+          <tree dataTree="{{g_tree_structure_data}}" selectKey="{{g_th_crrntly_slctd_tr_nd}}" bind:select="handleSwitchChild" isSelectLastNode="true"></tree>
+        </scroll-view>
+      </view>
+      <view class="main-content-right">
+        <scroll-view class="scroll-view-container" scroll-y="true" show-scrollbar="{{false}}" enhanced="{{true}}" scroll-with-animation bindscroll="handleBinddragstart" scroll-into-view="{{ scrollIntoId }}">
+          <view wx:for="{{g_right_data}}" wx:key="id" wx:for-item="item" wx:key="index" style="background-color:#fff;margin-bottom: 10rpx;border-radius: 10rpx;padding: 10rpx 10rpx;">
+            <!-- 第一层数据 -->
+            <block wx:if="{{item.isdir == 1}}">
+              <view id="{{'section'+item.id}}" class="section" style="font-weight: bold; font-size: 26rpx;color: #333;display: flex;justify-content: flex-start;gap: 10rpx;">{{item.name}}</view>
+              <!-- 第二层数据 -->
+              <view class="classification-department">
+                <block wx:for="{{item.children}}" wx:for-item="item" wx:key="index">
+                  <block wx:if="{{item.isdir == 1}}">
+                    <view id="{{'section'+item.id}}" class="section" style="display: flex;justify-content: space-between; color: #f0f0f0;font-size: 22rpx;width: 100%;margin: 0 30rpx;font-weight: bold;">
+                      <view>————</view>
+                      <text style="color: #7B7C7C;">{{item.name}}</text>
+                      <view>————</view>
+                    </view>
+                    <!-- 第三层数据 -->
+                    <block wx:for="{{item.children}}" wx:for-item="item" wx:key="index">
+                      <block wx:if="{{item.isdir== 1}}">
+                        <view id="{{'section'+item.id}}" class="section" style="font-size: 23rpx; color: #333;min-width: 100rpx;">{{item.name}}</view>
+                      </block>
+                      <view wx:else class="classification-department-item {{item.isdevelop == 0?'developed':'not-developed'}}" data-item="{{item}}" bindtap="handleJumpPage">
+                        <image src="{{c_link}}/img/{{item.icon}}" style="width: 80rpx;height: 80rpx;" />
+                        <view style="color: #333;font-size: 23rpx;">{{item.name}}</view>
+                      </view>
+                    </block>
+                  </block>
+                  <view wx:else class="classification-department-item {{item.isdevelop == 0?'developed':'not-developed'}}" data-item="{{item}}" bindtap="handleJumpPage">
+                    <image src="{{c_link}}/img/{{item.icon}}" style="width: 80rpx;height: 80rpx;" />
+                    <view style="color: #333;font-size: 23rpx;">{{item.name}}</view>
+                  </view>
+                </block>
+              </view>
+            </block>
+            <view wx:else class="classification-department-item {{item.isdevelop == 0?'developed':'not-developed'}}" data-item="{{item}}" bindtap="handleJumpPage">
+              <image style="width: 80rpx;height: 80rpx;" src="/assets/images/home/01.png" />
+              <view style="color: #333;font-size: 23rpx;">{{item.name}}</view>
+            </view>
+          </view>
+        </scroll-view>
+
+      </view>
+    </block>
+
+  </view>
+</view>
+<custom-tab-bar selectedtext='首页' wx:if="{{!sn_state}}" />

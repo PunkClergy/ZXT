@@ -1,0 +1,55 @@
+
+<view class='container'>
+
+  <form>
+    <!--
+    <view class='page_title'>注册车辆</view>
+-->
+    <view class='input_views'>
+
+      <view class='input_item'>
+        <view class='input_title'>设备号(SN)</view>
+        <input class='input_v' disabled="{{sncodeDisabled}}" value="{{sn}}" placeholder='请输入' bindinput='snInput' maxlength='11'></input>
+      </view>
+
+      
+        <view class='input_item'>
+          <view class='input_title'>注册码(CODE)</view>
+          <input class='input_v' disabled="{{sncodeDisabled}}" value="{{code}}" placeholder='请输入' bindinput='codeInput' bindblur="codeInputBlur"></input>
+        </view>
+
+        <view class="input_item">
+        <view class="input_title">车系</view>
+        <picker  style="width: 100%;" bindchange="carSerialPickerChange" range-key="carTypeName" value="{{serialIndex}}" range="{{carSerialArray}}">
+            <view class='input_v' style="text-align: left;">
+            {{carSerialArray[serialIndex].carTypeName}}
+            </view>
+        </picker>
+        <image class="arrowDown" src="../../../assets/images/system/arrow_down@2x.png"></image>
+        </view>
+      
+        <view class="input_item">
+        <view class="input_title">车型</view>
+        <picker  style="width: 100%;" bindchange="carModelPickerChange"  range-key="carModelName" value="{{modelIndex}}" range="{{carModelArray}}">
+            <view class='input_v' style="text-align: left;">
+            {{carModelArray[modelIndex].carModelName}}
+            </view>
+        </picker>
+        <image class="arrowDown" src="../../../assets/images/system/arrow_down@2x.png"></image>
+        </view>
+
+        <view class='input_item'>
+          <view class='input_title'>车架号(VIN)</view>
+          <input class='input_v' value="{{vin}}" placeholder='请输入' bindinput='vinInput'></input>
+        </view>
+
+        <view class='input_item'>
+          <view class='input_title'>车牌号</view>
+          <input class='input_v' value="{{platenumber}}" placeholder='请输入' bindinput='platenumberInput'></input>
+        </view>
+    </view>
+
+    <button class='login_btn' hover-class="btn_tapcolor" bindtap='regBtnTap'>保存</button>
+   
+  </form>
+</view>

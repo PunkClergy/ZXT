@@ -1,0 +1,9 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="视频播放" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;gap: 20rpx;">
+  <view style="padding: 20rpx;font-family: PingFang SC;font-weight: bold;font-size: 36rpx;color: #333333;">{{title}}</view>
+    <video id="myVideo" wx:if="{{mp4_url}}"  src="{{mp4_url}}" binderror="videoErrorCallback" danmu-list="{{danmuList}}" enable-danmu danmu-btn show-center-play-btn='{{false}}' show-play-btn="{{true}}" controls picture-in-picture-mode="{{['push', 'pop']}}" bindenterpictureinpicture='bindVideoEnterPictureInPicture' bindleavepictureinpicture='bindVideoLeavePictureInPicture' style="width: 98%;margin: 0 auto;"></video>
+  </view>
+</view>

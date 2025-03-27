@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "充值记录",
+  "usingComponents": {
+    "mp-searchbar": "weui-miniprogram/searchbar/searchbar"
+  }
+}

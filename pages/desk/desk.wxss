@@ -1,0 +1,231 @@
+/* 最外层样式 */
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+  align-items: center;
+}
+
+
+/* 自定义头部部分 */
+.custom-navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
+.status-bar {
+  width: 100%;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  height: 100%;
+}
+
+.title-container image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.title {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 33rpx;
+  color: #010101;
+  line-height: 30rpx;
+}
+
+/* 轮播图部分 */
+.swiper-outer-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-swiper {
+  width: 96%;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 快捷入口部分 */
+.middle {
+  width: 96%;
+  height: 80px;
+  border-top-left-radius: 8rpx;
+  border-top-right-radius: 8rpx;
+  background-color: #fff;
+}
+
+.middle-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.middle-swiper-item {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  overflow: hidden;
+}
+
+.middle-swiper-container {
+  box-sizing: border-box;
+  width: 20%;
+  padding: 5px;
+}
+
+.middle-swiper-container-icon {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+}
+
+.middle-swiper-container-icon image {
+  width: 43rpx;
+  height: 32rpx;
+  min-height: 32rpx;
+}
+
+.middle-swiper-container-icon text {
+  font-size: 22rpx;
+}
+
+.dots-container {
+  background: #fff;
+  width: 96%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10px;
+  border-bottom-left-radius: 8rpx;
+  border-bottom-right-radius: 8rpx;
+}
+
+.dot {
+  width: 20px;
+  height: 5px;
+  background-color: #aaa;
+  border-radius: 20%;
+  margin: 0 2px;
+}
+
+.active-dot {
+  background-color: #007aff;
+  width: 10px;
+}
+
+
+
+/* 主要功能区 */
+.main-content {
+  width: 96%;
+  border-radius: 15rpx;
+  display: flex;
+  margin-top: 10rpx;
+}
+
+.main-content-left {
+  width: 30%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.main-content-right {
+  width: 68%;
+  border-top-right-radius: 8rpx;
+  border-bottom-right-radius: 8rpx;
+  /* background-color: #fff; */
+  padding-left: 12rpx;
+  padding-right: 12rpx;
+
+}
+
+.scroll-view-container {
+  height: 100%;
+}
+
+
+.classification-department {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.classification-department-item {
+  width: 32%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 10rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.classification-department-item image {
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.classification-department-text {
+  font-size: 22rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+
+.developed {
+  opacity: 0.5;
+}
+
+.not-developed {
+  opacity: 1;
+}
+
+/* 新增终端tabs */
+.terminal-tabs-container {
+  background-color: #ECF7FA;
+  height: 40px;
+  display: flex;
+  width: 96%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.terminal-tabs-view {
+  font-size: 26rpx;
+  width: 30%;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

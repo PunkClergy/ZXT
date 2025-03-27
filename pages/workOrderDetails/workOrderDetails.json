@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "工单详情",
+  "usingComponents": {
+    "listCardComponent": "/components/listCardComponent/listCardComponent",
+    "timeline": "/components/timeline/timeline"
+  }
+}
+

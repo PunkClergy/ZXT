@@ -1,0 +1,159 @@
+<action-sheet hidden="{{isShowOilSheet}}" bindchange="actionSheetChange" z-index="{{ 999 }}" >
+ <block wx:for-items="{{oilItems}}">
+ <action-sheet-item id="{{item.id}}" bindtap="sheetTap">{{item.name}}</action-sheet-item>
+ </block>
+ <action-sheet-cancel class="cancel">取消</action-sheet-cancel>
+</action-sheet>
+
+<view style="background-color:white;margin: auto;height: 290rpx;">
+     <!-- 具体产品 -->
+     <view class='productDesView' style="display: flex;">
+      <image class="carImage" src="../../../assets/images/rent/car@2x.png"  mode='aspectFit'></image>
+      <view class = 'productDesText'>{{carItem.platenumber}}</view>
+     </view>
+     <view class="fengexian"></view>
+     <view class='productDesView' style="display: flex;">
+      <view class = 'yibiaoText'>车系</view>
+      <view class = 'qiText'>{{carItem.vehicleSerialName}}</view>
+      <view class = 'yibiaoText'>车型</view>
+      <view class = 'qiText'>{{carItem.vehicleModeName}}</view>
+     </view>
+     <view class='productDesView' style="display: flex;">
+      <view class = 'yibiaoText'>车架号</view>
+      <view class = 'qiText'>{{carItem.vin}}</view>
+      <view class = 'yibiaoText'>油箱容积</view>
+      <view class = 'qiText'>{{carItem.xsgw ==''?'':carItem.xsgw+'L' }}</view>
+     </view>
+     <view class='productDesView' style="display: flex;">
+      <view class = 'yibiaoText'>设备号</view>
+      <view class = 'qiText'>{{carItem.sn == null?'无':carItem.sn}}</view>
+      <view class = 'yibiaoText'>注册时间</view>
+      <view class = 'qiText' >{{carItem.createDate}}</view>
+     </view>
+
+    <view class='productDesView' style="display: flex;">
+       <button id="{{index}}" class="jisuanButton" hover-class="huanzuButton" style="float: left;" bindtap="getOilButtonTap">
+        检测油量
+       </button>
+    </view>
+    </view>
+<view wx:if="{{items.length == 0}}" class="scrollView_noDataTip">无数据</view>
+<view class='giftListView' style="margin-top: 10rpx;">
+<scroll-view style="height: {{scrollHihgt}}px" scroll-y="true" refresher-enabled="true"  bindrefresherrefresh="refresh" refresher-triggered="{{triggered}}">
+
+ <block wx:for="{{items}}"  wx:key="id">
+ <!-- 每个cell -->
+ <view class='{{item.status == 2?"item":"item2"}}' style="background-color:white;margin: auto;border-radius: 5px;margin-top: 6px;" wx:key="*this"   data-item= "{{item}}" data-id="{{item.ID}}" id="{{item.mappingid}}">
+  
+
+  <!-- 具体产品 -->
+  <view class='productDesView' style="display: flex;" wx:if="{{item.status == 0 || item.status == 2}}">
+   <view class = 'yibiaoText'>油量：</view>
+   <view class = 'qiText'>{{item.startoil}}L</view>
+   <view class = 'yibiaoText' style="margin-left: 110rpx;">类型：</view>
+   <view class = 'qiText'>起租</view>
+  </view>
+
+  <view class='productDesView' style="display: flex;" wx:if="{{item.status == 0 || item.status == 2}}">
+   <view class = 'yibiaoText'>时间：</view>
+   <view class = 'qiText'>{{item.startdate}}</view>
+   </view>
+
+   
+
+ 
+  <view class='productDesView' style="display: flex;" wx:if="{{item.status == 1 || item.status == 2}}">
+   <view class = 'yibiaoText'>油量：</view>
+   <view class = 'qiText'>{{item.endoil}}L</view>
+   <view class = 'yibiaoText' style="margin-left: 110rpx;">类型：</view>
+   <view class = 'qiText'>还租</view>
+  </view>
+  <view class='productDesView' style="display: flex;" wx:if="{{item.status == 1 || item.status == 2}}">
+   <view class = 'yibiaoText'>时间：</view>
+   <view class = 'qiText'>{{item.enddate}}</view>
+   </view>
+
+  <view class='productDesView' style="display: flex;" wx:if="{{item.status == 2}}">
+   <view class = 'yibiaoText'>补缴金额：</view>
+   <view class = 'qiText'>{{item.cost}}元</view>
+  </view>
+ </view>
+ </block>
+
+</scroll-view>
+
+</view>
+
+<view class="modal-mask" bindtap="hideModal" wx:if="{{showModal}}"></view>
+<view wx:if="{{showModal}}">
+  <view class="modal-content">
+    <view style="margin-top: 50rpx;">
+      <view class="model-text" style="color: gray;">请选择设备：</view>
+      <scroll-view 	scroll-y = "true"  class="model-text" style="height: 390rpx; margin-top: 20rpx;">
+        <radio-group bindchange="radioChange">
+        <label style="display: flex;height: 70rpx;"  wx:for="{{snitems}}" wx:key="{{item.idc}}">
+
+          <view style="height: 60rpx;">
+            <radio value="{{item.idc}}" style="transform:scale(0.8);line-height: 60rpx;"/>
+          </view>
+          <view style="height: 60rpx;line-height: 60rpx;">{{item.idc}}</view>
+        </label>
+      </radio-group>
+      </scroll-view>
+    <view class="fengexian" style="position:absolute;bottom:92rpx;"></view>
+    <view style="display:flex;width: 100%;position:absolute;bottom:0;">
+      <button class='cancelbtn' bindtap='cancelButttonTap'>取消</button>
+      <button class='btn' bindtap='sureButtonTap'>确定</button>
+    </view>
+    </view>
+  </view>
+</view>
+
+
+
+<view class="modal-mask" bindtap="hideModal" wx:if="{{oilShowModal}}"></view>
+<view wx:if="{{oilShowModal}}">
+  <view class="modal-content">
+    <view style="margin-top: 50rpx;">
+      <view style="color: gray;text-align: center;">提示</view>
+      <view class="model-text" style="margin-top: 160rpx;">{{oilInfo}}</view>
+    <view class="fengexian" style="position:absolute;bottom:92rpx;"></view>
+    <view style="display:flex;width: 100%;position:absolute;bottom:0;">
+      
+      <button class='btn' bindtap='startRent'>起租</button>
+      <button class='btn' bindtap='rentEnd'>还租</button>
+      <button class='btn' bindtap='oilcancelButttonTap'>关闭</button>
+    </view>
+    </view>
+  </view>
+</view>
+
+
+
+
+<view class="modal-mask" bindtap="hideModal" wx:if="{{orderShowModal}}"></view>
+<view wx:if="{{orderShowModal}}">
+  <view class="modal-content">
+    <view style="margin-top: 50rpx;">
+      <view class="model-text" style="color: gray;">请选择起租订单：</view>
+      <scroll-view 	scroll-y = "true"  class="model-text" style="height: 390rpx; margin-top: 20rpx;">
+        <radio-group bindchange="orderRadioChange">
+        <label style="display: flex;height: 70rpx;"  wx:for="{{qzOrderitems}}" wx:key="id">
+
+          <view style="height: 60rpx;">
+            <radio value="{{item.id}}" style="transform:scale(0.8);line-height: 60rpx;"/>
+          </view>
+          <view style="height: 60rpx;line-height: 60rpx;">{{item.startdate + '   油量：'+item.startoil+'L'}}</view>
+        </label>
+      </radio-group>
+      </scroll-view>
+    <view class="fengexian" style="position:absolute;bottom:92rpx;"></view>
+    <view style="display:flex;width: 100%;position:absolute;bottom:0;">
+      <button class='btn' bindtap='zhijieRentEnd'>直接还租</button>
+      <button class='btn' bindtap='qizhuRentEnd'>选订单还租</button>
+      <button class='btn' bindtap='rentEndCancel'>关闭</button>
+    </view>
+    </view>
+  </view>
+</view>
+

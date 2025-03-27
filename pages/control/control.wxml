@@ -1,0 +1,112 @@
+<view class='top-container'>
+  <map id="{{mapId}}"  scale='{{scale}}'  bindmarkertap='markertap' polyline="{{polyline}}" include-points="{{includePoints}}" markers="{{markers}}" longitude="{{longitude}}" latitude="{{latitude}}"   show-scale="true" style="width:100%;height:{{mapHeight}}px">
+
+  <view class='car-time-parent' wx:if="{{type == 1 && code != ''}}">
+    <view class='car-info-text'>使用时间</view>
+    <view class='address-info-text'>{{rentTimeInfo}}</view>
+  </view>
+
+  <!--
+  <view class='car-time-parent' hidden="{{isShowRentView || type == 0}}" bindtap="rentViewTap">
+    <view class='car-info-text'>订单信息</view>
+    <view class='address-info-text'>{{rentTimeInfo}}</view>
+  </view>
+  
+  <view class='car-time-parent' wx:if="{{type==3 && code != ''}}">
+    <view class='car-info-text'>{{plateNumber}}</view>
+    <view class='address-info-text'>开始使用时间：{{rentTimeInfo}}</view>
+  </view>
+
+  <view class='car-time-parent' wx:if="{{type==2}}">
+    <view class='car-info-text'>工单任务</view>
+    <view class='address-info-text'>任务时间：{{work.receivedate}}</view>
+    <view class='address-info-text'>接车地点：{{work.receiveaddress}}</view>
+    <view class='address-info-text'>送车地点：{{work.giveaddress}}</view>
+  </view>
+-->
+
+  <cover-image id="-4" bindtap="controlTap" class='network-icon' src="{{networkControlImg}}" wx:if="{{networkControlImg.length > 0}}"></cover-image>
+  <cover-image id="-5" bindtap="controlTap" class='bluetooth-icon' src="{{bluetoothControlImg}}"  wx:if="{{bluetoothControlImg.length > 0}}"></cover-image>
+  <cover-image id="-3" bindtap="controlTap" class='position-icon' src="{{positionUrl}}" wx:if="{{positionUrl.length > 0}}"></cover-image>
+  <cover-image id="-6" bindtap="controlTap" class='pnavigation-icon' src="{{navigationUrl}}" wx:if="{{navigationUrl.length > 0}}"></cover-image>
+  <cover-image id="{{kefuControlId}}" bindtap="controlTap" class='kefu-icon' src="../../assets/images/kefu.png" wx:if="{{navigationUrl.length > 0}}"></cover-image>
+  <cover-image id="-8" bindtap="controlTap" class='person-icon' src="../../assets/images/user3.png" wx:if="{{navigationUrl.length > 0}}"></cover-image>
+
+<!--
+  <view hidden="{{type != 0 && type != 1}}">
+  <button hidden="{{type != 0}}" class="zuche-icon"  bindtap="subletTap">转租</button>
+  <button hidden="{{type != 1}}" class="zuche-icon" style="background-color: red;" bindtap="rentalTap">{{rentButtonName}}</button>
+</view>
+-->
+<view wx:if="{{type==2}}">
+  <button class="zuche-icon"  bindtap="uploadImg">完成任务</button>
+</view>
+
+<view wx:if="{{isShowRentView && type == 0}}">
+  <button class="zuche-icon"  bindtap="uploadImg" style="background-color: red;">归还车辆</button>
+</view>
+
+ <!--
+<view wx:if="{{type==3 && selectSn !=''}}">
+  <button wx:if="{{!hasUsedCar}}" class="zuche-icon" bindtap="useCarTap">使用车辆</button>
+  <button wx:if="{{hasUsedCar}}" class="zuche-icon" bindtap="returnCarTap" style="background-color: red;">停用车辆</button>
+</view>
+ 
+<view wx:if="{{type==3 && selectSn !=''}}">
+  <button wx:if="{{!hasUsedCar}}" class="share-icon"  bindtap="subletTap">分享车辆</button>
+</view>
+
+  <cover-view style="display: flex;">
+    <input class="code-input" style="margin: auto;" name="userName"  placeholder="请输入密钥" />
+    <button class="code-button" style="margin: auto;" plain="false">确定</button>
+  </cover-view>
+  -->
+  </map>
+  <cover-image class='bg-arc' src="../../assets/images/control_up_bg.png"></cover-image> 
+</view>
+<view hidden="{{coverHeightHidden}}" class='bottom-container' style='height:{{coverHeight}}rpx;'>
+  <image class='bg-control-img' src="../../assets/images/control_down_bg.jpg"></image>
+  <view class='car-info-parent'>
+    <!--<image class='bg-car-img' src="{{carUrl}}" mode='aspectFit'></image>-->
+    <view class='car-info-text'>{{carInfo}}</view>
+    <view class='address-info-text'>{{addressInfo}}</view>
+  </view>
+  <view class='control-area'>
+    <!-- <view class='empty'></view>
+    <button bindtap='downloadApp' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/iphone.png" mode='aspectFit'></image>
+      <text>下载APP</text>
+    </button> -->
+    <view class='empty'></view>
+    <button bindtap='openLock' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/open.png" mode='aspectFit'></image>
+      <text>开锁</text>
+    </button>
+    <view class='empty'></view>
+    <button bindtap='closeLock' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/close.png" mode='aspectFit'></image>
+      <text>关锁</text>
+    </button>
+    <view class='empty'></view>
+    <button bindtap='lookForCar' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/find.png" mode='aspectFit'></image>
+      <text>寻车</text>
+    </button>
+    <view class='empty'></view>
+    <!--
+   <button bindtap='showCarImg' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/photo.png" mode='aspectFit'></image>
+      <text>查看照片</text>
+    </button>
+    -->
+    <button bindtap='subletTap' class='btn-control'>
+      <image class='icon-control' src="../../assets/images/shareCar.png" mode='aspectFit'></image>
+      <text>分享车辆</text>
+    </button>
+    <view class='empty'></view>
+  </view>
+
+</view><!--
+<view hidden="{{coverHeightHidden2}}" class='bottom-container-no-car' style='height:{{coverHeight2}}rpx}'>
+  <view class='no-car' style='line-height:{{coverHeight2}}rpx'>暂无车辆信息</view>
+</view>-->

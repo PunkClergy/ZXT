@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "车务管理",
+  "usingComponents": {
+    "mp-searchbar": "weui-miniprogram/searchbar/searchbar"
+  }
+}

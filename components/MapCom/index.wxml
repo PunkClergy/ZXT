@@ -1,0 +1,156 @@
+<map id="myMap" scale='{{scale}}' polyline="{{polyline}}" include-points="{{includePoints}}" markers="{{markers}}" longitude="{{longitude}}" latitude="{{latitude}}" show-scale="true" bindmarkertap="handleOnMarkerTap">
+  <view class="container-head">
+    <view class="head-bg" id="-4" bindtap="handleControl">
+      <image src="{{currentSelectControlType=='-4'?'/assets/images/home/wifi_1.png':'/assets/images/home/wifi.png'}}" />
+    </view>
+    <view class="head-bg" id='-5' bindtap="handleControl">
+      <image src="{{currentSelectControlType=='-5'?'/assets/images/home/bluetooth_1.png':'/assets/images/home/bluetooth.png'}}" />
+    </view>
+  </view>
+  <view class="info-upper" wx:if="{{source!='desk'}}">
+    <text bindtap="handleCurrentLocation">当前位置</text>
+    <text bindtap="handleTrajectory" wx:if="{{source !='carDetail'}}">历史轨迹</text>
+  </view>
+  <view class="info-middle" wx:if="{{source!='desk'}}">
+    <view class="info-middle-layer" bindtap="handleCarStatus">
+      <image src="/assets/images/home/info.png" />
+      <text>车辆状态</text>
+    </view>
+  </view>
+
+  <view class="info-middle-btn" wx:else>
+    <view class="info-middle-btn-layer" bindtap="handleReturnToVehicle">
+      <image src="/assets/images/home/yd.png" />
+    </view>
+    <view class="info-middle-btn-layer" bindtap="handleStartNavigation">
+      <image src="/assets/images/home/dh.png" />
+    </view>
+  </view>
+
+  <view class="info-lower">
+    <view class="info-lower-layer" id="3" bindtap="handleFooterBtn">
+      <image src="/assets/images/home/map2.png" />
+      <text>开锁</text>
+    </view>
+    <view class="info-lower-layer" id="1" bindtap="handleFooterBtn">
+      <image src="/assets/images/home/map4.png" />
+      <text>关锁</text>
+    </view>
+    <view class="info-lower-layer" id="5" bindtap="handleFooterBtn">
+      <image src="/assets/images/home/map1.png" />
+      <text>寻车</text>
+    </view>
+    <view class="info-lower-layer" id="8" bindtap="handleFooterBtn" wx:if="{{source!='desk'}}">
+      <image src="/assets/images/home/map3.png" />
+      <text>风控拦截</text>
+    </view>
+    <view class="info-lower-layer" id="6" bindtap="handleFooterBtn" wx:if="{{source!='desk'}}">
+      <image src="/assets/images/home/map5.png" />
+      <text>取消拦截</text>
+    </view>
+  </view>
+
+
+  <!-- 车辆状态弹窗 -->
+  <view class="car-status-info" wx:if="{{showModalState}}" bindtap="handleHideShowModal">
+    <view class="car-status-container">
+      <view class="status-info-title">
+        车辆状态
+      </view>
+      <view class="status-info-content">
+        <view class="status-info-item">
+          <text>VIN：{{statusInfo.vin||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>油量：{{statusInfo.confirmOilRemainA||'-'}}</text>
+          <text>电量：{{statusInfo.electricity||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>总里程：{{statusInfo.mileage||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>小电瓶：{{statusInfo.voltage||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>ACC：{{statusInfo.vin}}</text>
+          <text>ON：{{statusInfo.vin}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>发动机：{{statusInfo.vin}}</text>
+          <text>档位：{{statusInfo.vin}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>中控锁：{{statusInfo.vin}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>左前门：{{statusInfo.leftFrontDoor||'-'}}</text>
+          <text>右前门：{{statusInfo.rightFrontDoor||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>左后门：{{statusInfo.leftRearDoor||'-'}}</text>
+          <text>右后门：{{statusInfo.rightRearDoor||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>后备箱：{{statusInfo.vin}}</text>
+          <text>车灯：{{statusInfo.vin}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>脚刹：{{statusInfo.vin}}</text>
+          <text>手刹：{{statusInfo.vin}}</text>
+        </view>
+
+      </view>
+    </view>
+  </view>
+</map>
+<!-- 选择历史轨迹弹窗 -->
+<block>
+  <view class="modal-mask" wx:if="{{s_trajectory_show}}" bindtap="handleHideTrajectory"></view>
+  <view class="modal-base-map" wx:if="{{s_trajectory_show}}">
+    <form bindsubmit="handleFormSubmit">
+      <view class="modal-container">
+        <view class="modal-container-head">
+          <text>历史轨迹</text>
+          <image src="/assets/images/home/right_1.png" bindtap="handleHideTrajectory" />
+        </view>
+        <view class="modal-container-middle">
+          <view class="middle-form-item">
+            <label>开始时间</label>
+            <view class="modal-form-region">
+              <picker mode="date" value="{{time}}" data-index="startDate" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{startDate}}</text>
+                </view>
+              </picker>
+              <picker mode="time" value="{{time}}" data-index="startTime" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{startTime}}</text>
+                </view>
+              </picker>
+            </view>
+
+          </view>
+          <view class="middle-form-item">
+            <label>开始时间</label>
+            <view class="modal-form-region">
+              <picker mode="date" data-index="endDate" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{endDate}}</text>
+                </view>
+              </picker>
+              <picker mode="time" data-index="endTime" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{endTime}}</text>
+                </view>
+              </picker>
+            </view>
+
+          </view>
+        </view>
+        <view class="modal-container-footer">
+          <button formType="submit">确认</button>
+        </view>
+      </view>
+    </form>
+  </view>
+</block>

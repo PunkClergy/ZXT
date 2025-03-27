@@ -1,0 +1,71 @@
+<wxs module="tagsformat" src="../../utils/filter.wxs"></wxs>
+<view wx:if="{{items.length == 0}}" class="scrollView_noDataTip">无数据</view>
+<view class='giftListView'>
+  <view style="width: 100%;display:flex;">
+    <view style="width: 100%;">
+      <mp-searchbar search='ser' placeholder='车牌号/车型' id="searchbar" bindselectresult="selectRes" bindinput="inputChange" bindclear="clearInput" bindcancel="cancel" cancelText="搜索" wx-if="{{currentTab !=3}}">
+      </mp-searchbar>
+    </view>
+  </view>
+
+  <scroll-view style="height: {{scrollHihgt}}px;" class="scroll-container" scroll-y="true" refresher-enabled="true" bindscrolltolower="lower" bindrefresherrefresh="refresh" refresher-triggered="{{triggered}}">
+    <block wx:for="{{items}}" wx:key="index">
+      <view class="item-container">
+        <view class="head-container">
+          <view class="left-section">
+            <view class="label-item">
+              <image class="carImage" src="../../assets/images/home/car.png" mode="aspectFit"></image>
+              <view class="label">{{item.platenumber}}</view>
+            </view>
+            <view class="label-item">
+              <image class="carImage" src="../../assets/images/rent/car@2x.png" mode="aspectFit"></image>
+              <view class="label">{{item.vehicleSerialName}}{{item.vehicleModeName}}</view>
+            </view>
+            <view class="label-item">
+              <image class="carImage" src="../../assets/images/home/flag.png" mode="aspectFit"></image>
+              <view class="label">租车</view>
+            </view>
+          </view>
+          <view class="right-section">
+            <image class="carImage" src="../../assets/images/rent/car@2x.png" mode="aspectFit"></image>
+            <image class="carImage" src="../../assets/images/rent/car@2x.png" mode="aspectFit"></image>
+            <image class="carImage" src="../../assets/images/rent/car@2x.png" mode="aspectFit"></image>
+          </view>
+        </view>
+        <view class="border-box">
+          <!-- 每行两个内容 -->
+          <view class="box-row">
+            <view class="box-item">
+              <label>车架号 :</label>
+              <text>{{item.vin}}</text>
+            </view>
+            <view class="box-item">
+              <label>油箱容积 :</label>
+              <text>{{item.xsgw}}L</text>
+            </view>
+          </view>
+          <view class="box-row">
+            <view class="box-item">
+              <label>车辆类型 :</label>
+              <text>自助取还</text>
+            </view>
+            <view class="box-item">
+              <label>设备平台 :</label>
+              <text>智信通</text>
+            </view>
+
+          </view>
+          <view class="box-row">
+            <view class="box-item">
+              <label>设备号 :</label>
+              <text>{{item.sn||''}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="footer">
+          <text data-item="{{item}}" id="{{item.id}}" bindtap="handlegSendKey">发送钥匙</text>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>

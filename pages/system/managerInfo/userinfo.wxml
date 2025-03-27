@@ -1,0 +1,92 @@
+<view style="display: flex;background-color: #252C3B;height: 300rpx;">
+  <image class='user-bg' src="../../../assets/images/user1.png"></image>
+  <view>
+<view class='page_title'>{{userInfo.realname}}</view>
+<view class="username_title">{{userInfo.username}}</view>
+</view>
+</view>
+<view class='container'>
+
+  <button class='info-btn' hover-class="btn_tapcolor" bindtap='balanceTap'>
+      <image class='icon'  mode='aspectFit' src='../../../assets/images/system/password_icon@2x.png'></image>
+    <text class='info-btn-text'>余额充值</text>
+    <view class='info-btn-img'>
+      <image class='arrow' mode='aspectFit' src='../../../assets/images/system/arrow_right@2x.png'></image>
+    </view>
+  </button>
+
+<button class='info-btn' hover-class="btn_tapcolor" bindtap='updatePasswrodTap'>
+      <image class='icon'  mode='aspectFit' src='../../../assets/images/system/password_icon@2x.png'></image>
+    <text class='info-btn-text'>修改用户名和密码</text>
+    <view class='info-btn-img'>
+      <image class='arrow' mode='aspectFit' src='../../../assets/images/system/arrow_right@2x.png'></image>
+    </view>
+  </button>
+
+  <button class='info-btn' hover-class="btn_tapcolor" bindtap='unLoginBtnTap'>
+      <image class='icon'  mode='aspectFit' src='../../../assets/images/system/unlogin_icon@2x.png'></image>
+    <text class='info-btn-text'>退出登录</text>
+    <view class='info-btn-img'>
+    </view>
+  </button>
+
+  <button class='info-btn' hover-class="btn_tapcolor" bindtap='trackTap' wx:if="{{ nodeid == 2}}">
+    <text class='info-btn-text'>行车轨迹</text>
+    <view class='info-btn-img'>
+      <image class='arrow' mode='aspectFit' src='../../assets/images/arrow_right.png'></image>
+    </view>
+  </button>
+
+
+</view>
+
+
+<view class="modal-mask" bindtap="hideModal" wx:if="{{showModal}}"></view>
+<view wx:if="{{showModal}}">
+  <view class="modal-content">
+    <view class="model-textView" style="margin-top: 50rpx;">
+      <view class="model-text" style="color: gray;">请输入新密码：</view>
+      <view class="model-text" style="margin-top: 20rpx;">
+        <input class='input_v' placeholder=' 请输入' bindinput='newPasswordInput' password='true' value='{{newPassword}}' ></input>
+      </view>
+
+      <view class="model-text" style="color: gray;margin-top: 20rpx;">请再次输入新密码：</view>
+      <view class="model-text" style="margin-top: 20rpx;">
+        <input class='input_v' placeholder=' 请输入' bindinput='confirNewPasswordInput' password='true' value='{{confirNewPassword}}' ></input>
+      </view>
+    </view>
+   
+    <view class="fengexian" style="position:absolute;bottom:92rpx;"></view>
+    <view style="display:flex;width: 100%;position:absolute;bottom:0;">
+      <button class='cancelbtn' bindtap='cancelButttonTap'>取消</button>
+      <button class='btn' bindtap='sureButtonTap'>确定</button>
+    </view>
+    
+  </view>
+</view>
+
+
+<view class="modal-mask" bindtap="hideModal" wx:if="{{showModalUser}}"></view>
+<view wx:if="{{showModalUser}}">
+  <view class="modal-content">
+    <view class="model-textView" style="margin-top: 50rpx;">
+      <view class="model-text" style="color: gray;">请输入新用户名：</view>
+      <view class="model-text" style="margin-top: 20rpx;">
+        <input class='input_v' placeholder=' 请输入' bindinput='newUsernameInput'  value='{{newUsername}}' ></input>
+      </view>
+
+      <view class="model-text" style="color: gray;margin-top: 20rpx;">请再次输入新用户名：</view>
+      <view class="model-text" style="margin-top: 20rpx;">
+        <input class='input_v' placeholder=' 请输入' bindinput='confirNewUsernameInput'  value='{{confirNewUsername}}' ></input>
+      </view>
+    </view>
+   
+    <view class="fengexian" style="position:absolute;bottom:92rpx;"></view>
+    <view style="display:flex;width: 100%;position:absolute;bottom:0;">
+      <button class='cancelbtn' bindtap='cancelButttonUserTap'>取消</button>
+      <button class='btn' bindtap='sureButtonUserTap'>确定</button>
+    </view>
+    
+  </view>
+</view>
+<custom-tab-bar selectedtext='系统'/>

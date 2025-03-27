@@ -1,0 +1,90 @@
+<!--pages/order/orderList.wxml style="background-color:lightgray"-->
+<wxs module="tagsformat" src="../../utils/filter.wxs"></wxs>
+<view wx:if="{{items.length == 0}}" class="scrollView_noDataTip">无数据</view>
+<view class='giftListView'>
+  <view style="width: 100%;display:flex;">
+    <view style="width: 85%;">
+      <mp-searchbar search='ser' placeholder='车牌号/车型' id="searchbar" bindselectresult="selectRes" bindinput="inputChange" bindclear="clearInput" bindcancel="cancel" cancelText="搜索" wx-if="{{currentTab !=3}}">
+
+      </mp-searchbar>
+    </view>
+    <view style="align-items: center;display: flex;margin-left: 0rpx;">
+      <button class="addButton" bindtap="regCarBtnTap"></button>
+    </view>
+  </view>
+
+  <scroll-view style="height: {{scrollHihgt}}px" scroll-y="true" refresher-enabled="true" bindscrolltolower="lower" bindrefresherrefresh="refresh" refresher-triggered="{{triggered}}">
+    <block wx:for="{{items}}" wx:key="index">
+      <!-- 每个cell -->
+      <view class='item' style="background-color:white;margin: auto;border-radius: 5px;margin-top: 6px;" wx:key="*this" data-item="{{item}}" data-id="{{item.ID}}" id="{{item.mappingid}}" bindtap="handleSelectVehicle">
+
+
+        <view style="float: left;height: 100%;vertical-align: middle;">
+        </view>
+        <!-- 具体产品 -->
+        <view class='productDesView' style="display: flex;">
+          <image class="carImage" src="../../assets/images/rent/car@2x.png" mode='aspectFit'></image>
+          <view class='productDesText'>{{item.platenumber}}</view>
+
+          <view class="detialText" id="{{item.id}}" data-item="{{item}}" bindtap="showPopup">发送</view>
+          <view class="detialText" style="margin-left: 30rpx;" id="{{index}}" bindtap="editTap">取消发送 </view>
+
+        </view>
+        <view class="fengexian"></view>
+        <view class='productDesView' style="display: flex;">
+          <view class='yibiaoText'>车系</view>
+          <view class='qiText'>{{item.vehicleSerialName}}</view>
+          <view class='yibiaoText'>车型</view>
+          <view class='qiText'>{{item.vehicleModeName}}</view>
+        </view>
+        <view class='productDesView' style="display: flex;">
+          <view class='yibiaoText'>车架号</view>
+          <view class='qiText'>{{item.vin}}</view>
+          <view class='yibiaoText'>油箱容积</view>
+          <view class='qiText'>{{item.xsgw ==''?'':item.xsgw+'L' }}</view>
+        </view>
+        <view class='productDesView' style="display: flex;">
+          <view class='yibiaoText'>设备号</view>
+          <view class='qiText'>{{item.sn == null?'无':item.sn}}</view>
+          <view class='yibiaoText'>注册时间</view>
+          <view class='qiText'>{{item.createDate}}</view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 遮罩层 -->
+  <view class="mask" wx:if="{{showPopup}}" catchtap="hidePopup"></view>
+
+  <!-- 弹窗内容 -->
+  <view class="popup-box" wx:if="{{showPopup}}">
+    <!-- 动态生成表单项 -->
+    <block wx:for="{{formItems}}" wx:key="index">
+      <view class="popup-content">
+        <text>{{item.label || ''}}</text>
+        <block wx:if="{{item.name == 'platenumber'||item.name == 'sn'}}">
+          <input value="{{item.value}}" disabled="true" style="pointer-events: none;background: #eee;" />
+        </block>
+        <block wx:else>
+          <block wx:if="{{item.name == 'name'||item.name =='phone'}}">
+            <input disabled="{{item.name == 'platenumber'}}" placeholder="{{item.placeholder || '输入内容'}}" wx:if="{{showInput}}" value="{{item.value}}" bindinput="handleInputChange" data-index="{{index}}" />
+          </block>
+          <block wx:else>
+            <picker mode="{{item.name == 'endDate'||item.name == 'startDate'?'date':'time'}}" value="{{item.value}}" start="09:01" end="21:01" data-index="{{index}}" bindchange="bindTimeChange">
+              <view class="picker">
+                <input disabled="{{item.name == 'platenumber'}}" placeholder="{{item.placeholder || '输入内容'}}" wx:if="{{showInput}}" value="{{item.value}}" bindinput="handleInputChange" data-index="{{index}}" />
+              </view>
+            </picker>
+          </block>
+        </block>
+
+      </view>
+    </block>
+
+    <!-- 按钮组 -->
+    <view class="btn-group">
+      <button class="btn-cancel" bindtap="hidePopup">取消</button>
+      <button class="btn-confirm" bindtap="handleConfirm">确定</button>
+    </view>
+  </view>
+</view>

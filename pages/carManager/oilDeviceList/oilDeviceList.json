@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "油量设备管理",
+  "usingComponents": {
+    "mp-searchbar": "weui-miniprogram/searchbar/searchbar"
+  }
+}

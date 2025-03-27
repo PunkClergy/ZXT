@@ -1,0 +1,155 @@
+.page-body-wrapper {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  position: relative;
+  font-weight: 200;
+}
+
+.camera {
+  position: absolute;
+}
+
+.cover-top {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.cover-left {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 40rpx;
+  height: 100%;
+  position: absolute;
+}
+
+.cover-right {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 40rpx;
+  right: 0;
+  height: 100%;
+  position: absolute;
+}
+
+.cover-camera {
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  position: relative;
+}
+
+.cover-out-top {
+  height: 5rpx;
+  position: absolute;
+  left: 40rpx;
+}
+
+.cover-inner-top {
+  height: 10rpx;
+  width: 100rpx;
+  position: absolute;
+  top: 200rpx;
+  left: 50rpx;
+}
+
+.cover-out-left {
+  width: 5rpx;
+  position: absolute;
+  left: 40rpx;
+}
+
+.cover-inner-left {
+  height: 100rpx;
+  width: 10rpx;
+  position: absolute;
+  left: 50rpx;
+  top: 200rpx;
+}
+
+.cover-out-right {
+  width: 5rpx;
+  position: absolute;
+  right: 40rpx;
+}
+
+.cover-inner-right {
+  height: 100rpx;
+  width: 10rpx;
+  position: absolute;
+  left: 140rpx;
+  top: 200rpx;
+}
+
+.cover-out-bottom {
+  height: 6rpx;
+  position: absolute;
+  left: 40rpx;
+}
+
+.cover-bottom {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  position: relative;
+}
+
+.cover-inner-bottom {
+  height: 10rpx;
+  width: 100rpx;
+  position: absolute;
+  top: 290rpx;
+  left: 50rpx;
+}
+
+.tip {
+  margin-top: 40rpx;
+  color: #ffea00;
+  font-size: 30rpx;
+}
+
+.camera-start-btn {
+  width: 150rpx;
+  height: 150rpx;
+  position: absolute;
+  bottom: 200rpx;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+}
+
+.camera-start-img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.camera-pre {
+  width: 100rpx;
+  height: 100rpx;
+  position: absolute;
+  bottom: 200rpx;
+  left: 20rpx;
+}
+
+.bg-img {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+}
+
+.cover-line {
+  position: absolute;
+}
+
+.takePhoto {
+  width: 150rpx;
+  height: 150rpx;
+  position: absolute;
+  bottom: 200rpx;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  background-size: 150rpx 150rpx;
+  background-repeat: no-repeat;
+  border: none;
+}

@@ -1,0 +1,177 @@
+<view class=".container" style="background-image: url('{{s_background_picture_of_the_front_page}}')">
+
+  <view class="tabs-container">
+    <!-- Tabs 导航栏 -->
+    <view class="tabs-nav">
+      <view wx:for="{{tabs}}" wx:key="index" class="tab-item {{currentIndex === index ? 'active' : ''}}" bindtap="handleTabChange" data-index="{{index}}">
+        {{item}}
+      </view>
+    </view>
+
+    <!-- Tabs 内容区域 -->
+    <view class="tabs-content">
+      <view class="tab-pane" hidden="{{currentIndex !== 0}}">
+        <scroll-view class="scroll-container" scroll-y="{{true}}" scroll-into-view="{{scrollTopId}}" >
+          <view class="upper-half-card">
+            <view class="switching-button-container">
+              <view bindtap="handleScrollTo" data-target="section{{index+1}}" wx:for="{{c_card_collection}}" wx:key="index" class="switching-button {{s_crrntly_slctd_lbl === index + 1 ? 'switching-button-selected' : 'switching-button-unchecked'}}" data-index="{{index + 1}}">
+                <image src="/assets/images/home/{{s_crrntly_slctd_lbl === index + 1 ? item.unchecked_icon : item.selected_icon}}" mode="aspectFit" />
+                <text>{{item.title}}</text>
+              </view>
+            </view>
+
+            <view class="content-area-head">
+              {{c_card_collection[s_crrntly_slctd_lbl-1].title}}
+            </view>
+            <block>
+              <view class="card-content" id="section1">
+                <view class="vhcl-mngmnt-swtch" bindtap="handleSwitchBseVhcl">
+                  <text data-index="1" class="{{s_vhcl_nfrmtn_ndx == 1?'vhcl-mngmnt-swtch-active':''}}">基本信息</text>
+                  <text data-index="2" class="{{s_vhcl_nfrmtn_ndx == 2?'vhcl-mngmnt-swtch-active':''}}">自助取还信息</text>
+                </view>
+
+                <view class="bsc-vhcl-nfrmtn" wx:if="{{s_vhcl_nfrmtn_ndx == 1}}">
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">车牌号 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">汽车型号 :</view>
+                    <view>{{g_vhcl_nfrmtn.vehicleSerialName}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">车型 :</view>
+                    <view>{{g_vhcl_nfrmtn.vehicleModeName}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">车架号 :</view>
+                    <view>{{g_vhcl_nfrmtn.vin}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">油箱容积 :</view>
+                    <view>{{g_vhcl_nfrmtn.xsgw}}L</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">设备号 :</view>
+                    <view>{{g_vhcl_nfrmtn.sn}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">注册时间 :</view>
+                    <view>{{g_vhcl_nfrmtn.createDate}}</view>
+                  </view>
+                </view>
+                <view class="slf-srvc-pck-rtrn" wx:if="{{s_vhcl_nfrmtn_ndx == 2}}">
+                  <view class="slf-srvc-pck-rtrn-title">选择已保存的自助取还信息</view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">平台名称 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">发送方式 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">APP/链接 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">账号 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">密码 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                </view>
+              </view>
+            </block>
+            <block id="section2">
+              <view class="card-content" id="section2" style="">
+                <view class="vhcl-mngmnt-swtch" bindtap="handleSwitchWork">
+                  <text data-index="1" class="{{s_work_nfrmtn_ndx == 1?'vhcl-mngmnt-swtch-active':''}}">基本信息</text>
+                  <text data-index="2" class="{{s_work_nfrmtn_ndx == 2?'vhcl-mngmnt-swtch-active':''}}">自助取还信息</text>
+                  <text data-index="3" class="{{s_work_nfrmtn_ndx == 3?'vhcl-mngmnt-swtch-active':''}}">自助取还信息</text>
+                </view>
+
+                <view class="bsc-vhcl-nfrmtn" wx:if="{{s_vhcl_nfrmtn_ndx == 1}}">
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">车牌号 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">汽车型号 :</view>
+                    <view>{{g_vhcl_nfrmtn.vehicleSerialName}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">车型 :</view>
+                    <view>{{g_vhcl_nfrmtn.vehicleModeName}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">车架号 :</view>
+                    <view>{{g_vhcl_nfrmtn.vin}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">油箱容积 :</view>
+                    <view>{{g_vhcl_nfrmtn.xsgw}}L</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">设备号 :</view>
+                    <view>{{g_vhcl_nfrmtn.sn}}</view>
+                  </view>
+                  <view class="bsc-vhcl-nfrmtn-item">
+                    <view class="bsc-vhcl-nfrmtn-lable">注册时间 :</view>
+                    <view>{{g_vhcl_nfrmtn.createDate}}</view>
+                  </view>
+                </view>
+                <view class="slf-srvc-pck-rtrn" wx:if="{{s_vhcl_nfrmtn_ndx == 2}}">
+                  <view class="slf-srvc-pck-rtrn-title">选择已保存的自助取还信息</view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">平台名称 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">发送方式 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">APP/链接 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">账号 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                  <view class="slf-srvc-pck-rtrn-item">
+                    <view class="slf-srvc-pck-rtrn-lable">密码 :</view>
+                    <view> {{g_vhcl_nfrmtn.platenumber}}</view>
+                  </view>
+                </view>
+              </view>
+            </block>
+            <block id="section3">
+              <view id="section3" class="card-content">派单信息</view>
+            </block>
+            <!-- <block wx:if="{{s_crrntly_slctd_lbl==4}}">价格信息</block> -->
+
+          </view>
+        </scroll-view>
+      </view>
+      <view class="tab-pane" hidden="{{currentIndex !== 1}}">
+        <view class="lower-half-card">
+          <view class="lowerPart-half-card-head">
+            工单信息
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+
+
+
+
+
+
+
+</view>

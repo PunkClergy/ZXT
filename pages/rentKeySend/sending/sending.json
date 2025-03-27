@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "租车人电子钥匙发送",
+  "usingComponents": {
+    "time-line":"/components/timeline/timeline",
+    "map-com":"/components/MapCom/index",
+    "custom-header":"/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}

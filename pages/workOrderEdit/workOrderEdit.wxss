@@ -1,0 +1,252 @@
+.container {
+  padding: 0 10rpx;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+/* 上半部分 */
+.upper-half-card {
+  width: 100%;
+  background-color: none;
+  border-radius: 0px;
+  box-shadow: 0 1px 1px rgba(49, 46, 46, 0.1);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.upper-half-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.switching-button-container {
+  display: flex;
+  padding: 10rpx;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.switching-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx 20rpx;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  gap: 4rpx;
+}
+
+.switching-button-selected {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.switching-button-unchecked {
+  background-color: #DDE3E9;
+  color: #333333;
+
+}
+
+.switching-button image {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 2rpx;
+}
+
+.content-area-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #333333;
+}
+
+.card-content {
+  padding: 10px;
+  font-size: 14px;
+  color: #666666;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  height: 400px;
+}
+/* 车辆信息 */
+.vhcl-mngmnt-swtch {
+  display: flex;
+  gap: 20rpx
+}
+
+.vhcl-mngmnt-swtch-active {
+  background-color: #007bff !important;
+  color: #fff !important;
+}
+
+.vhcl-mngmnt-swtch text {
+  background-color: #DDE3E9;
+  border-radius: 6rpx;
+  padding: 10rpx 20rpx;
+}
+
+.bsc-vhcl-nfrmtn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.bsc-vhcl-nfrmtn-item {
+  flex: 0 0 calc(50% - 10px);
+  box-sizing: border-box;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 4rpx;
+}
+
+.bsc-vhcl-nfrmtn-lable {
+  min-width: 150rpx;
+}
+
+.slf-srvc-pck-rtrn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.slf-srvc-pck-rtrn-item {
+  flex: 0 0 calc(50% - 10px);
+  box-sizing: border-box;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 4rpx;
+}
+
+.slf-srvc-pck-rtrn-title {
+  font-size: 26rpx;
+  font-weight: bold;
+  min-width: 100%;
+}
+
+.slf-srvc-pck-rtrn-lable {
+  min-width: 150rpx;
+}
+/* 工单信息 */
+
+
+/* 下半部分 */
+.lower-half-card {
+  width: 100%;
+  background-color: none;
+  border-radius: 0px;
+  box-shadow: 0 0px 0px rgba(49, 46, 46, 0.1);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.lower-half-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+/* 可选：适配单行一个元素的情况 */
+@media (max-width: 375px) {
+  .bsc-vhcl-nfrmtn-item {
+    flex: 0 0 100%;
+    /* 在小屏幕下，每个元素占满一行 */
+  }
+}
+
+/* 容器样式 */
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 占满整个屏幕高度 */
+}
+
+/* 导航栏样式 */
+.tabs-nav {
+  display: flex;
+  justify-content: space-around;
+  background-color: #f0f0f0;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 单个 Tab 样式 */
+.tab-item {
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* 激活状态样式 */
+.active {
+  color: #007bff;
+  font-weight: bold;
+  border-bottom: 2px solid #007bff;
+}
+
+/* 内容区域样式 */
+.tabs-content {
+  flex: 1;
+  overflow-y: auto; /* 内容超出时滚动 */
+}
+
+/* 单个 Tab 内容样式 */
+.tab-pane {
+  font-size: 14px;
+}
+
+
+/* scroll-view 容器 */
+.scroll-container {
+  height: 100vh; /* 占满整个屏幕高度 */
+}
+
+/* 锚点导航样式 */
+.anchor-nav {
+  display: flex;
+  justify-content: space-around;
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+
+.anchor-nav view {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 目标内容样式 */
+.section {
+  height: 400px; /* 每个部分的高度 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+  background-color: #d0d0d0;
+}

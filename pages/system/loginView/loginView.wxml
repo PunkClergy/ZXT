@@ -1,0 +1,32 @@
+<!--pages/system/loginView/loginView.wxml-->
+<!-- <text>pages/system/loginView/loginView.wxml</text> -->
+
+<!-- <view class='navigation-bar'> </view>  -->
+
+<view class='container'>
+
+  <form>
+
+
+
+    <view class='input_views'>
+
+      <view class='input_item'>
+        <view class='input_title'>手机号</view>
+        <input class='input_v' placeholder='请输入' type='number' bindinput='accountInput' maxlength='11'></input>
+      </view>
+
+      <view class='veri_v'>
+        <view class='input_item1'>
+          <view class='input_title'>验证码</view>
+          <input class='input_v' placeholder='请输入' bindinput='vericodeInput' type='number'></input>
+        </view>
+        <button class='veri_btn' hover-class="btn_tapcolor" bindtap='getVeriCode' disabled='{{getverbtnstatus}}'>{{getverbtntitle}}</button>
+      </view>
+
+    </view>
+
+    <button class='login_btn' hover-class="btn_tapcolor" bindtap='loginBtnTap'>确定</button>
+
+  </form>
+</view>

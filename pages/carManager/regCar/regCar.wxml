@@ -1,0 +1,42 @@
+
+<view class='container'>
+
+<form>
+  <!--
+  <view class='page_title'>注册车辆</view>
+-->
+  <view class='input_views'>
+
+    <view class='input_item' wx:if="{{sn == 'null' || sn == '' }}">
+      <view class='input_title'>车系</view>
+      <input class='input_v'  value="{{vehicleSerialName}}" placeholder='请输入' bindinput='vehicleSerialNameInput' ></input>
+    </view>
+
+    
+      <view class='input_item' wx:if="{{sn == 'null' || sn == '' }}">
+        <view class='input_title'>车型</view>
+        <input class='input_v'  value="{{vehicleModeName}}" placeholder='请输入' bindinput='vehicleModeNameInput' ></input>
+      </view>
+
+     
+
+      <view class='input_item'>
+        <view class='input_title'>车架号</view>
+        <input class='input_v' value="{{vin}}" placeholder='请输入' bindinput='vinInput'></input>
+      </view>
+
+      <view class='input_item'>
+        <view class='input_title'>车牌号</view>
+        <input class='input_v' value="{{platenumber}}" placeholder='请输入' bindinput='platenumberInput'></input>
+      </view>
+
+      <view class='input_item'>
+        <view class='input_title'>油箱容积(升)</view>
+        <input class='input_v' value="{{xsgw}}" placeholder='请输入' type="number" bindinput='xsgwInput'></input>
+      </view>
+  </view>
+
+  <button class='login_btn' hover-class="btn_tapcolor" bindtap='regBtnTap'>保存</button>
+ 
+</form>
+</view>

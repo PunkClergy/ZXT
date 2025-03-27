@@ -1,0 +1,329 @@
+/* pages/order/orderList.wxss */
+page {
+  background-color: var(--weui-BG-0);
+  height: 100%;
+}
+
+.container {
+  padding: 10rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  height: 95vh;
+}
+
+.vehicle-information {
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.vehicle-information-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.vehicle-information-head-left {
+  display: flex;
+  align-items: center;
+  font-family: PingFang SC;
+  color: #333333;
+  gap: 10rpx;
+}
+
+.vehicle-information-head-left image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.head-license-plate {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 26rpx;
+}
+
+.head-model {
+  background: #EEF7FF;
+  border-radius: 6rpx;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #1B64B1;
+  padding: 4rpx 14rpx;
+
+}
+
+.head-order-type {
+  font-weight: 500;
+  font-size: 24rpx;
+}
+
+.vehicle-information-head-right {
+  color: #333333;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  color: #245AEE;
+}
+
+.vehicle-information-head-right image {
+  width: 25rpx;
+  height: 25rpx;
+}
+
+.vehicle-information-info {
+  padding: 20rpx;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 23rpx;
+  color: #333333;
+  line-height: 30rpx;
+}
+
+.monitoring_records {
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  /* 使这个元素尽可能地扩展以填充剩余的空间 */
+}
+
+.monitoring_records-head {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 25rpx;
+  color: #333333;
+  line-height: 30rpx;
+  padding: 10rpx;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.monitoring_records-info {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.filter-info {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8rpx;
+  padding: 20rpx 0;
+}
+
+.card-info {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8rpx;
+  padding: 20rpx 0;
+  border: 1px solid #f0f0f0;
+}
+
+.search-secondary .weui-search-bar__box,
+.search-secondary .weui-search-bar__label,
+.search-secondary .weui-search-bar__form {
+  border-radius: 300px;
+  border: 1rpx solid #F0F0F0;
+}
+
+.search-secondary {
+  background-color: #FFF !important;
+}
+
+.drop-down-filter {
+  --filter-active-color: #007aff;
+  display: flex;
+  align-items: center;
+  gap: 32rpx;
+  padding: 24rpx;
+  justify-content: space-between;
+}
+
+.filter-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  border-radius: 8rpx;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.filter-item.active {
+  background: var(--filter-active-color);
+  color: #fff;
+}
+
+.filter-text {
+  font-size: 28rpx;
+  margin-right: 8rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 25rpx;
+  color: #333333;
+}
+
+.filter-arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8rpx 6rpx 0 6rpx;
+  border-color: currentColor transparent transparent transparent;
+  transition: transform 0.2s;
+}
+
+.filter-arrow.up {
+  transform: rotate(180deg);
+}
+
+.filter-icon {
+  width: 30rpx;
+  height: 30rpx;
+  display: block;
+}
+
+
+.filter-item:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+.not-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-info-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+  border-bottom: 1px solid #F0F0F0;
+  padding: 6rpx 12rpx;
+}
+
+.card-car {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.card-info-content {
+  padding: 12rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 23rpx;
+  color: #333333;
+  gap: 20rpx;
+  border-bottom: 1px solid #F0F0F0;
+  display: flex;
+}
+
+.info-details {
+  min-width: 50%;
+}
+
+.card-info-footer {
+  padding: 12rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 25rpx;
+  color: #333333;
+}
+
+/* 点击态反馈 */
+.filter-item:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+
+
+
+/* 触发按钮样式 */
+.picker-trigger {
+  padding: 20rpx;
+  background: #fff;
+  border: 1rpx solid #e5e5e5;
+  border-radius: 8rpx;
+}
+
+.trigger-text {
+  color: #888;
+}
+
+/* 遮罩层 */
+.picker-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+/* 选择器容器 */
+.picker-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 600rpx;
+  background: #fff;
+  z-index: 1000;
+  animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* 头部操作栏 */
+.picker-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.picker-btn {
+  color: #666;
+  font-size: 32rpx;
+}
+
+.confirm {
+  color: #1aad19;
+}
+
+/* 选择器内容 */
+.picker-view {
+  height: 500rpx;
+}
+
+.picker-item {
+  line-height: 88rpx;
+  text-align: center;
+  font-size: 32rpx;
+}

@@ -1,0 +1,28 @@
+
+<view class='container'>
+
+<form>
+  <!--
+  <view class='page_title'>注册车辆</view>
+-->
+  <view class='input_views'>
+
+   
+
+      <view class='input_item'>
+        <view class='input_title'>购买次数</view>
+        <input class='input_v' value="{{buyCount}}" placeholder='请输入' type="number" bindinput='buyCountInput'></input>
+      </view>
+
+      <view class='input_item'>
+        <view class='input_title'>金额</view>
+        <input class='input_v' value="{{amount}}" disabled="disabled" type="number" bindinput='amountInput'></input>
+      </view>
+  </view>
+  <view style="font-size: 25rpx;margin-top: 20rpx;">
+       服务单价：{{fwPrice}}元/次
+       </view>
+  <button class='login_btn' hover-class="btn_tapcolor" bindtap='countBtnTap'>提交</button>
+  <view class="notInput"  bindtap="buyCountRecordTap">购买记录</view>
+</form>
+</view>

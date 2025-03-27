@@ -1,0 +1,31 @@
+<view class="recharge-page">
+  <!-- 充值面额区 -->
+  <view class="various-denom">
+    <text class="various-denom-title">余额充值</text>
+    <view class="various-denom-list">
+      <view class="various-denom-item {{item.value ==selected?'active':'' }}" data-value="{{item.value}}" wx:for="{{amounts}}" wx:key="id" data-info="{{item.value}}" bindtap="handleVarious">
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+    <view class="various-denom-custom-num" wx:if="{{selected == 'custom'}}">
+      <input placeholder="请输入充值金额" bindinput="handleCustomInput" bindfocus="handleCustomFocus" bindblur="handleCustomBlur" />
+      <view class="vary-tips" wx:if="{{tips}}">说明:数量是500的倍数</view>
+    </view>
+  </view>
+
+  <view class="recharge-amount-total">
+    <view class="recharge-amount-title">合计<text wx:if="{{amount}}">{{amount}}*1元/次</text></view>
+    <view class="recharge-amount-num">{{amount}}元</view>
+  </view>
+  <view class="recharge-amount-total">
+    <view class="recharge-amount-title">当前余额</view>
+    <view class="recharge-amount-num">{{balance}}元</view>
+  </view>
+  <view class="recharge-amount-total">
+    <view class="recharge-amount-title">充值后次数余额</view>
+    <view class="recharge-amount-num" style="color: {{after<0?'red':'green'}};">{{after}}元</view>
+  </view>
+  <view class="recharge-btn" bindtap="handleSubmit">
+    <text>{{after<0?'补足并充值':'扣减并充值'}} </text>
+  </view>
+</view>

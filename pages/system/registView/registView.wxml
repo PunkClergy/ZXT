@@ -1,0 +1,44 @@
+<!--pages/system/registView/registView.wxml-->
+<!-- <text>pages/system/registView/registView.wxml</text> -->
+
+<image class='bg-img' src="../../../assets/images/background.jpg"></image> 
+ <!-- <view class='navigation-bar'></view>  -->
+
+<view class='container'>
+  <form>
+    <view class='page_title'>注册</view>
+
+    <view class='input_views'>
+    
+      <view class='input_item'>
+        <view class='input_title'>姓名</view>
+        <input class='input_v' placeholder='请输入' bindinput='usernameInput'></input>
+    </view>
+
+    <view class='input_item'>
+        <view class='input_title'>手机号</view>
+        <input class='input_v' placeholder='请输入' bindinput='phoneNumInput' type='number' maxlength='11'></input>
+    </view>
+
+    <view class='veri_v'>
+      <view class='input_item1'>
+        <view class='input_title'>验证码</view>
+        <input class='input_v' placeholder='请输入' bindinput='vericodeInput' type='number'></input>
+      </view>
+      <button class='veri_btn' hover-class="btn_tapcolor" bindtap='getVeriCode' disabled='{{getverbtnstatus}}' >{{getverbtntitle}}</button>
+    </view>
+    
+    <view class='input_item'>
+        <view class='input_title'>密码</view>
+        <input class='input_v' placeholder='请输入' bindinput='passwordInput' password='{{!seepwd}}' value='{{password}}' ></input>
+        <view class='see_v' bindtap='changeSeeState'>
+          <image class='see_img' src='{{seeimg_url}}' ></image>
+        </view>
+    </view>
+
+    <button class='registBtn' hover-class="btn_tapcolor" bindtap='submitBtnTap'>提交</button>
+
+    </view>
+
+  </form>
+</view>

@@ -1,0 +1,54 @@
+<view class="page-body-wrapper">
+  <!-- <camera device-position="back" flash="off" binderror="error" style='height:{{showPhoneHeight}}px;width:100%'>
+    <cover-view class='cover-top' style='height:{{coverTop}}px'></cover-view>
+    <cover-view class='cover-left'></cover-view>
+    <cover-view class='cover-right'></cover-view>
+
+    <cover-view class='cover-camera' style='height:{{cameraShowHeight}}px'>
+      <cover-image class='cover-inner-top' hidden='{{hiddenCoverInner}}' src="../../assets/images/background.jpg"></cover-image>
+      <cover-image class='cover-inner-left' hidden='{{hiddenCoverInner}}' src="../../assets/images/background.jpg"></cover-image>
+      <cover-image class='cover-inner-right' hidden='{{hiddenCoverInner}}' src="../../assets/images/background.jpg"></cover-image>
+      <cover-image class='cover-inner-bottom' hidden='{{hiddenCoverInner}}' src="../../assets/images/background.jpg"></cover-image>
+    </cover-view>
+
+    <cover-image class='cover-out-top' style='width:{{cameraShowWidth}}px;top:{{coverTop}}px;' src="../../assets/images/camera_out_top_line.png"></cover-image>
+
+    <cover-image class='cover-out-left' style='height:{{cameraShowHeight}}px;top:{{coverTop}}px' src="../../assets/images/camera_out_left_line.png"></cover-image>
+    <cover-image class='cover-out-right' style='height:{{cameraShowHeight}}px;top:{{coverTop}}px' src="../../assets/images/camera_out_right_line.png"></cover-image>
+
+    <cover-image class='cover-out-bottom' style='width:{{cameraShowWidth}}px;top:{{coverBottomTop}}px;' src="../../assets/images/camera_out_bottom_line.png"></cover-image>
+
+    <cover-view class='cover-bottom'>
+      <cover-view class='tip'>{{tips}}</cover-view>
+    </cover-view>
+
+    <button class='camera-start-btn' bindtap='takePhoto'>
+      <cover-image class='camera-start-img' src='../../assets/images/camera.png'></cover-image>
+    </button>
+
+    <cover-image class='camera-pre' src='{{tempImagePath}}' hidden='true'></cover-image>
+  </camera> -->
+
+
+  <camera device-position="back" flash="off" binderror="error" style='height:{{(750-2*leftGap)/1.6}}rpx;width:{{750-2*leftGap}}rpx;position:absolute;left:{{leftGap}}rpx;top:{{topGap}}rpx'>
+
+    <!-- 上边缘线 -->
+    <cover-image class='cover-line' style='width:{{750-2*leftGap}}rpx;height:5rpx;top:{{0}}rpx;left:{{0}}rpx;' src="../../assets/images/camera/camera_out_top_line.png"></cover-image>
+
+    <!-- 左边缘线 -->
+    <cover-image class='cover-line' style='height:{{(750-2*leftGap)/1.6}}rpx;width:5rpx;top:{{0}}rpx;left:{{0}}rpx;' src="../../assets/images/camera/camera_out_left_line.png"></cover-image>
+
+    <!-- 右边缘线 -->
+    <cover-image class='cover-line' style='height:{{(750-2*leftGap)/1.6}}rpx;width:5rpx;top:{{0}}rpx;right:{{0}}rpx;' src="../../assets/images/camera/camera_out_right_line.png"></cover-image>
+
+    <!-- 下边缘线 -->
+    <cover-image class='cover-line' style='width:{{750-2*leftGap}}rpx;height:5rpx;bottom:{{0}}rpx;left:{{0}}rpx;' src="../../assets/images/camera/camera_out_bottom_line.png"></cover-image>
+
+  </camera>
+
+  <button class='takePhoto' bindtap='takePhoto'>
+    <cover-image class='camera-start-img' src='../../assets/images/camera/camera.png'></cover-image>
+  </button>
+
+
+</view>

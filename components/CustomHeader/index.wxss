@@ -1,0 +1,56 @@
+.title-box {
+  flex: 1;
+  min-width: 120rpx;
+  max-width: 60vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.title-text {
+  font-size: 34rpx;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+
+.icon {
+  width: 40rpx;
+  height: 40rpx;
+  min-width: 20rpx;
+  min-height: 20rpx;
+}
+
+.custom-navbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  /* background: #ffffff; */
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  gap: 50rpx;
+}
+
+.left-buttons {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 10rpx;
+}
+
+.nav-btn {
+  padding: 0 20rpx;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}

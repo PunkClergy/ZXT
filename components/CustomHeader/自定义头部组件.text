@@ -1,0 +1,65 @@
+   <view class="custom-navbar" style="height:{{totalNavHeight}}px;">
+    <view class="status-bar" style="height:{{statusBarHeight}}px;"></view>
+    <view class="nav-bar" style="height:{{navBarHeight}}px;">
+      <view class="title-container">
+        <image src="/assets/images/home/left.png" bindtap="handleJumpHome" />
+        <text class="title">租车人电子钥匙发送</text>
+      </view>
+    </view>
+  </view> 
+
+
+  
+/* 自定义同步部分 */
+.custom-navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
+.status-bar {
+  width: 100%;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* 使内容靠左对齐 */
+  padding-left: 10px;
+  /* 可选：增加一些左边距 */
+  box-sizing: border-box;
+  /* 确保padding不会影响总宽度 */
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  height: 100%;
+}
+
+.title-container image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.title {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 33rpx;
+  color: #010101;
+  line-height: 30rpx;
+}
+
+
+
+   c_screen_height: _handleWindowInfo.windowHeight || 0, //屏幕高度
+    c_screen_width: _handleWindowInfo.windowWidth || 0, //屏幕宽度
+    statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
+    navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
+    searchBarHeight: 80, // 搜索框高度，默认值
+    totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
+   

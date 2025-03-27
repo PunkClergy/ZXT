@@ -1,0 +1,58 @@
+page {
+  background-color: var(--weui-BG-0);
+  height: 100%;
+}
+
+.recharge-payment-container {
+  padding: 10px;
+}
+
+.recharge-payment-list {
+  padding: 12px;
+  margin-bottom: 5px;
+  background-color: #fff;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recharge-payment-area {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.recharge-payment-area-money {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.recharge-payment-area-title {
+  font-size: 26rpx;
+  display: flex;
+  gap: 10rpx;
+}
+
+.amount-of-money {
+  font-weight: 600;
+}
+
+.amount-of-info {
+  color: #1E67DE;
+  font-weight: 500;
+}
+
+.recharge-payment-btn {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 600;
+}
+
+.recharge-payment-btn image {
+  width: 30rpx;
+  height: 30rpx;
+}

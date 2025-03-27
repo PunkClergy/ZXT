@@ -1,0 +1,21 @@
+<!--pages/common/comTree/index.wxml-->
+<view wx:for="{{tree}}" wx:key="index" class="tree">
+  <view class="tree-outermost-layer {{selectKey == item.id ? 'tree-item-name-select' : '' }}" bindtap="select" data-item="{{item}}" data-index="{{index}}">
+    <view class="tree-outermost-left">
+      <view class="tree-outermost-selected" wx:if="{{selectKey == item.id}}" />
+      <view class="tree-outermost-not-selected" wx:else></view>
+      <view class="{{layered?'tree-outermost-text-secondary':'tree-outermost-text-top-level'}}">{{item.name}}</view>
+    </view>
+    <view data-index="{{index}}">
+      <block wx:if="{{item.children && item.children.length > 0}}">
+        <image src="/assets/images/home/down.png" style="width: 20rpx;height: 20rpx;" wx:if="{{item.open}}" />
+        <image src="/assets/images/home/right_1.png" style="width: 20rpx;height: 20rpx;" wx:else />
+      </block>
+      <block wx:else>
+        <view style="height: 20rpx;width: 20rpx;"></view>
+      </block>
+    </view>
+  </view>
+  <c-tree wx:if="{{item.children && item.children.length > 0 && item.open }}" dataTree='{{ item.children }}' selectKey="{{selectKey}}" isSelectLastNode="{{isSelectLastNode}}" isOpenAll="{{isOpenAll}}" layered='true'>
+  </c-tree>
+</view>

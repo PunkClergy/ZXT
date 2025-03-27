@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "油量计算器",
+  "usingComponents": {
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}

@@ -1,0 +1,50 @@
+<!--pages/oilList/oilSetCom/oilSetCom.wxml-->
+<view style="display: flex;margin-top: 40rpx;">
+<view class="title_view" >
+汽油价格
+</view>
+<button class="addButton" id="{{index}}" wx:if="{{index != 0}}" bindtap="addOilItemTap">添加</button>
+</view>
+
+<block wx:for="{{oilSetItems}}">
+<view wx:key="*this"  data-item= "{{item}}" class="cellView">
+<input class="titleInput" value="{{item.name}}" id="{{index}}" placeholder='油号' bindinput='oilNumInput'></input>
+<view style="width: 10rpx;"></view>
+<input class="valueInput" type="digit"  value="{{item.value}}" id="{{index}}" placeholder='元/升' bindinput='oilPriceInput'></input>
+<button class="delButton"  id="{{index}}" wx:if="{{index != 0}}" bindtap="delOilItemTap">删除</button>
+</view>
+</block>
+
+
+
+<view style="display: flex;margin-top: 20rpx;">
+<view class="title_view" >
+服务价格
+</view>
+<button class="addButton" id="{{index}}" wx:if="{{index != 0}}" bindtap="addFwItemTap">添加</button>
+</view>
+
+<block wx:for="{{fwSetItems}}">
+<view wx:key="*this"  data-item= "{{item}}" class="cellView">
+<input class="titleInput" value="{{item.name}}" placeholder='服务名称'  id="{{index}}" bindinput='fwNumInput'></input>
+<view style="width: 10rpx;"></view>
+<input class="valueInput" type="digit" style="background-color: #CCE5FF;" id="{{index}}"  value="{{item.value}}" placeholder='服务价格' bindinput='fwPriceInput'></input>
+<button class="delButton" id="{{index}}" wx:if="{{index != 0}}" bindtap="delFwItemTap">删除</button>
+</view>
+</block>
+
+<button class="saveButton"  bindtap="saveButtonTap" style="float: left;">保存</button>
+
+<view class="title_view" style="margin-top: 130rpx;">
+补差价计算公式
+</view>
+<view class="costView" style=" text-align: left;">
+服务费1+服务费2+服务费3+油号单价×升数
+</view>
+
+<view class="title_view" style="margin-top: 20rpx">
+补退计算公式
+</view>
+<view class="costView" style=" text-align: left;">
+油号单价×升数
+</view>

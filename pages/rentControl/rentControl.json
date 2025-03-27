@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "短租长租管理",
+  "usingComponents": {
+    "mp-searchbar": "weui-miniprogram/searchbar/searchbar",
+    "my-carList": "rentCarCom/rentCarCom",
+    "my-warnList": "rentRecordCom/rentRecordCom"
+  } 
+  
+}

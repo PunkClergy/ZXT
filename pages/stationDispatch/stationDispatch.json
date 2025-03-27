@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "热点位置",
+  "usingComponents": {
+    "custom-tab-bar":"/custom-tab-bar/index"
+  } 
+}

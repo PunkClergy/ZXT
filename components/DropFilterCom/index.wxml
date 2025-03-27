@@ -1,0 +1,11 @@
+<picker bindtap="handleTap" bindchange="handleChange" range-key="name" range="{{range}}" bindcancel="handleBindCancel">
+  <view class="picker">
+    <text class="picker-text">{{filter}}</text>
+    <block wx:if="{{btnRender}}">
+      <image src="/assets/images/home/xia.png" style="width: 20rpx;height: 30rpx;" />
+    </block>
+    <block wx:else>
+      <image src="/assets/images/home/up.png" style="width: 20rpx;height: 30rpx;" />
+    </block>
+  </view>
+</picker>

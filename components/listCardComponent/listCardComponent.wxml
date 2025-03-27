@@ -1,0 +1,60 @@
+<view class='cell-container' wx:key="*this" data-items="{{items}}" bindtap="handlecallParentMethod">
+  <!-- Card头部 -->
+  <view class="head-container">
+    <!-- 头部左边部分 -->
+    <view class="head-container-left">
+      <block wx:if="{{listType==1||listType==3}}">
+        <view class="head-container-left-view" wx:for="{{headDataSet}}" wx:key="index">
+          <image src="{{item.img}}" mode='aspectFit'></image>
+          <text>{{
+              item.multiLevel && items[item.multiLevel]  ? 
+              (items[item.multiLevel][item.value1] || '') + (items[item.multiLevel][item.value2] || ''):
+              (items[item.value] || '')
+            }}</text>
+        </view>
+      </block>
+      <block wx:if="{{listType == 2}}">
+        <view class="head-container-left-view" wx:for="{{headDataSet}}" wx:key="index">
+          <image src="{{item.img}}" mode='aspectFit'></image>
+          <text>{{
+              item.multiLevel && items[item.multiLevel]  ? 
+              (items[item.multiLevel][item.value1] || '') + (items[item.multiLevel][item.value2] || ''):
+              (items[item.value] || item.name)
+            }}</text>
+        </view>
+      </block>
+    </view>
+    <!-- 头部右边部分 -->
+    <view class="head-container-right">
+      <block wx:if="{{listType==1||listType==3}}">
+        <view wx:for="{{stateCollection}}" wx:key="index">
+          <text wx:if="{{item.value==items.status}}" style="color: {{}};">{{item.name}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+  <!-- Card内容 -->
+  <view class="content-container">
+    <block wx:if="{{listType==1||listType==3}}">
+      <view class="content-container-info">
+        <view wx:for="{{dataCollection}}" wx:key="index" class="content-container-info-item">{{item.name}} : {{items[item.value]}}</view>
+      </view>
+      <view style="height: 40rpx;" />
+      <view class="content-container-trailer" wx:if="{{listType == 1}}"><text>服务价格:0元</text></view>
+      <view class="content-container-trailer" wx:if="{{listType == 3}}"><text>取消订单</text></view>
+    </block>
+    <block wx:if="{{listType==2}}">
+      <view class="the_second_type_of_content_area" style="display: flex;">
+        <view class="on_the_left_side_of_the_second_content_area">
+          <view wx:for="{{dataCollection}}" wx:key="index" class="content-container-info-item">{{item.name}} : {{items[item.value]}}</view>
+        </view>
+        <view class="on_the_right_side_of_the_second_content_area">
+          <view class="right_side_title" style="display: flex;align-items: center;text-align: center;">{{items.ordertypename}}</view>
+          <view class="content-container-info">
+            <view wx:for="{{dataAdditional}}" wx:key="index" class="content-container-info-item">{{item.name}} : {{items.selfservicePlatform[item.value]||'暂无信息'}}</view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

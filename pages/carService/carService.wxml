@@ -1,0 +1,139 @@
+<view wx:if="{{items.length == 0}}" class="scrollView_noDataTip">无数据</view>
+<view class="container">
+  <view class="vehicle-information">
+    <view class="vehicle-information-head">
+      <view class="vehicle-information-head-left">
+        <view class="head-license-plate">
+          <image src="/assets/images/home/01.png" style="width: 50rpx;height: 50rpx;" />
+          <text>京AT8767</text>
+        </view>
+        <view class="head-model">
+          大众怕撒特
+        </view>
+        <view class="head-order-type">
+          租车
+        </view>
+      </view>
+      <view class="vehicle-information-head-right">
+        <text>选择车辆</text>
+        <image src="/assets/images/home/right_1.png" />
+      </view>
+    </view>
+    <view class="vehicle-information-info">
+      <view>
+        <label>车架号 : </label>
+        <text>324232345</text>
+      </view>
+      <view>
+        <label>车架号 : </label>
+        <text>324232345</text>
+      </view>
+    </view>
+  </view>
+  <view class="monitoring_records">
+    <view class="monitoring_records-head">
+      油量监测记录
+    </view>
+    <view class="monitoring_records-info">
+      <view class="filter-info">
+        <mp-searchbar ext-class="search-secondary" placeholder="搜索车牌号/地点/车务人员" search="{{false}}" cancel="{{false}}" bindblur="handleMpBulur" bindclear="handleMpClear" bindfocus="handleMpFocus" bindinput="handleMpInput" />
+        <view class="drop-down-filter">
+          <view wx:for="{{filterItems}}" wx:key="index" class="filter-item {{item.active ? 'active' : ''}}" bindtap="handleFilterPicker" data-type="{{item.type}}" role="button" aria-label="{{item.label}}筛选">
+            <block wx:if="{{!item.icon}}">
+              <text class="filter-text">{{item.label || item.value}}</text>
+              <view class="filter-arrow {{item.active ? 'up' : 'down'}}"></view>
+            </block>
+            <image wx:else src="{{item.icon}}" class="filter-icon" mode="aspectFit" aria-hidden="true" />
+          </view>
+        </view>
+      </view>
+
+      <scroll-view style="height: {{scrollHihgt}}px;" scroll-y="true" refresher-enabled="true" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-triggered="{{triggered}}">
+        <view style="display: flex;flex-direction: column;gap: 10rpx;">
+          <block wx:for="{{items}}" wx:key="index">
+            <view class="card-info">
+              <view class="card-info-head">
+                <view class="card-car">
+                  <image src="/assets/images/home/01.png" style="width: 50rpx;height: 50rpx;" />
+                  <text>{{item.platenumber||'-'}}</text>
+                </view>
+                <view>
+                  <text>{{item.vehicleSerialName||''}}{{item.vehicleModeName||''}}</text>
+                </view>
+                <view>
+                  <label>租车人:</label>
+                  <text>{{item.companyName||'-'}}</text>
+                </view>
+              </view>
+              <view class="card-info-content">
+                <view class="info-details">
+                  <view>
+                    <label>起租油量:</label>
+                    <text>{{item.startoil||0}}L</text>
+                  </view>
+                  <view>
+                    <label>起租检测人:</label>
+                    <text>{{item.startusername||'-'}}</text>
+                  </view>
+                  <view>
+                    <label>检测设备:</label>
+                    <text>{{item.startsn||'-'}}</text>
+                  </view>
+                  <view>
+                    <label>检测时间:</label>
+                    <text>{{item.startdate||'-'}}</text>
+                  </view>
+                </view>
+                <view class="info-details">
+                  <view>
+                    <label>还租油量:</label>
+                    <text>{{item.endoil||0}}L</text>
+                  </view>
+                  <view>
+                    <label>还租检测人:</label>
+                    <text>{{item.endusername||'-'}}</text>
+                  </view>
+                  <view>
+                    <label>检测设备:</label>
+                    <text>{{endsn||'-'}}</text>
+                  </view>
+                  <view>
+                    <label>检测时间:</label>
+                    <text>{{item.enddate||'-'}} </text>
+                  </view>
+                </view>
+              </view>
+              <view class="card-info-footer">
+                <view>
+                  油量差额：{{item.diff||0}}L
+                  收费状态：{{item.chargestatusname||'-'}}
+                </view>
+                <view>
+                  预估服务费：{{item.cost||0}}
+                  实收服务费：{{realcost||0}}
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+
+    </view>
+
+  </view>
+</view>
+
+<view class="picker-mask" wx:if="{{showPicker}}" bindtap="hidePicker"></view>
+
+<view class="picker-container" wx:if="{{showPicker}}">
+  <view class="picker-header">
+    <text class="picker-btn" bindtap="hidePicker">取消</text>
+    <text class="picker-btn confirm" bindtap="handleConfirm">确定</text>
+  </view>
+
+  <picker-view class="picker-view" value="{{pickerIndex}}" bindchange="bindPickerChange">
+    <picker-view-column>
+      <view wx:for="{{pickerData}}" wx:key="{{item.id}}" data-index="{{index}}" class="picker-item" bindtap="selectItem">{{item.value}}</view>
+    </picker-view-column>
+  </picker-view>
+</view>

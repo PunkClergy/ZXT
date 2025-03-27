@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "自助取还信息管理",
+  "usingComponents": {
+    "mp-searchbar": "weui-miniprogram/searchbar/searchbar",
+    "listCardComponent": "/components/listCardComponent/listCardComponent"
+  }
+}

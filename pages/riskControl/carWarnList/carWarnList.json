@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "车辆报警",
+  "usingComponents": {
+    "mp-searchbar": "weui-miniprogram/searchbar/searchbar"
+  } 
+  
+}

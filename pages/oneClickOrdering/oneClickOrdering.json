@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "一键下单",
+  "usingComponents": {
+    "ServiceInfoComponent": "/components/ServiceInfoComponent/ServiceInfoComponent",
+    "custom-tab-bar": "/custom-tab-bar/index"
+  }
+}

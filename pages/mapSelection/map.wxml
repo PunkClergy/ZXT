@@ -1,0 +1,21 @@
+<view class="container">
+
+  <map id="myMap" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" style="width: 100%; height: {{initial_height}};">
+    <view class="button_click_area">
+      <view class="button_click_area_cancel">取消</view>
+      <view class="button_click_area_confirm" bindtap="handleConfirm">确认</view>
+    </view>
+  </map>
+  <view class="map_input_section">
+    <input class="map_input_part_search" placeholder="请输入地址" bindinput="onInput" bindfocus="handleBindFocus" bindblur="handleBindBlur" />
+  </view>
+
+  <view class="map_input_display_section">
+    <block wx:for="{{addressList}}" wx:key="index">
+      <view class="map_input_display_partial_address {{item.id == selectId?'currently_selected':''}}" data-items="{{item}}" bindtap="handleSelectAddress">
+        <view style="font-size: 26rpx;">{{item.title}}</view>
+        <view class="detailed_address">{{item.address}}</view>
+      </view>
+    </block>
+  </view>
+</view>

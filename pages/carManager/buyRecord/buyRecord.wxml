@@ -1,0 +1,65 @@
+<!--pages/order/orderList.wxml style="background-color:lightgray"-->
+<wxs module="tagsformat" src="../../../utils/filter.wxs"></wxs>
+<view wx:if="{{items.length == 0}}" class="scrollView_noDataTip">无数据</view>
+<view class='giftListView' >
+<view style="width: 100%;display:flex;">
+<!--
+<view style="width: 100%;">
+  <mp-searchbar  search='ser' placeholder='设备号' id="searchbar" bindselectresult="selectRes" bindinput="inputChange" bindclear="clearInput" bindcancel="cancel" cancelText="搜索"  >
+  
+  </mp-searchbar>
+</view>
+-->
+</view>
+  
+<scroll-view style="height: {{scrollHihgt}}px" scroll-y="true" refresher-enabled="true" bindscrolltolower="lower" bindrefresherrefresh="refresh" refresher-triggered="{{triggered}}">
+ <block wx:for="{{items}}">
+ <!-- 每个cell -->
+  <view class='item' style="background-color:white;margin: auto;border-radius: 5px;margin-top: 6px;" wx:key="*this" data-item= "{{item}}" data-id="{{item.ID}}" id="{{item.mappingid}}">
+  
+<!--
+   <view class='moneyView'> 
+    <text class = 'productDesText'>金额: {{item.ordercost}}元</text>
+   </view>
+ -->
+  <view style="float: left;height: 100%;vertical-align: middle;">
+  </view>
+   <!-- 具体产品 -->
+   <view class='productDesView' style="display: flex;">
+    
+    <view class = 'productDesText'>单号：{{item.num}}</view>
+    <!--
+    <view class="detialText" style="margin-left: 479rpx;" id="{{index}}" >{{item.financeStatus ==0 ?'未付款':'已付款'}}</view>
+    -->
+   </view>
+   <view class="fengexian"></view>
+   <view class='productDesView' style="display: flex;">
+    <view class = 'yibiaoText'>收货人</view>
+    <view class = 'qiText'>{{item.linkman}}</view>
+    <view class = 'yibiaoText'>联系电话</view>
+    <view class = 'qiText' >{{item.linkmobile}}</view>
+   </view>
+
+   <view class='productDesView' style="display: flex;">
+    <view class = 'yibiaoText'>收货地址</view>
+    <view class = 'qiText'>{{item.linkaddress}}</view>
+   </view>
+
+   <view class='productDesView' style="display: flex;">
+    <view class = 'yibiaoText'>数量</view>
+    <view class = 'qiText'>{{item.deviceCount}}</view>
+    <view class = 'yibiaoText'>金额</view>
+    <view class = 'qiText'>{{item.cost}}元</view>
+   </view>
+
+   <view class='productDesView' style="display: flex;">
+    <view class = 'yibiaoText'>购买时间</view>
+    <view class = 'qiText'>{{item.createdate}}</view>
+   </view>
+  </view>
+ </block>
+</scroll-view>
+
+</view>
+
+

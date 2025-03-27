@@ -1,0 +1,215 @@
+page {
+  background-color: var(--weui-BG-0);
+    height: 100%;
+  }
+
+.bg-img {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+}
+
+.user-bg {
+  width: 180rpx;
+  height: 180rpx;
+  margin-top: 60rpx;
+  margin-left: 40rpx;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  position: relative;
+  font-weight: 200;
+  margin-top: 30rpx;
+}
+
+.page_title {
+  margin-top: 80rpx;
+  margin-left: 40rpx; 
+  color: white;
+  font-family: "";
+  font-size: 45rpx;
+}
+
+.info-btn {
+  margin-top: 20rpx;
+  margin-left: 40rpx;
+  margin-right: 30rpx;
+  height: 100rpx;
+  color: black;
+  text-align: left;
+  background-color:white;
+  font-size: 30rpx;
+  line-height: 100rpx;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.info-btn-text {
+  width: 100%;
+  color: black;
+  margin-left: 20rpx;
+}
+
+.info-btn-img {
+  width: 100%;
+  height: 100%;
+}
+
+.arrow {
+  height: 100%;
+  width: 25rpx;
+  float: right;
+  line-height: 100%;
+}
+
+.icon
+{
+  float: left;
+  width: 100rpx;
+  height: 100%;
+  line-height: 100%;
+  margin-left: -10rpx;
+}
+
+.unlogin_btn {
+  background-color: #045f33;
+  height: 100rpx;
+  color: white;
+  text-align: bottom;
+  font-size: 35rpx;
+  line-height: 100rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  position: absolute;
+  width: 670rpx;
+  bottom: 100rpx;
+}
+
+.unlogin_btn-p {
+  height: 100%;
+  width: 100%;
+}
+
+.btn_tapcolor
+{
+  background-color: #575757;
+}
+
+
+/* 遮盖层 */
+ 
+.modal-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+  z-index: 9000;
+  color: #fff;
+}
+
+
+ 
+/* 白色背景 */
+ 
+.modal-content {
+  position: fixed;
+  top: 220rpx;
+  left: 50rpx;
+  z-index: 9500;
+  width: 650rpx;
+  height: 500rpx;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 20rpx;
+}
+.model-textView
+{
+  width: 100%;
+  margin-top: 10rpx;
+}
+
+.model-text
+{
+  margin-left: 50rpx;
+  font-size: 34rpx;
+}
+
+.model-img
+{
+  height: 150rpx;
+  width:250rpx ;
+  margin-left: 50rpx;
+}
+
+.cancelbtn{
+  height: 90rpx;
+  width: 50%;
+  background-color:white;
+  color:gray;
+  text-align: center;
+  line-height: 90rpx;
+  margin: 0 auto;
+  margin-top: 40rpx;
+  font-size: 32rpx;
+}
+
+.btn{
+  height: 90rpx;
+  width: 50%;
+  background-color: #5a94ff;
+  color: #fff;
+  text-align: center;
+  line-height: 90rpx;
+  margin: 0 auto;
+  margin-top: 40rpx;
+  font-size: 32rpx;
+}
+
+.button-hover {
+  background-color:lightgray;
+}
+
+button::after{ 
+  border: none; 
+}
+
+button{ 
+  border-radius: 0;
+}
+
+.input_v
+{
+  height: 80rpx;
+  width: 90%;
+  text-align: left;
+  color: #4a4a4a;
+  font-size: 30rpx;
+  background-color: #EEEEEE;
+  border-radius: 10rpx;
+}
+
+.fengexian{
+  height: 1rpx;
+  width: 100%;
+  margin:0rpx auto;
+  margin-top: 10rpx;
+  background-color:#d2d2d2;
+  opacity:0.36;
+}
+
+.username_title {
+  margin-top: 20rpx;
+  margin-left: 40rpx; 
+  color: white;
+  font-family: "";
+  font-size: 36rpx;
+}

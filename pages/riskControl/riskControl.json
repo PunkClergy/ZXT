@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "风控及远程控制",
+  "usingComponents": {
+    "mp-searchbar": "weui-miniprogram/searchbar/searchbar",
+    "my-carList": "carListCom/carListCom",
+    "my-warnList": "warnListCom/warnListCom"
+  } 
+  
+}

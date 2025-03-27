@@ -1,0 +1,38 @@
+/* 样式定义 */
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+  border-radius: 10rpx;
+  position: fixed;
+  width: 95%;
+  margin: auto;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.picker-container {
+
+  font-size: 22rpx;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20rpx;
+}
+
+.actions view {
+  flex: 1;
+  text-align: center;
+}

@@ -1,0 +1,17 @@
+<view wx:if="{{items.length == 0}}" class="scrollView_noDataTip">无数据</view>
+<view class='giftListView'>
+  <view class="boxContainer">
+    <view class="boxSear">
+      <view style="width: 100%;">
+        <mp-searchbar search='ser' placeholder='关键字(平台/账号)' id="searchbar" bindselectresult="selectRes" bindinput="inputChange" bindclear="clearInput" bindcancel="cancel" cancelText="搜索" wx-if="{{currentTab !=3}}">
+        </mp-searchbar>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view style="height: {{scrollHihgt}}px" scroll-y="true" refresher-enabled="true" bindscrolltolower="lower" bindrefresherrefresh="refresh" refresher-triggered="{{triggered}}">
+    <block wx:for="{{items}}" wx:key="id">
+      <listCardComponent stateCollection="{{stateCollection}}" listType="{{listType}}" items="{{item}}" dataCollection="{{dataCollection}}" headDataSet="{{headDataSet}}" bind:handleCustomEvent="handleByCall" />
+    </block>
+  </scroll-view>
+</view>

@@ -1,0 +1,91 @@
+<view class="container">
+  <!-- 背景图 -->
+  <image class="bg-image" src="{{s_background_picture_of_the_front_page}}"></image>
+  <!-- 自定义导航和轮播部分~高度固定 -->
+  <view class="custom-navbar" style="height:{{c_totalNavHeight}}px;">
+    <!-- 导航部分 -->
+    <view class="status-bar" style="height:{{c_statusBarHeight}}px;"></view>
+    <view class="nav-bar" style="height:{{c_navBarHeight}}px;">
+      <view class="title-container">
+        <image src="/assets/images/home/1111.png" bindtap="handleUser" />
+        <text class="title">车务宝Wiselink</text>
+        <image src="/assets/images/index/logo.png" bindtap="handleJumpBack" />
+      </view>
+    </view>
+    <view style="background-color:#f0f0f0;border-radius: 8rpx;height: 30px;padding: 20rpx;display: flex;align-items: center;margin: 0 10rpx;border: 1px solid #f0f0f0;" wx:if="{{s_ribbon_height>200}}">
+      <text style="font-size: 25rpx;color: #7B7C7C;font-weight: 500;">{{s_currently_selected_item.name}}/{{s_second_level_selected_item.name}}/{{s_second_ribbon_selected_item.name}}</text>
+    </view>
+    <view class="search-container" wx:if="{{s_ribbon_height>200}}" style="width: 95%; height:{{c_searchBarHeight}}px;padding: 20rpx; ">
+      <view class="search-box">
+        <icon type="search" size="16" class="search-icon" />
+        <input placeholder="搜索车牌号/VIN/设备号" bindblur="handleBlur" class="search-input" />
+      </view>
+      <!-- <view class="search-count">
+    <text>共有{{19}}辆车</text>
+  </view> -->
+    </view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view style="margin-top: {{c_totalNavHeight}}px"></view>
+  <scroll-view scroll-y="true" class="content" style="height: 90%;" bindscroll="handleBindscroll">
+
+    <!-- 轮播图 -->
+    <view class="swiper-outer-container">
+      <swiper class="bg-swiper" vertical="{{false}}" circular="{{false}}" autoplay="{{false}}" indicator-dots="{{false}}" autoplay="{{true}}" interval="3000" duration="500" style="transition: 'height 0.5s ease';height: {{s_banner_height}}px;">
+        <swiper-item wx:for="{{g_banner_image}}" wx:key="index">
+          <image src="{{c_link}}/img/{{item.img}}" class="slide-image" bindload="initialiOnImageLoad"></image>
+        </swiper-item>
+      </swiper>
+    </view>
+    <!-- 快捷入口未选中前 -->
+    <view class="select-before-selection" wx:if="{{s_hierarchy==0}}">
+      <swiper bindchange="handleQuickEntry" class="select-before-selection-swiper" autoplay="{{false}}" interval="3000" duration="500" 	indicator-dots="{{true}}">
+        <swiper-item wx:for="{{g_before_passing_by_icon}}" wx:key="index">
+          <view class="select-before-selection-item">
+            <view class="select-before-selection-flex-item {{item.isdevelop == 0 ? 'developed' : 'not-developed'}}" wx:for="{{item}}" wx:key="index" data-item="{{item}}" bindtap="handleGetMenuList">
+              <image class="select-before-selection-flex-item-image" src="{{!item.icon ? '/assets/images/login/logo.png' : c_link + 'img/' + item.icon}}" mode="{{!item.icon ? 'aspectFill' : 'aspectFit'}}" />
+              <text class="select-before-selection-flex-item-text">{{item.name}}</text>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
+    <view class="select-after-selection" wx:else>
+      <view class="select-after-selection-left-area">
+        <view class="select-after-selection-left-area-active" data-index="{{s_currently_selected_item.id}}" data-flag="1" bindtap="handleGetMenuBack">
+          <image src="{{!s_currently_selected_item.icon ? '/assets/images/login/logo.png' : c_link + 'img/' + s_currently_selected_item.icon}}" /><text style="font-size: 12px;">{{s_currently_selected_item.name}}</text>
+        </view>
+        <view class="select-after-selection-left-area-back">
+          <image wx:if="{{s_second_level_selected_item}}" src="{{!s_second_level_selected_item.icon ? '/assets/images/login/logo.png' : c_link + 'img/' + s_second_level_selected_item.icon}}" /><text style="font-size: 12px;">{{s_second_level_selected_item.name}}</text>
+        </view>
+        <view class="select-after-selection-left-area-home">
+          <image src="/assets/images/index/desk@2x.png" bindtap="handleBack" />
+          <image src="/assets/images/home/map5.png" data-index="{{s_currently_selected_item.id}}" bindtap="handleGetMenuBack" />
+        </view>
+      </view>
+      <swiper bindchange="handleQuickEntry" class="select-after-selection-swiper" autoplay="{{false}}" interval="3000" duration="500" 	indicator-dots="{{true}}">
+        <swiper-item wx:for="{{g_tree_structure_data}}" wx:key="index">
+          <view class="select-after-selection-item">
+            <view class="select-after-selection-flex-item {{item.isdevelop == 0 ? 'developed' : 'not-developed'}}" wx:for="{{item}}" data-item="{{item}}" bindtap="handleGetMenuList" wx:key="index">
+              <image class="select-after-selection-image" src="{{!item.icon ? '/assets/images/login/logo.png' : c_link + 'img/' + item.icon}}" mode="{{!item.icon ? 'aspectFill' : 'aspectFit'}}" />
+              <text class="select-after-selection-text">{{item.name}}</text>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
+    <ribbon items="{{items}}" s_ribbon_height="{{s_ribbon_height}}" />
+    <!-- <view wx:else class="scrollView_noDataTip">无数据</view> -->
+    <view style="height: 20px;"></view>
+  </scroll-view>
+  <!-- <view bindtap="backToTop" style="position: absolute;z-index: 999;bottom: 50px;right: 10px; width: 60rpx;height: 60rpx;display: flex;align-items: center;justify-content: center; background-color:#fff ;border-radius:50% ;">
+    <image src="/assets/images/index/desk@2x.png" style="width: 40rpx;height: 40rpx;" />
+  </view> -->
+</view>
+<view bindtap="handleUser" wx:if="{{show}}" style="display: flex;flex-direction: column;padding: 20rpx; width: 40%;height: 100%;z-index: 99999;position: fixed;top: 40px;background:#fff ;border-radius: 8rpx;">
+<view>这是账号信息</view>
+<view>这是角色信息</view>
+<view>这是账号信息</view>
+<view>点击白色区域关闭</view>
+</view>

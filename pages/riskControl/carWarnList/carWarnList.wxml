@@ -1,0 +1,45 @@
+<view wx:if="{{items.length == 0}}" class="scrollView_noDataTip">无数据</view>
+<view class='giftListView' >
+<scroll-view style="height: 100%" scroll-y="true" refresher-enabled="true"  bindrefresherrefresh="refresh" refresher-triggered="{{triggered}}">
+
+ <block wx:for="{{items}}">
+ <!-- 每个cell -->
+  <view class='item' style="background-color:white;margin: auto;border-radius: 5px;margin-top: 6px;" wx:key="*this"   data-item= "{{item}}" data-id="{{item.ID}}" id="{{item.mappingid}}">
+  
+
+   <!-- 具体产品 -->
+   <view class='productDesView' style="display: flex;">
+    <image class="carImage" src="../../../assets/images/rent/car@2x.png" mode='aspectFit'></image>
+    <view class = 'productDesText'>{{item.platenumber}}</view>
+    <view class="lansekuai">{{item.vehicleModeName}}</view>
+    <view class = "qiText" style="margin-left: 100rpx;">报警类型</view>
+    <view class = "qiText" style="color: red;">{{item.warningState}}</view>
+    
+   </view>
+   <view class="fengexian"></view>
+   <view class='productDesView' style="height: 70rpx;">
+   <view style="display: flex;height:auto;margin-top: 10rpx;">
+  
+    <view class = "qiText" style="color: gray;">报警地点</view>
+    <view class = "qiText">{{item.remark}}</view>
+  
+  </view>
+
+  <view style="display: flex;height:auto;margin-top: 20rpx;">
+  
+  <view class = "qiText" style="color: gray;">报警时间</view>
+  <view class = "qiText">{{item.occurredTime}}</view>
+
+</view>
+    </view>
+
+
+    
+
+  </view>
+ </block>
+
+</scroll-view>
+
+</view>
+

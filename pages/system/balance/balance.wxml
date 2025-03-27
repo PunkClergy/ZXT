@@ -1,0 +1,26 @@
+
+<view class='container'>
+
+<form>
+  <!--
+  <view class='page_title'>注册车辆</view>
+-->
+  <view class='input_views'>
+
+   
+
+      <view class='input_item'>
+        <view class='input_title'>当前余额</view>
+        <input class='input_v' value="{{balance}}"  disabled="disabled" ></input>
+      </view>
+
+      <view class='input_item'>
+        <view class='input_title'>充值金额</view>
+        <input class='input_v' value="{{amount}}" placeholder='请输入'  type="number" bindinput='amountInput'></input>
+      </view>
+  </view>
+
+  <button class='login_btn' hover-class="btn_tapcolor" bindtap='payBtnTap'>支付</button>
+  <view class="notInput"  bindtap="payRecordTap">充值记录</view>
+</form>
+</view>

@@ -1,0 +1,95 @@
+.outer-layer-of-card {
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8rpx;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.card-head-plate {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.card-head-plate-type {
+  display: flex;
+  align-items: center;
+}
+
+.card-head-plate-type image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.card-head-plate-type text {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 25rpx;
+  color: #333333;
+}
+
+.card-head-plate_number {
+  background: #EEF7FF;
+  border-radius: 8rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 23rpx;
+  color: #1B64B1;
+  line-height: 30rpx;
+  padding: 6rpx 18rpx;
+}
+
+.card-head-plate_model {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 23rpx;
+  color: #333333;
+  line-height: 30rpx;
+  padding: 6rpx 18rpx;
+}
+
+.card-head-state {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.card-head-state-overtime {
+  border-radius: 4rpx;
+  border: 1px solid #DD0B2D;
+  padding: 4rpx 10rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 20rpx;
+  color: #DD0B2D;
+  line-height: 23rpx;
+}
+
+.card-head-state-normal {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 25rpx;
+  color: #F56F48;
+  line-height: 30rpx;
+}
+
+.card-middle {
+  padding: 20rpx;
+  border-bottom: 1px solid #F0F0F0;
+  display: flex;
+  flex-wrap:unset; /* 允许换行 */
+}
+
+.card-middle-train_operation {
+  flex: 1 0 50%; /* 基础宽度50%，不收缩 */
+  min-width: 50%; /* 最小宽度50% */
+  box-sizing: border-box;
+}

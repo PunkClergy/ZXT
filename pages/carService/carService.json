@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "车务整备",
+  "usingComponents": {
+    "mp-searchbar": "weui-miniprogram/searchbar/searchbar"
+  }
+}

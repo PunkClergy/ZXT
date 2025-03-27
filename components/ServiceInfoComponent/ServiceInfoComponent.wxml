@@ -1,0 +1,81 @@
+<form catchsubmit="formSubmit">
+  <view class="component_content_begins_container">
+    <block wx:for="{{info}}" wx:key="index" wx:if="{{item.display == 1}}">
+      <!-- 地图选点 -->
+      <block wx:if="{{item.type == 'address'}}">
+        <view class="component_content_begins_container_section">
+          <view class="component_content_begins_container_section_title">{{item.cnname}} ：</view>
+          <picker class="form_picker" bindchange="bindPickerChange" data-item="{{item}}" value="{{updateData[item.name+'type']}}" range="{{collectionOfLocationInformationTypes}}" name="{{item.name}}">
+            <view class="picker">
+              {{collectionOfLocationInformationTypes[updateData[item.name+'type']] || '请选择'+item.cnname}}
+            </view>
+          </picker>
+        </view>
+        <view class="component_content_begins_container_section">
+          <view class="component_content_begins_container_section_title"></view>
+          <view class="six_choices_for_location">
+            <block wx:if="{{updateData[item.name+'type'] == 0}}">
+              <input placeholder="{{'请输入'+item.cnname}}" data-item="{{item}}" bindblur="handleBlurMap" />
+            </block>
+            <block wx:if="{{updateData[item.name+'type'] == 1}}">
+              <view class="six_choices_for_location_map" data-item="{{item}}" bindtap="handleJumpToMap">
+                <view>{{form[item.name] ? form[item.name]['name'] : '请选择'}}</view>
+                <image src="/assets/images/home/map.png" />
+              </view>
+            </block>
+            <block wx:if="{{updateData[item.name+'type'] == 2}}"></block>
+            <block wx:if="{{updateData[item.name+'type'] == 3}}">
+              <picker bindchange="handleCarParkingListChange" data-item="{{item}}" value="{{index}}" range="{{carHotspotList}}" range-key="name">
+                <view class="picker">
+                  {{carHotspotList[updateData[item.name]]?carHotspotList[updateData[item.name]]['name']:'请选择车务宝热点'}}
+                </view>
+              </picker>
+            </block>
+            <block wx:if="{{updateData[item.name+'type'] == 4}}">
+              <picker bindchange="handleCarParkingListChange" data-item="{{item}}" value="{{index}}" range="{{rentedCarParklotList}}" range-key="name">
+                <view class="picker">
+                  {{rentedCarParklotList[updateData[item.name]]?rentedCarParklotList[updateData[item.name]]['name']:'请选择已租车位'}}
+                </view>
+              </picker>
+            </block>
+            <block wx:if="{{updateData[item.name+'type'] == 5}}">
+              <picker bindchange="handleCarParkingListChange" data-item="{{item}}" value="{{index}}" range="{{carParkingList}}" range-key="name">
+                <view class="picker">
+                  {{carParkingList[updateData[item.name]]?carParkingList[updateData[item.name]]['name']:'请选择网点'}}
+                </view>
+              </picker>
+            </block>
+          </view>
+        </view>
+      </block>
+      <!-- 选择时间 -->
+      <block wx:elif="{{item.type == 'dateTime'}}">
+        <view class="component_content_begins_container_section">
+          <view class="component_content_begins_container_section_title">{{item.cnname}} ：</view>
+          <picker class="form_picker" mode="date" value="{{updateData[item.name+'date']||'请选择日期'}}" data-item="{{item}}" bindchange="handleDateChange">
+            <view class="picker">
+              {{updateData[item.name+'date']||'请选择日期'}}
+            </view>
+          </picker>
+        </view>
+        <view class="component_content_begins_container_section" wx:if="{{updateData[item.name+'date']}}">
+          <view class="component_content_begins_container_section_title"></view>
+          <picker class="form_picker" mode="time" value="{{updateData[item.name+'time']||'请选择时间'}}" data-item="{{item}}" bindchange="handleTimeChange">
+            <view class="picker">
+              {{updateData[item.name+'time']||'请选择时间'}}
+            </view>
+          </picker>
+        </view>
+      </block>
+      <!-- 输入框操作 -->
+      <block wx:else>
+        <view class="component_content_begins_container_section">
+          <view class="component_content_begins_container_section_title">{{item.cnname}} ：</view>
+          <view class="input_box_type">
+            <input placeholder="{{'请选择'+item.cnname}}" value="{{form[item.name]}}" name="{{item.name}}" data-item="{{item}}" bindblur="handleBlur" bindinput="handleBlur" />
+          </view>
+        </view>
+      </block>
+    </block>
+  </view>
+</form>

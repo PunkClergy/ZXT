@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "drop-filter-com": "/components/DropFilterCom/index"
+  }
+}

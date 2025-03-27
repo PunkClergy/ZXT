@@ -1,0 +1,197 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="车辆编辑" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <view class="card-head">
+      <image src="/assets/images/home/car_icon.png" />
+      <text>车辆信息</text>
+    </view>
+    <view class="card-info">
+      <!-- 车系 -->
+      <view class="card-info-item">
+        <label>车系<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.vehicleSerialName||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <input placeholder="请输入车系" value="{{params.vehicleSerialName}}" data-item="vehicleSerialName" bindinput="handleBindinput" />
+          </view>
+        </block>
+
+      </view>
+      <!-- 车型 -->
+      <view class="card-info-item">
+        <label>车型<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.vehicleModeName||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <input placeholder="请输入车型" value="{{params.vehicleModeName}}" data-item="vehicleModeName" bindinput="handleBindinput" />
+          </view>
+        </block>
+      </view>
+      <!-- 年款 -->
+      <view class="card-info-item">
+        <label>年款<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.ccdate||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <input placeholder="请输入年款" value="{{params.ccdate}}" data-item="ccdate" bindinput="handleBindinput" />
+          </view>
+        </block>
+      </view>
+      <!-- 配置 -->
+      <view class="card-info-item">
+        <label>配置</label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.introduction||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <input placeholder="请输入配置" value="{{params.introduction}}" data-item="introduction" bindinput="handleBindinput" />
+          </view>
+        </block>
+
+      </view>
+      <!-- 车牌号 -->
+      <view class="card-info-item">
+        <label>车牌号<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.platenumber||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <input placeholder="请输入车牌号" value="{{params.platenumber}}" data-item="platenumber" bindinput="handleBindinput" />
+          </view>
+        </block>
+
+      </view>
+      <!-- 车架号 -->
+      <view class="card-info-item">
+        <label>车架号<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.vin||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <input placeholder="请输入车架号" value="{{params.vin}}" data-item="vin" bindinput="handleBindinput" />
+          </view>
+        </block>
+
+      </view>
+      <!-- 油箱容积 -->
+      <view class="card-info-item">
+        <label>油箱容积<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.xsgw||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <input placeholder="请输入油箱容积" value="{{params.xsgw}}" data-item="xsgw" bindinput="handleBindinput" />
+          </view>
+        </block>
+
+      </view>
+      <!-- 启动方式 -->
+      <view class="card-info-item">
+        <label>启动方式<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{batterylift||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-tabs">
+            <view class="card-info-item-tabs-btn">
+              <text class="{{batterylift == '一键启动'?'tabs-active':''}}" data-item="一键启动" bindtap="handleBatterylift">一键启动</text>
+              <text class="{{batterylift == '机械钥匙'?'tabs-active':''}}" data-item="机械钥匙" bindtap="handleBatterylift">机械钥匙</text>
+              <text class="{{batterylift == '其他'?'tabs-active':''}}" data-item="其他" bindtap="handleBatterylift">其他</text>
+            </view>
+            <view class="tabs-footer">
+              <view>说明：</view>
+              <view class="card-info-item-tips">
+                <view>[一键启动]为使用按键按下启动；</view>
+                <view>[机械钥匙]为使用钥匙片拧动启动；</view>
+              </view>
+            </view>
+          </view>
+        </block>
+
+      </view>
+      <!-- 自助取还 -->
+      <view class="card-info-item">
+        <label>自助取还<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{brakingType =='1'?'自助取还类':'非自助取还类'}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-tabs">
+            <view class="card-info-item-tabs-btn">
+              <text class="{{brakingType == 1?'tabs-active':''}}" data-item="1" bindtap="handleBrakingType">自助取还类</text>
+              <text class="{{brakingType == 2?'tabs-active':''}}" data-item="2" bindtap="handleBrakingType">非自助取还类</text>
+            </view>
+            <view class="tabs-footer" style="display: flex;justify-content: flex-end;">
+              <view>说明：</view>
+              <view class="card-info-item-tips" style="width: 80%;">
+                <view style="width: 100%;">带有车载自助取还硬件(支持手机控车)的点选[自助取还类型]，没有则选[非自助取还类型]</view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+      <block wx:if="{{brakingType == 1}}">
+            <!-- 所属平台 -->
+            <view class="card-info-item">
+        <label>所属平台<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{carOwnerName == '智信通'?carOwnerName:carOwnerNameValue}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-tabs">
+            <view class="card-info-item-tabs-btn">
+              <text class="{{carOwnerName == '智信通'?'tabs-active':''}}" data-item="智信通" bindtap="handleCarOwnerName">智信通</text>
+              <text class="{{carOwnerName == '其他'?'tabs-active':''}}" data-item="其他" bindtap="handleCarOwnerName">其他</text>
+              <input wx:if="{{carOwnerName=='其他'}}" value="{{carOwnerNameValue}}" placeholder="请输入" data-item="carOwnerNameValue" bindinput="handleCarOwnerNameBindinput" />
+            </view>
+            <view class="tabs-footer">
+
+              <view class="card-info-item-tips">
+                <view>说明：使用其他平台车载自助取还硬件的可以填入或留空</view>
+              </view>
+            </view>
+          </view>
+        </block>
+
+      </view>
+      <!-- 设备号 -->
+      <view class="card-info-item">
+        <label>设备号</label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.sn}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-tabs">
+            <view class="card-info-item-tabs-btn">
+              <input placeholder="请输入设备号" value="{{params.sn}}" data-item="sn" bindinput="handleBindinput" />
+            </view>
+            <view class="tabs-footer">
+              <view class="card-info-item-tips">
+                <view>说明：使用其他平台车载自助取还硬件的可以填入或留空</view>
+              </view>
+            </view>
+          </view>
+        </block>
+
+      </view>
+      </block>
+
+    </view>
+    <view class="card-footer">
+      <view bindtap="handleSubmit">确认修改</view>
+    </view>
+  </view>
+
+</view>

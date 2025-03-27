@@ -1,0 +1,214 @@
+page {
+  background-color: black;
+  height: 100%;
+}
+
+.top-container {
+  width: 100%;
+  position: relative;
+}
+
+.bg-arc {
+  height: 22px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.bottom-container {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.bg-control-img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.car-info-parent {
+  width: 100%;
+  position: absolute;
+  text-align: center;
+}
+
+.car-time-parent {
+  width: 80%;
+  left: 50%;
+  height: auto;
+  transform: translateX(-50%);
+  position: absolute;
+  text-align: center;
+  margin-top: 100rpx;
+  background-color:gray;
+  opacity: 0.90;  filter: alpha(opacity=90);
+  border-radius: 6rpx;
+}
+
+.bg-car-img {
+  height: 170rpx;
+}
+
+.car-info-text {
+  color: white;
+  font-size: 30rpx;
+}
+
+.address-info-text {
+  padding-top: 5rpx;
+  padding-bottom: 5rpx;
+  color: #ccc;
+  font-size: 25rpx;
+}
+
+.control-area {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 15rpx;
+  bottom: 0;
+}
+
+.btn-control {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 18%;
+  height: 135rpx;
+  font-size: 22rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding-top: 15rpx;
+}
+
+.button-hover {
+  background-color: rgba(222, 157, 10, 0.2);
+}
+
+.icon-control {
+  height: 65rpx;
+}
+
+.empty {
+  width: 5.6%;
+  /* width: 11.5%; */
+}
+
+.no-car {
+  font-size: 30rpx;
+  color: white;
+  width: 50%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bottom-container-no-car {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.person-icon {
+  height: 90rpx;
+  width: 90rpx;
+  position: absolute;
+  top: 10rpx;
+  right: 10rpx;
+  
+}
+
+.network-icon {
+  height: 90rpx;
+  width: 90rpx;
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  
+}
+
+.bluetooth-icon {
+  height: 90rpx;
+  width: 90rpx;
+  position: absolute;
+  top: 10rpx;
+  left: 100rpx;
+}
+
+.position-icon {
+  height: 90rpx;
+  width: 90rpx;
+  position: absolute;
+  bottom: 40rpx;
+  right: 10rpx;
+}
+
+.kefu-icon {
+  height: 90rpx;
+  width: 90rpx;
+  position: absolute;
+  bottom: 70rpx;
+  left: 10rpx;
+}
+
+.pnavigation-icon {
+  height: 90rpx;
+  width: 90rpx;
+  position: absolute;
+  bottom: 130rpx;
+  right: 10rpx;
+}
+
+.zuche-icon {
+  width: 200rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  color: white;
+  /* display:block;
+  margin:0 auto; */
+  position: absolute;
+  bottom: 50rpx;
+  left: 50%;   
+	transform:translateX(-50%);
+  background-color: green;
+  border-radius: 6rpx;
+  font-size: 32rpx;
+}
+
+.share-icon {
+  width: 200rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  color: white;
+  /* display:block;
+  margin:0 auto; */
+  position: absolute;
+  bottom: 130rpx; 
+  left: 50%;   
+	transform:translateX(-50%);
+  background-color: green;
+  border-radius: 6rpx;
+  font-size: 32rpx;
+}
+
+.code-input
+{
+  background-color: white;
+  height: 80rpx;
+  width: 300rpx;
+  text-align: center;
+}
+
+.code-button
+{
+  background-color: white;
+  height: 80rpx;
+  width: 100rpx;
+}

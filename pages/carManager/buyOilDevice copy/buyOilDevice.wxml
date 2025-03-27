@@ -1,0 +1,59 @@
+<view class='container'>
+
+  <form>
+    <!--
+  <view class='page_title'>注册车辆</view>
+-->
+    <view class='input_views'>
+
+      <view class='input_item'>
+        <view class='input_title'>姓名</view>
+        <input class='input_v' value="{{linkman}}" placeholder='请输入' bindinput='linkmanInput'></input>
+      </view>
+
+
+      <view class='input_item'>
+        <view class='input_title'>联系电话</view>
+        <input class='input_v' value="{{linkmobile}}" placeholder='请输入' bindinput='linkmobileInput'></input>
+      </view>
+
+
+
+      <view class='input_item'>
+        <view class='input_title'>地址</view>
+        <input class='input_v' value="{{linkaddress}}" placeholder='请输入' bindinput='linkaddressInput'></input>
+      </view>
+
+      <view class='input_item' style="margin-top: 50rpx;">
+        <view class='input_title'>购买数量</view>
+        <input class='input_v' value="{{deviceCount}}" placeholder='请输入' type="number" bindinput='deviceCountInput'></input>
+      </view>
+
+      <view class='input_item'>
+        <view class='input_title'>服务次数</view>
+        <input class='input_v' value="{{fwCount}}" placeholder='请输入' disabled="disabled" type="number" bindinput='fwCountInput'></input>
+      </view>
+
+      <view class='input_item'>
+        <view class='input_title'>金额</view>
+        <input class='input_v' value="{{cost}}" placeholder='请输入' disabled="disabled" bindinput='costInput'></input>
+      </view>
+
+
+      <view style="font-size: 25rpx;margin-top: 20rpx;">
+        设备单价：{{yjPrice}}元 服务单价：{{fwPrice}}元/次
+      </view>
+    </view>
+
+    <view class="g_agreement">
+      <checkbox-group bindchange="handleCheckboxChange" data-item="{{checkboxState}}">
+        <checkbox value="{{checkboxState}}" checked="{{checkboxState}}" />
+      </checkbox-group>
+      <text>已阅读并同意</text>
+      <text class="user_agreement" bindtap="serviceTap">《用户服务协议》</text>
+      <text>&</text>
+      <text class="privacy_agreement" bindtap="privateTap">《隐私政策》</text>
+    </view>
+    <button class='login_btn' hover-class="btn_tapcolor" bindtap='regBtnTap' disabled="{{checkboxState!='checked'}}">提交</button>
+  </form>
+</view>

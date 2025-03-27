@@ -1,0 +1,18 @@
+
+<view class='container'>
+
+<form>
+  <!--
+  <view class='page_title'>注册车辆</view>
+-->
+  <view class='input_views'>
+
+   
+
+    
+  </view>
+
+  <button class='login_btn' hover-class="btn_tapcolor" bindtap='jump2359Tap'>打开启航23.59无忧在线小程序</button>
+
+</form>
+</view>

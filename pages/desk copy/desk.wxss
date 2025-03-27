@@ -1,0 +1,46 @@
+page {
+  background-color: var(--weui-BG-0);
+    height: 100%;
+  }
+  
+  button::after{ border: none; }
+  
+  .top-container {
+    width: 100%;
+    position: relative;
+  }
+
+  .control-area {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 50rpx;
+  }
+  .empty {
+    width: 7%;
+    /* width: 11.5%; */
+  }
+
+  .btn-control {
+    color:black;
+    background-color: white;
+    width: 40%;
+    height: 300rpx;
+    font-size: 30rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 15rpx;
+  }
+  .button-hover {
+    background-color:lightgray;
+  }
+
+  .icon-control {
+    height: 200rpx;
+  }
