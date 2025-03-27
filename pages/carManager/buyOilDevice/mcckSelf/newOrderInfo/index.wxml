@@ -1,0 +1,78 @@
+<view class="container" scroll-y style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <!-- 自定义头部 -->
+  <custom-header title="订单详情" />
+  <scroll-view class="scroll-container" style="top:{{c_statusBarHeight + c_navBarHeight}}px;">
+    <!-- 主要Card区域 -->
+    <view class="card">
+      <!-- 主要Card头部区域 -->
+      <view class="card-head">
+        <view class="card-head-title">订单信息</view>
+        <view class="card-head-status">待适配信息</view>
+      </view>
+      <!-- Card内容区域 -->
+      <view class="card-content">
+        <!-- Info Card区域 -->
+        <view class="info-card">
+          <!-- Info Card内容区域 -->
+          <view class="info-card-content">
+            <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+              <label>订单编号 ：</label>
+              <text>{{item.createdate||'-'}}</text>
+            </view>
+            <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+              <label>订单时间 ：</label>
+              <text>{{item.createdate||'-'}}</text>
+            </view>
+            <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+              <label>发货时间 ：</label>
+              <text>{{item.createdate||'-'}}</text>
+            </view>
+            <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+              <label>物流单号 ：</label>
+              <text>{{item.createdate||'-'}}</text>
+            </view>
+            <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+              <label>完结时间 ：</label>
+              <text>{{item.createdate||'-'}}</text>
+            </view>
+            <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+              <label>收货人 ：</label>
+              <text>{{item.createdate||'-'}}</text>
+            </view>
+            <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+              <label>电话 ：</label>
+              <text>{{item.createdate||'-'}}</text>
+            </view>
+            <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+              <label>收货地址 ：</label>
+              <text>{{item.createdate||'-'}}</text>
+            </view>
+            <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+              <label>是否需要安装 ：</label>
+              <text>{{item.createdate||'-'}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- Demand card区域 -->
+        <view class="demand-card">
+          <!-- Demand card 头部区域 -->
+          <view class="demand-card-head">
+            <view class="demand-card-head-title">需求车辆</view>
+          </view>
+          <!-- Demand card 内容区域 -->
+          <view class="demand-card-content">
+            <scroll-view scroll-y class="demand-scroll-container" style="height: 200px;">
+              <view wx:for="{{100}}">
+                <view style="font-size: 24rpx;display: flex;align-items: flex-start;justify-content: space-between;padding: 10rpx 10rpx;border:1px solid #f0f0f0;margin:5rpx ;">
+                  <view style="width: 80%;">大众 帕萨特 2024 默认配置 一键启动 车架号大众 帕萨特 2024 默认配置 一键启动 车架号</view>
+                  <view>待确认</view>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

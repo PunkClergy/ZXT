@@ -11,7 +11,8 @@ const {
   u_buyMcckDevice
 } = require('../../../../../utils/request/eqpmnt')
 const {
-  byPost
+  byPost,
+  byPostJson
 } = require('../../../../../utils/request/http')
 Page({
   data: {
@@ -191,12 +192,16 @@ Page({
       linkman: "string",
       linkmobile: "string"
     }
-    const params = {
-      orderBO: JSON.stringify(param)
-    }
-    byPost(getApp().data.k1swUrl + u_buyMcckDevice.URL, params, function (res) {
-      console.log(res)
+    byPostJson(getApp().data.k1swUrl + u_buyMcckDevice.URL, JSON.stringify(param), function (response) {
       hideLoading();
+      if (response.data.code) {
+        wx.navigateTo({
+          url: '/pages/carManager/buyOilDevice/mcckSelf/newOrderInfo/index',
+        })
+      } else(
+        showModal(response.data.msg)
+      )
+
     });
   },
   onLoad(options) {

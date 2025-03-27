@@ -225,7 +225,6 @@
   font-weight: 500;
   font-size: 24rpx;
   color: #333333;
-
 }
 
 .long-info-item {

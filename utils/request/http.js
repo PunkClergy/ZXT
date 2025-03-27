@@ -111,7 +111,6 @@ function byPostJson(url, param, result) {
     header['token'] = userInfo.token;
     header['timestamp'] = Date.parse(new Date());
   }
-  printLog(url, param);
   return wx.request({
     timeout: 20000,
     url: url, //仅为示例，并非真实的接口地址
@@ -120,10 +119,10 @@ function byPostJson(url, param, result) {
     method: 'POST',
     success: function (res) {
       result(res);
-      log(res.data);
+
     },
     fail: function (res) {
-      log(res);
+
       result(false);
 
     }

@@ -1,0 +1,109 @@
+.container {
+  width: 100%;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+  position: relative;
+  align-items: center;
+}
+
+.scroll-container {
+  height: 100vh;
+  box-sizing: border-box;
+  position: fixed;
+}
+
+.card {
+  width: 96%;
+  margin: auto;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+}
+
+.card .card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.card .card-head .card-head-title {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.card .card-head .card-head-status {
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.card .card-content {
+  padding: 10rpx;
+}
+
+.info-card {
+  width: 100%;
+  margin: auto;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+}
+
+.info-card .info-card-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 10rpx;
+  gap: 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-card .info-card-content .info-item {
+  flex: 0 0 48%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  transition: all 0.3s;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.info-card .info-card-content .long-info-item {
+  flex-basis: 100% !important;
+}
+
+.demand-card {
+  width: 100%;
+  margin: auto;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+}
+.demand-card .demand-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.demand-card .demand-card-head .demand-card-head-title {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: bold;
+}
+
