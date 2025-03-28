@@ -1,4 +1,8 @@
 <map id="myMap" scale='{{scale}}' polyline="{{polyline}}" include-points="{{includePoints}}" markers="{{markers}}" longitude="{{longitude}}" latitude="{{latitude}}" show-scale="true" bindmarkertap="handleOnMarkerTap">
+  <view class="time-frame">
+    <text>租用时间:</text>
+    <text>{{g_leaseTime.startDate}} 至 {{g_leaseTime.endDate}}</text>
+  </view>
   <view class="container-head">
     <view class="head-bg" id="-4" bindtap="handleControl">
       <image src="{{currentSelectControlType=='-4'?'/assets/images/home/wifi_1.png':'/assets/images/home/wifi.png'}}" />
@@ -18,7 +22,7 @@
     </view>
   </view>
 
-  <view class="info-middle-btn" wx:else>
+  <view class="info-middle-btn" wx:if="{{source =='desk'}}">
     <view class="info-middle-btn-layer" bindtap="handleReturnToVehicle">
       <image src="/assets/images/home/yd.png" />
     </view>

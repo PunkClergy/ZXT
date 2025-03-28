@@ -95,6 +95,7 @@ Component({
     a_deputy_longitude: null, //当前手机所在位置
     latitude: null, //当前车辆所在位置
     longitude: null, //当前车辆在位置
+    g_leaseTime: null,
     c_k1sw_link: 'https://k1sw.wiselink.net.cn/', //域名
     c_fin3_link: 'https://fin3.wiselink.net.cn/fin/'
 
@@ -549,7 +550,14 @@ Component({
       byPost(this.data.c_fin3_link + u_RequestCarList.REQUEST_API, param, (response) => {
         hideLoading();
         if (response?.data?.code == 1000) {
-          this.handleGetCarPostion(response?.data?.content?.sn)
+          this.setData({
+            g_leaseTime: {
+              startDate: response.data.content.startDate.slice(0, 16),
+              endDate: response.data.content.endDate.slice(0, 16)
+            }
+          }, () => {
+            this.handleGetCarPostion(response?.data?.content?.sn)
+          })
         } else {
           showToast(response?.data?.msg || '请求失败')
         }
