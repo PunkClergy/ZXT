@@ -117,7 +117,7 @@ Page({
     const {
       item
     } = evt.currentTarget.dataset
-    wx.navigateTo({
+    wx.redirectTo({
       url: `${this.data.g_source}?datails=${JSON.stringify(item)}`
     })
   },

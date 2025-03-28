@@ -39,7 +39,6 @@ Page({
     arcImage: '../../assets/images/control_up_bg.png',
     arcHeight: 49,
     coverHeight: 230,
-
     startDate: '',
     startTime: '',
     endDate: '',
@@ -61,7 +60,7 @@ Page({
     })
   },
   handleJumpCarList() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/carManager/carList/carList?source=' + '/pages/riskControl/carDetail/carDetail',
     })
   },

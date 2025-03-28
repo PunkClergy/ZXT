@@ -47,15 +47,11 @@ Component({
           source
         } = this.data;
         if (!sn) {
-          if (this.data.source == 'carDetail') {
-            this.handleCarDetail()
-          } else {
-            this.handleLocation()
-          }
+          const handlerMethod = source === 'carDetail' ? 'handleCarDetail' : 'handleLocation';
+          this[handlerMethod]();
           return;
         }
-
-        const sourceHandlers = {
+        const SOURCE_HANDLERS = {
           desk: {
             method: 'handleSearchLink',
             description: '首页桌面入口处理'
@@ -70,11 +66,14 @@ Component({
           }
         };
 
-        const handlerConfig = sourceHandlers[source];
-        if (handlerConfig) {
+        const handlerConfig = SOURCE_HANDLERS[source];
 
-          if (typeof this[handlerConfig.method] === 'function') {
-            this[handlerConfig.method](sn);
+        if (handlerConfig) {
+          const {
+            method
+          } = handlerConfig;
+          if (typeof this[method] === 'function') {
+            this[method](sn);
           }
         }
       } catch (error) {
