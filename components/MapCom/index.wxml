@@ -32,7 +32,7 @@
   </view>
 
   <view class="info-lower">
-    <view class="info-lower-layer" id="3" bindtap="handleReturningVehicles">
+    <view class="info-lower-layer" id="3" bindtap="handleReturningVehicles" wx:if="{{source=='desk'}}">
       <image src="/assets/images/home/c_return.png" />
       <text>归还车辆</text>
     </view>
@@ -55,6 +55,10 @@
     <view class="info-lower-layer" id="6" bindtap="handleFooterBtn" wx:if="{{source!='desk'}}">
       <image src="/assets/images/home/map5.png" />
       <text>取消拦截</text>
+    </view>
+    <view class="info-lower-layer" id="3" bindtap="handleViewPhotos" wx:if="{{source=='desk'}}">
+      <image src="/assets/images/home/c_return.png" />
+      <text>查看照片</text>
     </view>
   </view>
 

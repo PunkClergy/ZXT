@@ -97,7 +97,8 @@ Component({
     a_deputy_longitude: null, //当前手机所在位置
     latitude: null, //当前车辆所在位置
     longitude: null, //当前车辆在位置
-    g_leaseTime: null,
+    g_leaseTime: null, //当前车辆租用时间
+    g_images: null, //当前车辆照片
     c_k1sw_link: 'https://k1sw.wiselink.net.cn/', //域名
     c_fin3_link: 'https://fin3.wiselink.net.cn/fin/'
 
@@ -189,7 +190,7 @@ Component({
             longitude: mainCar?.tlongitude || 0,
             sn: evt,
             callout: {
-              content: `当前位置：${mainCar?.address || '未知'}\n定位时间：${mainCar?.showtime || '未知'}`,
+              content: `${mainCar?.plateNumber||_this.data.g_plateNumber||''}\n当前位置：${mainCar?.address || '未知'}\n定位时间：${mainCar?.showtime || '未知'}`,
               display: 'ALWAYS',
               padding: 8
             }
@@ -208,7 +209,7 @@ Component({
               height: 35,
               sn: car.sn,
               callout: {
-                content: `当前位置：${car?.address || '未知'}\n定位时间：${car?.showtime || '未知'}`,
+                content: `${car?.plateNumber||_this.data.g_plateNumber||''}\n当前位置：${car?.address || '未知'}\n定位时间：${car?.showtime || '未知'}`,
                 display: 'BYCLICK',
                 padding: 8
               }
@@ -324,6 +325,10 @@ Component({
     },
     //底部操作
     handleFooterBtn(evt) {
+      if (!this.data.sn) {
+        showToast('无可用车辆')
+        return
+      }
       const showLoadingWithFallback = () => {
         try {
           showLoading('正在控制...');
@@ -417,7 +422,7 @@ Component({
           latitude: content?.tlatitude,
           longitude: content?.tlongitude,
           callout: {
-            content: `当前位置：${content?.address}\r\n定位时间：${content?.showtime}`, // 使用模板字符串提升可读性
+            content: `${content?.plateNumber||_this.data.g_plateNumber||''}\n当前位置：${content?.address}\r\n定位时间：${content?.showtime}`, // 使用模板字符串提升可读性
             display: 'ALWAYS',
             padding: 8
           }
@@ -551,12 +556,21 @@ Component({
       }
       byPost(this.data.c_fin3_link + u_RequestCarList.REQUEST_API, param, (response) => {
         hideLoading();
+        const resn = response?.data?.content
         if (response?.data?.code == 1000) {
           this.setData({
             g_leaseTime: {
               startDate: response.data.content.startDate.slice(0, 16),
-              endDate: response.data.content.endDate.slice(0, 16)
-            }
+              endDate: response.data.content.endDate.slice(0, 16),
+            },
+            g_images: [
+              resn?.uploadImgUrl,
+              resn?.uploadImgUrlFive,
+              resn?.uploadImgUrlFour,
+              resn?.uploadImgUrlThree,
+              resn?.uploadImgUrlTwo
+            ],
+            g_plateNumber: resn.plateNumber
           }, () => {
             this.handleGetCarPostion(response?.data?.content?.sn)
           })
@@ -575,6 +589,9 @@ Component({
     },
     // 开始导航
     handleStartNavigation() {
+      if (this.data.sn) {
+        return
+      }
       wx.openLocation({
         latitude: Number(this.data.latitude),
         longitude: Number(this.data.longitude),
@@ -653,9 +670,30 @@ Component({
     },
     // 归还车辆
     handleReturningVehicles() {
+      if (!this.data.sn) {
+        showToast('无可用车辆')
+        return
+      }
       wx.navigateTo({
         url: `/pages/upload-img/upload-img?type=${SHOW_TYPE?.DRIVINGCARD_TYPE}&code=${this.data.sn}`
       })
+    },
+    // 查看照片
+    handleViewPhotos() {
+      console.log(this.data)
+      if (!this.data.sn) {
+        showToast('无可用车辆')
+        return
+      }
+      console.log()
+      const images = this.data.g_images.map(ele => {
+        let temp = this.data.c_fin3_link + ele.replace(/\\/g, "/")
+        console.log(temp)
+        return temp
+      })
+      wx.previewImage({
+        urls: images // 需要预览的图片http链接列表
+      });
     }
   }
 })

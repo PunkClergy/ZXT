@@ -316,6 +316,14 @@ Page({
     // var url = "https://fin3.wiselink.net.cn/fin/h5Car/saveImg";
     var url = 'https://fin3.wiselink.net.cn/fin/' + "h5Car/saveImg";
     var code = that.data.code;
+    wx.removeStorage({
+      key: 'scene',
+    })
+    wx.setStorageSync('eli', true);
+    wx.switchTab({
+      url: '/pages/desk/desk',
+    })
+    return
     if(that.data.firstTempFilePaths.length == 0 || that.data.firstTempFilePaths[0].length == 0)
     {
       appUtil.showToast('请上传车头照片！');
@@ -352,17 +360,19 @@ Page({
     
 
     
-    let pages = getCurrentPages();
-    let prePage = pages[pages.length - 2];
-    prePage.setData({
-     reLunch:false,
-    })
+    // let pages = getCurrentPages();
+    // let prePage = pages[pages.length - 2];
+    // prePage.setData({
+    //  reLunch:false,
+    // })
     this.carManagerFinish()
     // wx.navigateBack({
     //   delta: 1
     // })
   },
   carManagerFinish : function(){
+  
+  
     var param = {};
     param[urlUtil.returnCar.CONTROLCODE] = that.data.code;
     appUtil.byPost('https://fin3.wiselink.net.cn/fin/' + urlUtil.returnCar.URL, param, function(res) {
@@ -374,6 +384,7 @@ Page({
           wx.removeStorage({
             key: 'scene',
           })
+          wx.setStorageSync('eli', true);
           wx.switchTab({
             url: '/pages/desk/desk',
           })
