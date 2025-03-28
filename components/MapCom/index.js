@@ -169,7 +169,7 @@ Component({
           }
         };
         showLoading("加载中...");
-        byPost(getApp().data.k1swUrl + u_getCarPoisiton.URL, {
+        byPost(this.data.c_k1sw_link + u_getCarPoisiton.URL, {
           [u_getCarPoisiton.sn]: evt
           // [u_getCarPoisiton.sn]: '640019899'
         }, (currentResponse) => {
@@ -191,7 +191,7 @@ Component({
               padding: 8
             }
           };
-          byGet(getApp().data.k1swUrl + u_getAllCarPoisiton.URL, {}).then(allCarsResponse => {
+          byGet(this.data.c_k1sw_link + u_getAllCarPoisiton.URL, {}).then(allCarsResponse => {
             if (allCarsResponse?.statusCode !== 200) {
               return handleError('周边车辆数据获取失败');
             }
@@ -297,7 +297,7 @@ Component({
       const requestParam = {
         [u_getCarStatus.sn]: sn
       };
-      const apiUrl = `${getApp().data.k1swUrl}${u_getCarStatus.URL}`;
+      const apiUrl = `${this.data.c_k1sw_link}${u_getCarStatus.URL}`;
       byPost(apiUrl, requestParam, (response) => {
         if (response.data.code !== 1000) {
           showToast(response.data.msg);
@@ -365,7 +365,7 @@ Component({
           _timestamp: Date.now()
         };
         byPost(
-          `${getApp().data.k1swUrl}${u_operation.URL}`,
+          `${this.data.c_k1sw_link}${u_operation.URL}`,
           requestParam,
           (response) => {
             safeHideLoading();
@@ -402,8 +402,7 @@ Component({
         [u_getCarPoisiton.sn]: evt
         // [u_getCarPoisiton.sn]: '640019899'
       };
-      byPost(getApp().data.fin3Url + u_getCarPoisiton.URL, param, (response) => {
-        console.log(response,'2222')
+      byPost(this.data.c_fin3_link + u_getCarPoisiton.URL, param, (response) => {
         hideLoading();
         const content = response?.data?.content;
         const markerList = [{
@@ -491,7 +490,7 @@ Component({
       } = this.data;
       const targetMarker = markers.find(marker => marker?.callout?.display === 'ALWAYS');
       const sn = targetMarker?.sn ?? '';
-      const url = getApp().data.fin3Url + u_getTrackPlayback.URL;
+      const url = this.data.c_fin3_link + u_getTrackPlayback.URL;
       const params = {
         [u_getTrackPlayback.sn]: sn,
         [u_getTrackPlayback.startDate]: `${startDate} ${startTime || '00:00:00'}`,

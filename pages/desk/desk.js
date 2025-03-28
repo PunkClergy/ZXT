@@ -296,13 +296,7 @@ Page({
         sn_state: true,
         sn_specific_value: options?.scene || options?.query
       }, () => {
-        if (options?.scene?.length < 6 || options?.query?.length < 6) {
           wx.setStorageSync('scene', options?.scene || options?.query);
-        } else {
-          wx.removeStorage({
-            key: 'scene',
-          });
-        }
       })
     }
   },
