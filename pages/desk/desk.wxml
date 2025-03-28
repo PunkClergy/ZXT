@@ -43,7 +43,7 @@
   <!-- 40为新增tabs高度；10为圆点高度;s_platform_height可能在苹果x以下异常 -->
   <view class="main-content" style="height: {{(c_screen_height + (sn_state?60:0))-(totalNavHeight+s_banner_height+s_quick_entrance_height+s_platform_height+5+10)}}px;">
     <block wx:if="{{sn_state}}">
-      <map-com multiple="false" source="desk" sn="{{sn_specific_value}}" style="width: 100%;" />
+      <map-com multiple="false" source="desk" sn="{{sn_specific_value}}" style="width: 100%;" id="myChild" />
     </block>
     <block wx:else>
       <view class="main-content-left" style="background-image: url('{{s_background_image_of_the_tree}}')">

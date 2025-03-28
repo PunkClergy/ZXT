@@ -694,6 +694,16 @@ Component({
       wx.previewImage({
         urls: images // 需要预览的图片http链接列表
       });
+    },
+    childMethod() {
+      this.setData({
+        g_leaseTime: false,
+        markers: null,
+        sn:null,
+        polyline:[]
+      }, () => {
+        this.handleLocation()
+      })
     }
   }
 })

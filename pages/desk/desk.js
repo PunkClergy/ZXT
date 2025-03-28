@@ -300,7 +300,14 @@ Page({
       })
     }
   },
-
+  triggerChildEvent(){
+    // / 使用 this.selectComponent('#myChild') 来获取子组件实例
+    const child = this.selectComponent('#myChild');
+    if (child) {
+      // 调用子组件的方法，并传递参数
+      child.childMethod('来自父组件的消息');
+    }
+  },
   onReady: function () {
     this.initialiImageBaseConversion()
   },

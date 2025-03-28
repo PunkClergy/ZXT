@@ -316,14 +316,6 @@ Page({
     // var url = "https://fin3.wiselink.net.cn/fin/h5Car/saveImg";
     var url = 'https://fin3.wiselink.net.cn/fin/' + "h5Car/saveImg";
     var code = that.data.code;
-    wx.removeStorage({
-      key: 'scene',
-    })
-    wx.setStorageSync('eli', true);
-    wx.switchTab({
-      url: '/pages/desk/desk',
-    })
-    return
     if(that.data.firstTempFilePaths.length == 0 || that.data.firstTempFilePaths[0].length == 0)
     {
       appUtil.showToast('请上传车头照片！');
@@ -371,8 +363,6 @@ Page({
     // })
   },
   carManagerFinish : function(){
-  
-  
     var param = {};
     param[urlUtil.returnCar.CONTROLCODE] = that.data.code;
     appUtil.byPost('https://fin3.wiselink.net.cn/fin/' + urlUtil.returnCar.URL, param, function(res) {
@@ -380,13 +370,16 @@ Page({
         var data = res.data;
         if (data.code == 1000) {
           //请求成功
+          let pages = getCurrentPages();
+          console.log(pages)
+          let prePage = pages[0];
+          prePage.triggerChildEvent()
           console.log(res.data)
           wx.removeStorage({
             key: 'scene',
           })
-          wx.setStorageSync('eli', true);
           wx.switchTab({
-            url: '/pages/desk/desk',
+            url: '/pages/desk/desk?eli='+true,
           })
           
           appUtil.showModal(data.msg, false, function() {});
