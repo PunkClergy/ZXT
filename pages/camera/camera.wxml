@@ -29,7 +29,7 @@
     <cover-image class='camera-pre' src='{{tempImagePath}}' hidden='true'></cover-image>
   </camera> -->
 
-  <image class='bg-img' src="../../assets/images/background.jpg"></image>
+  <image class='bg-img' src="/assets/images/background.jpg"></image>
   <camera device-position="back" flash="off" binderror="error" style='height:100%;width:100%;position:absolute;left:0rpx;top:0rpx'>
 
     <!-- 上边缘线 
@@ -47,7 +47,7 @@
   </camera>
 
   <button class='takePhoto' bindtap='takePhoto'>
-    <cover-image class='camera-start-img' src='../../assets/images/camera.png'></cover-image>
+    <cover-image class='camera-start-img' src='/assets/images/camera/camera.png'></cover-image>
   </button>
 
 

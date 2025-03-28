@@ -1,5 +1,7 @@
 const appUtil = require('../../utils/app-util.js');
-const urlUtil = require('../../utils/url-util.js');
+const {
+  SHOW_TYPE
+} = require('../../utils/Inspect/constant')
 const {
   showLoading,
   hideLoading,
@@ -560,6 +562,7 @@ Component({
           })
         } else {
           showToast(response?.data?.msg || '请求失败')
+          this.handleLocation()
         }
       });
     },
@@ -647,6 +650,12 @@ Component({
           polyline: routeLines
         });
       });
+    },
+    // 归还车辆
+    handleReturningVehicles() {
+      wx.navigateTo({
+        url: `/pages/upload-img/upload-img?type=${SHOW_TYPE?.DRIVINGCARD_TYPE}&code=${this.data.sn}`
+      })
     }
   }
 })

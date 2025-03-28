@@ -106,6 +106,13 @@ Page({
             currentCardType: that.data.cardType
           });
         }
+        else if (that.data.cardType == 5) {
+          prevPage.setData({ // 将我们想要传递的参数在这里直接setData。上个页面就会执行这里的操作。
+            fifthTempFilePaths: pathUrl,
+            currentViewType: that.data.viewType,
+            currentCardType: that.data.cardType
+          });
+        }
         wx.navigateBack({
           delta: 1 // 返回上一级页面。
         })

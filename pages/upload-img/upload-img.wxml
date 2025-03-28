@@ -1,0 +1,44 @@
+<image class='bg-img' src="../../assets/images/background.jpg"></image>
+
+<view class='container'>
+
+  <view class='page_title'>点击上传照片</view>
+
+  <scroll-view scroll-y='{{canScroll}}' style='height:{{showHeight}}px;margin-top:20rpx'>
+
+    <button id='1'  style='height:{{(750-2*leftGap)/1.6}}rpx;width:{{750-2*leftGap}}rpx;line-height:{{(750-2*leftGap)/1.6}}rpx' class='info-btn1' hover-class="btn_tapcolor" bindtap='inputCardBtnTap'>
+      
+      <image class='arrow' mode='aspectFill' src='{{firstTempFilePaths[0]}}'></image>
+      <text>车头照片</text>
+    </button>
+
+    <button id='2'  style='height:{{(750-2*leftGap)/1.6}}rpx;width:{{750-2*leftGap}}rpx;line-height:{{(750-2*leftGap)/1.6}}rpx' class='info-btn' hover-class="btn_tapcolor" bindtap='inputCardBtnTap'>
+      <text>车尾照片</text>
+      <image class='arrow' mode='aspectFill' src='{{secondTempFilePaths[0]}}'></image>
+    </button>
+    
+    <button id='3'  style='height:{{(750-2*leftGap)/1.6}}rpx;width:{{750-2*leftGap}}rpx;line-height:{{(750-2*leftGap)/1.6}}rpx' class='info-btn' hover-class="btn_tapcolor" bindtap='inputCardBtnTap'>
+      <text>车身左侧照片</text>
+      <image class='arrow' mode='aspectFill' src='{{thirdTempFilePaths[0]}}'></image>
+    </button>
+    <button id='4'  style='height:{{(750-2*leftGap)/1.6}}rpx;width:{{750-2*leftGap}}rpx;line-height:{{(750-2*leftGap)/1.6}}rpx' class='info-btn' hover-class="btn_tapcolor" bindtap='inputCardBtnTap'>
+      <text>车身右侧照片</text>
+      <image class='arrow' mode='aspectFill' src='{{fourthTempFilePaths[0]}}'></image>
+    </button>
+
+    <button id='5' style='height:{{(750-2*leftGap)/1.6}}rpx;width:{{750-2*leftGap}}rpx;line-height:{{(750-2*leftGap)/1.6}}rpx' class='info-btn' hover-class="btn_tapcolor" bindtap='inputCardBtnTap'>
+      <text>车钥匙位置照片</text>
+      <image class='arrow' mode='aspectFill' src='{{fifthTempFilePaths[0]}}'></image>
+    </button>
+<!--
+    <button id='4' style='height:{{(750-2*leftGap)/1.6}}rpx;width:{{750-2*leftGap}}rpx;line-height:{{(750-2*leftGap)/1.6}}rpx' class='info-btn' hover-class="btn_tapcolor" bindtap='inputCardBtnTap'>
+      <text>车右侧照片</text>
+      <image class='arrow' mode='aspectFill' src='{{fourthTempFilePaths[0]}}'></image>
+    </button>
+-->
+  </scroll-view>
+
+  <button class='submit_btn' hover-class="btn_tapcolor" bindtap='submitBtnTap'>提交并完成</button>
+
+
+</view>

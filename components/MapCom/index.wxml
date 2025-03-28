@@ -1,5 +1,5 @@
 <map id="myMap" scale='{{scale}}' polyline="{{polyline}}" include-points="{{includePoints}}" markers="{{markers}}" longitude="{{longitude}}" latitude="{{latitude}}" show-scale="true" bindmarkertap="handleOnMarkerTap">
-  <view class="time-frame">
+  <view class="time-frame" wx:if="{{g_leaseTime}}">
     <text>租用时间:</text>
     <text>{{g_leaseTime.startDate}} 至 {{g_leaseTime.endDate}}</text>
   </view>
@@ -32,6 +32,10 @@
   </view>
 
   <view class="info-lower">
+    <view class="info-lower-layer" id="3" bindtap="handleReturningVehicles">
+      <image src="/assets/images/home/c_return.png" />
+      <text>归还车辆</text>
+    </view>
     <view class="info-lower-layer" id="3" bindtap="handleFooterBtn">
       <image src="/assets/images/home/map2.png" />
       <text>开锁</text>
