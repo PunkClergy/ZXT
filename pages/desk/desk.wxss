@@ -10,7 +10,6 @@
   align-items: center;
 }
 
-
 /* 自定义头部部分 */
 .custom-navbar {
   width: 100%;
@@ -54,20 +53,25 @@
 
 /* 轮播图部分 */
 .swiper-outer-container {
-  display: flex;
   width: 100%;
-  align-items: center;
-  justify-content: center;
+  max-height: 500rpx; /* 设置最大高度 */
+  overflow: hidden; /* 裁剪溢出内容 */
+  position: relative;
+  background-size: cover;
+  background-position: center;
 }
 
 .banner-swiper {
+  margin: auto;
   width: 96%;
+  height: 100% !important; /* 强制继承容器高度 */
 }
 
 .slide-image {
   width: 100%;
   height: 100%;
-  display: block;
+  object-fit: cover; /* 图片裁剪适配 */
+  transform: translateZ(0); /* 触发硬件加速 */
 }
 
 /* 快捷入口部分 */
@@ -140,8 +144,6 @@
   width: 10px;
 }
 
-
-
 /* 主要功能区 */
 .main-content {
   width: 96%;
@@ -163,13 +165,11 @@
   /* background-color: #fff; */
   padding-left: 12rpx;
   padding-right: 12rpx;
-
 }
 
 .scroll-view-container {
   height: 100%;
 }
-
 
 .classification-department {
   display: flex;
@@ -210,7 +210,7 @@
 
 /* 新增终端tabs */
 .terminal-tabs-container {
-  background-color: #ECF7FA;
+  background-color: #ecf7fa;
   height: 40px;
   display: flex;
   width: 96%;

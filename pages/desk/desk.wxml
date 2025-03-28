@@ -12,9 +12,9 @@
   </view>
   <!-- 轮播图部分 -->
   <view class="swiper-outer-container" style="background-image: url('{{s_background_image_of_the_banner}}');margin-top: {{totalNavHeight}}px;height: {{s_banner_height}}px;">
-    <swiper class="banner-swiper" vertical="{{false}}" circular="{{false}}" autoplay="{{false}}" indicator-dots="{{false}}" autoplay="{{true}}" interval="3000" duration="500" style="transition: 'height 0.5s ease';height: {{s_banner_height}}px;">
-      <swiper-item wx:for="{{g_banner_image}}" wx:key="index">
-        <image src="{{c_link}}/img/{{item.img}}" class="slide-image" mode="widthFix" bindload="initialiOnImageLoad"></image>
+    <swiper class="banner-swiper" vertical="{{false}}" circular="{{false}}" autoplay="{{true}}" interval="3000" duration="500" style="height: {{s_banner_height}}px;">
+      <swiper-item wx:for="{{g_banner_image}}" wx:key="index" style="height: 100%; overflow: hidden;">
+        <image src="{{c_link}}/img/{{item.img}}" class="slide-image" mode="aspectFill" bindload="initialiOnImageLoad" />
       </swiper-item>
     </swiper>
   </view>
