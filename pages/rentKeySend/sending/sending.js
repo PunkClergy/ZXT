@@ -183,58 +183,73 @@ Page({
   },
   // 提交发送钥匙
   handleFormSubmit(evt) {
-    const { startDate, startTime, endDate, endTime, vehId } = this.data;
+    const {
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      vehId
+    } = this.data;
     const formData = evt.detail.value;
-    const validations = [
-      { field: formData.personName, message: '请输入使用人' },
-      { field: formData.mobile, message: '请输入手机号' }
+    const validations = [{
+        field: formData.personName,
+        message: '请输入使用人'
+      },
+      {
+        field: formData.mobile,
+        message: '请输入手机号'
+      }
     ];
-  
-    const validationError = validations.find(({ field }) => !field);
+
+    const validationError = validations.find(({
+      field
+    }) => !field);
     if (validationError) {
       showToast(validationError.message);
       return;
     }
-  
-    const buildDateTime = (date, time) => 
+
+    const buildDateTime = (date, time) =>
       `${date || ''} ${time ? `${time}:00` : '00:00:00'}`.trim();
-  
+
     const requestParams = {
-      vehId: vehId,  
+      vehId: vehId,
       startDate: buildDateTime(startDate, startTime),
       endDate: buildDateTime(endDate, endTime),
       personName: formData.personName,
       mobile: formData.mobile
     };
-  
+
     const API_ENDPOINTS = {
       baseURL: getApp().data.k1swUrl,
       sendRentKey: u_sendRentKey.URL
     };
-  
+
     const submitRequest = async () => {
       try {
         const response = await byGet(
           `${API_ENDPOINTS.baseURL}${API_ENDPOINTS.sendRentKey}`,
           requestParams
         );
-  
+
         if (response.data.code !== 1000) {
           throw new Error(response.data.msg);
         }
-  
+
         showToast('发送成功');
-        this.setData({ 
-          page: this.data.page + 1,
-          c_send_key_show_momal: false 
+        this.setData({
+          page: 1,
+          c_send_key_show_momal: false,
+          g_items:[]
+        },()=>{
+          this.getKeySendingList(vehId)
         });
-        await this.getKeySendingList(vehId); 
-  
+
       } catch (error) {
         showToast(error.message || '请求失败，请稍后重试');
       }
     };
-  
+
     submitRequest();
   },
   // 选择日期
@@ -244,16 +259,42 @@ Page({
     this.setData({
       [category]: value
     })
-
   },
-
+  // 获取当前年月日 时分
+  handleCurrentDate() {
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+    };
+  
+    const formatTime = (date) => {
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+    };
+  
+    const now = new Date();
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    const currentDate = formatDate(now);
+    const yesterdayDate = formatDate(yesterday);
+    const currentTime = formatTime(now);
+    this.setData({
+      startDate: yesterdayDate, 
+      endDate: currentDate,    
+      startTime: currentTime, 
+      endTime: currentTime     
+    });
+  },
   onLoad: function (options) {
     this.initialiImageBaseConversion()
     this.handleCarInfo(options)
   },
 
   onReady() {
-
+    this.handleCurrentDate()
   },
 
 })
