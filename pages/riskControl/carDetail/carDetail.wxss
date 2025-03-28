@@ -940,11 +940,15 @@ button::after {
 }
 
 .no-vehicle-selected {
+
   display: flex;
+  justify-content: center;
   align-items: center;
-  text-align: center;
   margin: auto;
   width: 96%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+
 }
 
 .no-vehicle-selected-item {
@@ -953,18 +957,19 @@ button::after {
   justify-content: center;
   align-items: center;
   background: #fff;
-  margin: 15rpx 0;
+  margin: 10rpx auto;
   width: 100%;
-  border-radius: 8rpx;
+  border-radius: 8px;
 }
 
 .no-vehicle-selected-item-btn {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 20rpx;
   width: 90%;
   align-items: center;
   background-color: #EEF7FF;
-  padding: 10rpx;
+  padding: 20rpx;
   font-size: 26rpx;
   border-radius: 8rpx;
   color: #1B64B1;

@@ -47,7 +47,11 @@ Component({
           source
         } = this.data;
         if (!sn) {
-          this.handleLocation()
+          if (this.data.source == 'carDetail') {
+            this.handleCarDetail()
+          } else {
+            this.handleLocation()
+          }
           return;
         }
 
@@ -159,73 +163,125 @@ Component({
     },
     // 车辆风控查询多辆车位置
     handleCarDetail(evt) {
-      if (!!evt) {
-        const _this = this;
-        let isLoadingCompleted = false;
-        const handleError = (errorMsg) => {
-          showToast(errorMsg);
-          safeHideLoading();
-        };
-        const safeHideLoading = () => {
-          if (!isLoadingCompleted) {
-            hideLoading();
-            isLoadingCompleted = true;
+      const _this = this;
+      let isLoadingCompleted = false;
+      const loadingTimer = setTimeout(() => safeHideLoading(), 10000);
+      const markerStyle = {
+        common: {
+          width: 18,
+          height: 35,
+          iconPath: "/assets/images/startPoint.png"
+        },
+        user: {
+          width: 25,
+          height: 37,
+          iconPath: "/assets/images/startPoint1.png"
+        }
+      };
+      const safeHideLoading = () => {
+        if (!isLoadingCompleted) {
+          clearTimeout(loadingTimer);
+          hideLoading();
+          isLoadingCompleted = true;
+        }
+      };
+      const handleError = (msg) => {
+        wx.showToast({
+          title: msg,
+          icon: 'none'
+        });
+        safeHideLoading();
+      };
+      const createCallout = (car) => {
+        return `${car?.plateNumber||_this.data.g_plateNumber||''}
+    当前位置：${car?.address||'未知'}
+    定位时间：${car?.showtime||'未知'}`;
+      };
+      showLoading('加载中...');
+      byGet(`${this.data.c_k1sw_link}${u_getAllCarPoisiton.URL}`, {})
+        .then(allRes => {
+          if (allRes?.statusCode !== 200) {
+            throw new Error('周边车辆获取失败');
           }
-        };
-        showLoading("加载中...");
-        byPost(this.data.c_k1sw_link + u_getCarPoisiton.URL, {
-          [u_getCarPoisiton.sn]: evt
-          // [u_getCarPoisiton.sn]: '640019899'
-        }, (currentResponse) => {
-          if (currentResponse?.data.code !== 1000) {
-            return handleError('主车辆数据获取失败');
-          }
-          const mainCar = currentResponse.data?.content || {};
-          const mainMarker = {
-            id: 0,
-            width: 18,
-            height: 35,
-            iconPath: "/assets/images/startPoint.png",
-            latitude: mainCar?.tlatitude || 0,
-            longitude: mainCar?.tlongitude || 0,
-            sn: evt,
+
+          const allCars = allRes.data?.content || [];
+          console.log(allCars)
+          const otherMarkers = allCars.map((car, index) => ({
+            ...car,
+            ...markerStyle.common,
+            id: index + 1,
+            latitude: car.tlatitude || 0,
+            longitude: car.tlongitude || 0,
+            sn: car.sn,
             callout: {
-              content: `${mainCar?.plateNumber||_this.data.g_plateNumber||''}\n当前位置：${mainCar?.address || '未知'}\n定位时间：${mainCar?.showtime || '未知'}`,
-              display: 'ALWAYS',
+              content: createCallout(car),
+              display: 'BYCLICK',
               padding: 8
             }
-          };
-          byGet(this.data.c_k1sw_link + u_getAllCarPoisiton.URL, {}).then(allCarsResponse => {
-            if (allCarsResponse?.statusCode !== 200) {
-              return handleError('周边车辆数据获取失败');
+          }));
+
+          const processMain = () => {
+            if (evt) {
+              byPost(
+                `${_this.data.c_k1sw_link}${u_getCarPoisiton.URL}`, {
+                  [u_getCarPoisiton.sn]: evt
+                },
+                (mainRes) => {
+                  if (mainRes?.data.code !== 1000) {
+                    return handleError('主车辆数据异常');
+                  }
+
+                  const mainCar = mainRes.data.content || {};
+                  const mainMarker = {
+                    ...markerStyle.common,
+                    id: 0,
+                    latitude: mainCar.tlatitude || 0,
+                    longitude: mainCar.tlongitude || 0,
+                    sn: evt,
+                    callout: {
+                      content: createCallout(mainCar),
+                      display: 'ALWAYS',
+                      padding: 8
+                    }
+                  };
+
+                  _this.setData({
+                    a_deputy_latitude: mainCar.tlatitude,
+                    a_deputy_longitude: mainCar.tlongitude,
+                    latitude: mainCar.tlatitude,
+                    longitude: mainCar.tlongitude,
+                    markers: [mainMarker, ...otherMarkers]
+                  });
+                  safeHideLoading();
+                }
+              );
+            } else {
+              wx.getLocation({
+                type: 'gcj02',
+                success: (res) => {
+                  const userMarker = {
+                    ...markerStyle.user,
+                    id: 0,
+                    latitude: res.latitude,
+                    longitude: res.longitude,
+                    title: '我的位置'
+                  };
+                  _this.setData({
+                    scale: 12,
+                    latitude: res.latitude,
+                    longitude: res.longitude,
+                    markers: [userMarker, ...otherMarkers]
+                  });
+                  safeHideLoading();
+                },
+                fail: () => handleError('定位失败')
+              });
             }
-            const allCars = allCarsResponse.data?.content || [];
-            const otherMarkers = allCars.map((car, index) => ({
-              id: index + 1,
-              longitude: car?.tlongitude || 0,
-              latitude: car?.tlatitude || 0,
-              iconPath: '/assets/images/startPoint.png',
-              width: 18,
-              height: 35,
-              sn: car.sn,
-              callout: {
-                content: `${car?.plateNumber||_this.data.g_plateNumber||''}\n当前位置：${car?.address || '未知'}\n定位时间：${car?.showtime || '未知'}`,
-                display: 'BYCLICK',
-                padding: 8
-              }
-            }));
-            _this.setData({
-              a_deputy_latitude: mainCar.tlatitude || 0,
-              a_deputy_longitude: mainCar.tlongitude || 0,
-              latitude: mainCar.tlatitude || 0,
-              longitude: mainCar.tlongitude || 0,
-              markers: [mainMarker, ...otherMarkers]
-            });
-            safeHideLoading();
-          });
-        });
-        setTimeout(safeHideLoading, 10000);
-      }
+          };
+
+          processMain();
+        })
+        .catch(err => handleError(err.message));
     },
     // 点击标记点
     handleOnMarkerTap(evt) {
@@ -251,8 +307,13 @@ Component({
             this.setData({
               markers: updatedMarkers,
               showModalState: false
+            }, () => {
+              this.triggerEvent('myMethod', {
+                info: updatedMarkers.find(item => item?.callout?.display == 'ALWAYS')
+              });
             });
           }
+
         } catch (error) {
           showToast('操作失败，请重试');
         }
@@ -699,8 +760,8 @@ Component({
       this.setData({
         g_leaseTime: false,
         markers: null,
-        sn:null,
-        polyline:[]
+        sn: null,
+        polyline: []
       }, () => {
         this.handleLocation()
       })
