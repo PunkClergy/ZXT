@@ -37,7 +37,7 @@
   </view>
   <!-- 指示点部分 -->
   <view class="dots-container">
-    <view wx:for="{{3}}" wx:key="index" class="dot {{index === g_quickIndex ? 'active-dot' : ''}}"></view>
+    <view wx:for="{{g_before_passing_by_icon.length}}" wx:key="index" class="dot {{index === g_quickIndex ? 'active-dot' : ''}}"></view>
   </view>
   <!-- 主要功能区 -->
   <!-- 40为新增tabs高度；10为圆点高度;s_platform_height可能在苹果x以下异常 -->

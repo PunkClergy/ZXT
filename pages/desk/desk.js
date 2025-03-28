@@ -131,8 +131,9 @@ Page({
     };
     byGet(url, params).then(response => {
       const content = response.data.content;
+      const chunks = Array.from({length: Math.ceil(content.length/5)}, (_,i) => content.slice(i*5, i*5+5));
       this.setData({
-        g_before_passing_by_icon: [content.slice(0, 5), content.slice(5, 10), content.slice(9, 14)],
+        g_before_passing_by_icon:chunks,
         termial_active: e?.id || e?.currentTarget?.dataset?.item?.id,
         g_quickIndex: 0,
         tabs_bg: params?.terminalId == '-1' ? _this.data.s_client_bg : (params?.terminalId == 222 ? _this.data.s_channel_bg : _this.data.s_service_bg),
