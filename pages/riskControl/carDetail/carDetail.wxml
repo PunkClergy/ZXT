@@ -1,47 +1,57 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="MCCK自助还车"/>
+  <custom-header title="MCCK自助还车" />
   <!-- 车辆基本信息Card -->
-  <view class="vehicle-basic-info-container" style="height:{{searchBarHeight}}px;margin-top: {{totalNavHeight}}px">
-    <view class="vehicle-basic-content-item">
-      <view class="vehicle-content-item-head">
-        <view class="vehicle-head-left">
-          <view class="vehicle-left-category">
-            <image src="/assets/images/home/01.png" />
-            <text>{{cellData.platenumber||'-'}}</text>
-          </view>
-          <view class="vehicle-left-brand">
-            {{cellData.vehicleSerialName||'-'}}{{cellData.vehicleModeName||''}}
-          </view>
-          <view class="vehicle-left-model">
-            {{cellData.sn ?'自助取还':cellData.sn===null?'非自助取还':'-'}}
-          </view>
+  <block wx:if="{{!cellData.sn}}">
+    <view wx:if="{{!cellData.sn}}" class="no-vehicle-selected" style="height: {{searchBarHeight}}px; margin-top: {{totalNavHeight}}px;">
+      <view class="no-vehicle-selected-item">
+        <view class="no-vehicle-selected-item-btn" bindtap="handleJumpCarList">
+          <text>请选择车辆</text>
+          <image src="/assets/images/home/right_1.png" style="width: 30rpx;height: 30rpx;" />
         </view>
-        <view class="vehicle-head-right">
-          <view class="vehicle-right-state" bindtap="handleJumpCarList">
-            <text>{{cellData?'重新选择':'选择车辆'}}</text>
-            <image src="/assets/images/home/right_1.png" />
-          </view>
-        </view>
-      </view>
-      <view class="vehicle-content-item-info">
-        <view class="info-item  {{cellData.vin.length > 15 ? 'long-info-item' : ''}}">
-          <label>车架号 ：</label>
-          <text>{{cellData.vin||'-'}}</text>
-        </view>
-
-        <view class="info-item  {{cellData.xsgw.length > 15 ? 'long-info-item' : ''}}">
-          <label>油箱容积 ：</label>
-          <text>{{item.xsgw||0}}L</text>
-        </view>
-
       </view>
     </view>
-  </view>
+  </block>
+  <block wx:else>
+    <view class="vehicle-basic-info-container" style="height:{{searchBarHeight}}px;margin-top: {{totalNavHeight}}px">
+      <view class="vehicle-basic-content-item">
+        <view class="vehicle-content-item-head">
+          <view class="vehicle-head-left">
+            <view class="vehicle-left-category">
+              <image src="/assets/images/home/01.png" />
+              <text>{{cellData.platenumber||'-'}}</text>
+            </view>
+            <view class="vehicle-left-brand">
+              {{cellData.vehicleSerialName||'-'}}{{cellData.vehicleModeName||''}}
+            </view>
+            <view class="vehicle-left-model">
+              {{cellData.sn ?'自助取还':cellData.sn===null?'非自助取还':'-'}}
+            </view>
+          </view>
+          <view class="vehicle-head-right">
+            <view class="vehicle-right-state" bindtap="handleJumpCarList">
+              <text>{{cellData?'重新选择':'选择车辆'}}</text>
+              <image src="/assets/images/home/right_1.png" />
+            </view>
+          </view>
+        </view>
+        <view class="vehicle-content-item-info">
+          <view class="info-item  {{cellData.vin.length > 15 ? 'long-info-item' : ''}}">
+            <label>车架号 ：</label>
+            <text>{{cellData.vin||'-'}}</text>
+          </view>
+
+          <view class="info-item  {{cellData.xsgw.length > 15 ? 'long-info-item' : ''}}">
+            <label>油箱容积 ：</label>
+            <text>{{item.xsgw||0}}L</text>
+          </view>
+
+        </view>
+      </view>
+    </view>
+  </block>
+
   <!-- 原有部分 -->
   <view style="height: {{c_screen_height-(searchBarHeight+totalNavHeight-60)}}px; margin: 15rpx;position: relative">
-    <map-com cellData="{{cellData}}" sn="{{cellData.sn}}" source="carDetail"/>
+    <map-com cellData="{{cellData}}" sn="{{cellData.sn}}" source="carDetail" />
   </view>
 </view>
-
-
-
