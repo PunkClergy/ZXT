@@ -82,8 +82,8 @@ Component({
     }
   },
   data: {
-    scale: 16,
-    polyline: [],
+    scale: 16, //地图缩方比例
+    polyline: [], //轨迹集合
     includePoints: [],
     currentSelectControlType: '-4', //当前选择网络或蓝牙
     showModalState: false, //车辆状态弹窗显隐
@@ -93,7 +93,7 @@ Component({
     startTime: '19:00', //历史轨迹查询时间
     endDate: '2025-03-20', //历史轨迹查询时间
     endTime: '19:00', //历史轨迹查询时间
-    requestPointLineUrl: 'https://apis.map.qq.com/ws/direction/v1/walking',
+    requestPointLineUrl: 'https://apis.map.qq.com/ws/direction/v1/walking', //路线规划API地址
     key: 'W66BZ-ADBC3-COB3F-YWZG4-MAVRO-IJBIM', //腾讯地图KEY
     routeColor: '#3893F9',
     a_deputy_latitude: null, //当前手机所在位置
@@ -133,7 +133,8 @@ Component({
         }
       })
     },
-    // 当前位置
+
+    // 点击 按钮 "当前位置" 执行方法
     handleCurrentLocation() {
       try {
         const {
@@ -160,6 +161,7 @@ Component({
         showToast('状态更新失败');
       }
     },
+
     // 车辆风控查询多辆车位置
     handleCarDetail(evt) {
       const _this = this;
@@ -197,92 +199,91 @@ Component({
     定位时间：${car?.showtime||'未知'}`;
       };
       showLoading('加载中...');
-      byGet(`${this.data.c_k1sw_link}${u_getAllCarPoisiton.URL}`, {})
-        .then(allRes => {
-          if (allRes?.statusCode !== 200) {
-            throw new Error('周边车辆获取失败');
+      byGet(`${this.data.c_k1sw_link}${u_getAllCarPoisiton.URL}`, {}).then(allRes => {
+        if (allRes?.statusCode !== 200) {
+          throw new Error('周边车辆获取失败');
+        }
+
+        const allCars = allRes.data?.content || [];
+        console.log(allCars)
+        const otherMarkers = allCars.map((car, index) => ({
+          ...car,
+          ...markerStyle.common,
+          id: index + 1,
+          latitude: car.tlatitude || 0,
+          longitude: car.tlongitude || 0,
+          sn: car.sn,
+          callout: {
+            content: createCallout(car),
+            display: 'BYCLICK',
+            padding: 8
           }
+        }));
 
-          const allCars = allRes.data?.content || [];
-          console.log(allCars)
-          const otherMarkers = allCars.map((car, index) => ({
-            ...car,
-            ...markerStyle.common,
-            id: index + 1,
-            latitude: car.tlatitude || 0,
-            longitude: car.tlongitude || 0,
-            sn: car.sn,
-            callout: {
-              content: createCallout(car),
-              display: 'BYCLICK',
-              padding: 8
-            }
-          }));
-
-          const processMain = () => {
-            if (evt) {
-              byPost(
-                `${_this.data.c_k1sw_link}${u_getCarPoisiton.URL}`, {
-                  [u_getCarPoisiton.sn]: evt
-                },
-                (mainRes) => {
-                  if (mainRes?.data.code !== 1000) {
-                    return handleError('主车辆数据异常');
-                  }
-
-                  const mainCar = mainRes.data.content || {};
-                  const mainMarker = {
-                    ...markerStyle.common,
-                    id: 0,
-                    latitude: mainCar.tlatitude || 0,
-                    longitude: mainCar.tlongitude || 0,
-                    sn: evt,
-                    callout: {
-                      content: createCallout(mainCar),
-                      display: 'ALWAYS',
-                      padding: 8
-                    }
-                  };
-
-                  _this.setData({
-                    a_deputy_latitude: mainCar.tlatitude,
-                    a_deputy_longitude: mainCar.tlongitude,
-                    latitude: mainCar.tlatitude,
-                    longitude: mainCar.tlongitude,
-                    markers: [mainMarker, ...otherMarkers]
-                  });
-                  safeHideLoading();
+        const processMain = () => {
+          if (evt) {
+            byPost(
+              `${_this.data.c_k1sw_link}${u_getCarPoisiton.URL}`, {
+                [u_getCarPoisiton.sn]: evt
+              },
+              (mainRes) => {
+                if (mainRes?.data.code !== 1000) {
+                  return handleError('主车辆数据异常');
                 }
-              );
-            } else {
-              wx.getLocation({
-                type: 'gcj02',
-                success: (res) => {
-                  const userMarker = {
-                    ...markerStyle.user,
-                    id: 0,
-                    latitude: res.latitude,
-                    longitude: res.longitude,
-                    title: '我的位置'
-                  };
-                  _this.setData({
-                    scale: 12,
-                    latitude: res.latitude,
-                    longitude: res.longitude,
-                    markers: [userMarker, ...otherMarkers]
-                  });
-                  safeHideLoading();
-                },
-                fail: () => handleError('定位失败')
-              });
-            }
-          };
 
-          processMain();
-        })
-        .catch(err => handleError(err.message));
+                const mainCar = mainRes.data.content || {};
+                const mainMarker = {
+                  ...markerStyle.common,
+                  id: 0,
+                  latitude: mainCar.tlatitude || 0,
+                  longitude: mainCar.tlongitude || 0,
+                  sn: evt,
+                  callout: {
+                    content: createCallout(mainCar),
+                    display: 'ALWAYS',
+                    padding: 8
+                  }
+                };
+
+                _this.setData({
+                  a_deputy_latitude: mainCar.tlatitude,
+                  a_deputy_longitude: mainCar.tlongitude,
+                  latitude: mainCar.tlatitude,
+                  longitude: mainCar.tlongitude,
+                  markers: [mainMarker, ...otherMarkers]
+                });
+                safeHideLoading();
+              }
+            );
+          } else {
+            wx.getLocation({
+              type: 'gcj02',
+              success: (res) => {
+                const userMarker = {
+                  ...markerStyle.user,
+                  id: 0,
+                  latitude: res.latitude,
+                  longitude: res.longitude,
+                  title: '我的位置'
+                };
+                _this.setData({
+                  scale: 12,
+                  latitude: res.latitude,
+                  longitude: res.longitude,
+                  markers: [userMarker, ...otherMarkers]
+                });
+                safeHideLoading();
+              },
+              fail: () => handleError('定位失败')
+            });
+          }
+        };
+
+        processMain();
+      }).catch(err => handleError(err.message));
     },
-    // 点击标记点
+
+    // 点击地图车辆标记点
     handleOnMarkerTap(evt) {
       if (this.data.source == 'carDetail') {
         try {
@@ -318,6 +319,7 @@ Component({
         }
       }
     },
+
     // 切换蓝牙和网络模式
     handleControl(evt) {
       const control_id = evt.currentTarget.id;
@@ -340,7 +342,8 @@ Component({
         default:
       }
     },
-    // 点击查看车辆状态
+
+    // 点击 按钮"车辆状态" 执行方法
     handleCarStatus() {
       const {
         markers = [], showModalState
@@ -377,13 +380,15 @@ Component({
         hideLoading();
       });
     },
-    // 点击关闭车辆状态弹窗
+
+    // 关闭车辆状态弹窗 执行方法
     handleHideShowModal() {
       this.setData({
         showModalState: false
       })
     },
-    //底部操作
+
+    //底部 "按钮" 操作 
     handleFooterBtn(evt) {
       if (!this.data.sn) {
         showToast('无可用车辆')
@@ -462,13 +467,13 @@ Component({
         safeHideLoading();
       }
     },
-    // 获取当前位置
+
+    // 租车人电子钥匙功能执行方法
     handleGetCarPostion(evt) {
       const _this = this;
       showLoading("加载中...");
       const param = {
         [u_getCarPoisiton.sn]: evt
-        // [u_getCarPoisiton.sn]: '640019899'
       };
       byPost(this.data.c_fin3_link + u_getCarPoisiton.URL, param, (response) => {
         hideLoading();
@@ -755,6 +760,7 @@ Component({
         urls: images // 需要预览的图片http链接列表
       });
     },
+    // 归还车辆父页面需要调用的方法
     childMethod() {
       this.setData({
         g_leaseTime: false,
