@@ -103,7 +103,9 @@ Component({
     g_leaseTime: null, //当前车辆租用时间
     g_images: null, //当前车辆照片
     c_k1sw_link: 'https://k1sw.wiselink.net.cn/', //域名
-    c_fin3_link: 'https://fin3.wiselink.net.cn/fin/'
+    c_fin3_link: 'https://fin3.wiselink.net.cn/fin/',
+    blueKey: '', //蓝牙密码
+    idc: '', //设备唯一标志
 
   },
 
@@ -437,37 +439,105 @@ Component({
           [u_operation.operationType]: controlType,
           _timestamp: Date.now()
         };
-        byPost(
-          `${this.data.c_k1sw_link}${u_operation.URL}`,
-          requestParam,
-          (response) => {
-            safeHideLoading();
-            try {
-              if (!response) {
-                throw new Error('空响应数据');
+        // 蓝牙操作
+        if (this.data.currentSelectControlType == '-5') {
+          this.handleExecuteBluetooth(controlType)
+          return
+        }
+        // 网络模式
+        else if (this.data.currentSelectControlType == '-4') {
+          byPost(
+            `${this.data.c_k1sw_link}${u_operation.URL}`,
+            requestParam,
+            (response) => {
+              safeHideLoading();
+              try {
+                if (!response) {
+                  throw new Error('空响应数据');
+                }
+                if (response.statusCode !== 200) {
+                  throw new Error(`网络异常[${response.statusCode}]`);
+                }
+                if (response.data?.code !== 1000) {
+                  const errorMsg = response.data?.msg || '未知业务错误';
+                  throw new Error(`[${response.data.code}]${errorMsg}`);
+                }
+                const successMessage = controlType === 5 ?
+                  '寻车成功，请注意附近鸣笛车辆!' :
+                  '控制成功!';
+                showToast(successMessage);
+              } catch (error) {
+                handleError(error);
               }
-              if (response.statusCode !== 200) {
-                throw new Error(`网络异常[${response.statusCode}]`);
-              }
-              if (response.data?.code !== 1000) {
-                const errorMsg = response.data?.msg || '未知业务错误';
-                throw new Error(`[${response.data.code}]${errorMsg}`);
-              }
-              const successMessage = controlType === 5 ?
-                '寻车成功，请注意附近鸣笛车辆!' :
-                '控制成功!';
-              showToast(successMessage);
-            } catch (error) {
-              handleError(error);
             }
-          }
-        );
+          );
+        }
+
       } catch (error) {
         handleError(error);
         safeHideLoading();
       }
     },
-
+    handleExecuteBluetooth(type) {
+      const _this = this
+      const that = this
+      const equireTypeArray = [1, 2, 3, 4, 5, 6, 7, 8];
+      const blueKey = this.data.blueKey
+      if (type == 5) {
+        //远程寻车
+        bleManager.sendData(_this.data.idc, blueKey, equireTypeArray[4], function (state) {
+          console.log(state)
+          if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_PRE_EXECUTE == state) {
+            //显示加载框
+            showLoading('加载中...');
+          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR == state) {
+            //异常取消加载框
+            hideLoading();
+          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ADAPTER_UNAVAILABLE == state) {
+            //蓝牙不可用
+            showModal('请打开蓝牙', false, function (confirm) {});
+          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND == state) {
+            //没有扫描到设备信息
+            that.isAndroid6(function (res) {
+              if (res) {
+                showModal('没有发现设备,请确定已经打开手机定位和微信定位权限!', false, function (confirm) {});
+              } else {
+                showModal('没有发现设备,请重试!', false, function (confirm) {});
+              }
+            });
+          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED == state) {
+            //连接失败
+            showModal('蓝牙连接失败,请重试!', false, function (confirm) {});
+          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_UNSUPPORTED == state) {
+            //不支持ble
+            showModal('您的手机不支持低功耗蓝牙', false, function (confirm) {});
+          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_SEND_FAILED == state) {
+            //发送失败
+            showModal('数据发送失败,请重试!', false, function (confirm) {});
+          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NO_RESPONSE == state) {
+            //无响应
+            showModal('设备超时无响应,请重试!', false, function (confirm) {});
+          }
+        }, function (data) {
+          console.log(data, '2292299229299dddddd')
+          //隐藏加载框
+          hideLoading();
+          if (data.controlType == 4) {
+            //解析控制
+            showToast(data.result);
+            if (data.result.indexOf("控制成功") != -1) {
+              //控制成功,通知服务器
+            }
+          }
+        })
+      } else if (type == 1) {
+        //锁门
+        _this.sendData(equireTypeArray[2], blueKey);
+      } else if (type == 3) {
+        //开门
+        _this.sendData(equireTypeArray[1], blueKey);
+      }
+    },
     // 租车人电子钥匙功能执行方法
     handleGetCarPostion(evt) {
       const _this = this;
@@ -622,6 +692,7 @@ Component({
       byPost(this.data.c_fin3_link + u_RequestCarList.REQUEST_API, param, (response) => {
         hideLoading();
         const resn = response?.data?.content
+
         if (response?.data?.code == 1000) {
           this.setData({
             g_leaseTime: {
@@ -635,7 +706,9 @@ Component({
               resn?.uploadImgUrlThree,
               resn?.uploadImgUrlTwo
             ],
-            g_plateNumber: resn.plateNumber
+            g_plateNumber: resn.plateNumber,
+            blueKey: resn?.blueKey,
+            idc: resn.idc
           }, () => {
             this.handleGetCarPostion(response?.data?.content?.sn)
           })
