@@ -478,64 +478,78 @@ Component({
         safeHideLoading();
       }
     },
+    // 蓝牙控制车辆
     handleExecuteBluetooth(type) {
-      const _this = this
-      const that = this
-      const equireTypeArray = [1, 2, 3, 4, 5, 6, 7, 8];
-      const blueKey = this.data.blueKey
-      if (type == 5) {
-        //远程寻车
-        bleManager.sendData(_this.data.idc, blueKey, equireTypeArray[4], function (state) {
-          console.log(state)
-          if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_PRE_EXECUTE == state) {
-            //显示加载框
-            showLoading('加载中...');
-          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR == state) {
-            //异常取消加载框
-            hideLoading();
-          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ADAPTER_UNAVAILABLE == state) {
-            //蓝牙不可用
-            showModal('请打开蓝牙', false, function (confirm) {});
-          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND == state) {
-            //没有扫描到设备信息
-            that.isAndroid6(function (res) {
-              if (res) {
-                showModal('没有发现设备,请确定已经打开手机定位和微信定位权限!', false, function (confirm) {});
-              } else {
-                showModal('没有发现设备,请重试!', false, function (confirm) {});
-              }
-            });
-          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED == state) {
-            //连接失败
-            showModal('蓝牙连接失败,请重试!', false, function (confirm) {});
-          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_UNSUPPORTED == state) {
-            //不支持ble
-            showModal('您的手机不支持低功耗蓝牙', false, function (confirm) {});
-          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_SEND_FAILED == state) {
-            //发送失败
-            showModal('数据发送失败,请重试!', false, function (confirm) {});
-          } else if (bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NO_RESPONSE == state) {
-            //无响应
-            showModal('设备超时无响应,请重试!', false, function (confirm) {});
-          }
-        }, function (data) {
-          console.log(data, '2292299229299dddddd')
-          //隐藏加载框
+      const COMMAND_MAPPING = {
+        5: 5, // 远程寻车
+        1: 3, // 锁门
+        3: 2 // 开门
+      };
+
+      const BLUETOOTH_HANDLERS = {
+        [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_PRE_EXECUTE]: () => {
+          showLoading('指令执行中...');
+        },
+        [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR]: () => {
           hideLoading();
-          if (data.controlType == 4) {
-            //解析控制
-            showToast(data.result);
-            if (data.result.indexOf("控制成功") != -1) {
-              //控制成功,通知服务器
+        },
+        [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ADAPTER_UNAVAILABLE]: () => {
+          showModal('请打开蓝牙', false);
+          hideLoading();
+        },
+        [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND]: () => {
+          this.isAndroid6((isAndroid) => {
+            const message = isAndroid ?
+              '请确定已经打开手机定位和微信定位权限!' :
+              '请重试!';
+            showModal(`没有发现设备，${message}`, false);
+          });
+          hideLoading();
+        },
+        [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED]: () => {
+          showModal('蓝牙连接失败，请重试!', false);
+          hideLoading();
+        },
+        [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_UNSUPPORTED]: () => {
+          showModal('您的手机不支持低功耗蓝牙', false);
+          hideLoading();
+        },
+        [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_SEND_FAILED]: () => {
+          showModal('数据发送失败，请重试!', false);
+          hideLoading();
+        },
+        [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NO_RESPONSE]: () => {
+          showModal('设备超时无响应，请重试!', false);
+          hideLoading();
+        }
+      };
+
+      try {
+        if (!COMMAND_MAPPING.hasOwnProperty(type)) return;
+        const command = COMMAND_MAPPING[type];
+        if (type == 5) {
+          bleManager.sendData(
+            this.data.idc,
+            this.data.blueKey,
+            command,
+            state => BLUETOOTH_HANDLERS[state]?.(),
+            data => {
+              hideLoading();
+              if (data.controlType === 4) {
+                showToast(data.result);
+                if (data.result.includes("控制成功")) {
+                  // 上传服务器逻辑
+                }
+              }
             }
-          }
-        })
-      } else if (type == 1) {
-        //锁门
-        _this.sendData(equireTypeArray[2], blueKey);
-      } else if (type == 3) {
-        //开门
-        _this.sendData(equireTypeArray[1], blueKey);
+          );
+          return;
+        }
+        if ([1, 3].includes(type)) {
+          this.sendData(command, this.data.blueKey);
+        }
+      } finally {
+        //  统一清理 (如果需要)
       }
     },
     // 租车人电子钥匙功能执行方法
