@@ -23,7 +23,7 @@ Page({
     type: 1,
     invit_code: '无',
     c_link: 'https://k1swtest.wiselink.net.cn/', //域名
-    // c_link:'http://192.168.43.23:8689'
+    // c_link: 'http://192.168.43.23:8689/'
   },
 
   onGetPhoneNumber(e) {
@@ -32,7 +32,18 @@ Page({
           code: e.detail.code
         },
         (response) => {
-          console.log(response)
+
+          appUtil.setStorage(getApp().data.userKey, response.data.content, function (success) {
+            if (success) {
+              getApp().data.userInfo = response.data.content;
+              wx.navigateBack({
+                delta: 1 // 返回上一级页面。
+              })
+
+            } else {
+              appUtil.showModal("本地数据处理失败，请重新登录！", false, function () {});
+            }
+          });
         });
     } else {
       console.log('用户拒绝了授权');
