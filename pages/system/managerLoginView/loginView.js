@@ -22,7 +22,7 @@ Page({
     openId: '',
     type: 1,
     invit_code: '无',
-    c_link: 'https://k1swtest.wiselink.net.cn/', //域名
+    c_link: 'https://k1sw.wiselink.net.cn/', //域名
     // c_link: 'http://192.168.43.23:8689/'
   },
 
@@ -32,16 +32,17 @@ Page({
           code: e.detail.code
         },
         (response) => {
-
+          console.log(response?.data)
+          var k1swUrl = response.data.content?.username == '13683187039' ? "https://k1swtest.wiselink.net.cn/" : "https://k3a.wiselink.net.cn/"
+          var fin3Url = response.data.content?.username == '13683187039' ? "https://fin3.wiselink.net.cn/fin/" : "https://fin3.wiselink.net.cn/fin/"
           appUtil.setStorage(getApp().data.userKey, response.data.content, function (success) {
             if (success) {
+              getApp().data.k1swUrl = k1swUrl;
               getApp().data.userInfo = response.data.content;
               wx.navigateBack({
                 delta: 1 // 返回上一级页面。
               })
 
-            } else {
-              appUtil.showModal("本地数据处理失败，请重新登录！", false, function () {});
             }
           });
         });
@@ -217,7 +218,7 @@ Page({
 
 
     var k1swUrl = "https://k3a.wiselink.net.cn/";
-    // var k1swUrl = "http://localhost:8689/";
+
     var fin3Url = "https://fin3.wiselink.net.cn/fin/";
     if (that.data.account_value == 'dzdemotest') {
       k1swUrl = "https://k1swtest.wiselink.net.cn/"

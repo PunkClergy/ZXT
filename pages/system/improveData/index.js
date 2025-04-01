@@ -190,6 +190,10 @@ Page({
   handleInquiryDetails() {
     const _this = this
     byGet(`${getApp().data.k1swUrl}${u_companyInfo.URL}`, {}).then(response => {
+      if (response?.data.code != 1000) {
+        showToast(response?.data.msg)
+        return
+      }
       const allRes = response?.data.content
       const params = {
         [u_getCitys.provinceId]: allRes?.province
@@ -226,24 +230,6 @@ Page({
           })
         })
       })
-
-      return
-      console.log(this.data.provinces)
-
-
-      // const params = {
-      //   id: allRes?.id,
-      //   name: allRes?.name,
-      //   chargemobile: allRes?.chargemobile,
-      //   chargename: allRes?.chargename,
-      //   province: allRes?.province,
-      //   city: allRes?.city,
-
-      // }
-      // const provincesIndex = 1
-      // _this.setData({
-      //   params
-      // })
     })
     return
   },
