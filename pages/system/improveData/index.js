@@ -175,12 +175,10 @@ Page({
     }, (response) => {
       if (response?.data?.code != 1000) {
         showToast(response?.data?.msg);
-        this.handleInquiryDetails()
         hideLoading();
         return
       }
       showToast('添加成功');
-      this.handleInquiryDetails()
     }, (error) => {
       hideLoading();
       showToast('提交失败，请稍后重试');
