@@ -165,3 +165,142 @@
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
 }
+
+.content-container {
+  position: absolute;
+  bottom: 10rpx;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  /* 当内容超出高度时显示滚动条 */
+}
+
+/* 内容项 */
+.content-item {
+  margin: 15rpx;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-item-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 10rpx;
+}
+
+.head-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.left-category {
+  display: flex;
+  align-items: center;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.left-category image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.left-brand {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #1b64b1;
+  background: #eef7ff;
+  border-radius: 5rpx;
+  padding: 0 15rpx;
+}
+
+.left-model {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.head-right {
+  display: flex;
+  flex-direction: row;
+  gap: 10rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-history {
+  color: #1b64b1;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+}
+
+.right-state {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #f56f48;
+}
+
+.right-special-state {
+  border-radius: 8rpx;
+  border: 1px solid #dd0b2d;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 20rpx;
+  color: #dd0b2d;
+  padding: 0 15rpx;
+}
+
+.content-item-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 10rpx;
+  gap: 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item {
+  flex: 0 0 48%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  transition: all 0.3s;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.long-info-item {
+  flex-basis: 100% !important;
+  /* 长内容时占满整行 */
+}
+.detection_button {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.detection_button text {
+  background-color: #2196f3;
+  background: linear-gradient(88deg, #1576dc, #1b64b1);
+  border-radius: 50rpx;
+  padding: 20rpx 100rpx;
+  font-size: 34rpx;
+  color: #fff;
+  font-weight: bold;
+}
+.head-right image {
+  width: 30rpx;
+  height: 30rpx;
+}
