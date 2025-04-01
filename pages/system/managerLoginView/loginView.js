@@ -1,6 +1,10 @@
 const appUtil = require('../../../utils/app-util.js');
 const urlUtil = require('../../../utils/url-util.js');
 const md5 = require('../../../utils/md5.js');
+const {
+  byPost,
+  byGet
+} = require('../../../utils/request/http')
 var that;
 var currentTime = 60;
 var interval;
@@ -17,53 +21,36 @@ Page({
     clickClose: false,
     openId: '',
     type: 1,
-    invit_code: '无'
+    invit_code: '无',
+    c_link: 'https://k1swtest.wiselink.net.cn/', //域名
+    // c_link:'http://192.168.43.23:8689'
   },
 
-  handleAuthorizedLogin() {
-    const that = this;
-
-    // 1. 获取登录code
-    wx.login({
-      success: res => {
-        if (res.code) {
-          console.log(res.code)
-          // 2. 获取用户信息
-          wx.getUserProfile({
-            desc: '用于完善会员资料',
-            success: userRes => {
-              // 3. 发送数据到服务器
-              wx.request({
-                url: 'https://yourdomain.com/api/login',
-                method: 'POST',
-                data: {
-                  code: res.code,
-                  encryptedData: userRes.encryptedData,
-                  iv: userRes.iv
-                },
-                success: serverRes => {
-                  if (serverRes.data.token) {
-                    // 存储登录态
-                    wx.setStorageSync('token', serverRes.data.token);
-                    console.log('登录成功');
-                  }
-                }
-              });
-            },
-            fail: err => {
-              console.error('获取用户信息失败', err);
-            }
-          });
-        } else {
-          console.error('登录失败', res);
-        }
-      }
-    });
+  onGetPhoneNumber(e) {
+    if (e.detail.code) {
+      byPost(this.data.c_link + 'userapi/wxLogin', {
+          code: e.detail.code
+        },
+        (response) => {
+          console.log(response)
+        });
+    } else {
+      console.log('用户拒绝了授权');
+    }
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // 检查是否需要隐私授权
+    wx.requirePrivacyAuthorize({
+      success: () => {
+        console.log('用户已同意隐私协议');
+      },
+      fail: (err) => {
+        console.log('用户拒绝隐私协议', err);
+      }
+    });
     that = this;
     that.setData({
       openId: options.openId
@@ -79,7 +66,7 @@ Page({
     wx.getStorage({
       key: 'scene',
       success(res) {
-        this.setData({
+        _this.setData({
           invit_code: res.data
         })
       },
