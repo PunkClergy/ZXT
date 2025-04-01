@@ -108,7 +108,8 @@
     "pages/carManager/buyOilDevice/oilLevel/newOrder/index",
     "pages/carManager/buyOilDevice/mcckSelf/newOrderInfo/index",
     "pages/upload-img/upload-img",
-    "pages/system/UserAuthSys/index"
+    "pages/system/UserAuthSys/index",
+    "pages/system/improveData/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
@@ -126,6 +127,9 @@
     },
     "scope.address": {
       "desc": "您的地址信息将用于填写收货地址"
+    },
+    "scope.userInfo": {
+      "desc": "你的公开信息将用于小程序功能"
     }
   },
   "sitemapLocation": "sitemap.json",
