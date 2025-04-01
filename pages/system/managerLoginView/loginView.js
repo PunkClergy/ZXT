@@ -22,7 +22,7 @@ Page({
     openId: '',
     type: 1,
     invit_code: '无',
-    c_link: 'https://k1sw.wiselink.net.cn/', //域名
+    c_link: 'https://k1swtest.wiselink.net.cn/', //域名
     // c_link: 'http://192.168.43.23:8689/'
   },
 

@@ -193,41 +193,63 @@ Page({
         return
       }
       const allRes = response?.data.content
-      const params = {
-        [u_getCitys.provinceId]: allRes?.province
-      }
-      byGet(`${getApp().data.k1swUrl}${u_getCitys.URL}`, params).then(res => {
-        const citys = res?.data?.content
-        const businesstypeStr = allRes?.businesstypeStr?.split(',')
-        const handleFind = (arr, id) => arr.findIndex(item => item?.id === id);
-        const provincesIndex = handleFind(_this.data?.provinces, allRes?.province)
-        const cityIndex = handleFind(citys, allRes?.city)
-        const s_show_renters = businesstypeStr?.some(item => item == 1)
-        const s_show_channel = businesstypeStr?.some(item => item == 3)
-        _this.setData({
-          city: citys
-        }, () => {
+      const businesstypeStr = allRes?.businesstypeStr?.split(',')
+      const handleFind = (arr, id) => arr.findIndex(item => item?.id === id);
+      const provincesIndex = handleFind(_this.data?.provinces, allRes?.province)
+      const s_show_renters = businesstypeStr?.some(item => item == 1)
+      const s_show_channel = businesstypeStr?.some(item => item == 3)
+      if (allRes?.province) {
+        const params = {
+          [u_getCitys.provinceId]: allRes?.province
+        }
+        byGet(`${getApp().data.k1swUrl}${u_getCitys.URL}`, params).then(res => {
+          const citys = res?.data?.content
+          const cityIndex = handleFind(citys, allRes?.city)
           _this.setData({
-            params: {
-              id: allRes?.id, //ID
-              name: allRes?.name, //企业名称
-              chargemobile: allRes?.chargemobile, //联系人电话
-              chargename: allRes?.chargename, //联系人
-              province: allRes?.province, //省份ID
-              city: allRes?.city, //城市ID
-              rentCarCount: allRes?.rentCarCount, //租赁车辆数量
-              rentCitys: allRes?.rentCitys, //租赁运营城市
-              areas: allRes?.areas, //渠道覆盖区域
-              largeCustomer: allRes?.largeCustomer, //渠道大客户
-              businesstypeStr: businesstypeStr //角色选择
-            },
-            provincesIndex, //省份索引
-            cityIndex, //城市索引
-            s_show_renters, //租车人输入字段显示隐藏
-            s_show_channel, //渠道合作输入字段显示隐藏
+            city: citys
+          }, () => {
+            _this.setData({
+              params: {
+                id: allRes?.id, //ID
+                name: allRes?.name, //企业名称
+                chargemobile: allRes?.chargemobile, //联系人电话
+                chargename: allRes?.chargename, //联系人
+                province: allRes?.province, //省份ID
+                city: allRes?.city, //城市ID
+                rentCarCount: allRes?.rentCarCount, //租赁车辆数量
+                rentCitys: allRes?.rentCitys, //租赁运营城市
+                areas: allRes?.areas, //渠道覆盖区域
+                largeCustomer: allRes?.largeCustomer, //渠道大客户
+                businesstypeStr: businesstypeStr //角色选择
+              },
+              provincesIndex, //省份索引
+              cityIndex, //城市索引
+              s_show_renters, //租车人输入字段显示隐藏
+              s_show_channel, //渠道合作输入字段显示隐藏
+            })
           })
         })
-      })
+      } else {
+        _this.setData({
+          params: {
+            id: allRes?.id, //ID
+            name: allRes?.name, //企业名称
+            chargemobile: allRes?.chargemobile, //联系人电话
+            chargename: allRes?.chargename, //联系人
+            province: allRes?.province, //省份ID
+            city: allRes?.city, //城市ID
+            rentCarCount: allRes?.rentCarCount, //租赁车辆数量
+            rentCitys: allRes?.rentCitys, //租赁运营城市
+            areas: allRes?.areas, //渠道覆盖区域
+            largeCustomer: allRes?.largeCustomer, //渠道大客户
+            businesstypeStr: businesstypeStr //角色选择
+          },
+          provincesIndex, //省份索引
+          s_show_renters, //租车人输入字段显示隐藏
+          s_show_channel, //渠道合作输入字段显示隐藏
+        })
+      }
+
     })
     return
   },

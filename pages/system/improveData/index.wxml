@@ -91,7 +91,7 @@
       <view class="card-info-item">
         <label>所在市</label>
         <view class="card-info-item-input">
-          <picker value="{{cityIndex}}" data-item="city" bindchange="handleCityPicker" range="{{city}}" range-key="name">
+          <picker value="{{cityIndex}}" data-item="city" bindchange="handleCityPicker" range="{{city}}" range-key="name" disabled="{{provincesIndex==null}}">
             <view class="picker">
               {{cityIndex?city[cityIndex]['name']:'请选择城市'}}
             </view>
