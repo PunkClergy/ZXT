@@ -29,6 +29,7 @@
           </view>
         </view>
       </block>
+      <view class="not-yet" wx:if="{{items.length<1}}" style="height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">暂无账号</view>
     </scroll-view>
     <view id="{{index}}" class="detection_button" bindtap="handleShowSendKeyModal">
       <text>添加子账号</text>

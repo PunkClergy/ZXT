@@ -10,9 +10,9 @@
     <view class="card-info">
       <!-- 角色选择 -->
       <view class="card-info-item">
-        <label>角色选择<text>*</text></label>
+        <label>角色选择</label>
         <view class="card-info-item-input">
-          <checkbox-group data-item="role" bindchange="handleCheckboxChange" style="display: flex;">
+          <checkbox-group data-item="businesstypeStr" bindchange="handleCheckboxChange" style="display: flex;">
             <label wx:for="{{items}}" wx:key="index">
               <view>
                 <checkbox value="{{item.value}}" checked="{{item.checked}}" style="transform: scale(0.5);" />
@@ -22,81 +22,66 @@
           </checkbox-group>
         </view>
       </view>
-      <!-- 账号 -->
-      <view class="card-info-item">
-        <label>账号<text>*</text></label>
-        <view class="card-info-item-input">
-          <input placeholder="请输入账号" value="{{params.account}}" data-item="account" bindinput="handleBindinput" />
-        </view>
-      </view>
-      <!-- 密码 -->
-      <view class="card-info-item">
-        <label>密码<text>*</text></label>
-        <view class="card-info-item-input eye" style="display: flex;align-items: center;gap: 10rpx;">
-          <input placeholder="请输入密码" password="{{eye_show_hide}}" value="{{params.password}}" data-item="password" bindinput="handleBindinput" />
-          <image src="/assets/images/home/{{eye_show_hide?'eye_hide':'eye_show'}}.png" bindtap="handleshowHide" />
-        </view>
-      </view>
       <!-- 企业名称x -->
       <view class="card-info-item">
-        <label>企业名称<text>*</text></label>
+        <label>企业名称</label>
         <view class="card-info-item-input">
-          <input placeholder="请输入企业名称" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+          <input placeholder="请输入企业名称" value="{{params.name}}" data-item="name" bindinput="handleBindinput" />
         </view>
       </view>
-      <!-- 联系人x -->
+      <!-- 联系人 -->
       <view class="card-info-item">
-        <label>联系人<text>*</text></label>
+        <label>联系人</label>
         <view class="card-info-item-input">
-          <input placeholder="请输入联系人" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+          <input placeholder="请输入联系人" value="{{params.chargename}}" data-item="chargename" bindinput="handleBindinput" />
         </view>
       </view>
       <!-- 联系电话 -->
       <view class="card-info-item">
-        <label>联系电话<text>*</text></label>
+        <label>联系电话</label>
         <view class="card-info-item-input">
-          <input placeholder="请输入联系电话" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+          <input placeholder="请输入联系电话" value="{{params.chargemobile}}" data-item="chargemobile" bindinput="handleBindinput" />
         </view>
       </view>
       <block wx:if="{{s_show_renters}}">
         <!-- 租赁车辆数量x租车人 -->
         <view class="card-info-item">
-          <label>租赁车辆数量<text>*</text></label>
+          <label>租赁车辆数量</label>
           <view class="card-info-item-input">
-            <input placeholder="请输入租赁车辆数量" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+            <input placeholder="请输入租赁车辆数量" value="{{params.rentCarCount}}" data-item="rentCarCount" bindinput="handleBindinput" />
           </view>
         </view>
         <!-- 租赁运营车辆x租车人 -->
         <view class="card-info-item">
-          <label>租赁运营城市<text>*</text></label>
+          <label>租赁运营城市</label>
           <view class="card-info-item-input">
-            <input placeholder="请输入租赁运营城市" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+            <input placeholder="请输入租赁运营城市" value="{{params.rentCitys}}" data-item="rentCitys" bindinput="handleBindinput" />
           </view>
         </view>
       </block>
       <block wx:if="{{s_show_channel}}">
         <!-- 渠道覆盖区域x渠道合作 -->
         <view class="card-info-item">
-          <label>渠道覆盖区域<text>*</text></label>
+          <label>渠道覆盖区域</label>
           <view class="card-info-item-input">
-            <input placeholder="请输入渠道覆盖区域" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+            <input placeholder="请输入渠道覆盖区域" value="{{params.areas}}" data-item="areas" bindinput="handleBindinput" />
           </view>
         </view>
         <!-- 渠道覆盖大客户x渠道合作 -->
         <view class="card-info-item">
-          <label>渠道覆盖大客户<text>*</text></label>
+          <label>渠道覆盖大客户</label>
           <view class="card-info-item-input">
-            <input placeholder="请输入渠道覆盖大客户" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+            <input placeholder="请输入渠道覆盖大客户" value="{{params.largeCustomer}}" data-item="largeCustomer" bindinput="handleBindinput" />
           </view>
         </view>
       </block>
       <!-- 所在省x -->
       <view class="card-info-item">
-        <label>所在省<text>*</text></label>
+        <label>所在省</label>
         <view class="card-info-item-input">
           <picker value="{{provincesIndex}}" data-item="provinces" bindchange="handleProvincesPicker" range="{{provinces}}" range-key="name">
             <view class="picker">
-              {{provincesIndex?provinces[provincesIndex]['name']:'请选择省份'}}
+              {{provincesIndex!=null?provinces[provincesIndex]['name']:'请选择省份'}}
             </view>
           </picker>
 
@@ -104,7 +89,7 @@
       </view>
       <!-- 所在市x -->
       <view class="card-info-item">
-        <label>所在市<text>*</text></label>
+        <label>所在市</label>
         <view class="card-info-item-input">
           <picker value="{{cityIndex}}" data-item="city" bindchange="handleCityPicker" range="{{city}}" range-key="name">
             <view class="picker">
