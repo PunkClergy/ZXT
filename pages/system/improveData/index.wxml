@@ -40,7 +40,7 @@
       <view class="card-info-item">
         <label>联系电话</label>
         <view class="card-info-item-input">
-          <input placeholder="请输入联系电话" value="{{params.chargemobile}}" data-item="chargemobile" bindinput="handleBindinput" />
+          <input type="number" placeholder="请输入联系电话" value="{{params.chargemobile}}" data-item="chargemobile" bindinput="handleBindinput" />
         </view>
       </view>
       <block wx:if="{{s_show_renters}}">
@@ -48,7 +48,7 @@
         <view class="card-info-item">
           <label>租赁车辆数量</label>
           <view class="card-info-item-input">
-            <input placeholder="请输入租赁车辆数量" value="{{params.rentCarCount}}" data-item="rentCarCount" bindinput="handleBindinput" />
+            <input type="number" placeholder="请输入租赁车辆数量" value="{{params.rentCarCount}}" data-item="rentCarCount" bindinput="handleBindinput" />
           </view>
         </view>
         <!-- 租赁运营车辆x租车人 -->

@@ -703,6 +703,10 @@ Component({
       const param = {
         [u_RequestCarList.CODE]: evt
       }
+      if (evt.length < 6) {
+        this.handleLocation()
+        return
+      }
       byPost(this.data.c_fin3_link + u_RequestCarList.REQUEST_API, param, (response) => {
         hideLoading();
         const resn = response?.data?.content
@@ -727,7 +731,7 @@ Component({
             this.handleGetCarPostion(response?.data?.content?.sn)
           })
         } else {
-          showToast(response?.data?.msg || '请求失败')
+          evt.length > 6 && showToast(response?.data?.msg || '请求失败')
           this.handleLocation()
         }
       });

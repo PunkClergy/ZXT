@@ -177,7 +177,7 @@ Page({
         hideLoading();
         return
       }
-      showToast('添加成功');
+      showToast(response?.data?.msg);
     }, (error) => {
       hideLoading();
       showToast('提交失败，请稍后重试');
