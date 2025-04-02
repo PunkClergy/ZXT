@@ -76,57 +76,52 @@ Page({
 
   //提交内容
   handleSubmit() {
-    const {
-      params
-    } = this.data;
-    const requiredFields = [{
-        key: 'username',
-        message: '请输入账号'
-      },
-      {
-        key: 'realname',
-        message: '请输入姓名'
-      },
-      {
-        key: 'password',
-        message: '请输入密码'
-      },
-      {
-        key: 'mobile',
-        message: '请输入手机号'
-      },
+    const { params } = this.data;
+    const requiredFields = [
+      { key: 'username', message: '请输入账号' },
+      { key: 'realname', message: '请输入姓名' },
+      { key: 'password', message: '请输入密码' },
+      { key: 'mobile', message: '请输入手机号' },
     ];
-    for (const {
-        key,
-        message
-      } of requiredFields) {
+  
+    // 检查必填字段
+    for (const { key, message } of requiredFields) {
       if (!params?.[key]) {
         showToast(message);
         return;
       }
     }
+  
+    // 验证用户名长度
+    if (params.username.length < 6) {
+      showToast('账号不能小于6位');
+      return;
+    }
+  
+    // 验证手机号长度
+    if (params.mobile.length !== 11) {
+      showToast('手机号必须是11位');
+      return;
+    }
+  
     showLoading();
-    byPost(`${getApp().data.k1swUrl}${u_addOrUpdateChildUser.URL}`, {
-      ...params
-    }, (response) => {
-      console.log(response?.data?.code)
-      if (response?.data?.code != 1000) {
-        showToast(response?.data?.msg);
+    byPost(
+      `${getApp().data.k1swUrl}${u_addOrUpdateChildUser.URL}`,
+      { ...params },
+      (response) => {
+        if (response?.data?.code != 1000) {
+          showToast(response?.data?.msg);
+          hideLoading();
+          return;
+        }
+        showToast('添加成功');
+        wx.navigateBack({ delta: 1 });
+      },
+      (error) => {
         hideLoading();
-        return
+        showToast('提交失败，请稍后重试');
       }
-
-      showToast('添加成功');
-      // wx.reLaunch({
-      //   url: '/pages/system/UserAuthSys/index',
-      // })
-      wx.navigateBack({
-        delta: 1
-      });
-    }, (error) => {
-      hideLoading();
-      showToast('提交失败，请稍后重试');
-    });
+    );
   },
 
   onLoad(options) {

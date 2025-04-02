@@ -34,7 +34,7 @@
       <view class="card-info-item">
         <label>手机号<text>*</text></label>
         <view class="card-info-item-input">
-          <input placeholder="请输入手机号" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+          <input type="number" placeholder="请输入手机号" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
         </view>
       </view>
     </view>
