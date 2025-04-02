@@ -12,7 +12,7 @@
       <view class="card-info-item">
         <label>角色选择</label>
         <view class="card-info-item-input">
-          <checkbox-group data-item="businesstypeStr" bindchange="handleCheckboxChange" style="display: flex;">
+          <checkbox-group data-item="businessTypes" bindchange="handleCheckboxChange" style="display: flex;">
             <label wx:for="{{items}}" wx:key="index">
               <view>
                 <checkbox value="{{item.value}}" checked="{{item.checked}}" style="transform: scale(0.5);" />
@@ -64,7 +64,7 @@
         <view class="card-info-item">
           <label>渠道覆盖区域</label>
           <view class="card-info-item-input">
-            <input placeholder="请输入渠道覆盖区域" value="{{params.areas}}" data-item="areas" bindinput="handleBindinput" />
+            <input placeholder="请输入渠道覆盖区域" value="{{params.serviceArea}}" data-item="serviceArea" bindinput="handleBindinput" />
           </view>
         </view>
         <!-- 渠道覆盖大客户x渠道合作 -->
@@ -91,11 +91,18 @@
       <view class="card-info-item">
         <label>所在市</label>
         <view class="card-info-item-input">
-          <picker value="{{cityIndex}}" data-item="city" bindchange="handleCityPicker" range="{{city}}" range-key="name" disabled="{{provincesIndex==null}}">
+          <picker value="{{cityIndex}}" data-item="citys" bindchange="handleCityPicker" range="{{citys}}" range-key="name" disabled="{{provincesIndex==null}}">
             <view class="picker">
-              {{cityIndex?city[cityIndex]['name']:'请选择城市'}}
+              {{cityIndex!=null?citys[cityIndex]['name']:'请选择城市'}}
             </view>
           </picker>
+        </view>
+      </view>
+      <!-- 备注 -->
+      <view class="card-info-item">
+        <label>备注</label>
+        <view class="card-info-item-input">
+          <input placeholder="请输入备注" value="{{params.bak}}" data-item="bak" bindinput="handleBindinput" />
         </view>
       </view>
     </view>

@@ -29,16 +29,16 @@ Page({
     s_show_renters: false, //是否勾选了角色的租车人
     s_show_channel: false, //是否勾选了角色的渠道合作
     items: [{
-      name: '租车人',
-      value: 1,
+      name: '客户',
+      value: '0',
       checked: false,
     }, {
-      name: '租车公司',
-      value: 2,
+      name: '服务商',
+      value: '1',
       checked: false
     }, {
       name: '渠道合作',
-      value: 3,
+      value: '2',
       checked: false
     }], //角色选择
     provinces: [], //省份列表
@@ -94,12 +94,11 @@ Page({
       params
     } = this.data
     params[evt.currentTarget.dataset.item] = evt.detail.value
-
     evt.detail.value.some(item => item == 1)
     this.setData({
       ...params,
-      s_show_renters: evt.detail.value.some(item => item == 1),
-      s_show_channel: evt.detail.value.some(item => item == 3)
+      s_show_renters: evt.detail.value.some(item => item == '0'),
+      s_show_channel: evt.detail.value.some(item => item == '2')
     })
   },
   // 选择省份
@@ -124,7 +123,7 @@ Page({
       }
       byGet(`${getApp().data.k1swUrl}${u_getCitys.URL}`, params).then(allRes => {
         _this.setData({
-          city: allRes?.data.content
+          citys: allRes?.data.content
         })
       })
     })
@@ -133,16 +132,16 @@ Page({
   handleCityPicker(evt) {
     const selectIndex = evt.detail.value;
     const {
-      city,
+      citys,
       params
     } = this.data;
-    const selectedProvince = city?.[selectIndex];
-    const cityId = selectedProvince.id;
+    const selectedProvince = citys?.[selectIndex];
+    const city = selectedProvince.id;
     this.setData({
       cityIndex: selectIndex,
       params: {
         ...params,
-        city: cityId,
+        city: city,
       },
     });
   },
@@ -171,7 +170,7 @@ Page({
     } = this.data
     byPost(`${getApp().data.k1swUrl}${u_companyImprove.URL}`, {
       ...params,
-      businesstypeStr: params?.businesstypeStr?.join()
+      businessTypes: params?.businessTypes?.join()
     }, (response) => {
       if (response?.data?.code != 1000) {
         showToast(response?.data?.msg);
@@ -188,53 +187,70 @@ Page({
   async handleInquiryDetails() {
     try {
       const app = getApp();
-      const { k1swUrl } = app.data;
+      const {
+        k1swUrl
+      } = app.data;
       const _this = this;
       const companyResponse = await byGet(
-        `${k1swUrl}${u_companyInfo.URL}`,
-        {}
+        `${k1swUrl}${u_companyInfo.URL}`, {}
       );
-  
+
       if (companyResponse?.data.code !== 1000) {
         showToast(companyResponse?.data.msg);
         return;
       }
+      if (!companyResponse?.data?.content) {
+        return;
+      }
       const allRes = companyResponse.data.content || {};
-      const businessTypes = allRes.businesstypeStr?.split(',') || [];
-      const provinceId = allRes.province;
-      const cityId = allRes.city;
+      const businessTypes = allRes.businessTypes?.split(',') || [];
+      const provinceId = allRes?.province;
+      const city = allRes?.city;
+
       const baseData = {
         params: {
-          id: allRes.id,
-          name: allRes.name,
-          chargemobile: allRes.chargemobile,
-          chargename: allRes.chargename,
-          province: provinceId,
-          city: cityId,
-          rentCarCount: allRes.rentCarCount,
-          rentCitys: allRes.rentCitys,
-          areas: allRes.areas,
-          largeCustomer: allRes.largeCustomer,
-          businesstypeStr: businessTypes
+          id: allRes.id || '',
+          name: allRes.name || '',
+          chargemobile: allRes.chargemobile || '',
+          chargename: allRes.chargename || '',
+          province: provinceId || '',
+          city: city || '',
+          rentCarCount: allRes.rentCarCount || '',
+          rentCitys: allRes.rentCitys || '',
+          serviceArea: allRes.serviceArea || '',
+          largeCustomer: allRes.largeCustomer || '',
+          bak: allRes?.bak || '',
+          businessTypes: businessTypes || '',
         },
-        provincesIndex: (_this.data.provinces || []).findIndex(
-          item => item?.id === provinceId
-        ),
-        s_show_renters: businessTypes.includes('1'),
-        s_show_channel: businessTypes.includes('3')
+        provincesIndex: ((index => index === -1 ? null : index)((_this.data.provinces || []).findIndex(item => item?.id == provinceId))),
+        s_show_renters: businessTypes.includes('0'),
+        s_show_channel: businessTypes.includes('2')
       };
       if (provinceId) {
         const cityResponse = await byGet(
-          `${k1swUrl}${u_getCitys.URL}`,
-          { [u_getCitys.provinceId]: provinceId }
+          `${k1swUrl}${u_getCitys.URL}`, {
+            [u_getCitys.provinceId]: provinceId
+          }
         );
-        
         const cities = cityResponse?.data?.content || [];
-        baseData.city = cities;
-        baseData.cityIndex = cities.findIndex(item => item?.id === cityId);
+        baseData.citys = cities;
+        baseData.cityIndex = cities.findIndex(item => item?.id == city);
       }
-      _this.setData(baseData);
-  
+      _this.setData(baseData, () => {
+        console.log(this.data)
+        const {
+          items
+        } = _this.data;
+        const updatedItems = items.map(item => ({
+          value: item?.value,
+          name: item?.name,
+          checked: businessTypes.includes(item?.value)
+        }));
+        _this.setData({
+          items: updatedItems
+        });
+      });
+
     } catch (error) {
       console.error('数据处理失败:', error);
       showToast('数据加载异常，请稍后重试');
@@ -246,7 +262,6 @@ Page({
 
   onReady() {
     this.initialiImageBaseConversion()
-
   },
 
 
