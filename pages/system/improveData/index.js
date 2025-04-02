@@ -185,73 +185,60 @@ Page({
     });
   },
   // 查询信息
-  handleInquiryDetails() {
-    const _this = this
-    byGet(`${getApp().data.k1swUrl}${u_companyInfo.URL}`, {}).then(response => {
-      if (response?.data.code != 1000) {
-        showToast(response?.data.msg)
-        return
+  async handleInquiryDetails() {
+    try {
+      const app = getApp();
+      const { k1swUrl } = app.data;
+      const _this = this;
+      const companyResponse = await byGet(
+        `${k1swUrl}${u_companyInfo.URL}`,
+        {}
+      );
+  
+      if (companyResponse?.data.code !== 1000) {
+        showToast(companyResponse?.data.msg);
+        return;
       }
-      const allRes = response?.data.content
-      const businesstypeStr = allRes?.businesstypeStr?.split(',')
-      const handleFind = (arr, id) => arr.findIndex(item => item?.id === id);
-      const provincesIndex = handleFind(_this.data?.provinces, allRes?.province)
-      const s_show_renters = businesstypeStr?.some(item => item == 1)
-      const s_show_channel = businesstypeStr?.some(item => item == 3)
-      if (allRes?.province) {
-        const params = {
-          [u_getCitys.provinceId]: allRes?.province
-        }
-        byGet(`${getApp().data.k1swUrl}${u_getCitys.URL}`, params).then(res => {
-          const citys = res?.data?.content
-          const cityIndex = handleFind(citys, allRes?.city)
-          _this.setData({
-            city: citys
-          }, () => {
-            _this.setData({
-              params: {
-                id: allRes?.id, //ID
-                name: allRes?.name, //企业名称
-                chargemobile: allRes?.chargemobile, //联系人电话
-                chargename: allRes?.chargename, //联系人
-                province: allRes?.province, //省份ID
-                city: allRes?.city, //城市ID
-                rentCarCount: allRes?.rentCarCount, //租赁车辆数量
-                rentCitys: allRes?.rentCitys, //租赁运营城市
-                areas: allRes?.areas, //渠道覆盖区域
-                largeCustomer: allRes?.largeCustomer, //渠道大客户
-                businesstypeStr: businesstypeStr //角色选择
-              },
-              provincesIndex, //省份索引
-              cityIndex, //城市索引
-              s_show_renters, //租车人输入字段显示隐藏
-              s_show_channel, //渠道合作输入字段显示隐藏
-            })
-          })
-        })
-      } else {
-        _this.setData({
-          params: {
-            id: allRes?.id, //ID
-            name: allRes?.name, //企业名称
-            chargemobile: allRes?.chargemobile, //联系人电话
-            chargename: allRes?.chargename, //联系人
-            province: allRes?.province, //省份ID
-            city: allRes?.city, //城市ID
-            rentCarCount: allRes?.rentCarCount, //租赁车辆数量
-            rentCitys: allRes?.rentCitys, //租赁运营城市
-            areas: allRes?.areas, //渠道覆盖区域
-            largeCustomer: allRes?.largeCustomer, //渠道大客户
-            businesstypeStr: businesstypeStr //角色选择
-          },
-          provincesIndex, //省份索引
-          s_show_renters, //租车人输入字段显示隐藏
-          s_show_channel, //渠道合作输入字段显示隐藏
-        })
+      const allRes = companyResponse.data.content || {};
+      const businessTypes = allRes.businesstypeStr?.split(',') || [];
+      const provinceId = allRes.province;
+      const cityId = allRes.city;
+      const baseData = {
+        params: {
+          id: allRes.id,
+          name: allRes.name,
+          chargemobile: allRes.chargemobile,
+          chargename: allRes.chargename,
+          province: provinceId,
+          city: cityId,
+          rentCarCount: allRes.rentCarCount,
+          rentCitys: allRes.rentCitys,
+          areas: allRes.areas,
+          largeCustomer: allRes.largeCustomer,
+          businesstypeStr: businessTypes
+        },
+        provincesIndex: (_this.data.provinces || []).findIndex(
+          item => item?.id === provinceId
+        ),
+        s_show_renters: businessTypes.includes('1'),
+        s_show_channel: businessTypes.includes('3')
+      };
+      if (provinceId) {
+        const cityResponse = await byGet(
+          `${k1swUrl}${u_getCitys.URL}`,
+          { [u_getCitys.provinceId]: provinceId }
+        );
+        
+        const cities = cityResponse?.data?.content || [];
+        baseData.city = cities;
+        baseData.cityIndex = cities.findIndex(item => item?.id === cityId);
       }
-
-    })
-    return
+      _this.setData(baseData);
+  
+    } catch (error) {
+      console.error('数据处理失败:', error);
+      showToast('数据加载异常，请稍后重试');
+    }
   },
   onLoad(options) {
     this.initialiProvinces()

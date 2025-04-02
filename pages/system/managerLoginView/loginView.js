@@ -35,9 +35,23 @@ Page({
           console.log(response?.data)
           var k1swUrl = response.data.content?.username == '13683187039' ? "https://k1swtest.wiselink.net.cn/" : "https://k3a.wiselink.net.cn/"
           var fin3Url = response.data.content?.username == '13683187039' ? "https://fin3.wiselink.net.cn/fin/" : "https://fin3.wiselink.net.cn/fin/"
-          appUtil.setStorage(getApp().data.userKey, response.data.content, function (success) {
+          appUtil.setStorage(getApp().data.k1swUrlKey, k1swUrl, function (success) {
             if (success) {
               getApp().data.k1swUrl = k1swUrl;
+            } else {
+              appUtil.showModal("本地数据处理失败，请重新登录！", false, function () {});
+            }
+          });
+
+          appUtil.setStorage(getApp().data.fin3UrlKey, fin3Url, function (success) {
+            if (success) {
+              getApp().data.fin3Url = fin3Url;
+            } else {
+              appUtil.showModal("本地数据处理失败，请重新登录！", false, function () {});
+            }
+          });
+          appUtil.setStorage(getApp().data.userKey, response.data.content, function (success) {
+            if (success) {
               getApp().data.userInfo = response.data.content;
               wx.navigateBack({
                 delta: 1 // 返回上一级页面。
