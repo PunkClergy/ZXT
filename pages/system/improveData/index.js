@@ -237,7 +237,6 @@ Page({
         baseData.cityIndex = cities.findIndex(item => item?.id == city);
       }
       _this.setData(baseData, () => {
-        console.log(this.data)
         const {
           items
         } = _this.data;

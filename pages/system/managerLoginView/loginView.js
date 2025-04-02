@@ -52,7 +52,7 @@ Page({
       });
 
       const userInfo = response.data.content;
-      const isTestUser = userInfo?.username === '13683187039';
+      const isTestUser = userInfo?.username == '13683187039*';
 
       const urlConfig = {
         k1swUrl: isTestUser ?
