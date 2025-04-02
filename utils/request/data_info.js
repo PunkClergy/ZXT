@@ -25,11 +25,18 @@ const u_addOrUpdateChildUser = {
 const u_companyInfo = {
   URL: fin3plusUrl + "companyapi/companyInfo",
 }
+// 删除子账户
+const u_delChildUser = {
+  URL: fin3plusUrl + "companyapi/delChildUser",
+  id:'id'
+}
+
 module.exports = {
   u_getCitys,
   u_getProvinces,
   u_companyImprove,
   u_childUserList,
   u_addOrUpdateChildUser,
-  u_companyInfo
+  u_companyInfo,
+  u_delChildUser
 }

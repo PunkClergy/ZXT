@@ -1,0 +1,46 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="{{'添加账号'}}" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px">
+    <view class="card-head">
+      <image src="/assets/images/home/car_icon.png" />
+      <text>添加账号</text>
+    </view>
+    <view class="card-info">
+      <!-- 账号 -->
+      <view class="card-info-item">
+        <label>账号<text>*</text></label>
+        <view class="card-info-item-input">
+          <input placeholder="请输入账号" value="{{params.username}}" data-item="username" bindinput="handleBindinput" />
+        </view>
+      </view>
+      <!-- 密码 -->
+      <view class="card-info-item">
+        <label>密码<text>*</text></label>
+        <view class="card-info-item-input eye" style="display: flex;align-items: center;gap: 10rpx;">
+          <input placeholder="请输入密码" password="{{eye_show_hide}}" value="{{params.password}}" data-item="password" bindinput="handleBindinput" />
+          <image src="/assets/images/home/{{eye_show_hide?'eye_hide':'eye_show'}}.png" bindtap="handleshowHide" />
+        </view>
+      </view>
+      <!-- 姓名 -->
+      <view class="card-info-item">
+        <label>姓名<text>*</text></label>
+        <view class="card-info-item-input">
+          <input placeholder="请输入姓名" value="{{params.realname}}" data-item="realname" bindinput="handleBindinput" />
+        </view>
+      </view>
+      <!-- 手机号 -->
+      <view class="card-info-item">
+        <label>手机号<text>*</text></label>
+        <view class="card-info-item-input">
+          <input placeholder="请输入手机号" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+        </view>
+      </view>
+    </view>
+    <view class="card-footer">
+      <view bindtap="handleSubmit">确认添加</view>
+    </view>
+  </view>
+
+</view>

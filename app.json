@@ -109,7 +109,8 @@
     "pages/carManager/buyOilDevice/mcckSelf/newOrderInfo/index",
     "pages/upload-img/upload-img",
     "pages/system/UserAuthSys/index",
-    "pages/system/improveData/index"
+    "pages/system/improveData/index",
+    "pages/system/UserAuthSys/add"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
