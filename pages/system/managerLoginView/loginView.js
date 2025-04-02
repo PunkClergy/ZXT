@@ -26,42 +26,71 @@ Page({
     // c_link: 'http://192.168.43.23:8689/'
   },
 
-  onGetPhoneNumber(e) {
-    if (e.detail.code) {
-      byPost(this.data.c_link + 'userapi/wxLogin', {
-          code: e.detail.code
-        },
-        (response) => {
-          console.log(response?.data)
-          var k1swUrl = response.data.content?.username == '13683187039' ? "https://k1swtest.wiselink.net.cn/" : "https://k3a.wiselink.net.cn/"
-          var fin3Url = response.data.content?.username == '13683187039' ? "https://fin3.wiselink.net.cn/fin/" : "https://fin3.wiselink.net.cn/fin/"
-          appUtil.setStorage(getApp().data.k1swUrlKey, k1swUrl, function (success) {
-            if (success) {
-              getApp().data.k1swUrl = k1swUrl;
-            } else {
-              appUtil.showModal("本地数据处理失败，请重新登录！", false, function () {});
-            }
-          });
+  async onGetPhoneNumber(e) {
+    try {
+      // 基础校验
+      if (!e.detail?.code) {
+        console.warn('用户拒绝了授权');
+        return;
+      }
 
-          appUtil.setStorage(getApp().data.fin3UrlKey, fin3Url, function (success) {
-            if (success) {
-              getApp().data.fin3Url = fin3Url;
+      // 发送登录请求
+      const response = await new Promise((resolve, reject) => {
+        byPost(
+          `${this.data.c_link}userapi/wxLogin`, {
+            code: e.detail.code
+          },
+          (res) => {
+            if (res?.data?.content) {
+              resolve(res);
             } else {
-              appUtil.showModal("本地数据处理失败，请重新登录！", false, function () {});
+              reject(new Error(res?.data?.message || '登录接口响应异常'));
             }
-          });
-          appUtil.setStorage(getApp().data.userKey, response.data.content, function (success) {
-            if (success) {
-              getApp().data.userInfo = response.data.content;
-              wx.navigateBack({
-                delta: 1 // 返回上一级页面。
-              })
+          },
+          (err) => reject(new Error(`网络请求失败: ${err.errMsg}`))
+        );
+      });
 
-            }
-          });
-        });
-    } else {
-      console.log('用户拒绝了授权');
+      const userInfo = response.data.content;
+      const isTestUser = userInfo?.username === '13683187039';
+
+      const urlConfig = {
+        k1swUrl: isTestUser ?
+          "https://k1swtest.wiselink.net.cn/" :
+          "https://k3a.wiselink.net.cn/",
+        fin3Url: "https://fin3.wiselink.net.cn/fin/" // 固定地址
+      };
+
+      const storageTasks = [
+        [getApp().data.k1swUrlKey, urlConfig.k1swUrl],
+        [getApp().data.fin3UrlKey, urlConfig.fin3Url],
+        [getApp().data.userKey, userInfo]
+      ].map(([key, value]) => new Promise((resolve, reject) => {
+        appUtil.setStorage(key, value, success =>
+          success ? resolve() : reject(`存储失败: ${key}`)
+        );
+      }));
+
+      await Promise.all(storageTasks);
+
+      const app = getApp();
+      app.data.k1swUrl = urlConfig.k1swUrl;
+      app.data.fin3Url = urlConfig.fin3Url;
+      app.data.userInfo = userInfo;
+
+      wx.navigateBack({
+        delta: 1
+      });
+    } catch (error) {
+      console.error('处理流程异常:', error);
+      appUtil.showModal(
+        error.message.includes('存储失败') ?
+        "本地数据处理失败，请重新登录！" :
+        "操作失败，请检查网络后重试",
+        false,
+        () => {
+          /* 可添加重试逻辑 */ }
+      );
     }
   },
   /**
