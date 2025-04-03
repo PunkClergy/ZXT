@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "车辆管理",
+  "navigationBarTitleText": "订单清单",
   "usingComponents": {
     "drop-filter-com": "/components/DropFilterCom/index",
     "custom-header": "/components/CustomHeader/index"

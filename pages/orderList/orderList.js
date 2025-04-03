@@ -88,7 +88,7 @@ Page({
     });
   },
   // 查看详情
-  handleView() {
+  handleView(evt) {
     const item = evt.currentTarget.dataset.item
     wx.navigateTo({
       url: '/pages/orderList/orderDetails/orderDetails?flag=' + 'see&item=' + JSON.stringify(item),
@@ -193,7 +193,6 @@ Page({
   },
   onLoad: function (options) {
     this.getOrderList()
-    this.initialiServiceCollection()
   },
   onShow: function () {
 

@@ -1,2 +1,101 @@
-<!--pages/orderList/orderDetails/orderDetails.wxml-->
-<text>pages/orderList/orderDetails/orderDetails.wxml</text>
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="订单清单" />
+  <!-- 内容区 -->
+  <view class="info-container" style="height:{{c_screen_height-(c_statusBarHeight + c_navBarHeight)}}px;margin-top: {{c_totalNavHeight}}px;">
+
+    <!-- 顶部卡片 -->
+    <view class="top-box">
+      <view class="content-item-head">
+        <view class="head-left">
+          <view class="left-category">
+            <text>客户信息</text>
+          </view>
+        </view>
+      </view>
+      <view class="content-item-info">
+        <view class="info-item  {{item.deviceCount.length > 15 ? 'long-info-item' : ''}}">
+          <label>客户名称 ：</label>
+          <text>{{item.deviceCount||'-'}}</text>
+        </view>
+
+        <view class="info-item  {{item.typeName.length > 15 ? 'long-info-item' : ''}}">
+          <label>客户号 ：</label>
+          <text>{{item.typeName||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.linkman.length > 15 ? 'long-info-item' : ''}}">
+          <label>联系人 ：</label>
+          <text>{{item.linkman||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
+          <label>联系电话 ：</label>
+          <text>{{item.linkmobile||'-'}}</text>
+        </view>
+      </view>
+    </view>
+    <!-- 中部 -->
+    <view class="middle-box">
+      <view class="content-item-head">
+        <view class="head-left">
+          <view class="left-category">
+            <text>产品信息</text>
+          </view>
+        </view>
+      </view>
+      <view class="middle-content-item-info">
+        <view class="info-item  {{item.deviceCount.length > 15 ? 'long-info-item' : ''}}">
+          <label>客户名称 ：</label>
+          <text>{{item.deviceCount||'-'}}</text>
+        </view>
+
+        <view class="info-item  {{item.typeName.length > 15 ? 'long-info-item' : ''}}">
+          <label>客户号 ：</label>
+          <text>{{item.typeName||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.linkman.length > 15 ? 'long-info-item' : ''}}">
+          <label>联系人 ：</label>
+          <text>{{item.linkman||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
+          <label>联系电话 ：</label>
+          <text>{{item.linkmobile||'-'}}</text>
+        </view>
+      </view>
+    </view>
+
+
+    <!-- 底部卡片 -->
+    <view class="bottom-box">
+      <view class="content-item-head">
+        <view class="head-left">
+          <view class="left-category">
+            <text>物流信息</text>
+          </view>
+        </view>
+      </view>
+      <view class="content-item-info">
+        <view class="info-item  {{item.deviceCount.length > 15 ? 'long-info-item' : ''}}">
+          <label>发货时间 ：</label>
+          <text>{{item.deviceCount||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.typeName.length > 15 ? 'long-info-item' : ''}}">
+          <label>提交安装时间 ：</label>
+          <text>{{item.typeName||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.linkman.length > 15 ? 'long-info-item' : ''}}">
+          <label>安装确认时间 ：</label>
+          <text>{{item.linkman||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
+          <label>安装完毕时间 ：</label>
+          <text>{{item.linkmobile||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
+          <label>备注 ：</label>
+          <text>{{item.linkmobile||'-'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
