@@ -30,6 +30,15 @@ const u_delChildUser = {
   URL: fin3plusUrl + "companyapi/delChildUser",
   id:'id'
 }
+// 订单购买记录
+const u_buyRecord = {
+  URL: fin3plusUrl + "deviceBuyApi/buyRecord",
+  days: 'days',
+  orderTypes: 'orderTypes',
+  status: 'status',
+  page: 'page',
+  comParam: 'comParam'
+}
 
 module.exports = {
   u_getCitys,
@@ -38,5 +47,6 @@ module.exports = {
   u_childUserList,
   u_addOrUpdateChildUser,
   u_companyInfo,
-  u_delChildUser
+  u_delChildUser,
+  u_buyRecord
 }

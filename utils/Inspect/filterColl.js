@@ -55,6 +55,16 @@ const macckStatus=[
     { status: 6, text: '待支付', color: '#F5222D' },      // 警示红 - 强调需要立即操作
     { status: 7, text: '待安装', color: '#722ED1' }       // 与适配确认保持同色系，表示关联流程
 ]
+const orderListStatus = [
+    { value: STATUS.ALL, name: '全部' },
+    { value: STATUS.PENDING_ACCEPTANCE, name: '待接单' },
+    { value: STATUS.AWAITING_CONFIRMATION, name: '待确认' },
+    { value: STATUS.ACCEPTED, name: '已接单' },
+    { value: STATUS.IN_PROGRESS, name: '进行中' },
+    { value: STATUS.AWAITING_INSPECTION, name: '待验收' },
+    { value: STATUS.COMPLETED, name: '已完结' },
+    { value: STATUS.CANCELLED, name: '已取消' }
+]
 /**
  * 导出过滤器配置
  */
@@ -63,5 +73,6 @@ export default {
   filterWorkStatus, 
   filterWorkTime,
   orderStatus,
-  macckStatus
+  macckStatus,
+  orderListStatus 
 };

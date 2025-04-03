@@ -16,7 +16,7 @@ const {
 } = require('../../../utils/public').default
 Page({
   data: {
-    c_screen_height: _handleWindowInfo.windowHeight || 0,
+    c_screen_height: _handleWindowInfo.screenHeight || 0,
     c_statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
     c_navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
     c_searchBarHeight: 70, // 搜索框高度，默认值
