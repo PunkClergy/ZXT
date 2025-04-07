@@ -328,11 +328,11 @@ Page({
       if (countErrors.length > 0) {
         errorMessages.push(
           countErrors.map(e =>
-            `请补全【${e.model}】的数据`
+            `【${e.model}】`
           ).join('\n')
         );
       }
-      showToast(errorMessages.join('\n\n'))
+      showToast(`请补全${errorMessages.join('\n\n')}的数据`)
       return;
     }
 
