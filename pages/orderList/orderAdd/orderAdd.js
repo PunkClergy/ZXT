@@ -32,6 +32,7 @@ Page({
     g_device_version_list: [], //硬件版本号
     g_device_version_index: null, //当前硬件版本号
     c_entry_method: 1, //当前选择录入方式
+    file: null, //上传的图片
     tabs: [{
       id: 0,
       title: '车型1',
@@ -152,7 +153,7 @@ Page({
   // 数量改变
   handleNumBindinput(evt) {
     this.setData({
-      num: evt.detail.value
+      deviceCount: evt.detail.value
     })
   },
   // 提交参数
@@ -164,23 +165,24 @@ Page({
       g_country_index,
       g_device_version_list,
       g_device_version_index,
-      num,
-      params
+      deviceCount,
+      params,
+      file
     } = this.data;
 
-    const category = g_category_list[g_category_index]?.id;
+    const deviceType = g_category_list[g_category_index]?.id;
     const country = g_country_list[g_country_index]?.id;
-    const device_version = g_device_version_list[g_device_version_index]?.id;
-    if (!category || !country || !device_version || !num) {
+    const deviceVersion = g_device_version_list[g_device_version_index]?.id;
+    if (!deviceType || !country || !deviceVersion || !deviceCount) {
       showToast('基础字段不得为空')
       return;
     }
 
-    const result = [];
+    const carList = [];
     const keys = Object.keys(params);
     const maxIndex = Math.max(
       ...keys.map((key) => {
-        const match = key.match(/\d+$/); 
+        const match = key.match(/\d+$/);
         return match ? parseInt(match[0], 10) : -1;
       })
     );
@@ -191,7 +193,7 @@ Page({
 
       for (const key of keys) {
         if (key.endsWith(String(i))) {
-          const newKey = key.replace(/\d+$/, ""); 
+          const newKey = key.replace(/\d+$/, "");
           const value = params[key];
           if (!value) {
             showToast(`列表项 ${i} 的字段 ${newKey} 不得为空`);
@@ -204,34 +206,65 @@ Page({
       if (hasEmptyField) {
         return;
       }
-      result.push(obj);
+      carList.push(obj);
     }
 
-    if (result.length === 0) {
+    if (carList.length === 0) {
       showToast('列表数据不得为空')
       return;
     }
     const submit_params = {
-      category,
+      deviceType,
       country,
-      device_version,
-      num,
-      list: result,
+      deviceVersion,
+      deviceCount,
+      carList,
+      file
     };
 
     console.log(submit_params);
   },
-  
+  // 上传图片或拍照
+  chooseImage() {
+    wx.chooseMedia({
+      count: 1, // 最多选择1张图片
+      mediaType: ['image'], // 只选择图片
+      sourceType: ['album', 'camera'], // 允许从相册选择或拍照
+      success: (res) => {
+        const tempFilePath = res.tempFiles[0].tempFilePath; // 获取图片临时路径
+        this.setData({
+          file: tempFilePath,
+        });
+      },
+      fail: (err) => {
+        console.error('选择图片失败', err);
+        wx.showToast({
+          title: '选择图片失败',
+          icon: 'none',
+        });
+      },
+    });
+  },
+  // 预览图片
+  previewImage() {
+    if (!this.data.file) return;
+    wx.previewMedia({
+      sources: [{
+        url: this.data.file, // 图片路径
+        type: 'image',
+      }, ],
+    });
+  },
+
   // 切换tab
-  switchTab(e) {
+  handleSwitchTab(e) {
     const index = e.currentTarget.dataset.index
     this.setData({
       currentIndex: index
     })
   },
-
   // 添加tab
-  addTab() {
+  hadnleAddTab() {
     const newTabs = this.data.tabs
     const newId = newTabs.length > 0 ? newTabs[newTabs.length - 1].id + 1 : 0
 
@@ -246,9 +279,8 @@ Page({
       scrollLeft: 10000 // 滚动到最右边
     })
   },
-
   // 删除tab
-  closeTab(e) {
+  hadnleCloseTab(e) {
     if (this.data.tabs.length === 1) return
 
     const id = e.currentTarget.dataset.id

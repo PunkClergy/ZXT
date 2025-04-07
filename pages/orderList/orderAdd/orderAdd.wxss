@@ -178,10 +178,10 @@ picker {
   color: #7b7c7c;
 }
 .card-upload {
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: #7b7c7c;
   border: 1rpx solid #f0f0f0;
-  padding: 10rpx 20rpx;
+  padding: 0rpx 20rpx;
   border-radius: 8rpx;
 }
 .vehicle-card-info-item {
@@ -260,3 +260,4 @@ picker {
   padding: 20px;
   font-size: 16px;
 }
+

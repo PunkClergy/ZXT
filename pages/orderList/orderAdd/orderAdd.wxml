@@ -69,12 +69,12 @@
           <scroll-view scroll-x class="tabs-scroll" scroll-left="{{scrollLeft}}" scroll-with-animation>
             <view class="tabs-container">
               <block wx:for="{{tabs}}" wx:key="id">
-                <view class="tab-item {{currentIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="switchTab">
+                <view class="tab-item {{currentIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="handleSwitchTab">
                   {{params['carmodel' + item.id]?params['carmodel' + item.id]:item.title}}
-                  <view wx:if="{{tabs.length > 1}}" class="close" data-id="{{item.id}}" bindtap="closeTab">×</view>
+                  <view wx:if="{{tabs.length > 1}}" class="close" data-id="{{item.id}}" bindtap="hadnleCloseTab">×</view>
                 </view>
               </block>
-              <view class="add-btn" bindtap="addTab">+</view>
+              <view class="add-btn" bindtap="hadnleAddTab">+</view>
             </view>
           </scroll-view>
 
@@ -124,9 +124,10 @@
 
       </view>
       <view class="card-info-item" wx:else>
-        <label style="font-size: 28rpx;">上传照片<text>*</text></label>
-        <view class="card-info-item-input">
-          <text class="card-upload">上传</text>
+        <label style="font-size: 26rpx;">上传照片<text>*</text></label>
+        <view class="card-info-item-input" style="display: flex; align-items: center;gap: 10rpx;">
+          <text src="{{file}}" class="card-upload" wx:if="{{file}}" bindtap="previewImage">预览</text>
+          <text class="card-upload" bindtap="chooseImage">{{file?'重新上传':'选择图片/拍照'}}</text>
         </view>
       </view>
       <!-- 类别选择-结束 -->
@@ -134,7 +135,7 @@
       <view class="card-info-item">
         <label>数量<text>*</text></label>
         <view class="card-info-item-input">
-          <input type="number" placeholder="请输入数量" value="{{num}}" data-item="num" bindinput="handleNumBindinput" />
+          <input type="number" placeholder="请输入数量" value="{{deviceCount}}" data-item="deviceCount" bindinput="handleNumBindinput" />
         </view>
       </view>
     </view>
