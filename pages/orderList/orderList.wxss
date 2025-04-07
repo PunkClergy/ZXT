@@ -64,7 +64,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 30rpx;
+  gap: 20rpx;
 }
 
 .search-drop {

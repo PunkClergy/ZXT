@@ -9,12 +9,14 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   byPost,
-  byGet
+  byGet,
+  byPostJson
 } = require('../../../utils/request/http')
 const {
   u_getDeviceType,
   u_getCountry,
   u_getDeviceVersion,
+  u_buyDevice
 } = require('../../../utils/request/data_info')
 Page({
 
@@ -156,74 +158,7 @@ Page({
       deviceCount: evt.detail.value
     })
   },
-  // 提交参数
-  handleSubmit() {
-    const {
-      g_category_list,
-      g_category_index,
-      g_country_list,
-      g_country_index,
-      g_device_version_list,
-      g_device_version_index,
-      deviceCount,
-      params,
-      file
-    } = this.data;
 
-    const deviceType = g_category_list[g_category_index]?.id;
-    const country = g_country_list[g_country_index]?.id;
-    const deviceVersion = g_device_version_list[g_device_version_index]?.id;
-    if (!deviceType || !country || !deviceVersion || !deviceCount) {
-      showToast('基础字段不得为空')
-      return;
-    }
-
-    const carList = [];
-    const keys = Object.keys(params);
-    const maxIndex = Math.max(
-      ...keys.map((key) => {
-        const match = key.match(/\d+$/);
-        return match ? parseInt(match[0], 10) : -1;
-      })
-    );
-
-    for (let i = 0; i <= maxIndex; i++) {
-      const obj = {};
-      let hasEmptyField = false;
-
-      for (const key of keys) {
-        if (key.endsWith(String(i))) {
-          const newKey = key.replace(/\d+$/, "");
-          const value = params[key];
-          if (!value) {
-            showToast(`列表项 ${i} 的字段 ${newKey} 不得为空`);
-            hasEmptyField = true;
-          }
-
-          obj[newKey] = value;
-        }
-      }
-      if (hasEmptyField) {
-        return;
-      }
-      carList.push(obj);
-    }
-
-    if (carList.length === 0) {
-      showToast('列表数据不得为空')
-      return;
-    }
-    const submit_params = {
-      deviceType,
-      country,
-      deviceVersion,
-      deviceCount,
-      carList,
-      file
-    };
-
-    console.log(submit_params);
-  },
   // 上传图片或拍照
   chooseImage() {
     wx.chooseMedia({
@@ -237,7 +172,6 @@ Page({
         });
       },
       fail: (err) => {
-        console.error('选择图片失败', err);
         wx.showToast({
           title: '选择图片失败',
           icon: 'none',
@@ -291,6 +225,151 @@ Page({
       tabs: newTabs,
       currentIndex: newIndex
     })
+  },
+  // 提交参数
+  handleSubmit() {
+    const {
+      g_category_list = [],
+        g_category_index = -1,
+        g_country_list = [],
+        g_country_index = -1,
+        g_device_version_list = [],
+        g_device_version_index = -1,
+        deviceCount = 0,
+        params = {},
+        file = null
+    } = this.data;
+
+    const validateIndex = (list, index) =>
+      Array.isArray(list) && index >= 0 && index < list.length;
+    const getValidValue = (list, index) =>
+      validateIndex(list, index) ? list[index]?.id : null;
+
+    const deviceType = getValidValue(g_category_list, g_category_index);
+    const country = getValidValue(g_country_list, g_country_index);
+    const deviceVersion = getValidValue(g_device_version_list, g_device_version_index);
+    const requiredBaseFields = [{
+        value: deviceType,
+        name: '产品类别'
+      },
+      {
+        value: country,
+        name: '国家地区'
+      },
+      {
+        value: deviceVersion,
+        name: '硬件版本号'
+      },
+      {
+        value: deviceCount,
+        name: '数量'
+      }
+    ];
+
+    const missingBaseField = requiredBaseFields.find(f => !f.value);
+    if (missingBaseField) {
+      showToast(`${missingBaseField.name}不得为空`);
+      return;
+    }
+    const REQUIRED_FIELDS_COUNT = 5;
+    const CAR_FIELD_PATTERN = /^(\D+)(\d+)$/;
+    const paramKeys = Object.keys(params);
+    const carIndices = new Set(paramKeys.map(key => {
+      const match = key.match(CAR_FIELD_PATTERN);
+      return match ? parseInt(match[2], 10) : null;
+    }).filter(index => index !== null));
+
+    if (carIndices.size === 0) {
+      wx.showToast('列表数据不得为空');
+      return;
+    }
+
+    const carList = [];
+    const carErrors = [];
+
+    Array.from(carIndices).sort((a, b) => a - b).forEach(index => {
+      const carItem = {};
+      const actualFields = new Set();
+      const missingFields = [];
+      paramKeys.forEach(key => {
+        const match = key.match(new RegExp(`^(.+?)${index}$`));
+        if (match) {
+          const fieldName = match[1];
+          const value = params[key]?.trim() || '';
+          actualFields.add(fieldName);
+          carItem[fieldName] = value;
+          if (!value) {
+            missingFields.push(fieldName);
+          }
+        }
+      });
+
+      if (actualFields.size !== REQUIRED_FIELDS_COUNT) {
+        carErrors.push({
+          type: 'FIELD_COUNT',
+          model: carItem.carmodel || `车型${index + 1}`,
+          required: REQUIRED_FIELDS_COUNT,
+          actual: actualFields.size
+        });
+      }
+
+      // 空字段校验
+      if (missingFields.length > 0) {
+        carErrors.push({
+          type: 'EMPTY_FIELD',
+          model: carItem.carmodel || `车型${index + 1}`,
+          fields: missingFields
+        });
+      }
+
+      carList.push(carItem);
+    });
+
+    if (carErrors.length > 0) {
+      const errorMessages = [];
+      const countErrors = carErrors.filter(e => e.type === 'FIELD_COUNT');
+      if (countErrors.length > 0) {
+        errorMessages.push(
+          countErrors.map(e =>
+            `请补全【${e.model}】的数据`
+          ).join('\n')
+        );
+      }
+      showToast(errorMessages.join('\n\n'))
+      return;
+    }
+
+    const submitParams = {
+      deviceType,
+      country,
+      deviceVersion,
+      deviceCount: Number(deviceCount),
+      carList: carList.map(item => ({
+        ...item,
+      })),
+      file
+    };
+    showLoading();
+    try {
+      byPostJson(
+        getApp().data.k1swUrl + u_buyDevice.URL,
+        JSON.stringify(submitParams),
+        (response) => {
+          if (response.data?.code == 1000) {
+            wx.navigateBack({
+              delta: 1
+            });
+            showToast(response.data?.msg || '提交成功');
+          } else {
+            showToast(response.data?.msg || '服务器返回未知错误');
+          }
+        }
+      );
+    } catch (error) {
+      showToast('网络连接异常，请检查网络设置');
+    } finally {
+      hideLoading();
+    }
   },
   onLoad(options) {
 

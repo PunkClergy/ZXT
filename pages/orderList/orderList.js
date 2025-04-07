@@ -157,6 +157,7 @@ Page({
       [u_buyRecord.page]: this.data.g_page,
     };
     byGet(getApp().data.k1swUrl + u_buyRecord.URL, param).then(response => {
+      hideLoading()
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
           showToast(`已加载全部数据：共${this.data.g_items.length}条`);
@@ -164,12 +165,10 @@ Page({
         this.setData({
           g_items: this.data.g_items.concat(response.data.content),
           g_total: Number(response.data.count || 0).toLocaleString()
-        }, () => {
-          hideLoading();
         });
       } else {
         showToast('请求失败，请稍后再试');
-        hideLoading();
+
       }
     })
   },
@@ -195,7 +194,13 @@ Page({
     this.getOrderList()
   },
   onShow: function () {
-
+    this.setData({
+      g_comParam: null,
+      g_page: 1,
+      g_items: []
+    }, () => {
+      this.getOrderList();
+    })
   },
   onReady: function () {
     this.initialiImageBaseConversion()
