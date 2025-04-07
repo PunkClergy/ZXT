@@ -11,72 +11,77 @@
       <!-- 产品类别 -->
       <view class="card-info-item">
         <label>产品类别<text>*</text></label>
-        <block wx:if="{{page_nature=='see'}}">
-          <view class="viewText">{{params.vehicleSerialName||''}}</view>
-        </block>
-        <block wx:else>
-          <view class="card-info-item-input">
-            <picker range-key="name" range="{{g_category_list}}" bindchange="handleCategory">
-              <block wx:if="{{!g_category_index}}">
-                <text>请选择类别</text>
-              </block>
-              <block wx:else>
-                <text style="color: #333;">{{g_category_list[g_category_index].name}}</text>
-              </block>
-            </picker>
-          </view>
-        </block>
+        <view class="card-info-item-input">
+          <picker range-key="name" range="{{g_category_list}}" bindchange="handleCategory">
+            <block wx:if="{{!g_category_index}}">
+              <text>请选择类别</text>
+            </block>
+            <block wx:else>
+              <text style="color: #333;">{{g_category_list[g_category_index].name}}</text>
+            </block>
+          </picker>
+        </view>
       </view>
       <!-- 国家地区 -->
       <view class="card-info-item">
         <label>国家地区<text>*</text></label>
-        <block wx:if="{{page_nature=='see'}}">
-          <view class="viewText">{{params.ccdate||''}}</view>
-        </block>
-        <block wx:else>
-          <view class="card-info-item-input">
-            <picker range-key="name" range="{{g_country_list}}" bindchange="handleCountry">
-              <block wx:if="{{!g_country_index}}">
-                <text>请选择国家</text>
-              </block>
-              <block wx:else>
-                <text style="color: #333;">{{g_country_list[g_country_index].name}}</text>
-              </block>
-            </picker>
-          </view>
-        </block>
+        <view class="card-info-item-input">
+          <picker range-key="name" range="{{g_country_list}}" bindchange="handleCountry">
+            <block wx:if="{{!g_country_index}}">
+              <text>请选择国家</text>
+            </block>
+            <block wx:else>
+              <text style="color: #333;">{{g_country_list[g_country_index].name}}</text>
+            </block>
+          </picker>
+        </view>
       </view>
       <!-- 硬件版本号 -->
       <view class="card-info-item">
         <label>硬件版本号<text>*</text></label>
-        <block wx:if="{{page_nature=='see'}}">
-          <view class="viewText">{{params.vehicleModeName||''}}</view>
+        <view class="card-info-item-input">
+          <picker range-key="name" range="{{g_device_version_list}}" bindchange="handleCountry">
+            <block wx:if="{{!g_device_version_index}}">
+              <text>请选择硬件版本</text>
+            </block>
+            <block wx:else>
+              <text style="color: #333;">{{g_device_version_list[g_device_version_index].name}}</text>
+            </block>
+          </picker>
+        </view>
+      </view>
+      <!-- 类别选择-开始 -->
+      <block wx:if="{{g_category_list[g_category_index].id == 12}}">
+        <view class="card-info-item">
+          <label>录入方式</label>
+          <view class="card-info-item-tabs">
+            <view class="card-info-item-tabs-btn">
+              <text class="{{c_entry_method==1?'tabs-active':''}}" data-item="1" bindtap="handleBatterylift">手动输入</text>
+              <text class="{{c_entry_method==2?'tabs-active':''}}" data-item="2" bindtap="handleBatterylift">拍照上传</text>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <view class="card-info-item">
+        <block wx:if="{{c_entry_method==1}}">
+
         </block>
         <block wx:else>
+          <label>上传照片<text>*</text></label>
           <view class="card-info-item-input">
-            <picker range-key="name" range="{{g_device_version_list}}" bindchange="handleCountry">
-              <block wx:if="{{!g_device_version_index}}">
-                <text>请选择硬件版本</text>
-              </block>
-              <block wx:else>
-                <text style="color: #333;">{{g_device_version_list[g_device_version_index].name}}</text>
-              </block>
-            </picker>
+            <text class="card-upload">上传</text>
           </view>
         </block>
       </view>
 
+      <!-- 类别选择-结束 -->
       <!-- 数量 -->
       <view class="card-info-item">
         <label>数量<text>*</text></label>
-        <block wx:if="{{page_nature=='see'}}">
-          <view class="viewText">{{params.ccdate||''}}</view>
-        </block>
-        <block wx:else>
-          <view class="card-info-item-input">
-            <input placeholder="请输入数量" value="{{params.ccdate}}" data-item="ccdate" bindinput="handleBindinput" />
-          </view>
-        </block>
+        <view class="card-info-item-input">
+          <input placeholder="请输入数量" value="{{params.ccdate}}" data-item="ccdate" bindinput="handleBindinput" />
+        </view>
       </view>
     </view>
     <view class="card-footer">

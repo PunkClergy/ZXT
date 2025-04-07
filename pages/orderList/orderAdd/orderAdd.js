@@ -31,6 +31,7 @@ Page({
     g_country_index: null, //当前选中国家
     g_device_version_list: [], //硬件版本号
     g_device_version_index: null, //当前硬件版本号
+    c_entry_method: 1
   },
   handleCategory(evt) {
     console.log(evt)
@@ -113,7 +114,12 @@ Page({
       g_device_version_index: evt.detail.value
     })
   },
-
+  handleBatterylift(evt) {
+    const flag = evt?.currentTarget?.dataset?.item
+    this.setData({
+      c_entry_method: flag
+    })
+  },
   // 提交参数
   handleSubmit() {
 
