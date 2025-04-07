@@ -1,0 +1,87 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="下单采购" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <view class="card-head">
+      <image src="/assets/images/home/car_icon.png" />
+      <text>下单采购</text>
+    </view>
+    <view class="card-info">
+      <!-- 产品类别 -->
+      <view class="card-info-item">
+        <label>产品类别<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.vehicleSerialName||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_category_list}}" bindchange="handleCategory">
+              <block wx:if="{{!g_category_index}}">
+                <text>请选择类别</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;">{{g_category_list[g_category_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </block>
+      </view>
+      <!-- 国家地区 -->
+      <view class="card-info-item">
+        <label>国家地区<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.ccdate||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_country_list}}" bindchange="handleCountry">
+              <block wx:if="{{!g_country_index}}">
+                <text>请选择国家</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;">{{g_country_list[g_country_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </block>
+      </view>
+      <!-- 硬件版本号 -->
+      <view class="card-info-item">
+        <label>硬件版本号<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.vehicleModeName||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_device_version_list}}" bindchange="handleCountry">
+              <block wx:if="{{!g_device_version_index}}">
+                <text>请选择硬件版本</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;">{{g_device_version_list[g_device_version_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </block>
+      </view>
+
+      <!-- 数量 -->
+      <view class="card-info-item">
+        <label>数量<text>*</text></label>
+        <block wx:if="{{page_nature=='see'}}">
+          <view class="viewText">{{params.ccdate||''}}</view>
+        </block>
+        <block wx:else>
+          <view class="card-info-item-input">
+            <input placeholder="请输入数量" value="{{params.ccdate}}" data-item="ccdate" bindinput="handleBindinput" />
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="card-footer">
+      <view bindtap="handleSubmit">确认修改</view>
+    </view>
+  </view>
+
+</view>

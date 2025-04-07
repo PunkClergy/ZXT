@@ -28,7 +28,7 @@ const u_companyInfo = {
 // 删除子账户
 const u_delChildUser = {
   URL: fin3plusUrl + "companyapi/delChildUser",
-  id:'id'
+  id: 'id'
 }
 // 订单购买记录
 const u_buyRecord = {
@@ -39,8 +39,22 @@ const u_buyRecord = {
   page: 'page',
   comParam: 'comParam'
 }
-
+// 获取类别列表
+const u_getDeviceType = {
+  URL: fin3plusUrl + "deviceBuyApi/getDeviceType",
+}
+// 获取国家列表
+const u_getCountry = {
+  URL: fin3plusUrl + "deviceBuyApi/getCountry",
+}
+// 获取硬件版本列表
+const u_getDeviceVersion = {
+  URL: fin3plusUrl + "deviceBuyApi/getDeviceVersion",
+}
 module.exports = {
+  u_getDeviceType,
+  u_getCountry,
+  u_getDeviceVersion,
   u_getCitys,
   u_getProvinces,
   u_companyImprove,

@@ -111,8 +111,8 @@ Page({
 
   // 跳转下单页面
   handleOneClickOrdering() {
-    wx.switchTab({
-      url: '/pages/oneClickOrdering/oneClickOrdering',
+    wx.navigateTo({
+      url: '/pages/orderList/orderAdd/orderAdd',
     })
   },
 
