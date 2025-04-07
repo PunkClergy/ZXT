@@ -112,7 +112,8 @@
     "pages/system/improveData/index",
     "pages/system/UserAuthSys/add",
     "pages/orderList/orderList",
-    "pages/orderList/orderDetails/orderDetails"
+    "pages/orderList/orderDetails/orderDetails",
+    "pages/orderList/orderAdd/orderAdd"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
