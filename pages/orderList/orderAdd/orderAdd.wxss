@@ -184,5 +184,79 @@ picker {
   padding: 10rpx 20rpx;
   border-radius: 8rpx;
 }
+.vehicle-card-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 0 0 0;
+  box-shadow: 0rpx 0rpx 0rpx 0rpx rgba(240, 240, 240, 0.31);
+}
 .vehicle-container-info {
+  width: 100%;
+}
+/* index.wxss */
+
+.tabs-scroll {
+  width: 100%;
+  white-space: nowrap;
+  height: 40px;
+}
+
+.tabs-container {
+  display: inline-flex;
+  height: 100%;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.tab-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 30px;
+  background: #fff;
+  border-radius: 8rpx;
+  margin-right: 10rpx;
+  font-size: 28rpx;
+  border: 1px solid #ddd;
+}
+
+.active {
+  background: #f0f0f0;
+  color: #333;
+  font-weight: bold;
+  border-color: #f0f0f0;
+}
+
+.add-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50rpx;
+  height: 50rpx;
+  background: #fff;
+  border-radius: 50%;
+  margin-left: 10rpx;
+  border: 1px solid #ddd;
+}
+
+.close {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  background: red;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+}
+
+.content {
+  padding: 20px;
+  font-size: 16px;
 }

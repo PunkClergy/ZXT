@@ -50,8 +50,14 @@ const u_getCountry = {
 // 获取硬件版本列表
 const u_getDeviceVersion = {
   URL: fin3plusUrl + "deviceBuyApi/getDeviceVersion",
+  typeId: 'typeId'
+}
+// 设备购买（数据全部由用户填写）
+const u_buyDevice = {
+  URL: fin3plusUrl + "deviceBuyApi/buyDevice"
 }
 module.exports = {
+  u_buyDevice,
   u_getDeviceType,
   u_getCountry,
   u_getDeviceVersion,
