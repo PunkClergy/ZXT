@@ -172,10 +172,7 @@ Page({
         });
       },
       fail: (err) => {
-        wx.showToast({
-          title: '选择图片失败',
-          icon: 'none',
-        });
+        showToast('选择图片失败');
       },
     });
   },
@@ -280,7 +277,7 @@ Page({
     }).filter(index => index !== null));
 
     if (carIndices.size === 0) {
-      wx.showToast('列表数据不得为空');
+      showToast('列表数据不得为空');
       return;
     }
 
