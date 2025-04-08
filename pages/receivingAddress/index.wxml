@@ -1,0 +1,75 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="地址管理" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <view class="data-list-container" wx:for="{{g_items}}" wx:key="index">
+      <view class="list-container-left" data-item="{{item}}" bindtap="handleChoice">
+        <!-- <view class="left-street">河北石家庄市长安区长丰街道</view> -->
+        <view class="left-detailed-address">{{item.address}}</view>
+        <view>
+          <label class="left-consignee">{{item.linkperson}}</label>
+          <text class="left-contact-information">{{item.linkmobile}}</text>
+        </view>
+      </view>
+      <view class="list-container-right">
+        <image src="/assets/images/home/_edit.png" />
+      </view>
+    </view>
+
+  </view>
+  <!-- 一键操作按钮 -->
+  <view class="levitation-button" wx:if="{{!g_source}}" bindtap="handleJumpInfo">
+    <text>新增地址</text>
+  </view>
+</view>
+<!-- 发送电子钥匙弹窗 -->
+<block>
+  <view class="modal-mask" wx:if="{{c_send_key_show_momal}}" bindtap="handleHideSengKeyModal"></view>
+  <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}">
+    <form bindsubmit="handleFormSubmit">
+      <view class="modal-container">
+        <view class="modal-container-head">
+          <text>新增地址</text>
+          <image src="/assets/images/home/right_1.png" bindtap="handleHideSengKeyModal" />
+        </view>
+        <view class="modal-container-middle">
+          <view class="middle-form-item">
+            <label>联系人</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入联系人" name='linkperson' style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>联系电话</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入联系电话" name='linkmobile' style="text-align: right;font-size: 28rpx;" />
+            </view>
+
+          </view>
+          <view class="middle-form-item">
+            <label>所在地区</label>
+            <view class="modal-form-region">
+              <picker mode="region" value="{{time}}" data-index="startDate" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text wx:if="{{c_province_city}}" style="border: none;color: #333;"> {{c_province_city}} </text>
+                  <input placeholder="请选择地区" disabled="true" name='mobile' style="text-align: right;font-size: 28rpx;" wx:else />
+                </view>
+              </picker>
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>详细地址</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入详细地址" name='address' style="text-align: right;font-size: 28rpx;" />
+            </view>
+
+          </view>
+        </view>
+        <view class="modal-container-footer">
+          <button formType="submit">确认</button>
+        </view>
+      </view>
+    </form>
+  </view>
+</block>

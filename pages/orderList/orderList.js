@@ -48,6 +48,9 @@ Page({
     startTime: '19:00', //历史轨迹查询时间
     endDate: '2025-03-20', //历史轨迹查询时间
     endTime: '19:00', //历史轨迹查询时间
+    c_send_key_show_momal: false,
+    c_pay_state: 1,
+    c_pay_quota: 0,
   },
   // 下拉筛选执行
   bindPickerChange(e) {
@@ -146,6 +149,7 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
+
   // 查询列表
   getOrderList() {
     showLoading("加载中...");
@@ -190,8 +194,32 @@ Page({
       this.getOrderList();
     });
   },
+  // 点击去支付
+  handleToPay() {
+    // 如果是待支付状态
+    this.setData({
+      c_send_key_show_momal: true,
+      c_pay_quota: 100,
+    })
+  },
+  // 切换支付方式
+  handleRadioChangePay(evt) {
+    this.setData({
+      c_pay_state: evt.detail.value
+    })
+  },
+  // 关闭选择支付弹窗
+  handleHideSengKeyModal() {
+    this.setData({
+      c_send_key_show_momal: false
+    })
+  },
+  // 确认支付
+  handleFormSubmit() {
+    console.log(1)
+  },
   onLoad: function (options) {
-    this.getOrderList()
+
   },
   onShow: function () {
     this.setData({

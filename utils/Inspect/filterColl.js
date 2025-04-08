@@ -2,7 +2,7 @@
  * 定义工单状态的常量值
  */
 const STATUS = {
-  ALL: null,
+  ALL: '',
   PENDING_ACCEPTANCE: 1,
   AWAITING_CONFIRMATION: 2,
   ACCEPTED: 3,

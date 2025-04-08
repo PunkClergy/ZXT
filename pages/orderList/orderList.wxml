@@ -25,13 +25,13 @@
         <view class="content-item-head">
           <view class="head-left">
             <view class="left-category">
-              <text>{{item.deviceType||'-'}}</text>
+              <text>{{item.deviceTypeName||'-'}}</text>
             </view>
             <view class="left-brand">
               {{item.num||'-'}}
             </view>
             <view class="left-model">
-              {{item.deviceVersion||'-'}}
+              {{item.deviceVersionName||'-'}}
             </view>
           </view>
           <view class="head-right">
@@ -63,7 +63,7 @@
         </view>
         <view class="content-item-footer">
           <view class="footer-left">开单时间: {{item.createdate||'-'}}</view>
-          <view class="footer-right">
+          <view class="footer-right" data-item="{{item}}" bindtap="handleToPay">
             {{item.cost !== null ? '￥' + item.cost :''}}金额和状态
           </view>
         </view>
@@ -77,3 +77,42 @@
   </view>
 
 </view>
+<block>
+  <view class="modal-mask" wx:if="{{c_send_key_show_momal}}" bindtap="handleHideSengKeyModal"></view>
+  <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}">
+    <form bindsubmit="handleFormSubmit">
+      <view class="modal-container">
+        <view class="modal-container-head">
+          <text>支付</text>
+          <image src="/assets/images/home/off.png" bindtap="handleHideSengKeyModal" />
+        </view>
+        <view class="modal-container-middle">
+          <view class="middle-form-item">
+            <label>支付方式</label>
+            <view class="modal-form-region">
+              <radio-group bindchange="handleRadioChangePay" style="display: flex;align-items: center; color: #7b7c7c;">
+                <radio value="1" checked="{{c_pay_state == 1}}" style="transform:scale(0.7);">
+                  <text style="font-size: 34rpx;font-weight: 600;">余额支付</text>
+                </radio>
+                <radio value="2" checked="{{c_pay_state==2}}" style="transform:scale(0.7);">
+                  <text style="font-size: 34rpx;font-weight: 600;">微信支付</text>
+                </radio>
+              </radio-group>
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <block wx:if="{{c_pay_state==1}}">
+              <label>余额</label>
+              <view class="modal-form-region">
+                <text>$100,39</text>
+              </view>
+            </block>
+          </view>
+        </view>
+        <view class="modal-container-footer">
+          <button formType="submit">确认支付</button>
+        </view>
+      </view>
+    </form>
+  </view>
+</block>

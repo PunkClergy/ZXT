@@ -56,7 +56,18 @@ const u_getDeviceVersion = {
 const u_buyDevice = {
   URL: fin3plusUrl + "deviceBuyApi/buyDevice"
 }
+// 地址列表
+const u_addressapiList = {
+  URL: fin3plusUrl + "addressapi/list"
+}
+// 地址新增
+const u_addOrUpdate = {
+  URL: fin3plusUrl + "addressapi/addOrUpdate"
+}
+
 module.exports = {
+  u_addOrUpdate,
+  u_addressapiList,
   u_buyDevice,
   u_getDeviceType,
   u_getCountry,

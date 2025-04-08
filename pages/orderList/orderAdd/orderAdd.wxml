@@ -63,8 +63,7 @@
         </view>
       </block>
 
-      <view class="vehicle-card-info-item" wx:if="{{c_entry_method==1}}">
-
+      <view class="vehicle-card-info-item" wx:if="{{c_entry_method==1&&g_category_list[g_category_index].id == 12}}">
         <view class="vehicle-container-info">
           <scroll-view scroll-x class="tabs-scroll" scroll-left="{{scrollLeft}}" scroll-with-animation>
             <view class="tabs-container">
@@ -120,10 +119,8 @@
 
           </view>
         </view>
-
-
       </view>
-      <view class="card-info-item" wx:else>
+      <view class="card-info-item" wx:if="{{c_entry_method==2&&g_category_list[g_category_index].id == 12}}">
         <label style="font-size: 26rpx;">上传照片<text>*</text></label>
         <view class="card-info-item-input" style="display: flex; align-items: center;gap: 10rpx;">
           <text src="{{file}}" class="card-upload" wx:if="{{file}}" bindtap="previewImage">预览</text>
@@ -138,6 +135,27 @@
           <input type="number" placeholder="请输入数量" value="{{deviceCount}}" data-item="deviceCount" bindinput="handleNumBindinput" />
         </view>
       </view>
+      <!-- 联系人 -->
+      <view class="card-info-item">
+        <label>收货信息<text>*</text></label>
+        <view class="card-info-item-input" bindtap="handleSelectAddress">
+          <view class="card-consignee">
+            <block wx:if="{{snitems}}">
+              <text>{{snitems.address}}</text>
+              <view class="card-information">
+                <text>{{snitems.linkperson}}</text>
+                <text>{{snitems.linkmobile}}</text>
+              </view>
+            </block>
+            <block wx:else>
+              <view style="font-size: 26rpx; color: #7b7c7c;">请选择地址</view>
+            </block>
+          </view>
+          <image src="/assets/images/home/right_1.png" style="width: 30rpx;height: 30rpx;" />
+        </view>
+
+      </view>
+
     </view>
     <view class="card-footer">
       <view bindtap="handleSubmit">确认修改</view>

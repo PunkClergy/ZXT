@@ -35,6 +35,7 @@ Page({
     g_device_version_index: null, //当前硬件版本号
     c_entry_method: 1, //当前选择录入方式
     file: null, //上传的图片
+    snitems: null,
     tabs: [{
       id: 0,
       title: '车型1',
@@ -71,6 +72,16 @@ Page({
         }), {});
         _this.setData(dataToUpdate);
       });
+  },
+  // URL转base64
+  initialiUrlToBase64WithMimeType(url) {
+    try {
+      const fs = wx.getFileSystemManager();
+      const filePath = url;
+      const fileContent = fs.readFileSync(filePath, 'base64');
+      const base64Data = `data:image/png;base64,${fileContent}`;
+      return base64Data;
+    } catch (err) {}
   },
   // 请求类别数据
   initialiCategory() {
@@ -234,9 +245,9 @@ Page({
         g_device_version_index = -1,
         deviceCount = 0,
         params = {},
-        file = null
+        file = null,
+        snitems
     } = this.data;
-
     const validateIndex = (list, index) =>
       Array.isArray(list) && index >= 0 && index < list.length;
     const getValidValue = (list, index) =>
@@ -260,6 +271,10 @@ Page({
       {
         value: deviceCount,
         name: '数量'
+      },
+      {
+        value: snitems,
+        name: '收货信息'
       }
     ];
 
@@ -276,7 +291,8 @@ Page({
       return match ? parseInt(match[2], 10) : null;
     }).filter(index => index !== null));
 
-    if (carIndices.size === 0) {
+
+    if (carIndices.size === 0 && g_category_list[g_category_index]?.id == 12) {
       showToast('列表数据不得为空');
       return;
     }
@@ -318,7 +334,6 @@ Page({
           fields: missingFields
         });
       }
-
       carList.push(carItem);
     });
 
@@ -336,21 +351,27 @@ Page({
       return;
     }
 
+
+
     const submitParams = {
       deviceType,
       country,
       deviceVersion,
       deviceCount: Number(deviceCount),
-      carList: carList.map(item => ({
+      carList: g_category_list[g_category_index]?.id == 12 ? carList?.map(item => ({
         ...item,
-      })),
-      file
+      })) : [],
+      file: this.initialiUrlToBase64WithMimeType(file)
     };
     showLoading();
     try {
       byPostJson(
         getApp().data.k1swUrl + u_buyDevice.URL,
-        JSON.stringify(submitParams),
+        JSON.stringify(Object.assign(submitParams, {
+          linkmobile: snitems?.linkmobile,
+          linkperson: snitems?.linkperson,
+          address: snitems?.address
+        })),
         (response) => {
           if (response.data?.code == 1000) {
             wx.navigateBack({
@@ -368,6 +389,24 @@ Page({
       hideLoading();
     }
   },
+  // 选择地址跳转
+  handleSelectAddress() {
+    wx.navigateTo({
+      url: '/pages/receivingAddress/index?souce=' + 'pages/orderList/orderAdd/orderAdd',
+    })
+  },
+  // 获取缓存choice
+  handleChoiceStorage() {
+    const _this = this
+    wx.getStorage({
+      key: 'choice', // 缓存的键名
+      success: function (res) {
+        _this.setData({
+          snitems: res.data
+        })
+      }
+    });
+  },
   onLoad(options) {
 
   },
@@ -380,6 +419,6 @@ Page({
   },
 
   onShow() {
-
+    this.handleChoiceStorage()
   },
 })

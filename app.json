@@ -113,7 +113,8 @@
     "pages/system/UserAuthSys/add",
     "pages/orderList/orderList",
     "pages/orderList/orderDetails/orderDetails",
-    "pages/orderList/orderAdd/orderAdd"
+    "pages/orderList/orderAdd/orderAdd",
+    "pages/receivingAddress/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
