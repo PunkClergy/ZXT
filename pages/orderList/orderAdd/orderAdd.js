@@ -255,7 +255,8 @@ Page({
         deviceCount = 0,
         params = {},
         file = null,
-        snitems
+        snitems,
+        c_entry_method
     } = this.data;
     const validateIndex = (list, index) =>
       Array.isArray(list) && index >= 0 && index < list.length;
@@ -301,7 +302,7 @@ Page({
     }).filter(index => index !== null));
 
 
-    if (carIndices.size === 0 && g_category_list[g_category_index]?.id == 12) {
+    if (carIndices.size === 0 && g_category_list[g_category_index]?.id == 12&&c_entry_method == 1) {
       showToast('列表数据不得为空');
       return;
     }
@@ -428,7 +429,7 @@ Page({
     const category = g_category_list[g_category_index];
     const country = g_country_list[g_country_index];
     const deviceVersion = g_device_version_list[g_device_version_index];
-    if (!category?.id || !country?.id || !deviceVersion?.id || !deviceCount) {
+    if (!category?.id || !country?.id || !deviceVersion?.id || !deviceCount||category?.id == 12) {
       return;
     }
     const params = {
