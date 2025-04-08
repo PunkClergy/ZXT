@@ -414,6 +414,7 @@ Page({
       }
     });
   },
+  // 计算价格
   handleCalculatePrice() {
     const {
       g_category_list = [],
