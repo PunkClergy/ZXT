@@ -457,7 +457,6 @@ Page({
 
   },
 
-
   onReady() {
     this.initialiImageBaseConversion()
     this.initialiCategory()

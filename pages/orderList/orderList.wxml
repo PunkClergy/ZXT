@@ -104,7 +104,7 @@
             <block wx:if="{{c_pay_state==1}}">
               <label>余额</label>
               <view class="modal-form-region">
-                <text>$100,39</text>
+                <text>￥{{balance}}</text>
               </view>
             </block>
           </view>

@@ -4,13 +4,15 @@ const {
   showToast
 } = require('../../utils/Inspect/tips')
 const {
-  byGet
+  byGet,
+  byPost
 } = require('../../utils/request/http')
 const {
   u_buyRecord,
-  u_serviceList,
-  u_getServiceFiled
 } = require('../../utils/request/data_info')
+import {
+  u_getCompanyInfo,
+} from '../../utils/request/eqpmnt';
 const {
   _handleWindowInfo,
   _handleDeviceInfo
@@ -202,6 +204,20 @@ Page({
       c_pay_quota: 100,
     })
   },
+  // 查询余额
+  handleBalance() {
+    var param = {};
+    param[u_getCompanyInfo.companyId] = getApp().data.userInfo.companyId;
+    byPost(getApp().data.k1swUrl + u_getCompanyInfo.URL, param, (res) => {
+      var data = res.data;
+      if (data.code == 1000) {
+        var content = data.content;
+        this.setData({
+          balance: content.balance
+        })
+      }
+    });
+  },
   // 切换支付方式
   handleRadioChangePay(evt) {
     this.setData({
@@ -232,6 +248,7 @@ Page({
   },
   onReady: function () {
     this.initialiImageBaseConversion()
+    this.handleBalance()
   },
 
 
