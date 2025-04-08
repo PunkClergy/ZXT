@@ -13,6 +13,7 @@ const {
   byPostJson
 } = require('../../../utils/request/http')
 const {
+  u_priceCalculation,
   u_getDeviceType,
   u_getCountry,
   u_getDeviceVersion,
@@ -41,7 +42,8 @@ Page({
       title: '车型1',
     }],
     currentIndex: 0,
-    scrollLeft: 0
+    scrollLeft: 0,
+    g_cost: 0
   },
   // 全图背景
   initialiImageBaseConversion() {
@@ -99,6 +101,7 @@ Page({
       g_category_index: evt.detail.value
     }, () => {
       this.initialiDeviceVersion(this.data.g_category_list[this.data.g_category_index]?.id)
+      this.handleCalculatePrice()
     })
   },
   // 请求国家数据
@@ -115,6 +118,8 @@ Page({
   handleCountry(evt) {
     this.setData({
       g_country_index: evt.detail.value
+    }, () => {
+      this.handleCalculatePrice()
     })
   },
   // 硬件版本数据
@@ -134,6 +139,8 @@ Page({
   handleDeviceVersion(evt) {
     this.setData({
       g_device_version_index: evt.detail.value
+    }, () => {
+      this.handleCalculatePrice()
     })
   },
   // 切换录入方式
@@ -167,6 +174,8 @@ Page({
   handleNumBindinput(evt) {
     this.setData({
       deviceCount: evt.detail.value
+    }, () => {
+      this.handleCalculatePrice()
     })
   },
 
@@ -351,8 +360,6 @@ Page({
       return;
     }
 
-
-
     const submitParams = {
       deviceType,
       country,
@@ -406,6 +413,44 @@ Page({
         })
       }
     });
+  },
+  handleCalculatePrice() {
+    const {
+      g_category_list = [],
+        g_category_index = -1,
+        g_country_list = [],
+        g_country_index = -1,
+        g_device_version_list = [],
+        g_device_version_index = -1,
+        deviceCount = 0,
+    } = this.data;
+    const category = g_category_list[g_category_index];
+    const country = g_country_list[g_country_index];
+    const deviceVersion = g_device_version_list[g_device_version_index];
+    if (!category?.id || !country?.id || !deviceVersion?.id || !deviceCount) {
+      return;
+    }
+    const params = {
+      deviceType: category.id,
+      country: country.id,
+      deviceVersion: deviceVersion.id,
+      deviceCount: Number(deviceCount),
+    };
+
+    byPostJson(
+      getApp().data.k1swUrl + u_priceCalculation.URL,
+      params,
+      (response) => {
+        try {
+          const resp = response.data.content;
+          if (resp) {
+            this.setData({
+              g_cost: resp,
+            });
+          }
+        } catch (error) {}
+      }
+    );
   },
   onLoad(options) {
 

@@ -155,10 +155,16 @@
         </view>
 
       </view>
-
+      <!-- 金额 -->
+      <view class="card-info-item" wx:if="{{g_cost}}">
+        <label>金额</label>
+        <view class="card-info-item-input">
+          <text style="font-weight: bold;color: red;">￥{{g_cost}}</text>
+        </view>
+      </view>
     </view>
     <view class="card-footer">
-      <view bindtap="handleSubmit">确认修改</view>
+      <view bindtap="handleSubmit">确认提交</view>
     </view>
   </view>
 

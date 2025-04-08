@@ -64,8 +64,13 @@ const u_addressapiList = {
 const u_addOrUpdate = {
   URL: fin3plusUrl + "addressapi/addOrUpdate"
 }
+// 价格计算
+const u_priceCalculation ={
+  URL: fin3plusUrl + "deviceBuyApi/priceCalculation"
+}
 
 module.exports = {
+  u_priceCalculation,
   u_addOrUpdate,
   u_addressapiList,
   u_buyDevice,
