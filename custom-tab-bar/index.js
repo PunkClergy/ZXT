@@ -1,5 +1,10 @@
 const appUtil = require("../utils/app-util")
-
+const {
+  u_navlist
+} = require('../utils/request/home')
+const {
+  byGet,
+} = require('../utils/request/http')
 // pages/custom-tab-bar/index.js
 Component({
   /**
@@ -22,35 +27,8 @@ Component({
     selected: 0,
     color: '#000000',
     selectedColor: "#1A79FF",
-    list: [{
-        pagePath: "/pages/desk/desk",
-        "iconPath": "../assets/images/index/desk@2x.png",
-        "selectedIconPath": "../assets/images/index/desk_s@2x.png",
-        text: "首页"
-      },
-      {
-        "pagePath": "/pages/stationDispatch/stationDispatch",
-        "iconPath": "../assets/images/index/sys@2x.png",
-        "selectedIconPath": "../assets/images/index/sys_s@2x.png",
-        "text": "热点位置"
-      }, {
-        pagePath: "/pages/oneClickOrdering/oneClickOrdering",
-        "iconPath": "../assets/images/index/work@2x.png",
-        "selectedIconPath": "../assets/images/index/work_s@2x.png",
-        text: "一键下单"
-      },
-      {
-        "pagePath": "/pages/carManager/buyOilDevice/buyOilDevice",
-        "iconPath": "../assets/images/index/purchase@2x.png",
-        "selectedIconPath": "../assets/images/index/purchase_s@2x.png",
-        "text": "购买和充值"
-      }, {
-        pagePath: "/pages/system/managerInfo/userinfo",
-        "iconPath": "../assets/images/index/setUp@2x.png",
-        "selectedIconPath": "../assets/images/index/setUp_s@2x.png",
-        text: "系统"
-      }
-    ]
+    list: [],
+    c_link: 'https://k1sw.wiselink.net.cn/'
 
   },
 
@@ -59,8 +37,8 @@ Component({
       var obj = this.createSelectorQuery();
       obj.select('.tab-bar').boundingClientRect(function (rect) {
         getApp().data.tabBarHeight = rect?.height; // 将获取到的高度设置缓存，以便之后使用
-        // console.log("rect.height="+getApp().data.tabBarHeight)
       }).exec();
+      this.handleNavlist()
     },
 
   },
@@ -70,7 +48,15 @@ Component({
    */
   methods: {
 
-
+    handleNavlist() {
+      console.log(11)
+      const _this = this
+      byGet(_this.data.c_link + u_navlist.URL, {}).then(response => {
+        _this.setData({
+          list: response.data.content
+        })
+      })
+    },
 
     switchTab(e) {
 

@@ -17,10 +17,14 @@ const u_rightMenulist ={
   terminalId:'terminalId',
   isDir:'isDir'
 }
+const u_navlist = {
+  URL:'deskapi/navlist',
+}
 const u_termialList = {
   URL:'deskapi/termialList',
 }
 module.exports = {
+  u_navlist,
   u_bannerlist,
   u_midMenulist,
   u_menulist,
