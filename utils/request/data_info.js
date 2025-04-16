@@ -73,8 +73,13 @@ const u_addOrUpdate = {
 const u_priceCalculation ={
   URL: fin3plusUrl + "deviceBuyApi/priceCalculation"
 }
+// 询价单
+const u_inquirySheet ={
+  URL: fin3plusUrl + "deviceBuyApi/inquirySheet"
+}
 
 module.exports = {
+  u_inquirySheet,
   u_getProductType,
   u_priceCalculation,
   u_addOrUpdate,

@@ -114,7 +114,8 @@
     "pages/orderList/orderList",
     "pages/orderList/orderDetails/orderDetails",
     "pages/orderList/orderAdd/orderAdd",
-    "pages/receivingAddress/index"
+    "pages/receivingAddress/index",
+    "pages/askPrice/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
