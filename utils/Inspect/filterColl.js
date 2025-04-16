@@ -65,10 +65,41 @@ const orderListStatus = [
     { value: STATUS.COMPLETED, name: '已完结' },
     { value: STATUS.CANCELLED, name: '已取消' }
 ]
+const FIELD_CONFIG = [
+  { key: 'producttypeName', label: '产品类别' },
+  { key: 'deviceversionName', label: '硬件版号' },
+  { key: 'hardwareprice', label: '硬件价格' },
+  { key: 'stairsList', label: '阶梯价格' },
+  { key: 'countryName', label: '国家' },
+  { key: 'currency', label: '币种' },
+  { key: 'serviceprice', label: '服务费价格(年)' },
+  { key: 'useprice', label: '使用费' },
+  { key: 'firstRecharge', label: '首次充值' },
+  { key: 'cloudprice', label: '云端费(月)' },
+  { key: 'otaprice', label: 'OTA对接(月)' },
+  { key: 'rentPrice', label: '月租' },
+  { key: 'deposit', label: '押金' },
+  { key: 'installprice', label: '安装费' },
+  { key: 'withkeyprice', label: '配钥匙价格-1' },
+  { key: 'withkeyprice2', label: '配钥匙价格-2' },
+  { key: 'withkeyprice3', label: '配钥匙价格-3' },
+  { key: 'takecarepricel', label: '原车钥匙组装费' },
+  { key: 'transportpricel', label: '拆除运输检验费' },
+  { key: 'servicecommission', label: '渠道服务费' },
+  { key: 'hardwarecommission', label: '硬件佣金' },
+  { key: 'promotion1', label: '直销内部J23非首次绩效(%)' },
+  { key: 'channelpromotion1', label: '渠道内部T23非首次绩效(%)' }, // 修正字段名
+  { key: 'testStartDate', label: '体验开始时间' },
+  { key: 'testEndDate', label: '体验结束时间' }, // 修正字段名
+  { key: 'testDeposit', label: '体验押金' },
+  { key: 'sns', label: '体验SN' },
+  { key: 'priority', label: '价格优先级' }
+];
 /**
  * 导出过滤器配置
  */
 export default {
+  FIELD_CONFIG,
   STATUS,        
   filterWorkStatus, 
   filterWorkTime,

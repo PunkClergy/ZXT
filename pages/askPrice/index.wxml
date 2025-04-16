@@ -28,13 +28,13 @@
           </block>
           <block wx:else>
             <view class="content-item">
-              <label>{{item.label||'-'}}</label>
+              <label>{{item.label}}</label>
               <view>
                 <block wx:if="{{item.key == 'priority'}}">
                   {{item.value ==1?'阶梯优先':'体验优先'}}
                 </block>
                 <block wx:else>
-                  {{item.value||'-'}}
+                  {{item.value}}
                   <block wx:if="{{item.key == 'installprice'}}">({{aggregate[currentIndex].needInstall ==1?'必须':'非必须'}})</block>
                   <block wx:if="{{item.key == 'takecarepricel'}}">({{aggregate[currentIndex].needTakeCare ==1?'必须':'非必须'}})</block>
                   <block wx:if="{{item.key == 'transportpricel'}}">({{aggregate[currentIndex].needTransport ==1?'必须':'非必须'}})</block>

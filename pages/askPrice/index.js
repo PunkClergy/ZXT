@@ -8,6 +8,9 @@ const {
 const {
   byGet
 } = require('../../utils/request/http')
+const {
+  FIELD_CONFIG
+} = require('../../utils/Inspect/filterColl').default
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0, //全高度
@@ -69,115 +72,35 @@ Page({
   },
   // 获取询价单
   handleuInquirySheet() {
+    // 空值处理函数
+    const formatValue = (value) => {
+      if (value === null || value === undefined) return '-';
+      if (typeof value === 'string' && value.trim() === '') return '-';
+      return value;
+    };
+
     byGet(getApp().data.k1swUrl + u_inquirySheet.URL, {}).then(response => {
-      const rspns = response.data.content
-      const default_coll = [{
-          producttypeName: '产品类别'
-        },
-        {
-          deviceversionName: '硬件版号'
-        },
-        {
-          hardwareprice: '硬件价格'
-        },
-        {
-          stairsList: '阶梯价格'
-        },
-        {
-          countryName: '国家'
-        },
-        {
-          currency: '币种'
-        },
-        {
-          serviceprice: '服务费价格(年)'
-        },
-        {
-          useprice: '使用费'
-        },
-        {
-          firstRecharge: '首次充值'
-        },
-        {
-          cloudprice: '云端费(月)'
-        },
-        {
-          otaprice: 'OTA对接(月)'
-        },
-        {
-          rentPrice: '月租'
-        },
-        {
-          deposit: '押金'
-        },
-        {
-          installprice: '安装费'
-        },
-        {
-          withkeyprice: '配钥匙价格-1'
-        },
-        {
-          withkeyprice2: '配钥匙价格-2'
-        },
-        {
-          withkeyprice3: '配钥匙价格-3'
-        },
-        {
-          takecarepricel: '原车钥匙组装费'
-        },
-        {
-          transportpricel: '拆除运输检验费'
-        },
-        {
-          servicecommission: '渠道服务费'
-        },
-        {
-          hardwarecommission: '硬件佣金'
-        },
-        {
-          promotion1: '直销内部J23非首次绩效(%)'
-        },
-        {
-          channelpromotionl: '渠道内部T23非首次绩效(%)'
-        },
-        {
-          testStartDate: '体验开始时间'
-        },
-        {
-          testStartDate: '体验结束时间'
-        },
-        {
-          testDeposit: '体验押金'
-        },
-        {
-          sns: '体验SN'
-        },
-        {
-          priority: '价格优先级'
-        }
-      ]
+      const {
+        content: responseData
+      } = response.data;
+      console.log(FIELD_CONFIG)
+      const formattedTabs = responseData.map(item => ({
+        title: item.devicetypeName || '未知设备类型',
+        list: FIELD_CONFIG.map(({
+          key,
+          label
+        }) => ({
+          key,
+          label,
+          value: formatValue(item[key])
+        }))
+      }));
 
-      const default_list = rspns.map((ele, index) => {
-        let temp = {
-          title: ele.devicetypeName,
-          list: default_coll.map(item => {
-            const key = Object.keys(item)[0];
-            return {
-              key,
-              label: item[key],
-              value: ele[key]
-            };
-          })
-        }
-        return temp
-      })
-
-      console.log(default_list)
       this.setData({
-        tabs: default_list,
-        aggregate: rspns
-      })
-    })
+        tabs: formattedTabs,
+        aggregate: responseData
+      });
+    });
   },
   onLoad(options) {},
 
