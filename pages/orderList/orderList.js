@@ -99,6 +99,13 @@ Page({
       url: '/pages/orderList/orderDetails/orderDetails?flag=' + 'see&item=' + JSON.stringify(item),
     })
   },
+  // 编辑
+  handleEdit(evt){
+    const item = evt.currentTarget.dataset.item
+    wx.navigateTo({
+      url: '/pages/orderList/orderAdd/orderAdd?flag=' + 'edit&item=' + JSON.stringify(item),
+    })
+  },
   // 搜索框执行操作
   handleBlur(e) {
     const resp = e.detail.value

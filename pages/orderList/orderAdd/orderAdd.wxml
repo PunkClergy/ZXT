@@ -55,7 +55,7 @@
         <label>销售代号<text>*</text></label>
         <view class="card-info-item-input">
           <picker range-key="name" range="{{g_device_type_list}}" bindchange="handleDeviceType">
-            <block wx:if="{{!g_device_type_index}}">
+            <block wx:if="{{g_device_type_index==null}}">
               <text>请选择硬件版本</text>
             </block>
             <block wx:else>

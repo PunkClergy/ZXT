@@ -140,6 +140,9 @@ Page({
   },
   // 销售代号数据
   initialiDevicetype(evt) {
+    const {
+      g_device_type_id
+    } = this.data
     const parmas = {
       [u_getDeviceType.productTypeId]: evt
     }
@@ -148,6 +151,15 @@ Page({
         const resp = response.data.content
         this.setData({
           g_device_type_list: resp
+        }, () => {
+          if (this.data.g_device_type_id) {
+            const g_device_type_index = resp.findIndex(
+              ele => ele.id === g_device_type_id
+            );
+            this.setData({
+              g_device_type_index
+            })
+          }
         })
       });
   },
@@ -463,12 +475,12 @@ Page({
     const productType = g_product_type_list[g_product_type_index];
     const country = g_country_list[g_country_index];
     const deviceVersion = g_device_version_list[g_device_version_index];
-    const deviceType = g_device_type_list[g_device_type_index] ;
+    const deviceType = g_device_type_list[g_device_type_index];
     if (!productType?.id || !country?.id || !deviceVersion?.id || !deviceCount || deviceType?.id == 11) {
       return;
     }
     const params = {
-      deviceType:deviceType.id,
+      deviceType: deviceType.id,
       productType: productType.id,
       country: country.id,
       deviceVersion: deviceVersion.id,
@@ -490,12 +502,59 @@ Page({
       }
     );
   },
+  // 获取编辑状态的初始值
+  initOptions(evt) {
+    this.setData({
+      g_product_type_id: evt.productType, //当前选择类别index
+      g_country_id: evt.country, //当前选中国家
+      g_device_version_id: evt.deviceVersion, //当前价格类型号
+      g_device_type_id: evt.deviceType, //当前销售代号
+      deviceCount: evt.deviceCount,
+      snitems: {
+        address: evt.linkaddress,
+        linkperson: evt.linkman,
+        linkmobile: evt.linkmobile
+      }
+    })
+  },
+  // 寻找索引值
+  initReplaceIndex() {
+    const {
+      g_product_type_list,
+      g_product_type_id,
+      g_country_id,
+      g_country_list,
+      g_device_version_id,
+      g_device_version_list
+    } = this.data;
+    const g_product_type_index = g_product_type_list.findIndex(
+      ele => ele.id === g_product_type_id
+    );
+    const g_country_index = g_country_list.findIndex(
+      ele => ele.id === g_country_id
+    );
+    const g_device_version_index = g_device_version_list.findIndex(
+      ele => ele.id === g_device_version_id
+    );
+    this.setData({
+      g_product_type_index,
+      g_country_index,
+      g_device_version_index,
+    }, () => {
+      this.initialiDevicetype(g_product_type_id)
+    })
+  },
   onLoad(options) {
-
+    if (options.item) {
+      this.initOptions(JSON.parse(options.item))
+    }
   },
 
   onReady() {
-
+    this.initReplaceIndex()
+    if (!this.data.snitems) {
+      this.handleChoiceStorage()
+    }
   },
 
   onShow() {
@@ -503,6 +562,6 @@ Page({
     this.initialiCategory()
     this.initialiCountry()
     this.initialiDeviceVersion()
-    this.handleChoiceStorage()
+
   },
 })
