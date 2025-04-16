@@ -20,6 +20,7 @@ Page({
     s_background_picture_of_the_front_page: '', //背景
     currentIndex: 0,
     scrollLeft: 0,
+    scrollTop:0,
     tabs: [],
     ladder: false
   },
@@ -30,6 +31,7 @@ Page({
     this.setData({
       currentIndex: index,
       scrollLeft: (index - 2) * 120,
+      scrollTop:0,
       ladder: false
     });
   },
