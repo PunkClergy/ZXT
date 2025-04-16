@@ -76,8 +76,8 @@ Page({
   handleuInquirySheet() {
     // 空值处理函数
     const formatValue = (value) => {
-      if (value === null || value === undefined) return '-';
-      if (typeof value === 'string' && value.trim() === '') return '-';
+      if (value === null || value === undefined) return '';
+      if (typeof value === 'string' && value.trim() === '') return '';
       return value;
     };
 

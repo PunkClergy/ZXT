@@ -27,7 +27,7 @@
             </view>
           </block>
           <block wx:else>
-            <view class="content-item">
+            <view class="content-item" wx:if="{{item.value != ''}}">
               <label>{{item.label}}</label>
               <view>
                 <block wx:if="{{item.key == 'priority'}}">
