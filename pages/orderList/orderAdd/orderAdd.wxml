@@ -12,12 +12,12 @@
       <view class="card-info-item">
         <label>产品类别<text>*</text></label>
         <view class="card-info-item-input">
-          <picker range-key="name" range="{{g_category_list}}" bindchange="handleCategory">
-            <block wx:if="{{!g_category_index}}">
+          <picker range-key="name" range="{{g_product_type_list}}" bindchange="handleCategory">
+            <block wx:if="{{!g_product_type_index}}">
               <text>请选择类别</text>
             </block>
             <block wx:else>
-              <text style="color: #333;">{{g_category_list[g_category_index].name}}</text>
+              <text style="color: #333;">{{g_product_type_list[g_product_type_index].name}}</text>
             </block>
           </picker>
         </view>
@@ -37,7 +37,7 @@
         </view>
       </view>
       <!-- 价格类型 -->
-      <view class="card-info-item" wx:if="{{g_category_index}}">
+      <view class="card-info-item">
         <label>价格类型<text>*</text></label>
         <view class="card-info-item-input">
           <picker range-key="name" range="{{g_device_version_list}}" bindchange="handleDeviceVersion">
@@ -51,7 +51,7 @@
         </view>
       </view>
       <!-- 销售代号 -->
-      <view class="card-info-item" wx:if="{{g_category_index}}">
+      <view class="card-info-item" wx:if="{{g_product_type_index}}">
         <label>销售代号<text>*</text></label>
         <view class="card-info-item-input">
           <picker range-key="name" range="{{g_device_type_list}}" bindchange="handleDeviceType">

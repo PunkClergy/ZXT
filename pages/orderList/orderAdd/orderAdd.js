@@ -29,8 +29,8 @@ Page({
     s_platform_height: _handleDeviceInfo.platform == "ios" || _handleDeviceInfo.platform == "devtools" ? 95 : 60, //判断系统获取底部高度
     s_background_picture_of_the_front_page: '', //背景
     params: {},
-    g_category_list: [], //类别
-    g_category_index: null, //当前选择类别index
+    g_product_type_list: [], //类别
+    g_product_type_index: null, //当前选择类别index
     g_country_list: [], //国家
     g_country_index: null, //当前选中国家
     g_device_version_list: [], //价格类型号
@@ -94,17 +94,16 @@ Page({
       (response) => {
         const resp = response.data.content
         this.setData({
-          g_category_list: resp
+          g_product_type_list: resp
         })
       });
   },
   // 类别发生变化
   handleCategory(evt) {
     this.setData({
-      g_category_index: evt.detail.value
+      g_product_type_index: evt.detail.value
     }, () => {
-      this.initialiDeviceVersion(this.data.g_category_list[this.data.g_category_index]?.id)
-      this.initialiDevicetype(this.data.g_category_list[this.data.g_category_index]?.id)
+      this.initialiDevicetype(this.data.g_product_type_list[this.data.g_product_type_index]?.id)
       this.handleCalculatePrice()
     })
   },
@@ -271,8 +270,8 @@ Page({
   // 提交参数
   handleSubmit() {
     const {
-      g_category_list = [],
-        g_category_index = -1,
+      g_product_type_list = [],
+        g_product_type_index = -1,
         g_country_list = [],
         g_country_index = -1,
         g_device_version_list = [],
@@ -290,12 +289,12 @@ Page({
     const getValidValue = (list, index) =>
       validateIndex(list, index) ? list[index]?.id : null;
 
-    const deviceType = getValidValue(g_category_list, g_category_index);
+    const productType = getValidValue(g_product_type_list, g_product_type_index);
     const country = getValidValue(g_country_list, g_country_index);
     const deviceVersion = getValidValue(g_device_version_list, g_device_version_index);
-    const deviceType1 = getValidValue(g_device_type_list, g_device_type_index);
+    const deviceType = getValidValue(g_device_type_list, g_device_type_index);
     const requiredBaseFields = [{
-        value: deviceType,
+        value: productType,
         name: '产品类别'
       },
       {
@@ -307,7 +306,7 @@ Page({
         name: '价格类型'
       },
       {
-        value: deviceType1,
+        value: deviceType,
         name: '销售代号'
       },
       {
@@ -394,6 +393,7 @@ Page({
     }
 
     const submitParams = {
+      productType,
       deviceType,
       country,
       deviceVersion,
@@ -409,8 +409,8 @@ Page({
         getApp().data.k1swUrl + u_buyDevice.URL,
         JSON.stringify(Object.assign(submitParams, {
           linkmobile: snitems?.linkmobile,
-          linkperson: snitems?.linkperson,
-          address: snitems?.address
+          linkman: snitems?.linkperson,
+          linkaddress: snitems?.address
         })),
         (response) => {
           if (response.data?.code == 1000) {
@@ -450,8 +450,8 @@ Page({
   // 计算价格
   handleCalculatePrice() {
     const {
-      g_category_list = [],
-        g_category_index = -1,
+      g_product_type_list = [],
+        g_product_type_index = -1,
         g_country_list = [],
         g_country_index = -1,
         g_device_version_list = [],
@@ -460,15 +460,16 @@ Page({
         g_device_type_index = -1,
         deviceCount = 0,
     } = this.data;
-    const category = g_category_list[g_category_index];
+    const productType = g_product_type_list[g_product_type_index];
     const country = g_country_list[g_country_index];
     const deviceVersion = g_device_version_list[g_device_version_index];
-    const device = g_device_type_list[g_device_type_index] ;
-    if (!category?.id || !country?.id || !deviceVersion?.id || !deviceCount || device?.id == 11) {
+    const deviceType = g_device_type_list[g_device_type_index] ;
+    if (!productType?.id || !country?.id || !deviceVersion?.id || !deviceCount || deviceType?.id == 11) {
       return;
     }
     const params = {
-      deviceType: category.id,
+      deviceType:deviceType.id,
+      productType: productType.id,
       country: country.id,
       deviceVersion: deviceVersion.id,
       deviceCount: Number(deviceCount),
@@ -494,12 +495,14 @@ Page({
   },
 
   onReady() {
-    this.initialiImageBaseConversion()
-    this.initialiCategory()
-    this.initialiCountry()
+
   },
 
   onShow() {
+    this.initialiImageBaseConversion()
+    this.initialiCategory()
+    this.initialiCountry()
+    this.initialiDeviceVersion()
     this.handleChoiceStorage()
   },
 })
