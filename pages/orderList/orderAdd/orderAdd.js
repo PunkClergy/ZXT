@@ -157,7 +157,7 @@ Page({
               ele => ele.id === g_device_type_id
             );
             this.setData({
-              g_device_type_index
+              g_device_type_index:g_device_type_index==-1?null:g_device_type_index
             })
           }
         })
@@ -519,30 +519,33 @@ Page({
   },
   // 寻找索引值
   initReplaceIndex() {
-    const {
-      g_product_type_list,
+    const { 
+      g_product_type_list = [],
       g_product_type_id,
+      g_country_list = [],
       g_country_id,
-      g_country_list,
-      g_device_version_id,
-      g_device_version_list
+      g_device_version_list = [],
+      g_device_version_id
     } = this.data;
-    const g_product_type_index = g_product_type_list.findIndex(
-      ele => ele.id === g_product_type_id
-    );
-    const g_country_index = g_country_list.findIndex(
-      ele => ele.id === g_country_id
-    );
-    const g_device_version_index = g_device_version_list.findIndex(
-      ele => ele.id === g_device_version_id
-    );
-    this.setData({
-      g_product_type_index,
-      g_country_index,
-      g_device_version_index,
-    }, () => {
-      this.initialiDevicetype(g_product_type_id)
-    })
+    const findValidIndex = (list, targetId) => {
+      if (!Array.isArray(list)) return null;
+      const index = list.findIndex(item => item.id === targetId);
+      return index >= 0 ? index : null;
+    };
+    const indexConfigs = [
+      { key: 'g_product_type_index', list: g_product_type_list, id: g_product_type_id },
+      { key: 'g_country_index', list: g_country_list, id: g_country_id },
+      { key: 'g_device_version_index', list: g_device_version_list, id: g_device_version_id }
+    ];
+    const updateData = indexConfigs.reduce((acc, { key, list, id }) => {
+      acc[key] = findValidIndex(list, id);
+      return acc;
+    }, {});
+    this.setData(updateData, () => {
+      if (updateData.g_product_type_index !== null) {
+        this.initialiDevicetype(g_product_type_id);
+      }
+    });
   },
   onLoad(options) {
     if (options.item) {
