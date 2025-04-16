@@ -277,6 +277,8 @@ Page({
         g_country_index = -1,
         g_device_version_list = [],
         g_device_version_index = -1,
+        g_device_type_list = [],
+        g_device_type_index = -1,
         deviceCount = 0,
         params = {},
         file = null,
