@@ -36,9 +36,9 @@
           </picker>
         </view>
       </view>
-      <!-- 硬件版本号 -->
+      <!-- 价格类型 -->
       <view class="card-info-item" wx:if="{{g_category_index}}">
-        <label>硬件版本号<text>*</text></label>
+        <label>价格类型<text>*</text></label>
         <view class="card-info-item-input">
           <picker range-key="name" range="{{g_device_version_list}}" bindchange="handleDeviceVersion">
             <block wx:if="{{!g_device_version_index}}">
@@ -50,8 +50,22 @@
           </picker>
         </view>
       </view>
+      <!-- 销售代号 -->
+      <view class="card-info-item" wx:if="{{g_category_index}}">
+        <label>销售代号<text>*</text></label>
+        <view class="card-info-item-input">
+          <picker range-key="name" range="{{g_device_type_list}}" bindchange="handleDeviceType">
+            <block wx:if="{{!g_device_type_index}}">
+              <text>请选择硬件版本</text>
+            </block>
+            <block wx:else>
+              <text style="color: #333;">{{g_device_type_list[g_device_type_index].name}}</text>
+            </block>
+          </picker>
+        </view>
+      </view>
       <!-- 类别选择-开始 -->
-      <block wx:if="{{g_category_list[g_category_index].id == 12}}">
+      <block wx:if="{{g_device_type_list[g_device_type_index].id == 11}}">
         <view class="card-info-item">
           <label>录入方式</label>
           <view class="card-info-item-tabs">
@@ -63,7 +77,7 @@
         </view>
       </block>
 
-      <view class="vehicle-card-info-item" wx:if="{{c_entry_method==1&&g_category_list[g_category_index].id == 12}}">
+      <view class="vehicle-card-info-item" wx:if="{{c_entry_method==1&&g_device_type_list[g_device_type_index].id == 11}}">
         <view class="vehicle-container-info">
           <scroll-view scroll-x class="tabs-scroll" scroll-left="{{scrollLeft}}" scroll-with-animation>
             <view class="tabs-container">
@@ -120,7 +134,7 @@
           </view>
         </view>
       </view>
-      <view class="card-info-item" wx:if="{{c_entry_method==2&&g_category_list[g_category_index].id == 12}}">
+      <view class="card-info-item" wx:if="{{c_entry_method==2&&g_device_type_list[g_device_type_index].id == 11}}">
         <label style="font-size: 26rpx;">上传照片<text>*</text></label>
         <view class="card-info-item-input" style="display: flex; align-items: center;gap: 10rpx;">
           <text src="{{file}}" class="card-upload" wx:if="{{file}}" bindtap="previewImage">预览</text>

@@ -59,12 +59,11 @@ Component({
     },
 
     switchTab(e) {
-
       if (appUtil.isLogin()) {
         const data = e.currentTarget.dataset
         const url = data.path
         wx.switchTab({
-          url
+          url: `/${url}`
         })
         this.setData({
           selected: data.index

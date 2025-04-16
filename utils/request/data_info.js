@@ -40,17 +40,22 @@ const u_buyRecord = {
   comParam: 'comParam'
 }
 // 获取类别列表
-const u_getDeviceType = {
-  URL: fin3plusUrl + "deviceBuyApi/getDeviceType",
+const u_getProductType = {
+  URL: fin3plusUrl + "deviceBuyApi/getProductType",
 }
 // 获取国家列表
 const u_getCountry = {
   URL: fin3plusUrl + "deviceBuyApi/getCountry",
 }
-// 获取硬件版本列表
+// 获取价格类型列表
 const u_getDeviceVersion = {
   URL: fin3plusUrl + "deviceBuyApi/getDeviceVersion",
   typeId: 'typeId'
+}
+// 获取销售代号列表
+const u_getDeviceType = {
+  URL: fin3plusUrl + "deviceBuyApi/getDeviceType",
+  productTypeId: 'productTypeId'
 }
 // 设备购买（数据全部由用户填写）
 const u_buyDevice = {
@@ -70,6 +75,7 @@ const u_priceCalculation ={
 }
 
 module.exports = {
+  u_getProductType,
   u_priceCalculation,
   u_addOrUpdate,
   u_addressapiList,

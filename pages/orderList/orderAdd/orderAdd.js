@@ -15,6 +15,7 @@ const {
 const {
   u_priceCalculation,
   u_getDeviceType,
+  u_getProductType,
   u_getCountry,
   u_getDeviceVersion,
   u_buyDevice
@@ -32,8 +33,10 @@ Page({
     g_category_index: null, //当前选择类别index
     g_country_list: [], //国家
     g_country_index: null, //当前选中国家
-    g_device_version_list: [], //硬件版本号
-    g_device_version_index: null, //当前硬件版本号
+    g_device_version_list: [], //价格类型号
+    g_device_version_index: null, //当前价格类型号
+    g_device_type_list: [], //销售代号
+    g_device_type_index: null, //当前销售代号
     c_entry_method: 1, //当前选择录入方式
     file: null, //上传的图片
     snitems: null,
@@ -87,7 +90,7 @@ Page({
   },
   // 请求类别数据
   initialiCategory() {
-    byPost(getApp().data.k1swUrl + u_getDeviceType.URL, {},
+    byPost(getApp().data.k1swUrl + u_getProductType.URL, {},
       (response) => {
         const resp = response.data.content
         this.setData({
@@ -101,6 +104,7 @@ Page({
       g_category_index: evt.detail.value
     }, () => {
       this.initialiDeviceVersion(this.data.g_category_list[this.data.g_category_index]?.id)
+      this.initialiDevicetype(this.data.g_category_list[this.data.g_category_index]?.id)
       this.handleCalculatePrice()
     })
   },
@@ -122,7 +126,7 @@ Page({
       this.handleCalculatePrice()
     })
   },
-  // 硬件版本数据
+  // 价格类型数据
   initialiDeviceVersion(evt) {
     const parmas = {
       [u_getDeviceVersion.typeId]: evt
@@ -135,10 +139,31 @@ Page({
         })
       });
   },
+  // 销售代号数据
+  initialiDevicetype(evt) {
+    const parmas = {
+      [u_getDeviceType.productTypeId]: evt
+    }
+    byPost(getApp().data.k1swUrl + u_getDeviceType.URL, parmas,
+      (response) => {
+        const resp = response.data.content
+        this.setData({
+          g_device_type_list: resp
+        })
+      });
+  },
   // 硬件数据发生变化
   handleDeviceVersion(evt) {
     this.setData({
       g_device_version_index: evt.detail.value
+    }, () => {
+      this.handleCalculatePrice()
+    })
+  },
+  // 销售代号发生变化
+  handleDeviceType(evt) {
+    this.setData({
+      g_device_type_index: evt.detail.value
     }, () => {
       this.handleCalculatePrice()
     })
@@ -266,6 +291,7 @@ Page({
     const deviceType = getValidValue(g_category_list, g_category_index);
     const country = getValidValue(g_country_list, g_country_index);
     const deviceVersion = getValidValue(g_device_version_list, g_device_version_index);
+    const deviceType1 = getValidValue(g_device_type_list, g_device_type_index);
     const requiredBaseFields = [{
         value: deviceType,
         name: '产品类别'
@@ -276,7 +302,11 @@ Page({
       },
       {
         value: deviceVersion,
-        name: '硬件版本号'
+        name: '价格类型'
+      },
+      {
+        value: deviceType1,
+        name: '销售代号'
       },
       {
         value: deviceCount,
@@ -302,7 +332,7 @@ Page({
     }).filter(index => index !== null));
 
 
-    if (carIndices.size === 0 && g_category_list[g_category_index]?.id == 12&&c_entry_method == 1) {
+    if (carIndices.size === 0 && g_device_type_list[g_device_type_index].id == 11 && c_entry_method == 1) {
       showToast('列表数据不得为空');
       return;
     }
@@ -366,7 +396,7 @@ Page({
       country,
       deviceVersion,
       deviceCount: Number(deviceCount),
-      carList: g_category_list[g_category_index]?.id == 12 ? carList?.map(item => ({
+      carList: g_device_type_list[g_device_type_index].id == 11 ? carList?.map(item => ({
         ...item,
       })) : [],
       file: this.initialiUrlToBase64WithMimeType(file)
@@ -424,12 +454,15 @@ Page({
         g_country_index = -1,
         g_device_version_list = [],
         g_device_version_index = -1,
+        g_device_type_list = [],
+        g_device_type_index = -1,
         deviceCount = 0,
     } = this.data;
     const category = g_category_list[g_category_index];
     const country = g_country_list[g_country_index];
     const deviceVersion = g_device_version_list[g_device_version_index];
-    if (!category?.id || !country?.id || !deviceVersion?.id || !deviceCount||category?.id == 12) {
+    const device = g_device_type_list[g_device_type_index] ;
+    if (!category?.id || !country?.id || !deviceVersion?.id || !deviceCount || device?.id == 11) {
       return;
     }
     const params = {
