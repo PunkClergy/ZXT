@@ -200,6 +200,10 @@ Page({
       params: {
         ...params
       }
+    }, () => {
+      this.setData({
+        deviceCount: this.data.tabs.length
+      })
     })
   },
   // 启动方式
@@ -283,6 +287,10 @@ Page({
     this.setData({
       tabs: newTabs,
       currentIndex: newIndex
+    }, () => {
+      this.setData({
+        deviceCount: this.data.tabs.length
+      })
     })
   },
   // 提交参数
@@ -309,7 +317,7 @@ Page({
 
     const productType = getValidValue(g_product_type_list, g_product_type_index);
     const country = getValidValue(g_country_list, g_country_index);
-    const deviceVersion = getValidValue(g_device_version_list, g_device_version_index);
+    const deviceVersion = getValidValue(g_device_version_list, g_device_version_index)
     const deviceType = getValidValue(g_device_type_list, g_device_type_index);
     const requiredBaseFields = [{
         value: productType,
@@ -421,6 +429,8 @@ Page({
       })) : [],
       file: this.initialiUrlToBase64WithMimeType(file)
     };
+    console.log(submitParams)
+    return
     showLoading();
     try {
       byPostJson(
@@ -510,12 +520,27 @@ Page({
   },
   // 获取编辑状态的初始值
   initOptions(evt) {
+    console.log(evt)
+
+    const params = evt.orderCarList.map(ele => {
+      let temp = {
+        [`carmodel${ele.id}`]: ele.carmodel,
+        [`carserial${ele.id}`]: ele.carserial,
+        [`carversion${ele.id}`]: ele.carversion,
+        [`runType${ele.id}`]: ele.runType,
+        [`vin${ele.id}`]: ele.vin
+      };
+      return temp
+    });
+    console.log(params)
     this.setData({
       g_product_type_id: evt.productType, //当前选择类别index
       g_country_id: evt.country, //当前选中国家
       g_device_version_id: evt.deviceVersion, //当前价格类型号
       g_device_type_id: evt.deviceType, //当前销售代号
       deviceCount: evt.deviceCount,
+      tabs: evt.orderCarList,
+      params: Object.assign({}, ...params),
       snitems: {
         address: evt.linkaddress,
         linkperson: evt.linkman,
@@ -525,7 +550,6 @@ Page({
   },
   // 寻找索引值
   initReplaceIndex() {
-    console.log(this.data)
     const {
       g_product_type_list = [],
         g_product_type_id,
@@ -570,8 +594,6 @@ Page({
     });
   },
   onLoad(options) {
-    console.log(options)
-    console.log(options.item)
     if (options.item) {
       this.initOptions(JSON.parse(options.item))
     }
@@ -579,9 +601,6 @@ Page({
 
   onReady() {
 
-    if (!this.data.snitems) {
-      this.handleChoiceStorage()
-    }
   },
 
   onShow() {
@@ -589,6 +608,9 @@ Page({
     this.initialiCategory()
     this.initialiCountry()
     this.initialiDeviceVersion()
+    if (!this.data.snitems) {
+      this.handleChoiceStorage()
+    }
 
   },
 })

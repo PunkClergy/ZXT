@@ -13,7 +13,7 @@
         <label>产品类别<text>*</text></label>
         <view class="card-info-item-input">
           <picker range-key="name" range="{{g_product_type_list}}" bindchange="handleCategory">
-            <block wx:if="{{!g_product_type_index}}">
+            <block wx:if="{{g_product_type_index==null}}">
               <text>请选择类别</text>
             </block>
             <block wx:else>
@@ -27,7 +27,7 @@
         <label>国家地区<text>*</text></label>
         <view class="card-info-item-input">
           <picker range-key="name" range="{{g_country_list}}" bindchange="handleCountry">
-            <block wx:if="{{!g_country_index}}">
+            <block wx:if="{{g_country_index==null}}">
               <text>请选择国家</text>
             </block>
             <block wx:else>
@@ -41,7 +41,7 @@
         <label>价格类型<text>*</text></label>
         <view class="card-info-item-input">
           <picker range-key="name" range="{{g_device_version_list}}" bindchange="handleDeviceVersion">
-            <block wx:if="{{!g_device_version_index}}">
+            <block wx:if="{{g_device_version_index==null}}">
               <text>请选择硬件版本</text>
             </block>
             <block wx:else>
@@ -51,7 +51,7 @@
         </view>
       </view>
       <!-- 销售代号 -->
-      <view class="card-info-item" wx:if="{{g_product_type_index}}">
+      <view class="card-info-item" wx:if="{{g_product_type_index!=null}}">
         <label>销售代号<text>*</text></label>
         <view class="card-info-item-input">
           <picker range-key="name" range="{{g_device_type_list}}" bindchange="handleDeviceType">
@@ -146,7 +146,7 @@
       <view class="card-info-item">
         <label>数量<text>*</text></label>
         <view class="card-info-item-input">
-          <input type="number" placeholder="请输入数量" value="{{deviceCount}}" data-item="deviceCount" bindinput="handleNumBindinput" />
+          <input disabled="{{g_device_type_list[g_device_type_index].id == 11}}" style="opacity: {{g_device_type_list[g_device_type_index].id == 11?'0.5':'1'}};" type="number" placeholder="请输入数量" value="{{deviceCount}}" data-item="deviceCount" bindinput="handleNumBindinput" />
         </view>
       </view>
       <!-- 联系人 -->
