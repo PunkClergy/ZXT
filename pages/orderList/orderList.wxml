@@ -21,7 +21,7 @@
   <!-- 主要内容区域 -->
   <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
     <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
-      <view class="content-item">
+      <view class="content-item" data-item="{{item}}" bindtap="handleView">
         <view class="content-item-head">
           <view class="head-left">
             <view class="left-category">
@@ -64,7 +64,18 @@
         <view class="content-item-footer">
           <view class="footer-left">开单时间: {{item.createdate||'-'}}</view>
           <view class="footer-right" data-item="{{item}}" bindtap="handleToPay">
-            {{item.cost !== null ? '￥' + item.cost :''}}金额和状态
+            <wxs module="utils">
+              function findName(list, value) {
+                for (var i = 0; i < list.length; i++) {
+                  if (list[i].value === value) {
+                    return list[i].name;
+                  }
+                }
+                return '未知状态';
+              }
+              module.exports.findName = findName;
+            </wxs>
+            {{ utils.findName(orderListStatus, item.status) }}
           </view>
         </view>
       </view>

@@ -77,15 +77,54 @@
   flex-wrap: wrap;
   min-height: 100rpx;
   max-height: 50vh;
-  overflow-y: auto; 
+  overflow-y: auto;
   justify-content: flex-start;
   padding: 10rpx;
   gap: 20rpx;
-  border-bottom: 1px solid #f0f0f0;
+  /* border-bottom: 1px solid #f0f0f0; */
 }
 /* 底部 */
 .bottom-box {
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* tabs 滚动容器 */
+.tabs-scroll {
+  width: 100%;
+  white-space: nowrap;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+/* tabs 容器 */
+.tabs-container {
+  display: inline-block;
+}
+/* 单个 tab 样式 */
+.tab-item {
+  display: inline-block;
+  padding: 0 30rpx;
+  line-height: 90rpx;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+  transition: all 0.3s;
+}
+
+/* 激活状态样式 */
+.tab-item.active {
+  color: #007aff;
+  font-weight: bold;
+}
+
+.tab-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 4rpx;
+  background: #007aff;
+  border-radius: 2rpx;
 }

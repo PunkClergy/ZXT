@@ -3,6 +3,7 @@
  */
 const STATUS = {
   ALL: '',
+  FALLBACK: -1,
   PENDING_ACCEPTANCE: 1,
   AWAITING_CONFIRMATION: 2,
   ACCEPTED: 3,
@@ -57,13 +58,14 @@ const macckStatus=[
 ]
 const orderListStatus = [
     { value: STATUS.ALL, name: '全部' },
-    { value: STATUS.PENDING_ACCEPTANCE, name: '待接单' },
-    { value: STATUS.AWAITING_CONFIRMATION, name: '待确认' },
-    { value: STATUS.ACCEPTED, name: '已接单' },
-    { value: STATUS.IN_PROGRESS, name: '进行中' },
-    { value: STATUS.AWAITING_INSPECTION, name: '待验收' },
-    { value: STATUS.COMPLETED, name: '已完结' },
-    { value: STATUS.CANCELLED, name: '已取消' }
+    { value: STATUS.PENDING_ACCEPTANCE, name: '待商家确认' },
+    { value: STATUS.AWAITING_CONFIRMATION, name: '待客户确认' },
+    { value: STATUS.ACCEPTED, name: '待付款' },
+    { value: STATUS.IN_PROGRESS, name: '待发货' },
+    { value: STATUS.AWAITING_INSPECTION, name: '待安装' },
+    { value: STATUS.COMPLETED, name: '安装完成' },
+    { value: STATUS.CANCELLED, name: '订单完成' },
+    { value: STATUS.FALLBACK, name: '已取消' },
 ]
 const FIELD_CONFIG = [
   { key: 'producttypeName', label: '产品类别' },

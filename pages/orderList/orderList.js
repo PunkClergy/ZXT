@@ -18,8 +18,7 @@ const {
   _handleDeviceInfo
 } = require('../../utils/public').default
 const {
-  orderListStatus,
-  orderStatus
+  orderListStatus
 } = require('../../utils/Inspect/filterColl').default
 Page({
   data: {
@@ -28,7 +27,6 @@ Page({
     c_navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
     c_searchBarHeight: 70, // 搜索框高度，默认值
     c_totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
-    c_status: orderStatus, //订单状态
     is_mask_visible: false, //蒙版状态
     g_page: 1, //列表页码
     g_comParam: '', //输入框内容
@@ -46,6 +44,7 @@ Page({
       params: 'g_status',
       filter_work: orderListStatus
     }, ], //筛选的下拉数据
+    orderListStatus:orderListStatus,
     startDate: '2025-03-20', //历史轨迹查询时间
     startTime: '19:00', //历史轨迹查询时间
     endDate: '2025-03-20', //历史轨迹查询时间
