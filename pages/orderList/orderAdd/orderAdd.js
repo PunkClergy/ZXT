@@ -46,7 +46,8 @@ Page({
     }],
     currentIndex: 0,
     scrollLeft: 0,
-    g_cost: 0
+    g_cost: 0,
+    id: null
   },
   // 全图背景
   initialiImageBaseConversion() {
@@ -209,7 +210,7 @@ Page({
   // 启动方式
   handleBatterylift(evt) {
     const params = this.data?.params
-    params['runType' + evt?.currentTarget.dataset.id] = evt.currentTarget.dataset.item
+    params['runtype' + evt?.currentTarget.dataset.id] = evt.currentTarget.dataset.item
     this.setData({
       params: {
         ...params
@@ -296,25 +297,23 @@ Page({
   // 提交参数
   handleSubmit() {
     const {
+      id,
       g_product_type_list = [],
-        g_product_type_index = -1,
-        g_country_list = [],
-        g_country_index = -1,
-        g_device_version_list = [],
-        g_device_version_index = -1,
-        g_device_type_list = [],
-        g_device_type_index = -1,
-        deviceCount = 0,
-        params = {},
-        file = null,
-        snitems,
-        c_entry_method
+      g_product_type_index = -1,
+      g_country_list = [],
+      g_country_index = -1,
+      g_device_version_list = [],
+      g_device_version_index = -1,
+      g_device_type_list = [],
+      g_device_type_index = -1,
+      deviceCount = 0,
+      params = {},
+      file = null,
+      snitems,
+      c_entry_method
     } = this.data;
-    const validateIndex = (list, index) =>
-      Array.isArray(list) && index >= 0 && index < list.length;
-    const getValidValue = (list, index) =>
-      validateIndex(list, index) ? list[index]?.id : null;
-
+    const validateIndex = (list, index) => Array.isArray(list) && index >= 0 && index < list.length;
+    const getValidValue = (list, index) => validateIndex(list, index) ? list[index]?.id : null;
     const productType = getValidValue(g_product_type_list, g_product_type_index);
     const country = getValidValue(g_country_list, g_country_index);
     const deviceVersion = getValidValue(g_device_version_list, g_device_version_index)
@@ -363,7 +362,6 @@ Page({
       showToast('列表数据不得为空');
       return;
     }
-
     const carList = [];
     const carErrors = [];
 
@@ -419,6 +417,7 @@ Page({
     }
 
     const submitParams = {
+      id,
       productType,
       deviceType,
       country,
@@ -429,8 +428,6 @@ Page({
       })) : [],
       file: this.initialiUrlToBase64WithMimeType(file)
     };
-    console.log(submitParams)
-    return
     showLoading();
     try {
       byPostJson(
@@ -520,19 +517,16 @@ Page({
   },
   // 获取编辑状态的初始值
   initOptions(evt) {
-    console.log(evt)
-
     const params = evt.orderCarList.map(ele => {
       let temp = {
         [`carmodel${ele.id}`]: ele.carmodel,
         [`carserial${ele.id}`]: ele.carserial,
         [`carversion${ele.id}`]: ele.carversion,
-        [`runType${ele.id}`]: ele.runType,
+        [`runtype${ele.id}`]: ele.runtype,
         [`vin${ele.id}`]: ele.vin
       };
       return temp
     });
-    console.log(params)
     this.setData({
       g_product_type_id: evt.productType, //当前选择类别index
       g_country_id: evt.country, //当前选中国家
@@ -545,7 +539,8 @@ Page({
         address: evt.linkaddress,
         linkperson: evt.linkman,
         linkmobile: evt.linkmobile
-      }
+      },
+      id: evt.id
     })
   },
   // 寻找索引值

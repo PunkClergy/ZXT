@@ -117,8 +117,8 @@
                   <label>启动方式<text>*</text></label>
                   <view class="card-info-item-tabs">
                     <view class="card-info-item-tabs-btn">
-                      <text class="{{params['runType' + item.id]  == '一键启动'?'tabs-active':''}}" data-id="{{item.id}}" data-item="一键启动" bindtap="handleBatterylift">一键启动</text>
-                      <text class="{{params['runType' + item.id]  == '机械钥匙'?'tabs-active':''}}" data-id="{{item.id}}" data-item="机械钥匙" bindtap="handleBatterylift">机械钥匙</text>
+                      <text class="{{params['runtype' + item.id]  == '一键启动'?'tabs-active':''}}" data-id="{{item.id}}" data-item="一键启动" bindtap="handleBatterylift">一键启动</text>
+                      <text class="{{params['runtype' + item.id]  == '机械钥匙'?'tabs-active':''}}" data-id="{{item.id}}" data-item="机械钥匙" bindtap="handleBatterylift">机械钥匙</text>
                     </view>
                   </view>
                 </view>
