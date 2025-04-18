@@ -435,7 +435,7 @@ Page({
       appUtil.hideLoading();
       if (res) {
         var data = res.data;
-        if (data.code == 1000) {
+        if (data.code == 1000) { 
           data.content.forEach((r) => {
             r.photoStatus = '未拍照',
               r.startPhotoPath = ''

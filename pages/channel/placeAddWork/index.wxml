@@ -1,0 +1,70 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="内部派工" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <view class="card-info">
+
+      <!-- 客户类型 -->
+      <view class="card-info-item">
+        <label>客户类型<text>*</text></label>
+        <block>
+          <view class="card-info-item-tabs">
+            <view class="card-info-item-tabs-btn">
+              <text class="{{companyType == 1?'tabs-active':''}}" data-item="1" bindtap="handleBatterylift">系统存在的</text>
+              <text class="{{companyType == 2?'tabs-active':''}}" data-item="2" bindtap="handleBatterylift">系统不存在的</text>
+            </view>
+          </view>
+        </block>
+      </view>
+      <!-- 客户名称 -->
+      <view class="card-info-item" wx:if="{{companyType==2}}">
+        <label>客户名称<text>*</text></label>
+        <block>
+          <view class="card-info-item-input">
+            <input placeholder="请输入客户名称" value="{{params.companyName}}" data-item="companyName" bindinput="handleBindinput" />
+          </view>
+        </block>
+
+      </view>
+      <!-- 客户列表&BD列表 -->
+      <view class="card-info-item">
+        <label>
+          <block wx:if="{{companyType == 1}}">
+            选择客户
+          </block>
+          <block wx:else>
+            指派BD
+          </block>
+          <text>*</text>
+        </label>
+        <view class="card-info-item-input" bindtap="handleSelectAddress">
+          <view class="card-consignee">
+            <block wx:if="{{(companyType==1&&select_content_guestdata.id)||(companyType == 2&&select_content_bddata.id)}}">
+              <view style="font-size: 26rpx;color: #7b7c7c;">{{companyType==1?select_content_guestdata.name:select_content_bddata.name}}</view>
+            </block>
+            <block wx:else>
+              <view style="font-size: 26rpx; color: #7b7c7c;">请选择</view>
+            </block>
+
+          </view>
+          <image src="/assets/images/home/right_1.png" style="width: 30rpx;height: 28rpx;" />
+        </view>
+      </view>
+      <!-- 派工内容 -->
+      <view class="card-info-item" wx:if="{{companyType==2}}">
+        <label>备注<text>*</text></label>
+        <block>
+          <view class="card-info-item-input">
+            <textarea bindblur="handleBindinput" value="{{params.content}}" data-item="content" auto-height placeholder="请输入派工内容" />
+          </view>
+        </block>
+
+      </view>
+    </view>
+    <view class="card-footer">
+      <view bindtap="handleSubmit">确认提交</view>
+    </view>
+  </view>
+
+</view>

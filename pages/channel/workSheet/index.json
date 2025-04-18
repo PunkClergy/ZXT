@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "派发工单",
+  "usingComponents": {
+    "drop-filter-com": "/components/DropFilterCom/index",
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}
+

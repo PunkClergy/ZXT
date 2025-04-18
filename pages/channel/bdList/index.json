@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "BD列表",
+  "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}
+
