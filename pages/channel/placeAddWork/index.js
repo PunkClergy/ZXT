@@ -77,7 +77,6 @@ Page({
   },
   // 获取缓存数据
   handleStorage() {
-    console.log(111)
     const {
       companyType
     } = this.data;
@@ -114,12 +113,10 @@ Page({
       [u_dispatchWork.content]: params.content || '',
       [u_dispatchWork.bdId]: companyType == 2 ? select_content_bddata?.id : ''
     }
-    byPost(u_dispatchWork, requestParam, (response) => {
+    byPost(getApp().data.k1swUrl + u_dispatchWork.URL, requestParam, (response) => {
       wx.removeStorage({
         key: 'guestdata',
-        success() {
-
-        }
+        success() {}
       });
       wx.removeStorage({
         key: 'bddata',

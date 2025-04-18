@@ -119,7 +119,8 @@
     "pages/channel/workSheet/index",
     "pages/channel/placeAddWork/index",
     "pages/channel/guestList/index",
-    "pages/channel/bdList/index"
+    "pages/channel/bdList/index",
+    "pages/channel/messageList/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

@@ -26,7 +26,22 @@ const u_dispatchWork = {
   content: 'content',
   bdId: 'bdId',
 }
+// 派工信息
+const u_nodeDetailList = {
+  URL: fin3plusUrl + "addressapi/nodeDetailList",
+  read: 'read',
+  companyId: 'companyId',
+}
+// 发送消息
+const u_nodeSubmit = {
+  URL: fin3plusUrl + "addressapi/nodeSubmit",
+  read: 'read',
+  companyId: 'companyId',
+}
+
 module.exports = {
+  u_nodeSubmit,
+  u_nodeDetailList,
   u_dispatchWork,
   u_bDList,
   u_companyList,

@@ -22,7 +22,7 @@ Page({
     c_totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_total: 0, //工单总数
     g_page: 1, //列表页码
-    g_comParam:''
+    g_comParam: ''
   },
 
   // 全屏背景
@@ -151,6 +151,15 @@ Page({
   handleOneClickOrdering() {
     wx.navigateTo({
       url: '/pages/channel/placeAddWork/index',
+    })
+  },
+  // 点击跳转详情
+  handleView(evt) {
+    const {
+      item
+    } = evt.currentTarget.dataset
+    wx.navigateTo({
+      url: '/pages/channel/messageList/index?id=' + item.companyId,
     })
   },
   onLoad(options) {
