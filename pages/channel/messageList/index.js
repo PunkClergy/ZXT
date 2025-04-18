@@ -27,7 +27,8 @@ Page({
     g_items: [],
     params: {},
     scrollBottom: 0,
-    toView: ''
+    toView: '',
+    c_link: 'https://k1sw.wiselink.net.cn/', //域名
   },
 
   // 全屏背景
@@ -98,19 +99,45 @@ Page({
       }
     })
   },
+  // 预览图片
+  previewImage(evt) {
+    const {
+      item
+    } = evt.currentTarget.dataset
+    if (!item) return;
+    wx.previewMedia({
+      sources: [{
+        url: item, // 图片路径
+        type: 'image',
+      }, ],
+    });
+  },
+  // URL转base64
+  initialiUrlToBase64WithMimeType(url) {
+    try {
+      const fs = wx.getFileSystemManager();
+      const filePath = url;
+      const fileContent = fs.readFileSync(filePath, 'base64');
+      const base64Data = `data:image/png;base64,${fileContent}`;
+      return base64Data;
+    } catch (err) {}
+  },
   // 发送
   handleSeed() {
     const {
       params,
-      companyId
+      companyId,
+      file
     } = this.data
     const requestParam = {
       companyId,
+      file: this.initialiUrlToBase64WithMimeType(file),
       content: params.content
     }
     byPost(getApp().data.k1swUrl + u_nodeSubmit.URL, requestParam, (response) => {
       this.setData({
-        params: {}
+        params: {},
+        g_items: []
       }, () => {
         this.getOrderList()
       })
@@ -119,6 +146,22 @@ Page({
       showToast('获取信息失败，请重试');
     }, () => {
       hideLoading();
+    });
+  },
+  handleUpdata() {
+    wx.chooseMedia({
+      count: 1, // 最多选择1张图片
+      mediaType: ['image'], // 只选择图片
+      sourceType: ['album', 'camera'], // 允许从相册选择或拍照
+      success: (res) => {
+        const tempFilePath = res.tempFiles[0].tempFilePath; // 获取图片临时路径
+        this.setData({
+          file: tempFilePath,
+        });
+      },
+      fail: (err) => {
+        showToast('选择图片失败');
+      },
     });
   },
   onLoad(options) {

@@ -1,7 +1,7 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
   <!-- 自定义头部 -->
   <custom-header title="派工信息" />
-  <scroll-view class="content-container" scroll-y="true" style="height: {{(c_screen_height)-(c_statusBarHeight + c_navBarHeight +80)}}px;top:{{c_statusBarHeight + c_navBarHeight}}px;" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}" scroll-into-view="{{toView}}">
+  <scroll-view class="content-container" scroll-y="true" style="height: {{(c_screen_height)-(c_statusBarHeight + c_navBarHeight +80+10)}}px;top:{{c_statusBarHeight + c_navBarHeight}}px;" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}" scroll-into-view="{{toView}}">
     <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
       <view class="content-item" data-item="{{item}}" id="msg{{index}}">
         <view class="content-item-head">
@@ -15,18 +15,20 @@
           </view>
         </view>
         <view class="content-item-info">
-          {{item.content}}
+          <view style="font-size: 24rpx;color: #7b7c7c;">{{item.content}}</view>
+          <image src="{{c_link}}/img/{{item.imgpath}}" style="height: 100rpx;width: 100rpx;" data-item="{{c_link}}/img/{{item.imgpath}}" bindtap="previewImage" wx:if="{{item.imgpath}}"/>
         </view>
       </view>
     </block>
   </scroll-view>
   <view class="seedView" style="height:{{c_bottom_seed}}px">
     <view class="seed-input">
-      <textarea bindblur="handleBindinput" value="{{params.content}}" data-item="content" placeholder="请输入内容" style="padding: 10rpx;" />
+      <textarea bindblur="handleBindinput" value="{{params.content}}" data-item="content" placeholder="请输入内容" />
     </view>
 
     <view class="seed-btn">
       <text bindtap="handleSeed" style="padding: 10rpx;">发送</text>
+      <text bindtap="handleUpdata" style="background: #fff;color: #000;padding: 10rpx;">{{file?'重新上传':'上传图片'}}</text>
     </view>
   </view>
 </view>

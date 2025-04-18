@@ -104,6 +104,7 @@
 .content-item-info {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   justify-content: flex-start;
   padding: 10rpx;
   gap: 20rpx;
@@ -201,7 +202,7 @@
   padding-bottom: env(safe-area-inset-bottom);
 }
 .seed-input {
-  width: 80%;
+  width: 75%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -210,19 +211,24 @@
 .seed-input textarea {
   border: 1px solid #eee;
   border-radius: 8rpx;
-  height: 80%;
+  height: 100%;
   background-color: #fff;
 }
 .seed-btn {
-  width: 18%;
+  width: 22%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: space-around;
+  gap: 20rpx;
+  font-size: 26rpx;
+  
 }
 .seed-btn text {
   border-radius: 10rpx;
-  width: 100%;
-  height: 80%;
+  width: 80%;
+  height: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
