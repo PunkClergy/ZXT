@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "渠道二维码",
+  "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}
+

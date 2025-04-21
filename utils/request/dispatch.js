@@ -38,8 +38,12 @@ const u_nodeSubmit = {
   read: 'read',
   companyId: 'companyId',
 }
-
+// 我的二维码
+const u_qrcode = {
+  URL: fin3plusUrl + "companyapi/qrcode",
+}
 module.exports = {
+  u_qrcode,
   u_nodeSubmit,
   u_nodeDetailList,
   u_dispatchWork,

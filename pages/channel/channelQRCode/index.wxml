@@ -1,0 +1,24 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <!-- 自定义头部 -->
+  <custom-header title="渠道二维码" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <!-- 顶部卡片 -->
+    <view class="top-box">
+      <view class="content-item-head">
+        <view class="head-left">
+          <view class="left-category">
+            <text>渠道二维码</text>
+          </view>
+        </view>
+      </view>
+      <view class="content-item-info">
+        <view class="info-item">
+          <image src="{{c_link}}img/{{imageUrl}}" />
+          <text bindtap="handleDownloadImage">预 览</text>
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+</view>

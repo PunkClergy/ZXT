@@ -120,7 +120,8 @@
     "pages/channel/placeAddWork/index",
     "pages/channel/guestList/index",
     "pages/channel/bdList/index",
-    "pages/channel/messageList/index"
+    "pages/channel/messageList/index",
+    "pages/channel/channelQRCode/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
