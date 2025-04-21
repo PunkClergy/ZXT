@@ -114,7 +114,6 @@ Page({
       [u_dispatchWork.bdId]: companyType == 2 ? select_content_bddata?.id : ''
     }
     byPost(getApp().data.k1swUrl + u_dispatchWork.URL, requestParam, (response) => {
-      console.log(response)
       wx.removeStorage({
         key: 'guestdata',
         success() {}
