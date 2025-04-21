@@ -1,7 +1,6 @@
 {
-  "navigationBarTitleText": "互动看板",
+  "navigationBarTitleText": "客户资料",
   "usingComponents": {
-    "drop-filter-com": "/components/DropFilterCom/index",
     "custom-header": "/components/CustomHeader/index"
   },
   "navigationStyle": "custom",

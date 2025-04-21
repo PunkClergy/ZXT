@@ -42,7 +42,19 @@ const u_nodeSubmit = {
 const u_qrcode = {
   URL: fin3plusUrl + "companyapi/qrcode",
 }
+// 扫码客户清单
+const u_myCompanyList = {
+  URL: fin3plusUrl + "companyapi/myCompanyList",
+  name: 'name',
+  page: 'page'
+}
+// 新增扫码客户
+const u_addOrUpateMyCompany = {
+  URL: fin3plusUrl + "companyapi/addOrUpateMyCompany",
+}
 module.exports = {
+  u_addOrUpateMyCompany,
+  u_myCompanyList,
   u_qrcode,
   u_nodeSubmit,
   u_nodeDetailList,

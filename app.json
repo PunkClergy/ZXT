@@ -121,7 +121,9 @@
     "pages/channel/guestList/index",
     "pages/channel/bdList/index",
     "pages/channel/messageList/index",
-    "pages/channel/channelQRCode/index"
+    "pages/channel/channelQRCode/index",
+    "pages/channel/scanCodeList/index",
+    "pages/channel/scanCodeList/scanCodeAdd/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

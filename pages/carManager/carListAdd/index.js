@@ -159,6 +159,7 @@ Page({
     if (options.item) {
       const info = JSON.parse(options.item)
       const params = {
+        id:info?.id,
         vehicleSerialName: info?.vehicleSerialName,
         vehicleModeName: info?.vehicleModeName,
         ccdate: info?.ccdate,
