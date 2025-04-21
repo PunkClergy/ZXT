@@ -5,7 +5,7 @@
     <view class="status-bar" style="height:{{statusBarHeight}}px;"></view>
     <view class="nav-bar" style="height:{{navBarHeight}}px;">
       <view class="title-container">
-        <image src="/assets/images/login/logo.png" bindtap="handleJumpHome" />
+        <image src="{{logoSrc}}" bindtap="handleJumpHome" />
         <text class="title">智信通wiselink</text>
       </view>
     </view>

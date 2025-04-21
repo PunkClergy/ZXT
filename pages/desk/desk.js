@@ -7,7 +7,8 @@ const {
   u_midMenulist,
   u_menulist,
   u_rightMenulist,
-  u_termialList
+  u_termialList,
+  u_logo
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -41,6 +42,7 @@ Page({
     num: 0, //下拉计数
     sn_specific_value: null,
     sn_state: false, //显示地图状态
+    logoSrc: '/assets/images/login/logo.png',
   },
 
   // 转换背景图base64
@@ -131,9 +133,11 @@ Page({
     };
     byGet(url, params).then(response => {
       const content = response.data.content;
-      const chunks = Array.from({length: Math.ceil(content.length/5)}, (_,i) => content.slice(i*5, i*5+5));
+      const chunks = Array.from({
+        length: Math.ceil(content.length / 5)
+      }, (_, i) => content.slice(i * 5, i * 5 + 5));
       this.setData({
-        g_before_passing_by_icon:chunks,
+        g_before_passing_by_icon: chunks,
         termial_active: e?.id || e?.currentTarget?.dataset?.item?.id,
         g_quickIndex: 0,
         tabs_bg: params?.terminalId == '-1' ? _this.data.s_client_bg : (params?.terminalId == 222 ? _this.data.s_channel_bg : _this.data.s_service_bg),
@@ -288,20 +292,33 @@ Page({
 
     })
   },
+  initLogo() {
+    const _this = this
+    byGet(_this.data.c_link + u_logo.URL, {}).then(response => {
+      const rspns = response.data.content
+      const {
+        c_link
+      } = this.data;
+      const logoSrc = `${c_link}/img/${rspns.img}`;
+      this.setData({
+        logoSrc
+      });
+    })
+  },
   onLoad: function (options) {
     wx.hideTabBar();
     this.initialGetBanner()
     this.handleTermialList()
-    if (options?.scene||options?.query) {
+    if (options?.scene || options?.query) {
       this.setData({
         sn_state: true,
         sn_specific_value: options?.scene || options?.query
       }, () => {
-          wx.setStorageSync('scene', options?.scene || options?.query);
+        wx.setStorageSync('scene', options?.scene || options?.query);
       })
     }
   },
-  triggerChildEvent(){
+  triggerChildEvent() {
     // / 使用 this.selectComponent('#myChild') 来获取子组件实例
     const child = this.selectComponent('#myChild');
     if (child) {
@@ -314,7 +331,7 @@ Page({
   },
 
   onShow: function (e) {
-
+    this.initLogo()
   },
   onUnload: function () {
     this.setData({

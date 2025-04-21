@@ -23,7 +23,12 @@ const u_navlist = {
 const u_termialList = {
   URL:'deskapi/termialList',
 }
+// 获取Logo
+const u_logo = {
+  URL:'deskapi/logo',
+}
 module.exports = {
+  u_logo,
   u_navlist,
   u_bannerlist,
   u_midMenulist,
