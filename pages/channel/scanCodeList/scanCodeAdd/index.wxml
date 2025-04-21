@@ -3,12 +3,7 @@
   <!-- 自定义头部 -->
   <custom-header title="新增客户" />
   <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
-    <view class="card-head">
-      <image src="/assets/images/home/car_icon.png" />
-      <text>完善我的资料</text>
-    </view>
     <view class="card-info">
-
       <!-- 客户角色 -->
       <view class="card-info-item">
         <label>客户角色<text>*</text></label>
