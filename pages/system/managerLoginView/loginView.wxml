@@ -1,5 +1,5 @@
 <view class='container'>
-  <image src="../../../assets/images/login/logo.png" style="width: 191rpx;height: 191rpx;margin-top: 30rpx;"></image>
+  <image src="{{logoSrc}}" style="width: 191rpx;height: 191rpx;margin-top: 30rpx;"></image>
   <view style="color: white;font-size:50rpx;font-weight: bold;"> </view>
   <view style="color: white;font-size:50rpx;">智信通wiselink </view>
   <form>

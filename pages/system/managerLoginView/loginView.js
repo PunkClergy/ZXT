@@ -5,6 +5,9 @@ const {
   byPost,
   byGet
 } = require('../../../utils/request/http')
+const {
+  u_logo
+} = require('../../../utils/request/home')
 var that;
 var currentTime = 60;
 var interval;
@@ -23,6 +26,7 @@ Page({
     type: 1,
     invit_code: '无',
     c_link: 'https://k1sw.wiselink.net.cn/', //域名
+    logoSrc: '/assets/images/login/logo.png',
     // c_link: 'http://192.168.43.23:8689/'
   },
 
@@ -56,8 +60,7 @@ Page({
 
       const urlConfig = {
         k1swUrl: isTestUser ?
-          "https://k1swtest.wiselink.net.cn/" :
-          "https://k3a.wiselink.net.cn/",
+          "https://k1swtest.wiselink.net.cn/" : "https://k3a.wiselink.net.cn/",
         fin3Url: "https://fin3.wiselink.net.cn/fin/" // 固定地址
       };
 
@@ -89,13 +92,24 @@ Page({
         "操作失败，请检查网络后重试",
         false,
         () => {
-          /* 可添加重试逻辑 */ }
+          /* 可添加重试逻辑 */
+        }
       );
     }
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  initLogo() {
+    const _this = this
+    byGet(_this.data.c_link + u_logo.URL, {}).then(response => {
+      const rspns = response.data.content
+      const {
+        c_link
+      } = this.data;
+      const logoSrc = `${c_link}/img/${rspns.img}`;
+      this.setData({
+        logoSrc
+      });
+    })
+  },
   onLoad: function (options) {
     // 检查是否需要隐私授权
     wx.requirePrivacyAuthorize({
@@ -132,6 +146,7 @@ Page({
     });
     currentTime = 60;
     clearInterval(interval);
+    this.initLogo()
   },
 
 
