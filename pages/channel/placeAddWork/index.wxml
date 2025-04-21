@@ -56,7 +56,7 @@
         <label>备注<text>*</text></label>
         <block>
           <view class="card-info-item-input">
-            <textarea maxlength="{{-1}}" style="height: 100rpx;" bindblur="handleBindinput" value="{{params.content}}" data-item="content" auto-height placeholder="请输入派工内容" />
+            <textarea maxlength="{{-1}}" style="height: 100rpx;" placeholder-style="fonr-size:26rpx" bindblur="handleBindinput" value="{{params.content}}" data-item="content" auto-height placeholder="请输入派工内容" />
           </view>
         </block>
 
