@@ -52,7 +52,19 @@ const u_myCompanyList = {
 const u_addOrUpateMyCompany = {
   URL: fin3plusUrl + "companyapi/addOrUpateMyCompany",
 }
+// 重置密码
+const u_resetMyCompanyPassword = {
+  URL: fin3plusUrl + "companyapi/resetMyCompanyPassword",
+  userId:'userId'
+}
+// 确认客户资料
+const u_comfirmMyCompany = {
+  URL: fin3plusUrl + "companyapi/comfirmMyCompany",
+  companyId:'companyId'
+}
 module.exports = {
+  u_comfirmMyCompany,
+  u_resetMyCompanyPassword,
   u_addOrUpateMyCompany,
   u_myCompanyList,
   u_qrcode,

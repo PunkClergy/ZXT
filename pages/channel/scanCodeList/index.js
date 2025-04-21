@@ -4,10 +4,13 @@ const {
   showToast
 } = require('../../../utils/Inspect/tips')
 const {
-  byGet
+  byGet,
+  byPost
 } = require('../../../utils/request/http')
 const {
   u_myCompanyList,
+  u_resetMyCompanyPassword,
+  u_comfirmMyCompany
 } = require('../../../utils/request/dispatch')
 const {
   _handleWindowInfo,
@@ -159,8 +162,56 @@ Page({
       item
     } = evt.currentTarget.dataset
     wx.navigateTo({
-      url: '/pages/channel/scanCodeList/scanCodeAdd/index?source= ' +JSON.stringify(item) ,
+      url: '/pages/channel/scanCodeList/scanCodeAdd/index?source= ' + JSON.stringify(item),
     })
+  },
+  //确认客户资料
+  handleDataConfim(evt) {
+    const {
+      item
+    } = evt.currentTarget.dataset
+    wx.showModal({
+      title: '资料确认',
+      content: '确定要确认客户资料！',
+      confirmText: '确定',
+      cancelText: '取消',
+      success(res) {
+        if (res.confirm) {
+          const pagems = {
+            [u_comfirmMyCompany.userId]: item.id
+          }
+          byPost(`${getApp().data.k1swUrl}${u_comfirmMyCompany.URL}`, pagems, (response) => {
+            showToast(response.data.msg)
+          }, (error) => {
+            hideLoading();
+          });
+        }
+      },
+    });
+  },
+  // 重置密码
+  handleResetPassword(evt) {
+    const {
+      item
+    } = evt.currentTarget.dataset
+    wx.showModal({
+      title: '重置密码',
+      content: '确定要重置密码吗？此操作不可撤销！',
+      confirmText: '确定',
+      cancelText: '取消',
+      success(res) {
+        if (res.confirm) {
+          const pagems = {
+            [u_resetMyCompanyPassword.userId]: item.userId
+          }
+          byPost(`${getApp().data.k1swUrl}${u_resetMyCompanyPassword.URL}`, pagems, (response) => {
+            showToast(response.data.msg)
+          }, (error) => {
+            hideLoading();
+          });
+        }
+      },
+    });
   },
   onLoad(options) {
 

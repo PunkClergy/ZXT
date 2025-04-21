@@ -23,8 +23,8 @@
           </view>
           <view class="head-right">
             <text data-item="{{item}}" bindtap="handleEdit">编辑</text>
-            <text>资料确认</text>
-            <text>重置密码</text>
+            <text data-item="{{item}}" bindtap="handleDataConfim">资料确认</text>
+            <text data-item="{{item}}" bindtap="handleResetPassword">重置密码</text>
           </view>
         </view>
         <view class="content-item-info">
