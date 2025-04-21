@@ -22,7 +22,7 @@ Page({
     s_banner_height: 60, // banner高度
     c_totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 50 : 50), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_banner_image: [], //Banner图集合
-    c_link: 'https://k1swtest.wiselink.net.cn/', //域名
+    c_link: 'https://k1sw.wiselink.net.cn/', //域名
     g_before_passing_by_icon: [], //快捷入口集合
     s_hierarchy: 0, //目前层级
     s_currently_selected_item: null, //当前选中Item

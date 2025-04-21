@@ -22,7 +22,7 @@ Page({
     c_bottom_seed: 80, //底部按钮高度
     c_totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     imageUrl: '/assets/qd.jpg',
-    c_link: 'https://k1swtest.wiselink.net.cn/'
+    c_link: 'https://k1sw.wiselink.net.cn/'
   },
 
   // 全屏背景
