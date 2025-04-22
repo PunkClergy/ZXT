@@ -123,7 +123,8 @@
     "pages/channel/messageList/index",
     "pages/channel/channelQRCode/index",
     "pages/channel/scanCodeList/index",
-    "pages/channel/scanCodeList/scanCodeAdd/index"
+    "pages/channel/scanCodeList/scanCodeAdd/index",
+    "pages/suborClients/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

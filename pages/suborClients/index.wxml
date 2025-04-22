@@ -1,0 +1,336 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="价格设定" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <scroll-view scroll-y class="content-scroll" style="height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +50+2)}}px;">
+      <view class="content-inner">
+        <!-- 产品类别 -->
+        <view class="card-info-item">
+          <label>产品类别<text>*</text></label>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_product_type_list}}" data-flag="product_type" bindchange="handleCategory">
+              <block wx:if="{{g_product_type_index==null}}">
+                <text>请选择类别</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;">{{g_product_type_list[g_product_type_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </view>
+        <!-- 价格类型 -->
+        <view class="card-info-item">
+          <label>价格类型<text>*</text></label>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_device_version_list}}" data-flag="device_version" bindchange="handleCategory">
+              <block wx:if="{{g_device_version_index==null}}">
+                <text>请选择价格类型</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;">{{g_device_version_list[g_device_version_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </view>
+        <!-- 销售代号 -->
+        <view class="card-info-item" wx:if="{{g_product_type_index}}">
+          <label>销售代号<text>*</text></label>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_device_type_list}}" data-flag="device_type" bindchange="handleCategory">
+              <block wx:if="{{g_device_type_index==null}}">
+                <text>请选择价格类型</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;">{{g_device_type_list[g_device_type_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </view>
+        <!-- 国家 -->
+        <view class="card-info-item">
+          <label>国家<text>*</text></label>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_country_list}}" data-flag="country" bindchange="handleCategory">
+              <block wx:if="{{g_country_index==null}}">
+                <text>请选择国家</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;">{{g_country_list[g_country_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </view>
+        <!-- 币种 -->
+        <view class="card-info-item">
+          <label>币种<text>*</text></label>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_currency_list}}" data-flag="currency" bindchange="handleCategory">
+              <block wx:if="{{g_currency_index==null}}">
+                <text>请选择币种</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;">{{g_currency_list[g_currency_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </view>
+        <!-- 硬件价格 -->
+        <view class="card-info-item">
+          <label>硬件价格</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入硬件价格" value="{{params.hardwareprice}}" data-value="hardwareprice" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 含服务费(年) -->
+        <view class="card-info-item">
+          <label>含服务费(年)</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入含服务费" value="{{params.includeseverYears}}" data-value="includeseverYears" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 服务费价格(年) -->
+        <view class="card-info-item">
+          <label>服务费价格(年)</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入服务费价格" value="{{params.serviceprice}}" data-value="serviceprice" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 使用费 -->
+        <view class="card-info-item">
+          <label>使用费(次)</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入使用费" value="{{params.useprice}}" data-value="useprice" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!--首次充值(次) -->
+        <view class="card-info-item">
+          <label>首次充值(次)</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入首次充值" value="{{params.firstRecharge}}" data-value="firstRecharge" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 租金 -->
+        <view class="card-info-item">
+          <label>租金</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入租金" value="{{params.rentPrice}}" data-value="rentPrice" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 押金 -->
+        <view class="card-info-item">
+          <label>押金</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入押金" value="{{params.deposit}}" data-value="deposit" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 云端使用费价格(月) -->
+        <view class="card-info-item">
+          <label>云端使用费价格(月)</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入云端使用费价格" value="{{params.cloudprice}}" data-value="cloudprice" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- OTA对接价格(月) -->
+        <view class="card-info-item">
+          <label>OTA对接价格(月)</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入OTA对接价格" value="{{params.otaprice}}" data-value="otaprice" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 安装费 -->
+        <view class="card-info-item">
+          <label>安装费</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入安装费" value="{{params.installprice}}" data-value="installprice" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 安装费限制needInstall -->
+        <view class="card-info-item">
+          <label>是否必须(安装费)</label>
+          <view class="card-info-item-tabs">
+            <view class="card-info-item-tabs-btn">
+              <text class="{{g_install_cost==1?'tabs-active':''}}" data-item="1" data-flag="install_cost" bindtap="handleEntryMethod">必须</text>
+              <text class="{{g_install_cost==0?'tabs-active':''}}" data-item="0" data-flag="install_cost" bindtap="handleEntryMethod">非必须</text>
+            </view>
+          </view>
+        </view>
+        <!-- 配钥匙价格-1 -->
+        <view class="card-info-item">
+          <label>配钥匙价格-1</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入价格" value="{{params.withkeyprice}}" data-value="withkeyprice" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 配钥匙价格-2 -->
+        <view class="card-info-item">
+          <label>配钥匙价格-2</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入价格" value="{{params.withkeyprice2}}" data-value="withkeyprice2" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 配钥匙价格-3 -->
+        <view class="card-info-item">
+          <label>配钥匙价格-3</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入价格" value="{{params.withkeyprice3}}" data-value="withkeyprice3" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 原车钥匙组装费 -->
+        <view class="card-info-item">
+          <label>原车钥匙组装费</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入组装费" value="{{params.takecarepricel}}" data-value="takecarepricel" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 原车钥匙组装费限制needTakeCare -->
+        <view class="card-info-item">
+          <label>是否必须(原车钥匙组装费)</label>
+          <view class="card-info-item-tabs">
+            <view class="card-info-item-tabs-btn">
+              <text class="{{g_group_cost==1?'tabs-active':''}}" data-item="1" data-flag="group_cost" bindtap="handleEntryMethod">必须</text>
+              <text class="{{g_group_cost==2?'tabs-active':''}}" data-item="2" data-flag="group_cost" bindtap="handleEntryMethod">非必须</text>
+            </view>
+          </view>
+        </view>
+        <!-- 拆除运输检验费 -->
+        <view class="card-info-item">
+          <label>拆除运输检验费</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入拆除运输检验费" value="{{params.transportpricel}}" data-value="transportpricel" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 拆除运输检验费限制needTransport -->
+        <view class="card-info-item">
+          <label>是否必须(拆除运输检验费)</label>
+          <view class="card-info-item-tabs">
+            <view class="card-info-item-tabs-btn">
+              <text class="{{g_test_cost==1?'tabs-active':''}}" data-item="1" data-flag="test_cost" bindtap="handleEntryMethod">必须</text>
+              <text class="{{g_test_cost==2?'tabs-active':''}}" data-item="2" data-flag="test_cost" bindtap="handleEntryMethod">非必须</text>
+            </view>
+          </view>
+        </view>
+        <!-- 直销内部综合绩效-硬件 -->
+        <view class="card-info-item">
+          <label>直销内部综合绩效-硬件:</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入综合绩效" value="{{params.promotion}}" data-item="promotion" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 直销内部综合绩效-硬件服务费 -->
+        <view class="card-info-item">
+          <label>直销内部综合绩效-硬件服务费:</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入服务费" value="{{params.promotionSoft}}" data-item="promotionSoft" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 直销内部综合结效-软件 -->
+        <view class="card-info-item">
+          <label>直销内部综合绩效-软件:</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入综合绩效" value="{{params.channelpromotion}}" data-item="channelpromotion" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 直销内部综合结效-软件服务费 -->
+        <view class="card-info-item">
+          <label>直销内部综合绩效-软件服务费:</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入服务费" value="{{params.channelpromotionsoft}}" data-item="channelpromotionsoft" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+        <!-- 客户名称 -->
+        <view class="card-info-item">
+          <label>客户名称</label>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_company_list}}" data-flag="company" bindchange="handleCategory">
+              <block wx:if="{{g_company_index==null}}">
+                <text>请选择客户</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;">{{g_company_list[g_company_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </view>
+        <block wx:if="{{g_company_index}}">
+          <!-- 阶梯价格 -->
+          <block wx:for="{{g_ladder_list}}" wx:key="index">
+            <view class="ladder-container">
+              <text class="ladder-container-title">阶梯{{index+1}}</text>
+              <view class="ladder-container-icon">
+                <image src="/assets/images/home/add.png" bindtap="handlePlusLadder" />
+                <image src="/assets/images/home/deled.png" data-index="{{index}}" bindtap="handleReduceLadder" />
+              </view>
+            </view>
+            <view class="card-info-item">
+              <label>数量<text>*</text></label>
+              <view class="card-info-item-input">
+                <input type="number" placeholder="请输入数量" value="{{item.devicecount}}" data-item="{{index}}" data-flag="devicecount" bindinput="handleLadder" />
+              </view>
+            </view>
+            <view class="card-info-item">
+              <label>价格<text>*</text></label>
+              <view class="card-info-item-input">
+                <input type="number" placeholder="请输入价格" value="{{item.deviceprice}}" data-item="{{index}}" data-flag="deviceprice" bindinput="handleLadder" />
+              </view>
+            </view>
+          </block>
+          <!-- 体验开始时间testStartDate -->
+          <view class="card-info-item">
+            <label>体验开始时间</label>
+            <picker mode="date" value="{{startDate}}" data-flag="start" bindchange="handleDate">
+              <view class="picker">
+                <text class="picker-title" wx:if="{{!startDate}}">请选择开始时间</text>
+                <text wx:else class="picker-title-active">{{startDate}}</text>
+              </view>
+            </picker>
+          </view>
+          <!-- 体验结束时间testStartDate -->
+          <view class="card-info-item">
+            <label>体验结束时间</label>
+            <picker mode="date" value="{{startDate}}" data-flag="end" bindchange="handleDate">
+              <view class="picker">
+                <text wx:if="{{!endDate}}" class="picker-title">请选择结束时间</text>
+                <text wx:else class="picker-title-active">{{endDate}}</text>
+              </view>
+            </picker>
+          </view>
+          <!-- 体验押金 -->
+          <view class="card-info-item">
+            <label>体验押金</label>
+            <view class="card-info-item-input">
+              <input type="number" placeholder="请输入押金" value="{{params.testDeposit}}" data-value="testDeposit" bindinput="handleNumBindinput" />
+            </view>
+          </view>
+          <!-- 体验SN -->
+          <view class="card-info-item">
+            <label>体验SN</label>
+            <view class="card-info-item-input">
+              <input type="number" placeholder="请输入SN" value="{{params.sns}}" data-value="sns" bindinput="handleNumBindinput" />
+            </view>
+          </view>
+          <!-- 价格优先级priority -->
+          <view class="card-info-item">
+            <label>价格优先级</label>
+            <view class="card-info-item-tabs">
+              <view class="card-info-item-tabs-btn">
+                <text class="{{g_priority_cost==1?'tabs-active':''}}" data-item="1" data-flag="priority_cost" bindtap="handleEntryMethod">阶梯优先</text>
+                <text class="{{g_priority_cost==2?'tabs-active':''}}" data-item="2" data-flag="priority_cost" bindtap="handleEntryMethod">体验优先</text>
+              </view>
+            </view>
+          </view>
+        </block>
+        <!-- 价格重要说明 -->
+        <view class="card-info-item">
+          <label>价格重要说明</label>
+          <view class="card-info-item-input">
+            <input type="number" placeholder="请输入说明" value="{{params.bak}}" data-value="bak" bindinput="handleNumBindinput" />
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="card-footer">
+      <view bindtap="handleSubmit">确认提交</view>
+    </view>
+  </view>
+</view>
