@@ -22,11 +22,18 @@
     "miniprogram": {
       "list": [
         {
+          "name": "dentistId=100",
+          "pathName": "pages/suborClientsList/index",
+          "query": "",
+          "scene": 1011,
+          "launchMode": "default"
+        },
+        {
           "name": "work sheet",
           "pathName": "pages/channel/workSheet/index",
           "query": "",
-          "scene": null,
-          "launchMode": "default"
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "pages/desk/desk",
@@ -34,13 +41,6 @@
           "query": "scene=29C1E887924E494284F2EAA81EF9ECCD",
           "launchMode": "default",
           "scene": null
-        },
-        {
-          "name": "dentistId=100",
-          "pathName": "pages/desk/desk",
-          "query": "query=29C1E887924E494284F2EAA81EF9ECCD",
-          "launchMode": "default",
-          "scene": 1011
         },
         {
           "name": "pages/sublet/sublet",

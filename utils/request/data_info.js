@@ -70,15 +70,25 @@ const u_addOrUpdate = {
   URL: fin3plusUrl + "addressapi/addOrUpdate"
 }
 // 价格计算
-const u_priceCalculation ={
+const u_priceCalculation = {
   URL: fin3plusUrl + "deviceBuyApi/priceCalculation"
 }
 // 询价单
-const u_inquirySheet ={
+const u_inquirySheet = {
   URL: fin3plusUrl + "deviceBuyApi/inquirySheet"
 }
-
+// 渠道为客户设置价格
+const u_devaddOrUpdate = {
+  URL: fin3plusUrl + "devicePriceApi/addOrUpdate"
+}
+const u_list = {
+  URL: fin3plusUrl + "devicePriceApi/list",
+  companyName: 'companyName',
+  page: 'page'
+}
 module.exports = {
+  u_list,
+  u_devaddOrUpdate,
   u_inquirySheet,
   u_getProductType,
   u_priceCalculation,

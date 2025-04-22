@@ -124,7 +124,8 @@
     "pages/channel/channelQRCode/index",
     "pages/channel/scanCodeList/index",
     "pages/channel/scanCodeList/scanCodeAdd/index",
-    "pages/suborClients/index"
+    "pages/suborClients/index",
+    "pages/suborClientsList/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

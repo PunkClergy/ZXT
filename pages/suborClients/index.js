@@ -11,6 +11,7 @@ const {
   u_getProductType,
   u_getCountry,
   u_getDeviceVersion,
+  u_devaddOrUpdate
 } = require('../../utils/request/data_info')
 const {
   u_companyList
@@ -255,7 +256,11 @@ Page({
       needTransport: g_test_cost,
       ...parmas
     }
-    console.log(temp)
+    byPost(getApp().data.k1swUrl + u_devaddOrUpdate.URL, temp,
+    (response) => {
+      console.log(response)
+      const resp = response.data.content
+    });
   },
   onLoad(options) {},
   onReady() {},
