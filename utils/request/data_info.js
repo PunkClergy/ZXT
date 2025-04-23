@@ -55,7 +55,7 @@ const u_getDeviceVersion = {
 // 获取销售代号列表
 const u_getDeviceType = {
   URL: fin3plusUrl + "deviceBuyApi/getDeviceType",
-  productTypeId: 'productTypeId'
+  productTypeId: 'producttypeid'
 }
 // 设备购买（数据全部由用户填写）
 const u_buyDevice = {
@@ -86,7 +86,12 @@ const u_list = {
   companyName: 'companyName',
   page: 'page'
 }
+const u_del = {
+  URL: fin3plusUrl + "devicePriceApi/del",
+  id: 'id',
+}
 module.exports = {
+  u_del,
   u_list,
   u_devaddOrUpdate,
   u_inquirySheet,

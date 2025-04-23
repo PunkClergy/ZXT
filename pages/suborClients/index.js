@@ -18,7 +18,8 @@ const {
 } = require('../../utils/request/dispatch')
 const {
   byGet,
-  byPost
+  byPost,
+  byPostJson
 } = require('../../utils/request/http')
 
 Page({
@@ -40,47 +41,18 @@ Page({
     g_currency_index: null, //当前选择币种
     g_company_list: [], //客户数据
     g_company_index: null, //当前选择客户
-    parmas: {}, //提交数据集合
+    params: {}, //提交数据集合
     g_install_cost: 1, //安装费限制
     g_group_cost: 1, //原车钥匙组装费限制
     g_test_cost: 1, //拆除运输检验费限制
     g_priority_cost: 1, //优先级
     startDate: '', //体验开始时间
     endDate: '', //体验结束时间
+    c_view_state: false, //是否为查看
     g_ladder_list: [{
       devicecount: '',
       deviceprice: ''
     }], //阶梯数据stairsList
-  },
-  // 全图背景
-  initialiImageBaseConversion() {
-    const _this = this;
-    const imageMap = [{
-      path: '/assets/images/home/car-bg.png',
-      key: 's_background_picture_of_the_front_page'
-    }];
-    const promises = imageMap.map(item =>
-      new Promise((resolve, reject) => {
-        wx.getFileSystemManager().readFile({
-          filePath: item.path,
-          encoding: 'base64',
-          success: (res) => {
-            resolve({
-              [item.key]: `data:image/png;base64,${res.data}`
-            });
-          }
-        });
-      })
-    );
-
-    Promise.all(promises)
-      .then(results => {
-        const dataToUpdate = results.reduce((acc, curr) => ({
-          ...acc,
-          ...curr
-        }), {});
-        _this.setData(dataToUpdate);
-      });
   },
   // 产品类别切换
   handleCategory(evt) {
@@ -124,30 +96,26 @@ Page({
         });
       }
     };
-
-    // 根据 flag 执行对应的逻辑
     if (flagMap[flag]) {
       flagMap[flag]();
-    } else {
-      console.warn(`未知的 flag: ${flag}`);
     }
   },
   // 内容输入回调
   handleNumBindinput(evt) {
-    const interval = 500;
+    const interval = 100;
     if (!this.lastTime) {
       this.lastTime = 0;
     }
     const now = Date.now();
     if (now - this.lastTime >= interval) {
       this.lastTime = now;
-      const parmas = this.data.parmas;
+      const params = this.data.params;
       const new_parmas = {
-        ...parmas,
+        ...params,
         [evt.currentTarget.dataset.value]: evt.detail.value,
       };
       this.setData({
-        parmas: new_parmas,
+        params: new_parmas,
       });
     }
   },
@@ -222,10 +190,8 @@ Page({
       g_ladder_list
     })
   },
-
   // 提交
   handleSubmit() {
-    console.log(this.data)
     const {
       g_product_type_list,
       g_product_type_index,
@@ -242,10 +208,16 @@ Page({
       g_install_cost,
       g_group_cost,
       g_test_cost,
-      parmas
+      g_priority_cost,
+      startDate,
+      endDate,
+      params,
+      g_ladder_list
     } = this.data
+    console.log(this.data)
     const temp = {
-      producttypeId: g_product_type_list[g_product_type_index]?.id,
+      ...params,
+      producttypeid: g_product_type_list[g_product_type_index]?.id,
       deviceversionid: g_device_version_list[g_device_version_index]?.id,
       devicetypeid: g_device_type_list[g_device_type_index]?.id,
       countryid: g_country_list[g_country_index]?.id,
@@ -254,16 +226,51 @@ Page({
       needInstall: g_install_cost,
       needTakeCare: g_group_cost,
       needTransport: g_test_cost,
-      ...parmas
+      priority: g_priority_cost,
+      testStartDate: startDate,
+      testEndDate: endDate,
+      stairsList: g_ladder_list
     }
-    byPost(getApp().data.k1swUrl + u_devaddOrUpdate.URL, temp,
-    (response) => {
-      console.log(response)
-      const resp = response.data.content
-    });
+    byPostJson(getApp().data.k1swUrl + u_devaddOrUpdate.URL, temp,
+      (response) => {
+        if (response?.data?.code) {
+          wx.reLaunch({
+            url: '/pages/suborClientsList/index',
+          })
+        }
+      });
   },
-  onLoad(options) {},
-  onReady() {},
+
+  // 全图背景
+  initialiImageBaseConversion() {
+    const _this = this;
+    const imageMap = [{
+      path: '/assets/images/home/car-bg.png',
+      key: 's_background_picture_of_the_front_page'
+    }];
+    const promises = imageMap.map(item =>
+      new Promise((resolve, reject) => {
+        wx.getFileSystemManager().readFile({
+          filePath: item.path,
+          encoding: 'base64',
+          success: (res) => {
+            resolve({
+              [item.key]: `data:image/png;base64,${res.data}`
+            });
+          }
+        });
+      })
+    );
+
+    Promise.all(promises)
+      .then(results => {
+        const dataToUpdate = results.reduce((acc, curr) => ({
+          ...acc,
+          ...curr
+        }), {});
+        _this.setData(dataToUpdate);
+      });
+  },
   // 请求类别数据
   initialiCategory() {
     byPost(getApp().data.k1swUrl + u_getProductType.URL, {},
@@ -285,17 +292,65 @@ Page({
       });
   },
   // 销售代号数据
-  initialiDevicetype(evt) {
-    const parmas = {
+  initialiDevicetype(evt, info) {
+    const params = {
       [u_getDeviceType.productTypeId]: evt
-    }
-    byPost(getApp().data.k1swUrl + u_getDeviceType.URL, parmas,
-      (response) => {
-        const resp = response.data.content
-        this.setData({
-          g_device_type_list: resp
-        })
+    };
+    const requestUrl = `${getApp().data.k1swUrl}${u_getDeviceType.URL}`;
+    const findSafeIndex = (list, id) => {
+      if (!Array.isArray(list)) return null;
+      const index = list.findIndex(ele => ele.id === id);
+      return index >= 0 ? index : null;
+    };
+    const updateDeviceInfo = () => {
+      const {
+        g_product_type_list,
+        g_device_version_list,
+        g_country_list,
+        g_currency_list,
+        g_company_list
+      } = this.data;
+      const indexMapping = {
+        g_product_type_index: [g_product_type_list, info.producttypeid],
+        g_device_type_index: [this.data.g_device_type_list, info.devicetypeid],
+        g_device_version_index: [g_device_version_list, info.deviceversionid],
+        g_country_index: [g_country_list, info.countryid],
+        g_currency_index: [g_currency_list, info.currency],
+        g_company_index: [g_company_list, info.companyid],
+      };
+      const indexes = Object.entries(indexMapping).reduce((acc, [key, [list, id]]) => {
+        acc[key] = findSafeIndex(list, id);
+        return acc;
+      }, {});
+      const {
+        needInstall: g_install_cost,
+        needTakeCare: g_group_cost,
+        needTransport: g_test_cost,
+        priority: g_priority_cost,
+        testStartDate: startDate,
+        testEndDate: endDate,
+        stairsList: g_ladder_list
+      } = info || {};
+      this.setData({
+        params: {
+          ...info
+        },
+        ...indexes,
+        g_install_cost,
+        g_group_cost,
+        g_test_cost,
+        g_priority_cost,
+        startDate,
+        endDate,
+        g_ladder_list
       });
+    };
+    byPost(requestUrl, params, (response) => {
+      this.setData({
+        g_device_type_list: response.data.content,
+        g_device_type_index: null
+      }, () => info && updateDeviceInfo());
+    }, () => {});
   },
   // 国家数据
   initialiCountry() {
@@ -324,7 +379,7 @@ Page({
   initialiCompanyList() {
     const param = {
       [u_companyList.name]: '',
-      [u_companyList.page]: '',
+      [u_companyList.page]: 1,
     };
     byGet(getApp().data.k1swUrl + u_companyList.URL, param).then(response => {
       const resp = response.data.content
@@ -333,13 +388,42 @@ Page({
       })
     })
   },
+  // 编辑跳转来
+  initialiEdit(options) {
+    if (options.item) {
+      const info = JSON.parse(options?.item)
+      this.initialiDevicetype(info?.producttypeid, info)
+    }
+    if (options?.type) {
+      this.setData({
+        c_view_state: true
+      })
+    }
+  },
+  // 按顺序执行
+  async initialiSort(evt) {
+    try {
+      const initializationTasks = [
+        this.initialiCategory(),
+        this.initialiDeviceVersion(),
+        this.initialiCountry(),
+        this.initialiCurrency(),
+        this.initialiCompanyList(),
+      ];
+
+      await Promise.all(initializationTasks);
+      this.initialiEdit(evt);
+    } catch (error) {
+      console.error('Initialization failed:', error);
+    }
+  },
+  onLoad(options) {
+    this.initialiSort(options)
+  },
+  onReady() {},
   onShow() {
     this.initialiImageBaseConversion()
-    this.initialiCategory()
-    this.initialiDeviceVersion()
-    this.initialiCountry()
-    this.initialiCurrency()
-    this.initialiCompanyList()
+
   },
 
 

@@ -7,7 +7,8 @@ const {
   byGet
 } = require('../../utils/request/http')
 const {
-  u_list
+  u_list,
+  u_del
 } = require('../../utils/request/data_info')
 const {
   _handleWindowInfo,
@@ -158,29 +159,51 @@ Page({
       g_source: source
     })
   },
-  handleSelectJump(evt) {
-    const {
-      item
-    } = evt.currentTarget.dataset
-    wx.setStorage({
-      key: 'guestdata', 
-      data: item, 
-      success() {
-       wx.navigateBack({
-         detail:1
-       })
+  // 查看详情
+  handleView(evt) {
+    const item = evt.currentTarget.dataset.item
+    wx.navigateTo({
+      url: '/pages/suborClients/index?item=' + JSON.stringify(item) + '&type=view',
+    })
+  },
+  // 编辑
+  handleEdit(evt) {
+    const item = evt.currentTarget.dataset.item
+    wx.navigateTo({
+      url: '/pages/suborClients/index?item=' + JSON.stringify(item),
+    })
+  },
+  // 删除
+  handleDelete(evt) {
+    const item = evt.currentTarget.dataset.item
+    const index = evt.currentTarget.dataset.index
+    const g_items = this.data.g_items
+    const param = {
+      [u_del.id]: item?.id,
+    };
+    byGet(getApp().data.k1swUrl + u_del.URL, param).then(response => {
+      hideLoading()
+      if (response.statusCode == 200) {
+        this.setData({
+          g_items: g_items.filter((_, i) => i != index)
+        }, () => {
+          showToast(response?.data?.msg);
+        })
+      } else {
+        showToast('请求失败，请稍后再试');
       }
-    });
+    })
   },
   onLoad(options) {
     this.initCarryParams(options)
-
   },
-
-
-  onReady() {
-
+  // 新增跳转
+  handleOneClickOrdering() {
+    wx.navigateTo({
+      url: '/pages/suborClients/index',
+    })
   },
+  onReady() {},
 
   onShow() {
     this.initialiImageBaseConversion()

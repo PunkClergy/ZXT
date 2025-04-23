@@ -18,42 +18,50 @@
         <view class="content-item-head">
           <view class="head-left">
             <view class="left-category">
-              <text>{{item.name||'-'}}</text>
+              <text>{{item.devicetypeName||'-'}}</text>
             </view>
           </view>
-          <view class="head-right"></view>
+          <view class="head-right">
+            <image src="/assets/images/home/_see.png" data-item="{{item}}" bindtap="handleView" />
+            <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
+            <image src="/assets/images/home/_delete.png" data-item="{{item}}" data-index="{{index}}" bindtap="handleDelete" />
+          </view>
         </view>
         <view class="content-item-info">
-          <view class="info-item  {{item.chargename.length > 15 ? 'long-info-item' : ''}}">
-            <label>负责人 ：</label>
-            <text>{{item.chargename||'-'}}</text>
+          <view class="info-item  {{item.chargename.length > 8 ? 'long-info-item' : ''}}">
+            <label>产品类别 ：</label>
+            <text>{{item.producttypeName||'-'}}</text>
           </view>
-          <view class="info-item  {{item.chargemobile.length > 15 ? 'long-info-item' : ''}}">
-            <label>电话 ：</label>
-            <text>{{item.chargemobile||'-'}}</text>
+          <view class="info-item  {{item.deviceversionName.length > 8 ? 'long-info-item' : ''}}">
+            <label>价格类型 ：</label>
+            <text>{{item.deviceversionName||'-'}}</text>
           </view>
-          <view class="info-item  {{item.provinceName.length > 15 ? 'long-info-item' : ''}}">
-            <label>省份 ：</label>
-            <text>{{item.provinceName||'-'}}</text>
+          <view class="info-item  {{item.countryHame.length > 8 ? 'long-info-item' : ''}}">
+            <label>国家地区 ：</label>
+            <text>{{item.countryHame||'-'}}</text>
           </view>
-          <view class="info-item  {{item.cityName.length > 15 ? 'long-info-item' : ''}}">
-            <label>城市 ：</label>
-            <text>{{item.cityName||'-'}}</text>
+          <view class="info-item  {{item.hardwareprice.length > 8 ? 'long-info-item' : ''}}">
+            <label>硬件价格 ：</label>
+            <text>{{item.hardwareprice||'-'}}</text>
           </view>
-          <view class="info-item  {{item.parentName.length > 15 ? 'long-info-item' : ''}}">
-            <label>所属BD ：</label>
-            <text>{{item.parentName||'-'}}</text>
+          <view class="info-item  {{item.useprice.length > 8 ? 'long-info-item' : ''}}">
+            <label>使用费 ：</label>
+            <text>{{item.useprice||'-'}}</text>
           </view>
-        </view>
-        <view class="content-item-footer" wx:if="{{g_source}}">
-          <view class="footer-left"></view>
-          <view class="footer-right">
-            <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump">
-              <text>选择</text>
-            </view>
+          <view class="info-item  {{item.cloudprice.length > 8 ? 'long-info-item' : ''}}">
+            <label>云端使用费价格(月) ：</label>
+            <text>{{item.cloudprice||'-'}}</text>
+          </view>
+          <view class="info-item  {{item.otaprice.length > 8 ? 'long-info-item' : ''}}">
+            <label>OTA对接价格(月) ：</label>
+            <text>{{item.otaprice||'-'}}</text>
           </view>
         </view>
       </view>
     </block>
   </scroll-view>
+  <!-- 一键操作按钮 -->
+  <view class="levitation-button" bindtap="handleOneClickOrdering">
+    <text>新增</text>
+  </view>
 </view>
