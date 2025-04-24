@@ -8,87 +8,80 @@
   background-position: center;
   touch-action: pan-x;
   position: relative;
-  align-items: center;
 }
-
-/* 内容项 */
-.content-item {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: fixed;
+.main-container {
+  position: absolute;
+  bottom: 10rpx;
   width: 96%;
+  margin: auto;
+  border-radius: 10rpx;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
 }
-
-.content-item-head {
+/* 头部 */
+.main-head {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid #f0f0f0;
-  padding: 10rpx;
+  padding: 0rpx 15rpx;
 }
-
-.head-left {
+/* 头部左侧 */
+.main-head-left-category {
   display: flex;
   align-items: center;
-  gap: 20rpx;
+  gap: 10rpx;
 }
-
-.left-category {
-  display: flex;
-  align-items: center;
+.main-head-left-category image {
+  width: 43rpx;
+  height: 35rpx;
+}
+.main-head-left-category text {
   font-family: PingFang SC;
   font-weight: bold;
   font-size: 26rpx;
   color: #333333;
 }
-
-.left-category image {
-  width: 40rpx;
-  height: 40rpx;
-}
-
-
-
-
-
-.head-right {
-  display: flex;
-  flex-direction: row;
-  gap: 10rpx;
-  align-items: center;
-  justify-content: center;
-}
-
-.right-history {
-  color: #1B64B1;
-  font-family: PingFang SC;
-  font-weight: 500;
-  font-size: 24rpx;
+/* 头部右侧 */
+.main-head-right-category {
   display: flex;
   align-items: center;
   gap: 20rpx;
 }
-
-.right-history image {
-  width: 30rpx;
-  height: 30rpx;
+.main-head-right-category image {
+  width: 35rpx;
+  height: 35rpx;
 }
-
-.content-item-info {
+/* 内容区域 */
+.main-central-scroll-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+.main-central-layar {
+  border: 1px solid #f0f0f0;
+}
+.main-central-layar-info {
+  font-size: 26rpx;
+  color: #333333;
+  margin: 20rpx 10rpx;
+}
+.vehicle-main {
+  width: 95%;
+  margin: auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   padding: 10rpx;
-  gap: 10rpx;
+  gap: 20rpx;
   border: 1px solid #f0f0f0;
-  width: 98%;
-  background: #fff;
-  border-radius: 8rpx;
 }
-
-.info-item {
-  flex: 0 0 48%;
+.vehicle-main-info {
+  flex-basis: 100% !important;
   box-sizing: border-box;
   word-wrap: break-word;
   transition: all 0.3s;
@@ -96,173 +89,5 @@
   font-weight: 500;
   font-size: 24rpx;
   color: #333333;
-
 }
 
-.long-info-item {
-  flex-basis: 100% !important;
-  /* 长内容时占满整行 */
-}
-
-.car-info {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-  width: 96%;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-}
-
-
-
-.levitation-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10rpx 0;
-  width: 40%;
-  background: linear-gradient(88deg, #1576DC, #1B64B1);
-  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
-  border-radius: 36rpx;
-  font-family: PingFang SC;
-  font-weight: bold;
-  font-size: 30rpx;
-  color: #FFFFFF;
-}
-
-/* 弹窗蒙版 */
-.modal-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 998;
-}
-
-.modal-base-map {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #fff;
-  border-radius: 20rpx;
-  z-index: 998;
-  padding: 20rpx;
-}
-
-.modal-container {
-  height: 70vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-container-head {
-  display: flex;
-  justify-content: row;
-  justify-content: space-between;
-  align-items: center;
-  height: 60rpx;
-}
-
-.modal-container-head text {
-  font-weight: bold;
-  font-size: 34rpx;
-  color: #333333;
-}
-
-.modal-container-head image {
-  width: 24rpx;
-  height: 24rpx;
-}
-
-.modal-container-middle {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.modal-container-footer {
-  height: 80rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-container-footer button {
-  background: linear-gradient(88deg, #1576DC, #1B64B1);
-  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
-  border-radius: 36rpx;
-  font-weight: bold;
-  font-size: 34rpx;
-  color: #FFFFFF;
-  width: 40%;
-  height: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-.middle-form-item {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 45rpx;
-  width: 80%;
-
-}
-
-.middle-form-item label {
-  font-family: PingFang SC;
-  font-weight: 600;
-  font-size: 28rpx;
-  color: #333333;
-
-}
-
-.modal-form-region {
-  display: flex;
-  flex-direction: column;
-  gap: 10rpx;
-}
-
-.modal-form-region input {
-  text-align: right;
-  font-size: 28rpx;
-}
-
-.modal-form-region text {
-  font-size: 20rpx;
-  text-align: right;
-  color: #686363
-}
-
-.form-item-text {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 4rpx;
-  padding: 4rpx 2rpx 4rpx 10rpx;
-  gap: 20rpx;
-}
-
-.form-item-text text {
-  font-family: PingFang SC;
-  font-weight: 500;
-  font-size: 28rpx;
-  color: #7B7C7C;
-  border-bottom: 1rpx solid #f0f0f0;
-
-}
-
-.form-item-text image {
-  width: 30rpx;
-  height: 30rpx;
-}

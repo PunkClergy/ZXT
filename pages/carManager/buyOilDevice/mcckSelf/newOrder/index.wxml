@@ -1,175 +1,93 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
   <!-- 自定义头部 -->
-  <custom-header title="MCCK自助取还设备购买" />
-  <!-- 设备区 -->
-  <view class="content-item" style="top:{{c_statusBarHeight + c_navBarHeight}}px; height:{{c_screen_height-(c_statusBarHeight + c_navBarHeight)}}px;">
-    <view class="content-item-head">
-      <view class="head-left">
-        <view class="left-category">
-          <image src="/assets/images/home/01.png" />
-          <text>车辆信息</text>
-        </view>
-        <view class="left-category">
-          合计{{8}}台
-        </view>
+  <custom-header title="购买和充值" />
+  <!-- 主要内容区域 -->
+  <view class="main-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <view class="main-head" style="height: {{c_height_head}}px;">
+      <view class="main-head-left-category">
+        <image src="/assets/images/home/car_icon.png" />
+        <text>车辆合计:{{8}}台</text>
       </view>
-      <view class="head-right">
-        <view class="right-history">
-          <image src="/assets/images/home/mcck_add.png" bindtap="handleMcckAdd" />
-          <image src="/assets/images/home/mcck_Import.png" bindtap="handleChooseFile" />
-        </view>
+      <view class="main-head-right-category">
+        <image src="/assets/images/home/mcck_add.png" bindtap="handleMcckAdd" />
+        <image src="/assets/images/home/mcck_Import.png" bindtap="handleChooseFile" />
       </view>
     </view>
-    <scroll-view scroll-y="true" style="height: 70%;" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
-      <view class="car-info">
-        <view class="content-item-info" wx:for="{{g_car_items}}" wx:key="index">
-          <view class="info-item long-info-item}}">
-            <text style="font-weight: bold;">{{item.carserial}} {{item.carmodel}} {{item.carversion}}</text>
+    <view class="main-central">
+      <scroll-view show-scrollbar="{{false}}" enhanced="{{true}}" scroll-y="true" style="height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +c_height_head+2)}}px;">
+        <view class="main-central-scroll-view">
+          <view class="main-central-layar">
+            <view class="main-central-layar-info">车辆信息</view>
+            <block wx:for="{{10}}">
+              <view class="vehicle-main">
+                <view class="vehicle-main-info">
+                  <text>一汽大众/帕萨特-2024款 默认配置 一键启动</text>
+                </view>
+                <view class="vehicle-main-info">
+                  <text>LSG129934JDH495S</text>
+                </view>
+              </view>
+            </block>
+            <view>物流信息</view>
           </view>
-          <view class="info-item  {{item.introduction.length > 15 ? 'long-info-item' : ''}}">
-            <label>配置 ：</label>
-            <text>{{item.introduction}}</text>
-          </view>
-          <view class="info-item  {{item.runtype.length > 15 ? 'long-info-item' : ''}}">
-            <label>启动方式 ：</label>
-            <text>{{item.runtype}}</text>
-          </view>
-          <view class="info-item  {{item.vin.length > 15 ? 'long-info-item' : ''}}">
-            <label>车架号 ：</label>
-            <text>{{item.vin}}</text>
-          </view>
         </view>
-      </view>
-
-    </scroll-view>
-    <view style=" border:1rpx solid #f0f0f0;">
-      <view style="width: 98%;display: flex;align-items: center;justify-content: center;margin: auto;margin-top: 10rpx;flex-direction: column;gap:20rpx">
-        <view style="display: flex;justify-content: flex-start;width: 100%;font-size: 24rpx;font-weight: bold;">
-          <label>是否需要安装 ：</label>
-          <text>sss</text>
-        </view>
-        <view style="display: flex;justify-content: flex-start;width: 100%;font-size: 24rpx;font-weight: bold;">
-          <label>收货地址 ：</label>
-          <text>获取微信地址</text>
-        </view>
-        <view style="display: flex;justify-content: flex-end;width: 100%;font-size: 24rpx;font-weight: bold;">
-          <text>贾宝玉</text>
-          <text>13123654675</text>
-        </view>
-        <view style="display: flex;justify-content: flex-end;width: 100%;font-size: 24rpx;font-weight: bold;">
-          <text>北京市丰台区总部基地6号楼1单元2层201室</text>
-        </view>
-        <view style="display: flex;justify-content: flex-end;width: 100%;font-size: 24rpx;font-weight: bold;">
-          <text class="levitation-button" bindtap="handleGenerateOrder">生成订单</text>
-        </view>
-      </view>
+      </scroll-view>
     </view>
   </view>
+  <!-- <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+    <view class="content-item">
+      <view class="content-item-head">
+        <view class="head-left">
+          <view class="left-category">
+            <image src="/assets/images/home/car_icon.png" />
+            <text>{{item.platenumber}}</text>
+          </view>
+          <view class="left-split_line"></view>
+          <view class="left-model">
+            {{item.vehicleSerialName||'-'}}{{item.vehicleModeName||''}}
+          </view>
+          <view class="left-brand">
+            短租
+          </view>
+        </view>
+        <view class="head-right">
+          <image src="/assets/images/home/_see.png" data-item="{{item}}" bindtap="handleView" />
+          <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
+          <image wx:if="{{!item.sn}}" src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />
+        </view>
+      </view>
+      <view class="content-item-info">
+        <view class="info-item  {{item.vin.length > 15 ? 'long-info-item' : ''}}">
+          <label>车架号 ：</label>
+          <text>{{item.vin||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.xsgw.length > 15 ? 'long-info-item' : ''}}">
+          <label>油箱容积 ：</label>
+          <text>{{item.xsgw?item.xsgw+'L':'-' }}</text>
+        </view>
+        <view class="info-item">
+          <label>车辆类型 ：</label>
+          <text>{{item.sn?'自助取还':'非自助取还'}}</text>
+        </view>
+        <view class="info-item  {{item.carOwnerName.length > 15 ? 'long-info-item' : ''}}">
+          <label>设备平台 ：</label>
+          <text>{{item.carOwnerName||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.sn.length > 15 ? 'long-info-item' : ''}}">
+          <label>设备号 ：</label>
+          <text>{{item.sn||'-'}}</text>
+        </view>
+
+      </view>
+      <view class="content-item-footer" wx:if="{{g_source}}">
+        <view class="footer-left"></view>
+        <view class="footer-right">
+          <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump">
+            <text>选择此车</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </scroll-view> -->
 </view>
-<!-- 添加车辆 -->
-<block>
-  <view class="modal-mask" wx:if="{{c_add_car_show_momal}}" bindtap="handleHideSengKeyModal"></view>
-  <view class="modal-base-map" wx:if="{{c_add_car_show_momal}}">
-    <form bindsubmit="handleFormSubmit" bindreset="handleHideSengKeyModal">
-      <view class="modal-container">
-        <view class="modal-container-head">
-          <text>新增车辆</text>
-          <image src="/assets/images/home/right_1.png" bindtap="handleHideSengKeyModal" />
-        </view>
-        <view class="modal-container-middle">
-          <view class="middle-form-item">
-            <label>车系</label>
-            <view class="modal-form-region">
-              <input placeholder="请输入车系" name='carserial' />
-              <text>例如：大众，奥迪，比亚迪</text>
-            </view>
-          </view>
-          <view class="middle-form-item">
-            <label>车型</label>
-            <view class="modal-form-region">
-              <input placeholder="请输入车型" name='carmodel' />
-              <text>例如：帕萨特，A4L，秦PLUS</text>
-            </view>
-          </view>
-          <view class="middle-form-item">
-            <label>年款</label>
-            <view class="modal-form-region">
-              <input placeholder="请输入年款" name='carversion' />
-              <text>例如：2024，2025</text>
-            </view>
-          </view>
-          <view class="middle-form-item">
-            <label>配置</label>
-            <view class="modal-form-region">
-              <input placeholder="请输入配置" name='introduction' />
-              <text>例如：40TFSI时尚动感型</text>
-            </view>
-          </view>
-          <view class="middle-form-item">
-            <label>车架号</label>
-            <view class="modal-form-region">
-              <input placeholder="请输入车架号" name='vin' />
-              <text>例如：LSGH53E03</text>
-            </view>
-          </view>
-          <view class="middle-form-item">
-            <label>启动方式</label>
-            <view class="modal-form-region">
-              <radio-group bindchange="radioChange" name="runtype" style="display: flex;gap: 10rpx;">
-                <view>
-                  <radio value="一键启动" checked="true" style=" transform: scale(0.6);" />
-                  <text style="font-size: 22rpx;">一键启动</text>
-                </view>
-                <view>
-                  <radio value="机械钥匙" style=" transform: scale(0.6);" />
-                  <text style="font-size: 22rpx;">机械钥匙</text>
-                </view>
-                <view>
-                  <radio value="其他" style=" transform: scale(0.6);" />
-                  <text style="font-size: 22rpx;">其他</text>
-                </view>
-              </radio-group>
-              <text>说明:[一键启动]为使用按键按下启动</text><text>[机械钥匙]为使用钥匙片拧动启动</text>
-            </view>
-          </view>
-        </view>
-        <view class="modal-container-footer">
-          <button formType="reset" style="color: #333;background: #fff;">取消</button>
-          <button formType="submit">确认</button>
-        </view>
-      </view>
-    </form>
-  </view>
-</block>
-
-<!-- 批量导入 -->
-<block>
-  <view class="modal-mask" wx:if="{{c_import_car_show_momal}}" bindtap="handleHideImportModal"></view>
-  <view class="modal-base-map" wx:if="{{c_import_car_show_momal}}">
-    <form bindsubmit="handleFormImportSubmit" bindreset="handleHideImportModal">
-      <view class="modal-container" style="height: 30vh;">
-        <view class="modal-container-head">
-          <text>批量导入车辆</text>
-          <image src="/assets/images/home/right_1.png" bindtap="handleHideImportModal" />
-        </view>
-        <view class="modal-container-middle">
-          <view class="middle-form-item">
-            <view style="display: flex;flex-direction: column;margin:auto ;">
-              <view style="display: flex;gap: 20rpx;align-items: center;">
-                <text style="padding: 10rpx 20rpx;border: 1px solid #f0f0f0;border-radius: 8rpx;font-size: 26rpx;" bindtap="handleImport">选择文件</text>
-                <text style="font-size: 22rpx;color: blue;border-bottom: 1px solid blue;">下载模板</text>
-              </view>
-              <view>
-                <text style="border-bottom: 1px solid blue;font-size: 22rpx;color: blue;">{{fileName}}</text>
-              </view>
-            </view>
-          </view>
-        </view>
-        <view class="modal-container-footer">
-          <button formType="reset" style="color: #333;background: #fff;">取消</button>
-          <button formType="submit">确认</button>
-        </view>
-      </view>
-    </form>
-  </view>
-</block>

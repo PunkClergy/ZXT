@@ -22,6 +22,7 @@ Page({
     c_navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
     c_searchBarHeight: 70, // 搜索框高度，默认值
     c_totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
+    c_height_head:40,
     g_triggered: false, //下拉刷新状态
     c_add_car_show_momal: false, //添加车辆
     c_import_car_show_momal: false, //导入车辆

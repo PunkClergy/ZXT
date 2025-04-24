@@ -19,9 +19,9 @@ Page({
     const type = eve.currentTarget.dataset.tag
     const routes = {
       balance: '/pages/carManager/buyOilDevice/balance/index',
-      oilDeviceCount: '/pages/carManager/buyOilDevice/oilLevel/index',
+      oilDeviceCount: '/pages/orderList/orderList',
       oilDeviceRemainingUseCount: '/pages/carManager/buyOilDevice/oilQuantity/index',
-      mcckDeviceCount: '/pages/carManager/buyOilDevice/mcckSelf/index',
+      mcckDeviceCount: '/pages/orderList/orderList',
       balanceList: '/pages/carManager/buyOilDevice/balance/detailes',
       oilDeviceCountList: '/pages/carManager/buyOilDevice/oilLevel/detailes',
       oilDeviceRemainingUseCountList: '/pages/carManager/buyOilDevice/oilQuantity/detailes',
