@@ -32,7 +32,22 @@ Page({
     city: null, //城市列表
     citys: [], //城市列表
     cityIndex: null, //当前选择城市
-    custom_role: 1, //默认客户角色
+    custom_role: [], //默认客户角色
+    items: [{
+      name: '客户',
+      value: '0',
+      checked: false,
+    }, {
+      name: '渠道合作',
+      value: '2',
+      checked: false
+    }], //角色选择
+  },
+  handleCheckboxChange(evt) {
+    const value = evt.detail.value;
+    this.setData({
+      custom_role: value
+    })
   },
   // 初始化背景图
   initialiImageBaseConversion() {

@@ -5,7 +5,7 @@
   <view class="search-container" style="height:{{c_searchBarHeight+40}}px;margin-top: {{c_totalNavHeight}}px;">
     <view class="search-box">
       <icon type="search" size="16" class="search-icon" />
-      <input placeholder="搜索订单号" bindblur="handleBlur" class="search-input" />
+      <input placeholder="搜索客户名称" bindblur="handleBlur" class="search-input" />
     </view>
     <view class="search-count">
       <text>共有{{g_total}}个工单</text>

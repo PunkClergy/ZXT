@@ -8,7 +8,7 @@
       <input placeholder="搜索客户名称" bindblur="handleBlur" class="search-input" />
     </view>
     <view class="search-count">
-      <text>共有{{g_total}}个工单</text>
+      <text>共有{{g_total}}个客户</text>
     </view>
   </view>
   <!-- 主要内容区域 -->

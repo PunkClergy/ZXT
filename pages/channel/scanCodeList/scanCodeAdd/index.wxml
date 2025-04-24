@@ -6,16 +6,17 @@
     <view class="card-info">
       <!-- 客户角色 -->
       <view class="card-info-item">
-        <label>客户角色<text>*</text></label>
-        <block>
-          <view class="card-info-item-tabs">
-            <view class="card-info-item-tabs-btn">
-              <text class="{{custom_role == 1?'tabs-active':''}}" data-item="1" bindtap="handleBatteryRole">客户</text>
-              <text class="{{custom_role == 2?'tabs-active':''}}" data-item="2" bindtap="handleBatteryRole">服务商</text>
-              <text class="{{custom_role == 3?'tabs-active':''}}" data-item="3" bindtap="handleBatteryRole">渠道</text>
-            </view>
-          </view>
-        </block>
+        <label>角色选择</label>
+        <view class="card-info-item-input">
+          <checkbox-group data-item="businessTypes" bindchange="handleCheckboxChange" style="display: flex;">
+            <label wx:for="{{items}}" wx:key="index">
+              <view>
+                <checkbox value="{{item.value}}" checked="{{item.checked}}" style="transform: scale(0.5);" />
+              </view>
+              <view>{{item.name}}</view>
+            </label>
+          </checkbox-group>
+        </view>
       </view>
       <!-- 企业名称x -->
       <view class="card-info-item">
