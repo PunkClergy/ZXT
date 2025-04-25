@@ -129,7 +129,9 @@
     "pages/riskControl/GPSPosition/index",
     "pages/riskControl/GPSTrajectory/index",
     "pages/productCatalog/domestic/index",
-    "pages/productCatalog/International/index"
+    "pages/productCatalog/International/index",
+    "pages/carManager/corpel/index",
+    "pages/carManager/corpelAdd/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

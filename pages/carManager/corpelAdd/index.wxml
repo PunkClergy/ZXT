@@ -1,0 +1,63 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+<!-- 自定义头部 -->
+<custom-header title="{{params.id?'车务人员编辑':'车务人员新增'}}" />
+<view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+  <view class="card-info">
+    <!-- 车系 -->
+    <view class="card-info-item">
+      <label>姓名<text>*</text></label>
+      <block wx:if="{{page_nature=='see'}}">
+        <view class="viewText">{{params.name||''}}</view>
+      </block>
+      <block wx:else>
+        <view class="card-info-item-input">
+          <input placeholder="请输入姓名" value="{{params.name}}" data-item="name" bindinput="handleBindinput" />
+        </view>
+      </block>
+
+    </view>
+    <!-- 车型 -->
+    <view class="card-info-item">
+      <label>联系电话<text>*</text></label>
+      <block wx:if="{{page_nature=='see'}}">
+        <view class="viewText">{{params.mobile||''}}</view>
+      </block>
+      <block wx:else>
+        <view class="card-info-item-input">
+          <input placeholder="请输入联系电话" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+        </view>
+      </block>
+    </view>
+    <!-- 年款 -->
+    <view class="card-info-item">
+      <label>身份证号<text>*</text></label>
+      <block wx:if="{{page_nature=='see'}}">
+        <view class="viewText">{{params.idcard||''}}</view>
+      </block>
+      <block wx:else>
+        <view class="card-info-item-input">
+          <input placeholder="请输入身份证号" value="{{params.idcard}}" data-item="idcard" bindinput="handleBindinput" />
+        </view>
+      </block>
+    </view>
+    <!-- 详细地址 -->
+    <view class="card-info-item">
+      <label>详细地址<text>*</text></label>
+      <block wx:if="{{page_nature=='see'}}">
+        <view class="viewText">{{params.address||''}}</view>
+      </block>
+      <block wx:else>
+        <view class="card-info-item-input">
+          <input placeholder="请输入地址" value="{{params.address}}" data-item="address" bindinput="handleBindinput" />
+        </view>
+      </block>
+    </view>
+   
+  </view>
+  <view class="card-footer">
+    <view bindtap="handleSubmit">确认</view>
+  </view>
+</view>
+
+</view>

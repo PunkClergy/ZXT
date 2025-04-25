@@ -12,7 +12,21 @@ const u_carList = {
 const u_addOrUpdateCar = {
   URL: fin3plusUrl + "carapi/addOrUpdateCar",
 }
+// 车务人员列表
+const u_carManagerapi_list = {
+  URL: fin3plusUrl + "carManagerapi/list",
+  page: 'page',
+  comParam: 'comParam'
+}
+// 新增车务人员
+const u_carManagerapi_addOrUpdate = {
+  URL: fin3plusUrl + "carManagerapi/addOrUpdate",
+  page: 'page',
+  comParam: 'comParam'
+}
 module.exports = {
+  u_carManagerapi_addOrUpdate,
+  u_carManagerapi_list,
   u_carList,
   u_addOrUpdateCar
 }
