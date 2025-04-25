@@ -1,1 +1,1 @@
-<web-view src="https://k3a.wiselink.net.cn/img/gn.html" bindmessage="onMessage" bindload="onLoad" binderror="onError"></web-view>
+<web-view src="https://k3a.wiselink.net.cn/img/domestic.html"></web-view>
