@@ -12,8 +12,8 @@
     </view>
   </view>
   <view class="info-upper" wx:if="{{source!='desk'}}">
-    <text bindtap="handleCurrentLocation">当前位置</text>
-    <text bindtap="handleTrajectory" wx:if="{{source !='carDetail'}}">历史轨迹</text>
+    <text bindtap="handleCurrentLocation" wx:if="{{source !='GPSTrajectory'}}">当前位置</text>
+    <text bindtap="handleTrajectory" wx:if="{{source !='carDetail'&&source !='GPSPosition'}}">历史轨迹</text>
   </view>
   <view class="info-middle" wx:if="{{source!='desk'}}">
     <view class="info-middle-layer" bindtap="handleCarStatus">
@@ -31,7 +31,7 @@
     </view>
   </view>
 
-  <view class="info-lower">
+  <view class="info-lower" wx:if="{{source != 'GPSPosition'}}">
     <view class="info-lower-layer" id="3" bindtap="handleReturningVehicles" wx:if="{{source=='desk'}}">
       <image src="/assets/images/home/c_return.png" />
       <text>归还车辆</text>

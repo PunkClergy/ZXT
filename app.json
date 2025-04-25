@@ -125,7 +125,9 @@
     "pages/channel/scanCodeList/index",
     "pages/channel/scanCodeList/scanCodeAdd/index",
     "pages/suborClients/index",
-    "pages/suborClientsList/index"
+    "pages/suborClientsList/index",
+    "pages/riskControl/GPSPosition/index",
+    "pages/riskControl/GPSTrajectory/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
