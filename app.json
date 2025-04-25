@@ -127,7 +127,8 @@
     "pages/suborClients/index",
     "pages/suborClientsList/index",
     "pages/riskControl/GPSPosition/index",
-    "pages/riskControl/GPSTrajectory/index"
+    "pages/riskControl/GPSTrajectory/index",
+    "pages/productCatalog/domestic/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
