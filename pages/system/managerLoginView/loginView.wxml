@@ -1,29 +1,78 @@
-<view class='container'>
-  <image src="{{logoSrc}}" style="width: 191rpx;height: 191rpx;margin-top: 30rpx;"></image>
-  <view style="color: white;font-size:50rpx;font-weight: bold;"> </view>
-  <view style="color: white;font-size:50rpx;">智信通wiselink </view>
-  <form>
+<view style="display: flex; flex-direction: column; height: 100vh;">
 
-    <view class='input_views'>
-      <view class='input_item'>
-        <view class='input_title'>邀请码</view>
-        <input class='input_v' value="{{invit_code}}" placeholder='邀请码' disabled></input>
-      </view>
-
-      <view class='input_item'>
-        <view class='input_title'>账号</view>
-        <input class='input_v' placeholder='请输入账号或手机号' bindinput='accountInput' maxlength='11'></input>
-      </view>
-
-
-      <view class='input_item'>
-        <view class='input_title'>密码</view>
-        <input class='input_v' placeholder='请输入' bindinput='vericodeInput' password="true"></input>
-      </view>
-
+  <!-- 上部分：登录区域 -->
+  <view style="flex:4; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20rpx 0; gap:40rpx;">
+    <!-- Logo 区域 -->
+    <view style="display:flex; flex-direction:column; align-items:center; animation: fadeIn 0.6s ease-in">
+      <image src="{{logoSrc}}" style="width:190rpx; height:190rpx; border-radius:32rpx; box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.1);" />
+      <text style="font-size:36rpx; color:#fff; font-weight:500; margin-top:20rpx;">智信通Wiselink</text>
     </view>
 
-    <button class='login_btn' hover-class="btn_tapcolor" bindtap='loginBtnTap'>登录</button>
-    <button open-type="getPhoneNumber" class='login_btn' hover-class="btn_tapcolor" bindgetphonenumber="onGetPhoneNumber">快捷登录</button>
-  </form>
+    <!-- 登录方式选择 -->
+    <view style="width:92%; display:flex; justify-content:flex-start;">
+      <radio-group style="display:flex; gap:40rpx;" bindchange="radioChange">
+        <label style="display:flex; align-items:center;">
+          <radio value="1" checked color="#4cd964" style="transform:scale(0.8)" />
+          <text style="font-size:28rpx; margin-left:10rpx;color: #fff;">微信登录</text>
+        </label>
+        <label style="display:flex; align-items:center;">
+          <radio value="2" color="#4cd964" style="transform:scale(0.8)" />
+          <text style="font-size:28rpx; margin-left:10rpx;color: #fff;">账号密码登录</text>
+        </label>
+      </radio-group>
+    </view>
+    <!-- 登录按钮 -->
+    <view style="width:92%; margin:0 auto; transition: all 0.3s ease;" wx:if="{{type==2}}">
+      <view style="display: flex;flex-direction: column;gap: 40rpx;">
+        <view style="display: flex;flex-direction: row;height: 90rpx;background: white;border-radius: 10rpx;align-items: center;">
+          <view style="min-width: 150rpx;font-size: 30rpx;margin-left: 10rpx;color: #a4a4a4;">账号</view>
+          <input style=" margin-left: 10rpx;width: 75%;height: 100%;text-align: left;color: #4a4a4a;font-size: 30rpx;" placeholder='请输入账号或手机号' bindinput='accountInput' maxlength='11'></input>
+        </view>
+        <view style="display: flex;flex-direction: row;height: 90rpx;background: white;border-radius: 10rpx;align-items: center;">
+          <view style="min-width: 150rpx;font-size: 30rpx;margin-left: 10rpx;color: #a4a4a4;">密码</view>
+          <input style=" margin-left: 10rpx;width: 75%;height: 100%;text-align: left;color: #4a4a4a;font-size: 30rpx;" placeholder='请输入密码' bindinput='vericodeInput' password="true"></input>
+        </view>
+        <view style="display: flex;flex-direction: row;text-align: center;justify-content: center; height: 90rpx;background:#4cd964;;border-radius: 10rpx;align-items: center;color: white;" bindtap="loginBtnTap">
+          <text>登录</text>
+        </view>
+      </view>
+    </view>
+    <view style="width:92%; margin:0 auto; transition: all 0.3s ease;" hover-class="button-hover" wx:else>
+      <button style="color:#fff; font-size:34rpx; font-weight:500;background:#4cd964 ;" open-type="getPhoneNumber" class='login_btn' hover-class="btn_tapcolor" bindgetphonenumber="onGetPhoneNumber">微信一键登录</button>
+    </view>
+  </view>
+  <!-- 下部分：信息展示 -->
+  <view style="flex:3; padding:40rpx 20rpx; display:flex; flex-direction:column; justify-content:space-between; align-items:center;">
+    <!-- 核心功能 -->
+    <view style="width:96%; background:#fff; padding:30rpx 20rpx; border-radius:16rpx; box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.08);">
+      <text style="display:block; font-size:26rpx; color:#666; margin-bottom:20rpx;">智前通手机汽车互联钥匙期MCCK<text style="font-size: 24rpx;">(mobile car connect key)</text></text>
+      <text style="display:block; font-size:28rpx; color:#2d3436; font-weight:600; margin-bottom:30rpx;">核心功能</text>
+
+      <view style="display:flex; flex-direction:column; gap:24rpx;">
+        <view style="display:flex; align-items:center;padding: 5rpx 0;">
+          <view style="width:12rpx; height:12rpx; background:#4cd964; border-radius:50%; margin-right:16rpx;"></view>
+          <text style="font-size:24rpx; color:#444;">无人租车（自助起租 自动还车 降低取送车成本）</text>
+        </view>
+        <view style="display:flex; align-items:center;padding: 5rpx 0;">
+          <view style="width:12rpx; height:12rpx; background:#4cd964; border-radius:50%; margin-right:16rpx;"></view>
+          <text style="font-size:26rpx; color:#444;">起租油量精准检测 还租油量精准检测（避免油量损失）</text>
+        </view>
+        <view style="display:flex; align-items:center;padding: 5rpx 0;">
+          <view style="width:12rpx; height:12rpx; background:#4cd964; border-radius:50%; margin-right:16rpx;"></view>
+          <text style="font-size:24rpx; color:#444;">控制风控方案（轻点鼠标 远程安全控车）</text>
+        </view>
+        <view style="display:flex; align-items:center;padding: 5rpx 0; ">
+          <view style="width:12rpx; height:12rpx; background:#4cd964; border-radius:50%; margin-right:16rpx;"></view>
+          <text style="font-size:24rpx; color:#444;">里程收集（实现按里程收费的小时租）</text>
+        </view>
+      </view>
+      <view style="text-align:center; color:#666;margin-top: 40rpx;">
+        <text style="display:block; font-size:28rpx; margin-bottom:16rpx;">智信通·中国北京</text>
+        <view style="font-size:26rpx; line-height:1.8;">
+          <text style="display:block;">电话: 010-68283131 网址: www.wiselink.net.cn</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
 </view>
