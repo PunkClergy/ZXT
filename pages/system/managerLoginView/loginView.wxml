@@ -4,8 +4,12 @@
   <view style="flex:4; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20rpx 0; gap:40rpx;">
     <!-- Logo 区域 -->
     <view style="display:flex; flex-direction:column; align-items:center; animation: fadeIn 0.6s ease-in">
-      <image src="{{logoSrc}}" style="width:190rpx; height:190rpx; border-radius:32rpx; box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.1);" />
-      <text style="font-size:36rpx; color:#fff; font-weight:500; margin-top:20rpx;">智信通Wiselink</text>
+      <view style="display: flex;align-items: center;gap: 10rpx;">
+        <image src="{{logoSrc}}" style="width:60rpx; height:60rpx; border-radius:22rpx; box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.1);" />
+        <text style="color: white;font-size: 32rpx;">智信通wiselink</text>
+      </view>
+
+      <text style="font-size:30rpx; color:#a3a1a1; font-weight:500; margin-top:20rpx;">领先的出行技术服务商</text>
     </view>
 
     <!-- 登录方式选择 -->
@@ -25,16 +29,18 @@
     <view style="width:92%; margin:0 auto; transition: all 0.3s ease;" wx:if="{{type==2}}">
       <view style="display: flex;flex-direction: column;gap: 40rpx;">
         <view style="display: flex;flex-direction: row;height: 90rpx;background: white;border-radius: 10rpx;align-items: center;">
-          <view style="min-width: 150rpx;font-size: 30rpx;margin-left: 10rpx;color: #a4a4a4;">账号</view>
+          <view style="min-width: 150rpx;font-size: 30rpx;margin-left: 25rpx;color: #a4a4a4;">账号</view>
           <input style=" margin-left: 10rpx;width: 75%;height: 100%;text-align: left;color: #4a4a4a;font-size: 30rpx;" placeholder='请输入账号或手机号' bindinput='accountInput' maxlength='11'></input>
         </view>
         <view style="display: flex;flex-direction: row;height: 90rpx;background: white;border-radius: 10rpx;align-items: center;">
-          <view style="min-width: 150rpx;font-size: 30rpx;margin-left: 10rpx;color: #a4a4a4;">密码</view>
+          <view style="min-width: 150rpx;font-size: 30rpx;margin-left: 25rpx;color: #a4a4a4;">密码</view>
           <input style=" margin-left: 10rpx;width: 75%;height: 100%;text-align: left;color: #4a4a4a;font-size: 30rpx;" placeholder='请输入密码' bindinput='vericodeInput' password="true"></input>
         </view>
-        <view style="display: flex;flex-direction: row;text-align: center;justify-content: center; height: 90rpx;background:#4cd964;;border-radius: 10rpx;align-items: center;color: white;" bindtap="loginBtnTap">
-          <text>登录</text>
+        <view bindtap="loginBtnTap">
+          <button style="width: 100%;background:#4cd964;color: white;">登录</button>
+          <text style="color: white;font-size: 24rpx;">账号为登录后设定，无账号请使用微信登录</text>
         </view>
+
       </view>
     </view>
     <view style="width:92%; margin:0 auto; transition: all 0.3s ease;" hover-class="button-hover" wx:else>
@@ -45,30 +51,30 @@
   <view style="flex:3; padding:40rpx 20rpx; display:flex; flex-direction:column; justify-content:space-between; align-items:center;">
     <!-- 核心功能 -->
     <view style="width:96%; background:#fff; padding:30rpx 20rpx; border-radius:16rpx; box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.08);">
-      <text style="display:block; font-size:26rpx; color:#666; margin-bottom:20rpx;">智前通手机汽车互联钥匙期MCCK<text style="font-size: 24rpx;">(mobile car connect key)</text></text>
+      <text style="display:block; font-size:26rpx; color:#333; margin-bottom:20rpx;">智前通手机汽车互联钥匙期MCCK<text style="font-size: 24rpx;">(mobile car connect key)</text></text>
       <text style="display:block; font-size:28rpx; color:#2d3436; font-weight:600; margin-bottom:30rpx;">核心功能</text>
 
       <view style="display:flex; flex-direction:column; gap:24rpx;">
         <view style="display:flex; align-items:center;padding: 5rpx 0;">
           <view style="width:12rpx; height:12rpx; background:#4cd964; border-radius:50%; margin-right:16rpx;"></view>
-          <text style="font-size:24rpx; color:#444;">无人租车（自助起租 自动还车 降低取送车成本）</text>
+          <text style="font-size:24rpx; color:#333;">无人租车（自助起租 自动还车 降低取送车成本）</text>
         </view>
         <view style="display:flex; align-items:center;padding: 5rpx 0;">
           <view style="width:12rpx; height:12rpx; background:#4cd964; border-radius:50%; margin-right:16rpx;"></view>
-          <text style="font-size:26rpx; color:#444;">起租油量精准检测 还租油量精准检测（避免油量损失）</text>
+          <text style="font-size:26rpx; color:#333;">起租油量精准检测 还租油量精准检测（避免油量损失）</text>
         </view>
         <view style="display:flex; align-items:center;padding: 5rpx 0;">
           <view style="width:12rpx; height:12rpx; background:#4cd964; border-radius:50%; margin-right:16rpx;"></view>
-          <text style="font-size:24rpx; color:#444;">控制风控方案（轻点鼠标 远程安全控车）</text>
+          <text style="font-size:24rpx; color:#333;">控制风控方案（轻点鼠标 远程安全控车）</text>
         </view>
         <view style="display:flex; align-items:center;padding: 5rpx 0; ">
           <view style="width:12rpx; height:12rpx; background:#4cd964; border-radius:50%; margin-right:16rpx;"></view>
-          <text style="font-size:24rpx; color:#444;">里程收集（实现按里程收费的小时租）</text>
+          <text style="font-size:24rpx; color:#333;">里程收集（实现按里程收费的小时租）</text>
         </view>
       </view>
-      <view style="text-align:center; color:#666;margin-top: 40rpx;">
-        <text style="display:block; font-size:28rpx; margin-bottom:16rpx;">智信通·中国北京</text>
-        <view style="font-size:26rpx; line-height:1.8;">
+      <view style="text-align:center; color:#333;margin-top: 40rpx;">
+        <text style="display:block; font-size:24rpx; margin-bottom:16rpx;">智信通·中国北京</text>
+        <view style="font-size:24rpx; line-height:1;">
           <text style="display:block;">电话: 010-68283131 网址: www.wiselink.net.cn</text>
         </view>
       </view>
