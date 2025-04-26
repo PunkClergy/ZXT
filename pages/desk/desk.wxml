@@ -25,7 +25,7 @@
         <view class="middle-swiper-item">
           <block wx:for="{{item}}" wx:key="index">
             <view class="middle-swiper-container">
-              <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList">
+              <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList" style="height: {{s_quick_entrance_height}}px;">
                 <image src="{{!item.icon ? '/assets/images/index/icon5.png' : c_link + 'img/' + item.icon}}" />
                 <text>{{item.name}}</text>
               </view>

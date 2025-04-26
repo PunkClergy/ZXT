@@ -31,7 +31,7 @@ Page({
     g_before_passing_by_icon: [], //快捷入口数据
     s_background_image_of_the_tree: '', //树的背景图
     s_background_image_of_the_banner: '', //banner背景
-    s_quick_entrance_height: 60, //快捷入口高度 70为一行 140为两行 210为三行...
+    s_quick_entrance_height: 80, //快捷入口高度 70为一行 140为两行 210为三行...
     c_link: 'https://k1sw.wiselink.net.cn/', //域名
     g_tree_structure_data: [], //分类树结构
     s_platform_height: _handleDeviceInfo.platform == "ios" || _handleDeviceInfo.platform == "devtools" ? 95 : 60, //判断系统获取底部高度
