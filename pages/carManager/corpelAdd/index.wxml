@@ -12,7 +12,7 @@
       </block>
       <block wx:else>
         <view class="card-info-item-input">
-          <input placeholder="请输入姓名" value="{{params.name}}" data-item="name" bindinput="handleBindinput" />
+          <input placeholder="请输入姓名" value="{{params.name}}" data-item="name" bindfocus="handleBindinput" />
         </view>
       </block>
 
@@ -25,7 +25,7 @@
       </block>
       <block wx:else>
         <view class="card-info-item-input">
-          <input placeholder="请输入联系电话" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+          <input placeholder="请输入联系电话" value="{{params.mobile}}" data-item="mobile" bindfocus="handleBindinput" />
         </view>
       </block>
     </view>
@@ -37,7 +37,7 @@
       </block>
       <block wx:else>
         <view class="card-info-item-input">
-          <input placeholder="请输入身份证号" value="{{params.idcard}}" data-item="idcard" bindinput="handleBindinput" />
+          <input placeholder="请输入身份证号" value="{{params.idcard}}" data-item="idcard" bindfocus="handleBindinput" />
         </view>
       </block>
     </view>
@@ -49,7 +49,7 @@
       </block>
       <block wx:else>
         <view class="card-info-item-input">
-          <input placeholder="请输入地址" value="{{params.address}}" data-item="address" bindinput="handleBindinput" />
+          <input placeholder="请输入地址" value="{{params.address}}" data-item="address" bindfocus="handleBindinput" />
         </view>
       </block>
     </view>

@@ -24,7 +24,13 @@ const u_carManagerapi_addOrUpdate = {
   page: 'page',
   comParam: 'comParam'
 }
+// 车务人员删除
+const u_carManagerapi_del = {
+  URL: fin3plusUrl + "/carManagerapi/del",
+  id: 'id',
+}
 module.exports = {
+  u_carManagerapi_del,
   u_carManagerapi_addOrUpdate,
   u_carManagerapi_list,
   u_carList,

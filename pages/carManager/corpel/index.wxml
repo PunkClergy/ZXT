@@ -39,7 +39,7 @@
           <view class="head-right">
 
             <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
-            <image wx:if="{{!item.sn}}" src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />
+            <image wx:if="{{!item.sn}}" src="/assets/images/home/_delete.png" data-item="{{item}}" data-index="{{index}}" bindtap="handleDelete" />
           </view>
         </view>
         <view class="content-item-info">

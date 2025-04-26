@@ -4,8 +4,8 @@ const {
   showToast
 } = require('../../../utils/Inspect/tips')
 const {
-  u_carList,
-  u_carManagerapi_list
+  u_carManagerapi_list,
+  u_carManagerapi_del
 } = require('../../../utils/request/car')
 const {
   byPost,
@@ -153,5 +153,25 @@ Page({
       url: '/pages/carManager/corpelAdd/index?flag=' + 'edit&item=' + JSON.stringify(item),
     })
   },
-  handleDelete() {},
+// 删除
+handleDelete(evt) {
+  const item = evt.currentTarget.dataset.item
+  const index = evt.currentTarget.dataset.index
+  const g_items = this.data.g_items
+  const param = {
+    [u_carManagerapi_del.id]: item?.id,
+  };
+  byGet(getApp().data.k1swUrl + u_carManagerapi_del.URL, param).then(response => {
+    hideLoading()
+    if (response.statusCode == 200) {
+      this.setData({
+        g_items: g_items.filter((_, i) => i != index)
+      }, () => {
+        showToast(response?.data?.msg);
+      })
+    } else {
+      showToast('请求失败，请稍后再试');
+    }
+  })
+},
 })
