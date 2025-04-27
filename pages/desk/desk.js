@@ -332,6 +332,10 @@ Page({
 
   onShow: function (e) {
     this.initLogo()
+    const scene = wx.getStorageSync('scene');
+    this.setData({
+      sn_specific_value: scene || ''
+    })
   },
   onUnload: function () {
     this.setData({

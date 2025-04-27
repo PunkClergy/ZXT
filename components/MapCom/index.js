@@ -732,6 +732,9 @@ Component({
           })
         } else {
           evt.length > 6 && showToast(response?.data?.msg || '请求失败')
+          wx.removeStorage({
+            key: 'scene',
+          });
           this.handleLocation()
         }
       });
