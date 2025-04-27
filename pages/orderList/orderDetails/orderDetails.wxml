@@ -98,7 +98,6 @@
           </view>
         </view>
       </scroll-view>
-
     </view>
 
 
@@ -134,5 +133,9 @@
         </view>
       </view>
     </view>
+  </view>
+
+  <view class="levitation-button" bindtap="handleOneClickOrdering">
+    <text>去支付</text>
   </view>
 </view>

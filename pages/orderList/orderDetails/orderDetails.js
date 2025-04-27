@@ -1,29 +1,8 @@
 const {
-  showLoading,
-  hideLoading,
-  showToast
-} = require('../../../utils/Inspect/tips')
-const {
-  byGet
-} = require('../../../utils/request/http')
-const {
-  u_buyRecord,
-  u_serviceList,
-  u_getServiceFiled
-} = require('../../../utils/request/data_info')
-const {
   _handleWindowInfo,
   _handleDeviceInfo
 } = require('../../../utils/public').default
-const {
-  orderListStatus,
-  orderStatus
-} = require('../../../utils/Inspect/filterColl').default
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0,
     c_statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
@@ -81,6 +60,11 @@ Page({
       scrollLeft: (index - 2) * 120,
       scrollTop: 0,
     });
+  },
+  handleOneClickOrdering() {
+    wx.navigateTo({
+      url: '/pages/pay/index?info=' + JSON.stringify(this.data.all_data),
+    })
   },
   onLoad(options) {
     if (options.item) {

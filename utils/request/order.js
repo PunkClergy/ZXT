@@ -13,7 +13,13 @@ const u_serviceList = {
 const u_getServiceFiled = {
   URL: fin3plusUrl + 'cwapi/getServiceFiled',
 }
+// 查询订单支付敏感信息
+const u_pay = {
+  URL: fin3plusUrl + 'deviceBuyApi/pay',
+  orderNum:'orderNum'
+}
 module.exports = {
+  u_pay,
   u_orderList,
   u_serviceList,
   u_getServiceFiled
