@@ -9,15 +9,11 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   byPost,
-  byGet,
   byPostJson
 } = require('../../../utils/request/http')
 const {
   u_priceCalculation,
   u_getDeviceType,
-  u_getProductType,
-  u_getCountry,
-  u_getDeviceVersion,
   u_buyDevice
 } = require('../../../utils/request/data_info')
 Page({
@@ -29,12 +25,6 @@ Page({
     s_platform_height: _handleDeviceInfo.platform == "ios" || _handleDeviceInfo.platform == "devtools" ? 95 : 60, //判断系统获取底部高度
     s_background_picture_of_the_front_page: '', //背景
     params: {},
-    g_product_type_list: [], //类别
-    g_product_type_index: null, //当前选择类别index
-    g_country_list: [], //国家
-    g_country_index: null, //当前选中国家
-    g_device_version_list: [], //价格类型号
-    g_device_version_index: null, //当前价格类型号
     g_device_type_list: [], //销售代号
     g_device_type_index: null, //当前销售代号
     c_entry_method: 1, //当前选择录入方式
@@ -47,7 +37,7 @@ Page({
     currentIndex: 0,
     scrollLeft: 0,
     g_cost: 0,
-    id: null
+    id: ''
   },
   // 全图背景
   initialiImageBaseConversion() {
@@ -89,71 +79,13 @@ Page({
       return base64Data;
     } catch (err) {}
   },
-  // 请求类别数据
-  initialiCategory() {
-    byPost(getApp().data.k1swUrl + u_getProductType.URL, {},
-      (response) => {
-        const resp = response.data.content
-        this.setData({
-          g_product_type_list: resp
-        }, () => {
-          this.initReplaceIndex()
-        })
-      });
-  },
-  // 类别发生变化
-  handleCategory(evt) {
-    this.setData({
-      g_product_type_index: evt.detail.value
-    }, () => {
-      this.initialiDevicetype(this.data.g_product_type_list[this.data.g_product_type_index]?.id)
-      this.handleCalculatePrice()
-    })
-  },
-  // 请求国家数据
-  initialiCountry() {
-    byPost(getApp().data.k1swUrl + u_getCountry.URL, {},
-      (response) => {
-        const resp = response.data.content
-        this.setData({
-          g_country_list: resp
-        }, () => {
-          this.initReplaceIndex()
-        })
-      });
-  },
-  // 国家数据发生变化
-  handleCountry(evt) {
-    this.setData({
-      g_country_index: evt.detail.value
-    }, () => {
-      this.handleCalculatePrice()
-    })
-  },
-  // 价格类型数据
-  initialiDeviceVersion(evt) {
-    const parmas = {
-      [u_getDeviceVersion.typeId]: evt
-    }
-    byPost(getApp().data.k1swUrl + u_getDeviceVersion.URL, parmas,
-      (response) => {
-        const resp = response.data.content
-        this.setData({
-          g_device_version_list: resp
-        }, () => {
-          this.initReplaceIndex()
-        })
-      });
-  },
+
   // 销售代号数据
   initialiDevicetype(evt) {
     const {
       g_device_type_id
     } = this.data
-    const parmas = {
-      [u_getDeviceType.productTypeId]: evt
-    }
-    byPost(getApp().data.k1swUrl + u_getDeviceType.URL, parmas,
+    byPost(getApp().data.k1swUrl + u_getDeviceType.URL, {},
       (response) => {
         const resp = response.data.content
         this.setData({
@@ -170,14 +102,7 @@ Page({
         })
       });
   },
-  // 硬件数据发生变化
-  handleDeviceVersion(evt) {
-    this.setData({
-      g_device_version_index: evt.detail.value
-    }, () => {
-      this.handleCalculatePrice()
-    })
-  },
+
   // 销售代号发生变化
   handleDeviceType(evt) {
     this.setData({
@@ -298,12 +223,6 @@ Page({
   handleSubmit() {
     const {
       id,
-      g_product_type_list = [],
-      g_product_type_index = -1,
-      g_country_list = [],
-      g_country_index = -1,
-      g_device_version_list = [],
-      g_device_version_index = -1,
       g_device_type_list = [],
       g_device_type_index = -1,
       deviceCount = 0,
@@ -314,29 +233,22 @@ Page({
     } = this.data;
     const validateIndex = (list, index) => Array.isArray(list) && index >= 0 && index < list.length;
     const getValidValue = (list, index) => validateIndex(list, index) ? list[index]?.id : null;
-    const productType = getValidValue(g_product_type_list, g_product_type_index);
-    const country = getValidValue(g_country_list, g_country_index);
-    const deviceVersion = getValidValue(g_device_version_list, g_device_version_index)
     const deviceType = getValidValue(g_device_type_list, g_device_type_index);
-    const requiredBaseFields = [{
-        value: productType,
-        name: '产品类别'
-      },
-      {
-        value: country,
-        name: '国家地区'
-      },
-      {
-        value: deviceVersion,
-        name: '价格类型'
-      },
-      {
+    const requiredBaseFields = g_device_type_list[g_device_type_index].id != 11 ? [{
         value: deviceType,
         name: '销售代号'
       },
       {
         value: deviceCount,
         name: '数量'
+      },
+      {
+        value: snitems,
+        name: '收货信息'
+      }
+    ] : [{
+        value: deviceType,
+        name: '销售代号'
       },
       {
         value: snitems,
@@ -418,10 +330,7 @@ Page({
 
     const submitParams = {
       id,
-      productType,
       deviceType,
-      country,
-      deviceVersion,
       deviceCount: Number(deviceCount),
       carList: g_device_type_list[g_device_type_index].id == 11 ? carList?.map(item => ({
         ...item,
@@ -475,28 +384,16 @@ Page({
   // 计算价格
   handleCalculatePrice() {
     const {
-      g_product_type_list = [],
-        g_product_type_index = -1,
-        g_country_list = [],
-        g_country_index = -1,
-        g_device_version_list = [],
-        g_device_version_index = -1,
-        g_device_type_list = [],
+      g_device_type_list = [],
         g_device_type_index = -1,
         deviceCount = 0,
     } = this.data;
-    const productType = g_product_type_list[g_product_type_index];
-    const country = g_country_list[g_country_index];
-    const deviceVersion = g_device_version_list[g_device_version_index];
     const deviceType = g_device_type_list[g_device_type_index];
-    if (!productType?.id || !country?.id || !deviceVersion?.id || !deviceCount || deviceType?.id == 11) {
+    if (!deviceCount || deviceType?.id == 11) {
       return;
     }
     const params = {
       deviceType: deviceType.id,
-      productType: productType.id,
-      country: country.id,
-      deviceVersion: deviceVersion.id,
       deviceCount: Number(deviceCount),
     };
 
@@ -528,9 +425,6 @@ Page({
       return temp
     });
     this.setData({
-      g_product_type_id: evt.productType, //当前选择类别index
-      g_country_id: evt.country, //当前选中国家
-      g_device_version_id: evt.deviceVersion, //当前价格类型号
       g_device_type_id: evt.deviceType, //当前销售代号
       deviceCount: evt.deviceCount,
       tabs: evt.orderCarList,
@@ -543,66 +437,18 @@ Page({
       id: evt.id
     })
   },
-  // 寻找索引值
-  initReplaceIndex() {
-    const {
-      g_product_type_list = [],
-        g_product_type_id,
-        g_country_list = [],
-        g_country_id,
-        g_device_version_list = [],
-        g_device_version_id
-    } = this.data;
-    const findValidIndex = (list, targetId) => {
-      if (!Array.isArray(list)) return null;
-      const index = list.findIndex(item => item.id === targetId);
-      return index >= 0 ? index : null;
-    };
-    const indexConfigs = [{
-        key: 'g_product_type_index',
-        list: g_product_type_list,
-        id: g_product_type_id
-      },
-      {
-        key: 'g_country_index',
-        list: g_country_list,
-        id: g_country_id
-      },
-      {
-        key: 'g_device_version_index',
-        list: g_device_version_list,
-        id: g_device_version_id
-      }
-    ];
-    const updateData = indexConfigs.reduce((acc, {
-      key,
-      list,
-      id
-    }) => {
-      acc[key] = findValidIndex(list, id);
-      return acc;
-    }, {});
-    this.setData(updateData, () => {
-      if (updateData.g_product_type_index !== null) {
-        this.initialiDevicetype(g_product_type_id);
-      }
-    });
-  },
+
   onLoad(options) {
     if (options.item) {
       this.initOptions(JSON.parse(options.item))
     }
+    this.initialiDevicetype()
   },
 
-  onReady() {
-
-  },
+  onReady() {},
 
   onShow() {
     this.initialiImageBaseConversion()
-    this.initialiCategory()
-    this.initialiCountry()
-    this.initialiDeviceVersion()
     if (!this.data.snitems) {
       this.handleChoiceStorage()
     }
