@@ -42,7 +42,8 @@ Page({
       const response = await new Promise((resolve, reject) => {
         byPost(
           `${this.data.c_link}userapi/wxLogin`, {
-            code: e.detail.code
+            code: e.detail.code,
+            inviteCode:that.data.invit_code
           },
           (res) => {
             if (res?.data?.content) {
