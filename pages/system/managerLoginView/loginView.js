@@ -24,7 +24,7 @@ Page({
     clickClose: false,
     openId: '',
     type: 1,
-    invit_code: '无',
+    invit_code: '',
     c_link: 'https://k1sw.wiselink.net.cn/', //域名
     logoSrc: '/assets/images/login/logo.png',
     // c_link: 'http://192.168.43.23:8689/'
@@ -305,6 +305,7 @@ Page({
     param[urlUtil.UserLogin.PASSWORD] = that.data.password_value;
     param[urlUtil.UserLogin.CODE] = code;
     param[urlUtil.UserLogin.TYPE] = that.data.type;
+    param.inviteCode = that.data.invit_code
     // param[urlUtil.CarManagerLogoinPar.COMPANYID] =  getApp().data.companyId;
     appUtil.byPost(k1swUrl + urlUtil.UserLogin.LOGIN_API, param, function (res) {
       appUtil.hideLoading();
