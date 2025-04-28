@@ -84,7 +84,8 @@ Page({
   },
   handlePay() {
     const _this = this
-    if (_this.isWechat) {
+    if (_this.data.isWechat) {
+      console.log(1)
       // 微信支付
       const params = {
         [urlUtil.pay.amount]: Math.abs(_this.data.orderInfo.cost),
@@ -103,24 +104,22 @@ Page({
             signType: 'MD5',
             paySign: content.paySign,
             success(res) {
-              appUtil.showModal("支付成功！", false, function (res) {
-                const params_pay = {
-                  [u_pay.orderNum]: _this.data.orderInfo.num
+              const params_pay = {
+                [u_pay.orderNum]: _this.data.orderInfo.num
+              }
+              byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
+                if (resp.data.code == 1000) {
+                  wx.showModal({
+                    title: '提示',
+                    content: '支付成功',
+                    showCancel: false,
+                    success: function (res) {
+                      wx.reLaunch({
+                        url: '/pages/orderList/orderList',
+                      })
+                    }
+                  })
                 }
-                byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
-                  if (resp.data.code == 1000) {
-                    wx.showModal({
-                      title: '提示',
-                      content: '支付成功',
-                      showCancel: false,
-                      success: function (res) {
-                        wx.reLaunch({
-                          url: '/pages/orderList/orderList',
-                        })
-                      }
-                    })
-                  }
-                });
               });
             }
           })
