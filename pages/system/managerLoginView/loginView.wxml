@@ -30,7 +30,7 @@
       <view class="input-group">
         <view class="input-item">
           <view class="input-label">账号</view>
-          <input class="input-field" placeholder='请输入账号或手机号' bindinput='accountInput' maxlength='11' />
+          <input class="input-field" placeholder='请输入账号或手机号' bindinput='accountInput' />
         </view>
         <view class="input-item">
           <view class="input-label">密码</view>

@@ -56,8 +56,23 @@ Component({
       return 0
     },
 
-    handleBack() {
-      wx.navigateBack()
+    handleBack(e) {
+      const pages = getCurrentPages();
+      if (pages.length >= 2) {
+        wx.navigateBack({
+          delta: 1,
+          success: () => {},
+          fail: (err) => {
+            wx.switchTab({
+              url: '/pages/desk/desk'
+            });
+          }
+        });
+      } else {
+        wx.reLaunch({
+          url: '/pages/desk/desk'
+        });
+      }
     },
 
     handleGoHome() {
