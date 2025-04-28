@@ -90,7 +90,14 @@ const u_del = {
   URL: fin3plusUrl + "devicePriceApi/del",
   id: 'id',
 }
+// 确认
+const u_orderConfirm = {
+  URL: fin3plusUrl + "deviceBuyApi/orderConfirm",
+  orderNum: 'orderNum',
+}
+
 module.exports = {
+  u_orderConfirm,
   u_del,
   u_list,
   u_devaddOrUpdate,

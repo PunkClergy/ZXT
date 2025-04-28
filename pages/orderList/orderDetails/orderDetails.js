@@ -2,6 +2,12 @@ const {
   _handleWindowInfo,
   _handleDeviceInfo
 } = require('../../../utils/public').default
+const {
+  u_orderConfirm
+} = require('../../../utils/request/data_info')
+const {
+  byPost
+} = require('../../../utils/request/http')
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0,
@@ -61,10 +67,28 @@ Page({
       scrollTop: 0,
     });
   },
+  // 去支付
   handleOneClickOrdering() {
     wx.navigateTo({
       url: '/pages/pay/index?info=' + JSON.stringify(this.data.all_data),
     })
+  },
+  // 确认
+  handleConfirm() {
+    const {
+      all_data
+    } = this.data
+    const params = {
+      [u_orderConfirm.orderNum]: all_data.num
+    }
+    byPost(getApp().data.k1swUrl + u_orderConfirm.URL, params,
+      (response) => {
+        const resp = response.data.content
+        all_data.status = resp
+        this.setData({
+          all_data
+        })
+      });
   },
   onLoad(options) {
     if (options.item) {

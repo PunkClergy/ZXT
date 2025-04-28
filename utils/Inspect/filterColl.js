@@ -57,15 +57,15 @@ const macckStatus=[
     { status: 7, text: '待安装', color: '#722ED1' }       // 与适配确认保持同色系，表示关联流程
 ]
 const orderListStatus = [
-    { value: STATUS.ALL, name: '全部' },
-    { value: STATUS.PENDING_ACCEPTANCE, name: '待商家确认' },
-    { value: STATUS.AWAITING_CONFIRMATION, name: '待客户确认' },
-    { value: STATUS.ACCEPTED, name: '待付款' },
-    { value: STATUS.IN_PROGRESS, name: '待发货' },
-    { value: STATUS.AWAITING_INSPECTION, name: '待安装' },
-    { value: STATUS.COMPLETED, name: '安装完成' },
-    { value: STATUS.CANCELLED, name: '订单完成' },
-    { value: STATUS.FALLBACK, name: '已取消' },
+  { value: STATUS.ALL, name: '全部', color: '#78909C' },          // 灰蓝色
+  { value: STATUS.PENDING_ACCEPTANCE, name: '待商家确认', color: '#FF9800' }, // 琥珀色
+  { value: STATUS.AWAITING_CONFIRMATION, name: '待客户确认', color: '#42A5F5' }, // 鲜明蓝
+  { value: STATUS.ACCEPTED, name: '待付款', color: '#FFCA28' },    // 醒目黄
+  { value: STATUS.IN_PROGRESS, name: '待发货', color: '#2196F3' }, // 深品牌蓝
+  { value: STATUS.AWAITING_INSPECTION, name: '待安装', color: '#AB47BC' }, // 紫罗兰
+  { value: STATUS.COMPLETED, name: '安装完成', color: '#8BC34A' }, // 活力绿
+  { value: STATUS.CANCELLED, name: '订单完成', color: '#4CAF50' }, // 深叶绿
+  { value: STATUS.FALLBACK, name: '已取消', color: '#F44336' }     // 警示红
 ]
 const FIELD_CONFIG = [
   { key: 'producttypeName', label: '产品类别' },

@@ -135,7 +135,10 @@
     </view>
   </view>
 
-  <view class="levitation-button" bindtap="handleOneClickOrdering">
+  <view class="levitation-button" bindtap="handleConfirm" wx:if="{{all_data.status == 2}}">
+    <text>确认</text>
+  </view>
+  <view class="levitation-button" bindtap="handleOneClickOrdering" wx:if="{{all_data.status == 3}}">
     <text>去支付</text>
   </view>
 </view>

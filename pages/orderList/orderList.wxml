@@ -64,18 +64,11 @@
         <view class="content-item-footer">
           <view class="footer-left">开单时间: {{item.createdate||'-'}}</view>
           <view class="footer-right" data-item="{{item}}" bindtap="handleToPay">
-            <wxs module="utils">
-              function findName(list, value) {
-                for (var i = 0; i < list.length; i++) {
-                  if (list[i].value === value) {
-                    return list[i].name;
-                  }
-                }
-                return '未知状态';
-              }
-              module.exports.findName = findName;
-            </wxs>
-            {{ utils.findName(orderListStatus, item.status) }}
+            <block wx:for="{{orderListStatus}}" wx:for-item="ele" wx:key="index">
+              <view wx:if="{{ele.value == item.status}}" style="color: {{ele.color}};">
+                {{ele.name}}
+              </view>
+            </block>
           </view>
         </view>
       </view>

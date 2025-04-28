@@ -414,6 +414,12 @@ Page({
   },
   // 获取编辑状态的初始值
   initOptions(evt) {
+    if (evt.orderCarList.length < 1) {
+      this.setData({
+        c_entry_method: 2,
+        file: `${getApp().data.k1swUrl}img${evt.file}`
+      })
+    }
     const params = evt.orderCarList.map(ele => {
       let temp = {
         [`carmodel${ele.id}`]: ele.carmodel,
