@@ -8,7 +8,14 @@ const u_rentRecord = {
 const u_sendRentKey = {
   URL: fin3plusUrl + "rentKeyApi/sendRentKey",
 }
+// 取消电子钥匙
+const u_cancelRentKey = {
+  URL: fin3plusUrl + "rentKeyApi/cancelRentKey",
+  controlCode: 'controlCode'
+}
+
 module.exports = {
+  u_cancelRentKey,
   u_rentRecord,
   u_sendRentKey
 }

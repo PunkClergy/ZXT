@@ -86,7 +86,7 @@
             <view class="card-info">
               <time-line events="{{[{content:item.startAddress||'-',createdate:item.startdate||'-'},{content:item.endAddress||'-',createdate:item.enddate||'-'}]}}" />
             </view>
-            <view class="card-footer" wx:if="{{!item.status}}">
+            <view class="card-footer" wx:if="{{!item.status}}" data-item="{{item}}" bindtap="handleCance">
               <text>取消用车</text>
             </view>
           </view>

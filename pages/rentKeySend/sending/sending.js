@@ -1,7 +1,3 @@
-const appUtil = require('../../../utils/app-util.js');
-const urlUtil = require('../../../utils/url-util.js');
-const bleManager = require('../../../utils/ble-manager.js');
-
 const {
   showLoading,
   hideLoading,
@@ -9,7 +5,8 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   u_rentRecord,
-  u_sendRentKey
+  u_sendRentKey,
+  u_cancelRentKey
 } = require('../../../utils/request/self')
 const {
   byPost,
@@ -288,6 +285,28 @@ Page({
       endDate: tomorrowDate, // 明天作为结束日期
       startTime: currentTime,
       endTime: currentTime
+    });
+  },
+  handleCance(evt) {
+    const {
+      vehId
+    } = this.data;
+    const params = {
+      [u_cancelRentKey.controlCode]: evt.currentTarget.dataset.item.controlcode
+    }
+    byGet(getApp().data.k1swUrl + u_cancelRentKey.URL, params).then(response => {
+      console.log(response.data)
+      if (response.data.code == 1000) {
+        this.setData({
+          page: 1,
+          c_send_key_show_momal: false,
+          g_items: []
+        }, () => {
+          this.getKeySendingList(vehId)
+        });
+      } else {
+        showToast(response.data.msg)
+      }
     });
   },
   onLoad: function (options) {
