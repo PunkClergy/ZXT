@@ -78,21 +78,21 @@
           <text>电量：{{statusInfo.electricity||'-'}}</text>
         </view>
         <view class="status-info-item">
-          <text>总里程：{{statusInfo.mileage||'-'}}</text>
+          <text>总里程：{{statusInfo.totalMileage||'-'}}</text>
         </view>
         <view class="status-info-item">
           <text>小电瓶：{{statusInfo.voltage||'-'}}</text>
         </view>
         <view class="status-info-item">
-          <text>ACC：{{statusInfo.vin}}</text>
-          <text>ON：{{statusInfo.vin}}</text>
+          <text>ACC：{{statusInfo.acc}}</text>
+          <text>ON：{{statusInfo.on}}</text>
         </view>
         <view class="status-info-item">
-          <text>发动机：{{statusInfo.vin}}</text>
-          <text>档位：{{statusInfo.vin}}</text>
+          <text>发动机：{{statusInfo.engineStatus}}</text>
+          <text>档位：{{statusInfo.gears}}</text>
         </view>
         <view class="status-info-item">
-          <text>中控锁：{{statusInfo.vin}}</text>
+          <text>中控锁：{{statusInfo.centralLckingStatus}}</text>
         </view>
         <view class="status-info-item">
           <text>左前门：{{statusInfo.leftFrontDoor||'-'}}</text>
@@ -103,12 +103,8 @@
           <text>右后门：{{statusInfo.rightRearDoor||'-'}}</text>
         </view>
         <view class="status-info-item">
-          <text>后备箱：{{statusInfo.vin}}</text>
-          <text>车灯：{{statusInfo.vin}}</text>
-        </view>
-        <view class="status-info-item">
-          <text>脚刹：{{statusInfo.vin}}</text>
-          <text>手刹：{{statusInfo.vin}}</text>
+          <text>脚刹：{{statusInfo.brakeLights}}</text>
+          <text>手刹：{{statusInfo.parkBrake}}</text>
         </view>
 
       </view>

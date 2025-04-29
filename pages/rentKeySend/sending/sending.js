@@ -240,8 +240,8 @@ Page({
         this.setData({
           page: 1,
           c_send_key_show_momal: false,
-          g_items:[]
-        },()=>{
+          g_items: []
+        }, () => {
           this.getKeySendingList(vehId)
         });
 
@@ -268,24 +268,26 @@ Page({
       const day = date.getDate();
       return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
     };
-  
+
     const formatTime = (date) => {
       const hours = date.getHours();
       const minutes = date.getMinutes();
       return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
     };
-  
+
     const now = new Date();
-    const yesterday = new Date(now);
-    yesterday.setDate(now.getDate() - 1);
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1); // 改为获取明天
+
     const currentDate = formatDate(now);
-    const yesterdayDate = formatDate(yesterday);
+    const tomorrowDate = formatDate(tomorrow);
     const currentTime = formatTime(now);
+
     this.setData({
-      startDate: yesterdayDate, 
-      endDate: currentDate,    
-      startTime: currentTime, 
-      endTime: currentTime     
+      startDate: currentDate, // 今天作为开始日期
+      endDate: tomorrowDate, // 明天作为结束日期
+      startTime: currentTime,
+      endTime: currentTime
     });
   },
   onLoad: function (options) {

@@ -230,7 +230,6 @@ Page({
           that.setData({
             code: ''
           });
-          that.finishDes();
           appUtil.showModal(data.msg, false, function () {});
         }
       } else {

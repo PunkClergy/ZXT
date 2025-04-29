@@ -368,6 +368,7 @@ Component({
       };
       const apiUrl = `${this.data.c_k1sw_link}${u_getCarStatus.URL}`;
       byPost(apiUrl, requestParam, (response) => {
+        hideLoading()
         if (response.data.code !== 1000) {
           showToast(response.data.msg);
           return
