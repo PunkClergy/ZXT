@@ -52,6 +52,6 @@
 
   <!-- 原有部分 -->
   <view style="height: {{c_screen_height-(searchBarHeight+totalNavHeight-60)}}px; margin: 15rpx;position: relative">
-    <map-com cellData="{{cellData}}" sn="{{cellData.sn}}" source="carDetail" bindmyMethod="handleChildEvent" />
+    <map-com cellData="{{cellData}}" sn="{{cellData.sn}}" source="carDetail" isfooter="{{fasle}}" bindmyMethod="handleChildEvent" />
   </view>
 </view>

@@ -31,7 +31,7 @@
     </view>
   </view>
 
-  <view class="info-lower" wx:if="{{source != 'GPSPosition'}}">
+  <view class="info-lower" wx:if="{{isfooter}}">
     <view class="info-lower-layer" id="3" bindtap="handleReturningVehicles" wx:if="{{source=='desk'}}">
       <image src="/assets/images/home/c_return.png" />
       <text>归还车辆</text>

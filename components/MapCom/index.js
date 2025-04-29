@@ -37,6 +37,11 @@ Component({
     source: {
       type: String,
       value: null
+    },
+    // 是否显示底部
+    isfooter:{
+      type:Boolean,
+      value:true
     }
   },
   lifetimes: {
