@@ -79,6 +79,8 @@ Component({
       } catch (error) {
         showToast('初始化失败，请刷新重试');
       }
+
+      this.handleCurrentDate()
     }
   },
   data: {
@@ -110,6 +112,36 @@ Component({
   },
 
   methods: {
+    // 获取当前年月日 时分
+    handleCurrentDate() {
+      const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+      };
+
+      const formatTime = (date) => {
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+      };
+
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(now.getDate() + 1); // 改为获取明天
+
+      const currentDate = formatDate(now);
+      const tomorrowDate = formatDate(tomorrow);
+      const currentTime = formatTime(now);
+
+      this.setData({
+        startDate: currentDate, // 今天作为开始日期
+        endDate: tomorrowDate, // 明天作为结束日期
+        startTime: currentTime,
+        endTime: currentTime
+      });
+    },
     // 获取当前硬件设备定位
     handleLocation() {
       const _this = this

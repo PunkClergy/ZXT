@@ -125,12 +125,12 @@
           <view class="middle-form-item">
             <label>开始时间</label>
             <view class="modal-form-region">
-              <picker mode="date" value="{{time}}" data-index="startDate" bindchange="bindTimeChange">
+              <picker mode="date"  data-index="startDate" bindchange="bindTimeChange">
                 <view class="form-item-text">
                   <text>{{startDate}}</text>
                 </view>
               </picker>
-              <picker mode="time" value="{{time}}" data-index="startTime" bindchange="bindTimeChange">
+              <picker mode="time"  data-index="startTime" bindchange="bindTimeChange">
                 <view class="form-item-text">
                   <text>{{startTime}}</text>
                 </view>
