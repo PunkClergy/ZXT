@@ -39,9 +39,9 @@ Component({
       value: null
     },
     // 是否显示底部
-    isfooter:{
-      type:Boolean,
-      value:true
+    isfooter: {
+      type: Boolean,
+      value: true
     }
   },
   lifetimes: {
@@ -52,7 +52,11 @@ Component({
           source
         } = this.data;
         if (!sn) {
-          const handlerMethod = source === 'carDetail' ? 'handleCarDetail' : 'handleLocation';
+          const handlerMethod = {
+            carDetail: 'handleCarDetail',
+            sending: 'handleLocation',
+            desk: 'handleLocation'
+          } [source];
           this[handlerMethod]();
           return;
         }
