@@ -132,7 +132,8 @@
     "pages/productCatalog/International/index",
     "pages/carManager/corpel/index",
     "pages/carManager/corpelAdd/index",
-    "pages/pay/index"
+    "pages/pay/index",
+    "pages/noDeposit/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
