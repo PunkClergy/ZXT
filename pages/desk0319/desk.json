@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "车务宝wiselink",
-
-  "usingComponents": {
-    "ribbon": "/components/Ribbon/index"
-  },
-  "navigationStyle": "custom",
-  "disableScroll": true
-}

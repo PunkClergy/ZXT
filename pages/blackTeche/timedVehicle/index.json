@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "油费报销",
+  "usingComponents": {
+    "custom-header":"/components/CustomHeader/index",
+    "map-com":"/components/MapCom/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}
