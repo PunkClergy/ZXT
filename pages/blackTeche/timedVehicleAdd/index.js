@@ -61,7 +61,7 @@ Page({
   },
   handleCarList() {
     wx.navigateTo({
-      url: '/pages/carManager/carList/carList?source=' + '/pages/blackTeche/timedVehicleAdd/index&flagMulti=' + 1,
+      url: `/pages/carManager/carList/carList?source=/pages/blackTeche/timedVehicleAdd/index&flagMulti=1&info=${JSON.stringify(this.data)}`
     })
   },
   handleSubmit() {
@@ -105,8 +105,9 @@ Page({
   onLoad(options) {
     if (options.black) {
       this.setData({
+        ...JSON.parse(options.info),
         vehids: options.black,
-        platenumbers:options.platenumbers
+        platenumbers: options.platenumbers,
       })
     }
     if (options.details) {

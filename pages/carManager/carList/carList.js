@@ -39,23 +39,6 @@ Page({
   onReady: function () {
     this.initialiImageBaseConversion()
   },
-  // handleChangeBlack(evt) {
-  //   const id = evt.currentTarget.dataset.item.id;
-  //   const blackSet = new Set(this.data.g_black);
-  //   const platenumbers = new Set(this.data.g_platenumbers);
-  //   const platenumber = this.data.g_items
-  //   const vehicle = platenumber.find(item => item.id === id);
-  //   if (blackSet.has(id)) {
-  //     blackSet.delete(id);
-  //     // platenumbers.delete(platenumber)
-  //   } else {
-  //     blackSet.add(id);
-  //     platenumbers.add(vehicle.platenumber)
-  //   }
-  //   this.setData({
-  //     g_black: Array.from(blackSet)
-  //   });
-  // },
   handleChangeBlack(evt) {
     // 使用解构赋值一次性获取所有需要的数据
     const {
@@ -92,11 +75,13 @@ Page({
   initCarryParams(evt) {
     const {
       source,
-      flagMulti
+      flagMulti,
+      info
     } = evt
     this.setData({
       g_source: source,
-      g_flagMulti: flagMulti
+      g_flagMulti: flagMulti,
+      info: JSON.parse(info) 
     })
   },
   initialiImageBaseConversion() {
@@ -201,7 +186,7 @@ Page({
   },
   handleJumpBlackInfo() {
     wx.reLaunch({
-      url: `${this.data.g_source}?black=${this.data.g_black}&platenumbers=${this.data.g_platenumbers}`,
+      url: `${this.data.g_source}?black=${this.data.g_black}&platenumbers=${this.data.g_platenumbers}&info=${JSON.stringify(this.data.info)}`,
     })
   },
   handleView(evt) {
