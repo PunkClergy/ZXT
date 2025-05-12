@@ -28,12 +28,16 @@ const u_addOrUpdate = {
 const u_addList = {
   URL: fin3plusUrl + 'oilReimbursementapi/addOrUpdate',
 }
-const u_scheduledCarList = {
+const u_scheduledaddOrUpdate = {
+  URL: fin3plusUrl + 'scheduledCarApi/addOrUpdate',
+}
+const u_scheduledCarList = {  
   URL: fin3plusUrl + 'scheduledCarApi/list',
   page: 'page',
   comParam: 'comParam'
 }
 module.exports = {
+  u_scheduledaddOrUpdate,
   u_scheduledCarList,
   u_addList,
   u_addOrUpdate,

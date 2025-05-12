@@ -9,38 +9,39 @@
       <!-- 标题 -->
       <view class="card-info-item">
         <label>标题</label>
-        <input placeholder="请输入标题" value="{{params.vehicleSerialName}}" data-item="vehicleSerialName" bindinput="handleBindinput" />
+        <input placeholder="请输入标题" value="{{params.title}}" data-item="title" bindinput="handleBindinput" />
       </view>
       <!-- 选择车辆 -->
       <view class="card-info-item">
         <label>车辆</label>
-        <label>请选择车辆</label>
+        <label bindtap="handleCarList" wx:if="{{!platenumbers}}">请选择车辆</label>
+        <label wx:else>查看</label>
       </view>
       <!-- 开始时间 -->
       <view class="card-info-item">
         <label>开始时间</label>
-        <picker mode="time" value="{{time}}" bindchange="bindTimeChange">
-          <view class="picker">{{time || '请选择时间'}}</view>
+        <picker mode="time" value="{{starttime}}" bindchange="handleBindStartTimeChange">
+          <view class="picker">{{starttime || '请选择时间'}}</view>
         </picker>
       </view>
       <!-- 结束时间 -->
       <view class="card-info-item">
         <label>结束时间</label>
-        <picker mode="time" value="{{time}}" bindchange="bindTimeChange">
-          <view class="picker">{{time || '请选择时间'}}</view>
+        <picker mode="time" value="{{endtime}}" bindchange="hadnlebindEndTimeChange">
+          <view class="picker">{{endtime || '请选择时间'}}</view>
         </picker>
       </view>
       <!-- 启用状态 -->
       <view class="card-info-item">
-        <label>启用状态</label>
-        <switch checked="{{enabled}}" bindchange="toggleEnable" />
+        <label>任务类型</label>
+        <switch checked="{{enabled}}" bindchange="handleToggleEnable" />
       </view>
       <!-- 生效日期 -->
       <view class="card-info-item" style="flex-direction: column;">
         <label>生效日期</label>
         <view style="display: flex;justify-content: flex-end;gap: 10rpx;">
           <block wx:for="{{days}}" wx:key="value">
-            <view class="day-item {{item.active ? 'active' : ''}}" bindtap="toggleDay" data-day="{{item.value}}">
+            <view class="day-item {{item.active ? 'active' : ''}}" bindtap="handleToggleDay" data-day="{{item.value}}">
               {{item.label}}
             </view>
           </block>
@@ -49,8 +50,8 @@
       </view>
       <!-- 备注 -->
       <view class="card-info-item">
-        <label>启用状态</label>
-        <input placeholder="请输入备注" value="{{params.vehicleSerialName}}" data-item="vehicleSerialName" bindinput="handleBindinput" />
+        <label>备注</label>
+        <input placeholder="请输入备注" value="{{params.bak}}" data-item="bak" bindinput="handleBindinput" />
       </view>
 
     </view>
@@ -59,29 +60,3 @@
     </view>
   </view>
 </view>
-<!-- <view class="container">
-  <view class="form-item">
-    <text class="label">时间选择</text>
-    <picker mode="time" value="{{time}}" bindchange="bindTimeChange">
-      <view class="picker">{{time || '请选择时间'}}</view>
-    </picker>
-  </view>
-  <view class="form-item">
-    <text class="label">启用</text>
-    <switch checked="{{enabled}}" bindchange="toggleEnable" />
-  </view>
-  <view class="form-item-date">
-    <text class="label">生效日期</text>
-    <view class="days-container">
-      <block wx:for="{{days}}" wx:key="value">
-        <view class="day-item {{item.active ? 'active' : ''}}" bindtap="toggleDay" data-day="{{item.value}}">
-          {{item.label}}
-        </view>
-      </block>
-    </view>
-  </view>
-
-
-
-  <button class="save-btn" bindtap="saveAlarm">保存闹钟</button>
-</view> -->

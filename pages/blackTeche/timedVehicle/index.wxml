@@ -1,8 +1,8 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="油费报销" />
+  <custom-header title="远程控车" />
   <!-- 闹钟列表 -->
   <scroll-view class="alarm-list" scroll-y style="height: {{c_screen_height-totalNavHeight}}px;margin-top: {{totalNavHeight}}px;">
-    <block wx:for="{{alarms}}" wx:key="id">
+    <block wx:for="{{g_items}}" wx:key="id">
       <view class="alarm-item" data-id="{{item.id}}">
         <!-- 左侧时间 -->
         <view class="left-content" bindtap="editAlarm">

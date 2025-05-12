@@ -18,7 +18,8 @@ Page({
     totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_page: 1, //列表页码
     g_comParam: '', //输入框内容
-    alarms: [{
+    g_items:[]
+,    alarms: [{
         id: 1,
         title: '定时内容标题',
         starttime: '07:09',

@@ -22,11 +22,13 @@ Page({
     c_searchBarHeight: 70, // 搜索框高度，默认值
     c_totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_source: 0, //上级跳转页面
+    g_flagMulti: 0,
     g_page: 1, //当前页码
     g_comParam: '', //输入框内容
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新是否开启
     g_total: 0, //列表总数
+    g_black: []
   },
 
   onLoad: function (options) {
@@ -36,12 +38,27 @@ Page({
   onReady: function () {
     this.initialiImageBaseConversion()
   },
+  handleChangeBlack(evt) {
+    const id = evt.currentTarget.dataset.item.id;
+    const blackSet = new Set(this.data.g_black);
+
+    if (blackSet.has(id)) {
+      blackSet.delete(id);
+    } else {
+      blackSet.add(id);
+    }
+    this.setData({
+      g_black: Array.from(blackSet)
+    });
+  },
   initCarryParams(evt) {
     const {
-      source
+      source,
+      flagMulti
     } = evt
     this.setData({
-      g_source: source
+      g_source: source,
+      g_flagMulti: flagMulti
     })
   },
   initialiImageBaseConversion() {
@@ -142,6 +159,11 @@ Page({
   handleJumpInfo() {
     wx.navigateTo({
       url: '/pages/carManager/carListAdd/index',
+    })
+  },
+  handleJumpBlackInfo() {
+    wx.reLaunch({
+      url: `${this.data.g_source}?black=${this.data.g_black}`,
     })
   },
   handleView(evt) {
