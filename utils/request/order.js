@@ -36,7 +36,11 @@ const u_scheduledCarList = {
   page: 'page',
   comParam: 'comParam'
 }
+const u_scheduledCarApiDel =  {
+  URL: fin3plusUrl + 'scheduledCarApi/del',
+}
 module.exports = {
+  u_scheduledCarApiDel,
   u_scheduledaddOrUpdate,
   u_scheduledCarList,
   u_addList,

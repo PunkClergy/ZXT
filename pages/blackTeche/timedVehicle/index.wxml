@@ -5,14 +5,14 @@
     <block wx:for="{{g_items}}" wx:key="id">
       <view class="alarm-item" data-id="{{item.id}}">
         <!-- 左侧时间 -->
-        <view class="left-content" bindtap="editAlarm">
+        <view class="left-content" bindtap="editAlarm" data-item="{{item}}">
           <text class="left-title">{{item.title}}</text>
           <text class="left-time">{{item.starttime}}-{{item.endtime}}</text>
         </view>
 
         <!-- 右侧内容 -->
-        <view class="right-content">
-          <switch class="switch" checked="{{item.allowuse}}" bindchange="toggleAlarm" data-id="{{item.id}}" />
+        <view class="right-content" >
+          <text bindtap="handleDel" data-item="{{item}}" style="color: #7b7b7b;font-size: 26rpx;">删除</text>
         </view>
       </view>
     </block>

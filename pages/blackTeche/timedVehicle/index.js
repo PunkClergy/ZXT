@@ -3,10 +3,12 @@ const {
   _handleDeviceInfo
 } = require('../../../utils/public').default
 const {
-  u_scheduledCarList
+  u_scheduledCarList,
+  u_scheduledCarApiDel
 } = require('../../../utils/request/order')
 const {
-  byGet
+  byGet,
+  byPost
 } = require('../../../utils/request/http')
 Page({
   data: {
@@ -18,24 +20,7 @@ Page({
     totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_page: 1, //列表页码
     g_comParam: '', //输入框内容
-    g_items:[]
-,    alarms: [{
-        id: 1,
-        title: '定时内容标题',
-        starttime: '07:09',
-        endtime: '09:09',
-        vehids: [],
-        dayofweek: [1, 2, 3, 4, 5],
-        allowuse: true,
-        bak: '22222'
-      },
-      {
-        id: 2,
-        time: "08:00",
-        repeatDays: [0, 6],
-        enabled: false
-      }
-    ]
+    g_items: [],
   },
 
   // 格式化重复天数
@@ -73,16 +58,15 @@ Page({
 
   // 编辑闹钟
   editAlarm(e) {
-    const id = e.currentTarget.dataset.id;
-
+    const item = e.currentTarget.dataset.item;
     wx.navigateTo({
-      url: `/pages/blackTeche/timedVehicleAdd/index?id=${id}`
+      url: `/pages/blackTeche/timedVehicleAdd/index?details=${JSON.stringify(item)}`
     })
   },
   initList() {
     const param = {
       [u_scheduledCarList.page]: this.data.g_page,
-      [u_scheduledCarList.comParam]: this.data.comParam
+      [u_scheduledCarList.comParam]: this.data.g_comParam
     };
     byGet(getApp().data.k1swUrl + u_scheduledCarList.URL, param).then(response => {
       if (response.statusCode == 200) {
@@ -93,7 +77,7 @@ Page({
           g_items: this.data.g_items.concat(response.data.content),
           g_total: Number(response.data.count || 0).toLocaleString()
         }, () => {
-          hideLoading();
+          // hideLoading();
         });
       } else {
         showToast('请求失败，请稍后再试');
@@ -101,8 +85,22 @@ Page({
       }
     })
   },
+  handleDel(evt) {
+    const id = evt.currentTarget.dataset.item.id
+    byPost(getApp().data.k1swUrl + u_scheduledCarApiDel.URL, {
+      scheduledId: id
+    }, (response) => {
+      this.setData({
+        g_page: 1, //列表页码
+        g_comParam: '', //输入框内容
+        g_items: [],
+      }, () => {
+        this.initList()
+      })
+
+    });
+  },
   onLoad() {
-    console.log(211)
     this.initList()
   },
 })

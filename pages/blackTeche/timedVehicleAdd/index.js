@@ -17,7 +17,7 @@ Page({
     s_background_picture_of_the_front_page: '', //背景
     time: '',
     label: '',
-    platenumbers: '',
+    vehids: '',
     params: {},
     allowuse: 0,
     starttime: '',
@@ -72,9 +72,9 @@ Page({
       starttime: this.data.starttime,
       endtime: this.data.endtime,
       allowuse: this.data.allowuse,
-      vehids: this.data.platenumbers,
+      vehids: this.data.vehids,
       dayofweek: this.data.days
-        .filter(item => item.active) // 筛选 active 为 true 的项
+        .filter(item => item.active)
         .map(item => item.value)
     }
     console.log(temp)
@@ -97,14 +97,33 @@ Page({
   },
   handleToggleEnable(evt) {
     this.setData({
-      allowuse: evt.detail.value?true:false
+      allowuse: evt.detail.value
     })
   },
   onLoad(options) {
     console.log(options)
     if (options.black) {
       this.setData({
-        platenumbers: options.black
+        vehids: options.black
+      })
+    }
+    if (options.details) {
+      console.log(JSON.parse(options.details))
+      const dayofweek = JSON.parse(options.details).dayofweek.split(",").map(Number);
+      const days = this.data.days
+      const newDays = days.map(day => ({
+        ...day,
+        active: Array.isArray(dayofweek) ?
+          dayofweek.includes(day.value) : day.value === dayofweek
+      }));
+      console.log(newDays)
+      this.setData({
+        ...JSON.parse(options.details),
+        days: newDays,
+        params: {
+          title: JSON.parse(options.details).title,
+          bak: JSON.parse(options.details).bak
+        }
       })
     }
   },
