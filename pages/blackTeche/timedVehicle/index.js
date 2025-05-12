@@ -3,12 +3,7 @@ const {
   _handleDeviceInfo
 } = require('../../../utils/public').default
 const {
-  showLoading,
-  hideLoading,
-  showToast
-} = require('../../../utils/Inspect/tips')
-const {
-  u_orderList
+  u_scheduledCarList
 } = require('../../../utils/request/order')
 const {
   byGet
@@ -23,70 +18,72 @@ Page({
     totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_page: 1, //列表页码
     g_comParam: '', //输入框内容
-    g_items: [], //列表数据
-    g_total: 0, //工单总数
-    g_triggered: false, //下拉刷新状态
-    s_trajectory_show: false,
+    alarms: [{
+        id: 1,
+        title: '定时内容标题',
+        starttime: '07:09',
+        endtime: '09:09',
+        vehids: [],
+        dayofweek: [1, 2, 3, 4, 5],
+        allowuse: true,
+        bak: '22222'
+      },
+      {
+        id: 2,
+        time: "08:00",
+        repeatDays: [0, 6],
+        enabled: false
+      }
+    ]
   },
-  // 全图背景
-  initialiImageBaseConversion() {
-    const _this = this;
-    const imageMap = [{
-      path: '/assets/images/home/car-bg.png',
-      key: 's_background_picture_of_the_front_page'
-    }];
-    const promises = imageMap.map(item =>
-      new Promise((resolve, reject) => {
-        wx.getFileSystemManager().readFile({
-          filePath: item.path,
-          encoding: 'base64',
-          success: (res) => {
-            resolve({
-              [item.key]: `data:image/png;base64,${res.data}`
-            });
-          }
-        });
-      })
-    );
 
-    Promise.all(promises)
-      .then(results => {
-        const dataToUpdate = results.reduce((acc, curr) => ({
-          ...acc,
-          ...curr
-        }), {});
-        _this.setData(dataToUpdate);
-      });
+  // 格式化重复天数
+  formatRepeatDays(days) {
+    if (days.length === 0) return "仅一次";
+    if (days.length === 7) return "每天";
+
+    const weekDays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+    return days.map(d => weekDays[d]).join(" ");
   },
-  // 新增跳转
-  handleOneClickOrdering() {
+
+  // 切换闹钟状态
+  toggleAlarm(e) {
+    const id = e.currentTarget.dataset.id;
+    const alarms = this.data.alarms.map(alarm => {
+      if (alarm.id === id) {
+        alarm.enabled = !alarm.enabled;
+      }
+      return alarm;
+    });
+    this.setData({
+      alarms
+    });
+  },
+
+  // 添加新闹钟
+  addAlarm() {
+    wx.showToast({
+      title: '跳转到添加页面',
+      icon: 'none'
+    })
+    // 实际使用时跳转到添加页面
+    // wx.navigateTo({ url: '/pages/add-alarm/add-alarm' })
+  },
+
+  // 编辑闹钟
+  editAlarm(e) {
+    const id = e.currentTarget.dataset.id;
+
     wx.navigateTo({
-      url: '/pages/blackTeche/fuelExpAdd/index',
+      url: `/pages/blackTeche/timedVehicleAdd/index?id=${id}`
     })
   },
-  handleLower() {
-    this.setData({
-      g_page: this.data.g_page + 1
-    }, () => {
-      this.getOrderList();
-    });
-  },
-  handleRefresh() {
-    this.setData({
-      g_triggered: false,
-      g_page: 1,
-      g_items: []
-    }, () => {
-      this.getOrderList();
-    });
-  },
-  getOrderList() {
-    showLoading("加载中...");
+  initList() {
     const param = {
-      [u_orderList.comParam]: this.data.g_comParam,
-      [u_orderList.page]: this.data.g_page,
+      [u_scheduledCarList.page]: this.data.g_page,
+      [u_scheduledCarList.comParam]: this.data.comParam
     };
-    byGet(getApp().data.k1swUrl + u_orderList.URL, param).then(response => {
+    byGet(getApp().data.k1swUrl + u_scheduledCarList.URL, param).then(response => {
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
           showToast(`已加载全部数据：共${this.data.g_items.length}条`);
@@ -103,49 +100,8 @@ Page({
       }
     })
   },
-  // 获取当前年月日 时分
-  handleCurrentDate() {
-    const formatDate = (date) => {
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
-    };
-
-    const formatTime = (date) => {
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
-      return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
-    };
-
-    const now = new Date();
-    const tomorrow = new Date(now);
-    tomorrow.setDate(now.getDate() + 1); // 改为获取明天
-
-    const currentDate = formatDate(now);
-    const tomorrowDate = formatDate(tomorrow);
-    const currentTime = formatTime(now);
-
-    this.setData({
-      startDate: currentDate, // 今天作为开始日期
-      endDate: tomorrowDate, // 明天作为结束日期
-      startTime: currentTime,
-      endTime: currentTime
-    });
+  onLoad() {
+    console.log(211)
+    this.initList()
   },
-  onLoad(options) {
-    this.getOrderList()
-  },
-
-
-  onReady() {
-
-  },
-
-
-  onShow() {
-    this.initialiImageBaseConversion()
-    this.handleCurrentDate()
-  },
-
 })

@@ -1,112 +1,20 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="远程控车" />
-  <!-- 搜索框 -->
-  <view class="search-container" style="height:{{searchBarHeight}}px;margin-top: {{totalNavHeight}}px;">
-    <view class="search-box">
-      <icon type="search" size="16" class="search-icon" />
-      <input placeholder="搜索车牌号/VIN/设备号" bindblur="handleBlur" class="search-input" />
-    </view>
-    <view class="search-count">
-      <text>共有{{g_total}}辆车</text>
-    </view>
-  </view>
-  <!-- 主要内容区域 -->
-  <scroll-view class="content-container" scroll-y="true" style="height: {{c_screen_height-searchBarHeight-totalNavHeight}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
-    <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
-      <view class="content-item">
-        <view class="content-item-head">
-          <view class="head-left">
-            <view class="left-category">
-              <image src="/assets/images/home/01.png" />
-              <text>{{item.ordertypename}}</text>
-            </view>
-            <view class="left-brand">
-              {{item.platenumber}}
-            </view>
-            <view class="left-model">
-              {{item.vehicleSerialName||'-'}}{{item.vehicleModeName||''}}
-            </view>
-          </view>
-          <view class="head-right">
-            <view class="right-special-state" bindtap="handle">禁用</view>
-            <!-- <view class="right-special-state">启用</view> -->
-            <view class="right-special-state">设置</view>
-          </view>
+  <custom-header title="油费报销" />
+  <!-- 闹钟列表 -->
+  <scroll-view class="alarm-list" scroll-y style="height: {{c_screen_height-totalNavHeight}}px;margin-top: {{totalNavHeight}}px;">
+    <block wx:for="{{alarms}}" wx:key="id">
+      <view class="alarm-item" data-id="{{item.id}}">
+        <!-- 左侧时间 -->
+        <view class="left-content" bindtap="editAlarm">
+          <text class="left-title">{{item.title}}</text>
+          <text class="left-time">{{item.starttime}}-{{item.endtime}}</text>
         </view>
-        <view class="content-item-info">
-          <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
-            <label>下单时间{{index}} ：</label>
-            <text>{{item.createdate||'-'}}</text>
-          </view>
 
-          <view class="info-item  {{item.ispatchtype.length > 15 ? 'long-info-item' : ''}}">
-            <label>派单方式 ：</label>
-            <text>{{item.ispatchtype||'-'}}</text>
-          </view>
-
-          <view class="info-item  {{item.carmanagername.length > 15 ? 'long-info-item' : ''}}">
-            <label>车务人员 ：</label>
-            <text>{{item.carmanagername||'-'}}</text>
-          </view>
-
-          <block wx:for="{{g_filed[item.ordertype]}}" wx:for-item="innerItem" wx:key="index">
-            <view class="info-item  {{innerItem.name.length > 15 ? 'long-info-item' : ''}}" wx:if="{{innerItem.value!='finishdate'}}">
-              <label>{{innerItem.name||'-'}} ：</label>
-              <text>{{item[innerItem.value]||'-'}}</text>
-            </view>
-          </block>
+        <!-- 右侧内容 -->
+        <view class="right-content">
+          <switch class="switch" checked="{{item.allowuse}}" bindchange="toggleAlarm" data-id="{{item.id}}" />
         </view>
       </view>
     </block>
   </scroll-view>
 </view>
-<block>
-  <view class="modal-mask" wx:if="{{s_trajectory_show}}" bindtap="handleHideTrajectory"></view>
-  <view class="modal-base-map" wx:if="{{s_trajectory_show}}">
-    <form bindsubmit="handleFormSubmit">
-      <view class="modal-container">
-        <view class="modal-container-head">
-          <text>禁用时间</text>
-          <image src="/assets/images/home/right_1.png" bindtap="handleHideTrajectory" />
-        </view>
-        <view class="modal-container-middle">
-          <view class="middle-form-item">
-            <label>开始时间</label>
-            <view class="modal-form-region">
-              <picker mode="date"  data-index="startDate" bindchange="bindTimeChange">
-                <view class="form-item-text">
-                  <text>{{startDate}}</text>
-                </view>
-              </picker>
-              <picker mode="time"  data-index="startTime" bindchange="bindTimeChange">
-                <view class="form-item-text">
-                  <text>{{startTime}}</text>
-                </view>
-              </picker>
-            </view>
-
-          </view>
-          <view class="middle-form-item">
-            <label>开始时间</label>
-            <view class="modal-form-region">
-              <picker mode="date" data-index="endDate" bindchange="bindTimeChange">
-                <view class="form-item-text">
-                  <text>{{endDate}}</text>
-                </view>
-              </picker>
-              <picker mode="time" data-index="endTime" bindchange="bindTimeChange">
-                <view class="form-item-text">
-                  <text>{{endTime}}</text>
-                </view>
-              </picker>
-            </view>
-
-          </view>
-        </view>
-        <view class="modal-container-footer">
-          <button formType="submit">确认</button>
-        </view>
-      </view>
-    </form>
-  </view>
-</block>
