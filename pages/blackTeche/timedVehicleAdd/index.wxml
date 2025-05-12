@@ -36,8 +36,8 @@
         <label>任务类型</label>
         <!-- <switch checked="{{enabled}}" bindchange="handleToggleEnable" /> -->
         <radio-group bindchange="handleToggleEnable">
-          <radio value="0" checked="{{allowuse == 0}}">禁用</radio>
-          <radio value="1" checked="{{allowuse ==1}}">启用</radio>
+          <radio value="0" checked="{{allowuse == 0}}" style=" transform: scale(0.7);">禁用</radio>
+          <radio value="1" checked="{{allowuse ==1}}" style=" transform: scale(0.7);">启用</radio>
         </radio-group>
       </view>
       <!-- 生效日期 -->
