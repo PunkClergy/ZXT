@@ -17,4 +17,7 @@
       </view>
     </block>
   </scroll-view>
+  <view class="card-footer">
+      <view bindtap="handleAdd">新增</view>
+    </view>
 </view>

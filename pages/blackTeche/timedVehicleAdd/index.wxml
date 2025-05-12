@@ -14,8 +14,8 @@
       <!-- 选择车辆 -->
       <view class="card-info-item">
         <label>车辆</label>
-        <label bindtap="handleCarList" wx:if="{{!platenumbers}}">请选择车辆</label>
-        <label wx:else>查看</label>
+        <label bindtap="handleCarList" wx:if="{{!vehids}}">请选择车辆</label>
+        <label wx:else>{{platenumbers}}</label>
       </view>
       <!-- 开始时间 -->
       <view class="card-info-item">

@@ -65,7 +65,6 @@ Page({
     })
   },
   handleSubmit() {
-    console.log(this.data)
     let temp = {
       title: this.data.title,
       ...this.data.params,
@@ -80,6 +79,9 @@ Page({
     console.log(temp)
     byPost(getApp().data.k1swUrl + u_scheduledaddOrUpdate.URL, temp, (response) => {
       console.log(response)
+      wx.reLaunch({
+        url: '/pages/blackTeche/timedVehicle/index',
+      })
 
     });
   },
@@ -101,10 +103,10 @@ Page({
     })
   },
   onLoad(options) {
-    console.log(options)
     if (options.black) {
       this.setData({
-        vehids: options.black
+        vehids: options.black,
+        platenumbers:options.platenumbers
       })
     }
     if (options.details) {
@@ -116,7 +118,6 @@ Page({
         active: Array.isArray(dayofweek) ?
           dayofweek.includes(day.value) : day.value === dayofweek
       }));
-      console.log(newDays)
       this.setData({
         ...JSON.parse(options.details),
         days: newDays,

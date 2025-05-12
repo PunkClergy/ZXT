@@ -39,7 +39,7 @@
               短租
             </view>
           </view>
-          <view class="head-right">
+          <view class="head-right" wx:if="{{!(g_flagMulti)}}">
             <image src="/assets/images/home/_see.png" data-item="{{item}}" bindtap="handleView" />
             <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
             <image wx:if="{{!item.sn}}" src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />

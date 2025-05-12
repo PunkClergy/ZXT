@@ -63,6 +63,11 @@ Page({
       url: `/pages/blackTeche/timedVehicleAdd/index?details=${JSON.stringify(item)}`
     })
   },
+  handleAdd() {
+    wx.navigateTo({
+      url: `/pages/blackTeche/timedVehicleAdd/index`
+    })
+  },
   initList() {
     const param = {
       [u_scheduledCarList.page]: this.data.g_page,
