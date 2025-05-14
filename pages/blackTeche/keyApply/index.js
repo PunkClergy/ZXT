@@ -9,7 +9,7 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   u_vehicleApplyApiList,
-  u_vehicleApplyApiApprove
+  u_vehicleApplyApiApproveKey
 } = require('../../../utils/request/order')
 const {
   byGet,
@@ -113,7 +113,7 @@ Page({
       success(res) {
         if (res.confirm) {
           console.log('用户点击确定');
-          byPost(getApp().data.k1swUrl + u_vehicleApplyApiApprove.URL, {
+          byPost(getApp().data.k1swUrl + u_vehicleApplyApiApproveKey.URL, {
             id: item.id,
             status: flag
           }, function (res) {

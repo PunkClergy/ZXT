@@ -59,11 +59,11 @@ const u_retrunCar = {
   URL: fin3plusUrl + 'vehicleApplyApi/retrunCar',
 }
 // 电子钥匙审批
-const u_vehicleApplyApiApprove={
+const u_vehicleApplyApiApproveKey = {
   URL: fin3plusUrl + 'vehicleApplyApi/approve',
 }
 module.exports = {
-  u_vehicleApplyApiApprove,
+  u_vehicleApplyApiApproveKey,
   u_retrunCar,
   u_vehicleApplyApiList,
   u_vehicleApplyApiApprove,
