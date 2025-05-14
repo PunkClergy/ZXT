@@ -142,12 +142,11 @@ Page({
       file
     } = this.data
     let temp = {
-      vehid: vehie_items?.id,
       ...params,
       usecarstartdate: startDate + ' ' + startTime,
       usecarenddate: endDate + ' ' + endTime,
       oildate: oilendDate + ' ' + oilendTime,
-      oilinvoiceimg: file||''
+      oilinvoiceimg: file || ''
     }
     console.log(temp)
     byPost(getApp().data.k1swUrl + u_addList.URL, temp, function (res) {

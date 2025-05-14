@@ -39,7 +39,11 @@ const u_scheduledCarList = {
 const u_scheduledCarApiDel =  {
   URL: fin3plusUrl + 'scheduledCarApi/del',
 }
+const u_scheduledCarApiExam =  {
+  URL: fin3plusUrl + 'oilReimbursementapi/approve',
+}
 module.exports = {
+  u_scheduledCarApiExam,
   u_scheduledCarApiDel,
   u_scheduledaddOrUpdate,
   u_scheduledCarList,

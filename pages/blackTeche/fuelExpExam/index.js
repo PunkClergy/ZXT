@@ -8,10 +8,12 @@ const {
   showToast
 } = require('../../../utils/Inspect/tips')
 const {
-  u_addOrUpdate
+  u_addOrUpdate,
+  u_scheduledCarApiExam
 } = require('../../../utils/request/order')
 const {
-  byGet
+  byGet,
+  byPost
 } = require('../../../utils/request/http')
 Page({
   data: {
@@ -111,6 +113,37 @@ Page({
         hideLoading();
       }
     })
+  },
+  handleSelectJump(evt) {
+    console.log(evt)
+    const flag = evt.currentTarget.dataset.flag
+    const item = evt.currentTarget.dataset.item
+    const _this = this
+    wx.showModal({
+      title: '提示',
+      content: `确认${flag == 2?'同意':'拒绝'}审批`,
+      confirmText: "确定",
+      cancelText: "取消",
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定');
+          byPost(getApp().data.k1swUrl + u_scheduledCarApiExam.URL, {
+            id: item.id,
+            status: flag
+          }, function (res) {
+            if (res.data.code == 1000) {
+              _this.setData({
+                g_page: 1, //列表页码
+                g_comParam: '', //输入框内容
+                g_items: [], //列表数据
+              }, () => {
+                _this.getOrderList()
+              })
+            }
+          });
+        }
+      }
+    });
   },
   onLoad(options) {
     this.getOrderList()

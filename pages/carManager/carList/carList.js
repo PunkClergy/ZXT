@@ -81,7 +81,7 @@ Page({
     this.setData({
       g_source: source,
       g_flagMulti: flagMulti,
-      info: JSON.parse(info) 
+      info: info&&JSON.parse(info) 
     })
   },
   initialiImageBaseConversion() {

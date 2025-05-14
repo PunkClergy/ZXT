@@ -11,13 +11,13 @@
         </view>
 
         <!-- 右侧内容 -->
-        <view class="right-content" >
+        <view class="right-content">
           <text bindtap="handleDel" data-item="{{item}}" style="color: #7b7b7b;font-size: 26rpx;">删除</text>
         </view>
       </view>
     </block>
   </scroll-view>
-  <view class="card-footer">
-      <view bindtap="handleAdd">新增</view>
-    </view>
+  <view class="levitation-button" bindtap="handleAdd">
+    <text>新增</text>
+  </view>
 </view>

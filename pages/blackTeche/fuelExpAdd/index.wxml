@@ -9,6 +9,12 @@
     </view>
     <view class="card-info">
       <view class="card-info-item">
+        <label>车牌号<text>*</text></label>
+        <view class="card-info-item-input">
+          <input placeholder="请输入车牌号" value="{{params.platenumber}}" data-item="platenumber" bindinput="handleBindinput" />
+        </view>
+      </view>
+      <view class="card-info-item">
         <label>车辆使用开始时间<text>*</text></label>
         <view class="modal-form-region">
           <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
@@ -72,6 +78,12 @@
         <view class="card-info-item-input" style="display: flex; align-items: center;gap: 10rpx;">
           <text src="{{file}}" class="card-upload" wx:if="{{file}}" bindtap="previewImage">预览</text>
           <text class="card-upload" bindtap="chooseImage">{{file?'重新上传':'选择图片/拍照'}}</text>
+        </view>
+      </view>
+      <view class="card-info-item">
+        <label>说明<text>*</text></label>
+        <view class="card-info-item-input">
+          <input placeholder="请输入用车说明" value="{{params.bak}}" data-item="bak" bindinput="handleBindinput" />
         </view>
       </view>
     </view>

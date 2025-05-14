@@ -137,7 +137,8 @@
     "pages/blackTeche/fuelExp/index",
     "pages/blackTeche/timedVehicle/index",
     "pages/blackTeche/fuelExpAdd/index",
-    "pages/blackTeche/timedVehicleAdd/index"
+    "pages/blackTeche/timedVehicleAdd/index",
+    "pages/blackTeche/fuelExpExam/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

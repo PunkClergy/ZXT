@@ -90,3 +90,25 @@
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
 }
+.levitation-button {
+  position: absolute;
+  bottom: 50rpx;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.levitation-button text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 75rpx;
+  width: 40%;
+  background: linear-gradient(88deg, #1576DC, #1B64B1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 32rpx;
+  color: #FFFFFF;
+}
