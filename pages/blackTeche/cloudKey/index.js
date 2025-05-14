@@ -12,7 +12,8 @@ const {
   u_retrunCar
 } = require('../../../utils/request/order')
 const {
-  byGet,byPost
+  byGet,
+  byPost
 } = require('../../../utils/request/http')
 Page({
   data: {
