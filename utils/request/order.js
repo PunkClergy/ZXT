@@ -58,7 +58,12 @@ const u_vehicleApplyApiList = {
 const u_retrunCar = {
   URL: fin3plusUrl + 'vehicleApplyApi/retrunCar',
 }
+// 电子钥匙审批
+const u_vehicleApplyApiApprove={
+  URL: fin3plusUrl + 'vehicleApplyApi/approve',
+}
 module.exports = {
+  u_vehicleApplyApiApprove,
   u_retrunCar,
   u_vehicleApplyApiList,
   u_vehicleApplyApiApprove,

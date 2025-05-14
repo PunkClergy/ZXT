@@ -61,7 +61,7 @@ Page({
   // 新增跳转
   handleOneClickOrdering() {
     wx.navigateTo({
-      url: '/pages/blackTeche/cloudKeyApply/index',
+      url: '/pages/blackTeche/keyApply/index',
     })
   },
   handleSelectJump(evt) {

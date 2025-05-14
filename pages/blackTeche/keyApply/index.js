@@ -8,8 +8,8 @@ const {
   showToast
 } = require('../../../utils/Inspect/tips')
 const {
-  u_addOrUpdate,
-  u_scheduledCarApiExam
+  u_vehicleApplyApiList,
+  u_vehicleApplyApiApprove
 } = require('../../../utils/request/order')
 const {
   byGet,
@@ -59,23 +59,8 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
-  // 新增跳转
-  handleOneClickOrdering() {
-    wx.navigateTo({
-      url: '/pages/blackTeche/fuelExpAdd/index',
-    })
-  },
-  // 预览图片
-  previewImage(evt) {
-    console.log(evt)
-    const images = evt.currentTarget.dataset.item
-    wx.previewMedia({
-      sources: [{
-        url: images, // 图片路径
-        type: 'image',
-      }, ],
-    });
-  },
+
+
   handleLower() {
     this.setData({
       g_page: this.data.g_page + 1
@@ -95,9 +80,10 @@ Page({
   getOrderList() {
     showLoading("加载中...");
     const param = {
-      [u_addOrUpdate.page]: this.data.g_page,
+      [u_vehicleApplyApiList.page]: this.data.g_page,
+      applystatus: 1
     };
-    byGet(getApp().data.k1swUrl + u_addOrUpdate.URL, param).then(response => {
+    byGet(getApp().data.k1swUrl + u_vehicleApplyApiList.URL, param).then(response => {
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
           showToast(`已加载全部数据：共${this.data.g_items.length}条`);
@@ -127,7 +113,7 @@ Page({
       success(res) {
         if (res.confirm) {
           console.log('用户点击确定');
-          byPost(getApp().data.k1swUrl + u_scheduledCarApiExam.URL, {
+          byPost(getApp().data.k1swUrl + u_vehicleApplyApiApprove.URL, {
             id: item.id,
             status: flag
           }, function (res) {

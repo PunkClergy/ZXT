@@ -16,7 +16,6 @@
               {{item.platenumber}}
             </view>
           </view>
-
         </view>
         <view class="content-item-info">
           <view class="info-item {{item.usecarstartdate.length > 15 ? 'long-info-item' : ''}}">
