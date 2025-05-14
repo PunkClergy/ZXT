@@ -31,18 +31,37 @@ const u_addList = {
 const u_scheduledaddOrUpdate = {
   URL: fin3plusUrl + 'scheduledCarApi/addOrUpdate',
 }
-const u_scheduledCarList = {  
+// 油费报销列表
+const u_scheduledCarList = {
   URL: fin3plusUrl + 'scheduledCarApi/list',
   page: 'page',
   comParam: 'comParam'
 }
-const u_scheduledCarApiDel =  {
+// 油费报销删除
+const u_scheduledCarApiDel = {
   URL: fin3plusUrl + 'scheduledCarApi/del',
 }
-const u_scheduledCarApiExam =  {
+// 油费审批
+const u_scheduledCarApiExam = {
   URL: fin3plusUrl + 'oilReimbursementapi/approve',
 }
+// 电子钥匙-申请
+const u_vehicleApplyApiApprove = {
+  URL: fin3plusUrl + 'vehicleApplyApi/applyCar',
+}
+// 电子钥匙-列表
+const u_vehicleApplyApiList = {
+  URL: fin3plusUrl + 'vehicleApplyApi/list',
+  page: 'page',
+}
+// 电子钥匙-归还
+const u_retrunCar = {
+  URL: fin3plusUrl + 'vehicleApplyApi/retrunCar',
+}
 module.exports = {
+  u_retrunCar,
+  u_vehicleApplyApiList,
+  u_vehicleApplyApiApprove,
   u_scheduledCarApiExam,
   u_scheduledCarApiDel,
   u_scheduledaddOrUpdate,

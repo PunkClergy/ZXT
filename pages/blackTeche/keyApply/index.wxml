@@ -1,0 +1,73 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <custom-header title="油费报销-审批" />
+  <!-- 主要内容区域 -->
+  <scroll-view class="content-container" scroll-y="true" style="height: {{c_screen_height-totalNavHeight}}px;margin-top: {{totalNavHeight}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+    <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
+      <view class="content-item">
+        <view class="content-item-head">
+          <view class="head-left">
+            <view class="left-category">
+              <image src="/assets/images/home/01.png" />
+            </view>
+            <view class="left-brand">
+              {{item.platenumber}}
+            </view>
+          </view>
+
+        </view>
+        <view class="content-item-info">
+          <view class="info-item {{item.username.length > 8 ? 'long-info-item' : ''}}">
+            <label>提交人 ：</label>
+            <text>{{item.username||'-'}}</text>
+          </view>
+          <view class="info-item {{item.usecarstartdate.length > 15 ? 'long-info-item' : ''}}">
+            <label>车辆使用开始时间 ：</label>
+            <text>{{item.usecarstartdate||'-'}}</text>
+          </view>
+          <view class="info-item  {{item.usecarenddate.length > 15 ? 'long-info-item' : ''}}">
+            <label>车辆使用结束时间 ：</label>
+            <text>{{item.usecarenddate||'-'}}</text>
+          </view>
+          <view class="info-item  {{item.oildate.length > 15 ? 'long-info-item' : ''}}">
+            <label>加油时间 ：</label>
+            <text>{{item.oildate||'-'}}</text>
+          </view>
+          <view class="info-item  {{item.oil.length > 15 ? 'long-info-item' : ''}}">
+            <label>加油油量 ：</label>
+            <text>{{item.oil||'-'}}</text>
+          </view>
+
+          <view class="info-item  {{item.oilcost.length > 15 ? 'long-info-item' : ''}}">
+            <label>加油花费 ：</label>
+            <text>{{item.oilcost||'-'}}</text>
+          </view>
+          <view class="info-item">
+            <label>发票 ：</label>
+            <text style="border: 1px solid #f0f0f0;padding: 5rpx 15rpx;border-radius: 8rpx;" src="{{item.oilinvoiceimg}}" class="card-upload" data-item="{{item.oilinvoiceimg}}" bindtap="previewImage">预览</text>
+          </view>
+          <view class="info-item  {{item.statusname.length > 15 ? 'long-info-item' : ''}}">
+            <label>审批状态 ：</label>
+            <text>{{item.statusname}}</text>
+          </view>
+          <view class="info-item  {{item.oilinvoiceimg.length > 15 ? 'long-info-item' : ''}}">
+            <label>说明 ：</label>
+            <text>{{item.bak}}</text>
+          </view>
+        </view>
+        <view class="content-item-footer" wx:if="{{item.status == 1}}">
+          <view class="footer-left"></view>
+          <view class="footer-right" style="display: flex;gap: 10rpx;">
+            <block>
+              <view class="footer-right-btn" data-item="{{item}}" data-flag="2" bindtap="handleSelectJump" style="background: #1AAD19;">
+                <text>同意</text>
+              </view>
+              <view class="footer-right-btn" data-item="{{item}}" data-flag="3" bindtap="handleSelectJump" style="background: #b84d4d;">
+                <text>拒绝</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
