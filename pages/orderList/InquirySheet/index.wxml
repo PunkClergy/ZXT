@@ -77,7 +77,7 @@
 
     </view>
     <view class="card-footer">
-      <view bindtap="handleSubmit">确认修改</view>
+      <view bindtap="handleSubmit">去下单</view>
     </view>
   </view>
 

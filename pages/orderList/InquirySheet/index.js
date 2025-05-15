@@ -124,7 +124,11 @@ Page({
     })
 
   },
-
+  handleSubmit() {
+    wx.reLaunch({
+      url: '/pages/orderList/orderAdd/orderAdd',
+    })
+  },
   onLoad(options) {
     this.initialiIndustry()
     this.initialgetIntroduction()
