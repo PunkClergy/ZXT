@@ -95,8 +95,22 @@ const u_orderConfirm = {
   URL: fin3plusUrl + "deviceBuyApi/orderConfirm",
   orderNum: 'orderNum',
 }
-
+// 获取行业列表
+const u_getIndustry = {
+  URL: fin3plusUrl + "deviceBuyApi/getIndustry",
+}
+// 获取核心功能
+const u_getIntroduction = {
+  URL: fin3plusUrl + "deviceBuyApi/getIntroduction",
+}
+// 获取销售代号
+const u_saleCode = {
+  URL: fin3plusUrl + "deviceBuyApi/getSaleCode",
+}
 module.exports = {
+  u_saleCode,
+  u_getIntroduction,
+  u_getIndustry,
   u_orderConfirm,
   u_del,
   u_list,

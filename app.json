@@ -141,7 +141,8 @@
     "pages/blackTeche/fuelExpExam/index",
     "pages/blackTeche/cloudKey/index",
     "pages/blackTeche/cloudKeyApply/index",
-    "pages/blackTeche/keyApply/index"
+    "pages/blackTeche/keyApply/index",
+    "pages/orderList/InquirySheet/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
