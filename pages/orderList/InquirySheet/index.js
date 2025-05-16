@@ -121,6 +121,10 @@ Page({
     byGet(getApp().data.k1swUrl + u_saleCode.URL, parmas).then(response => {
       const list = response.data.content
       console.log(list)
+      this.setData({
+        g_device_type_list: list
+      })
+
     })
 
   },

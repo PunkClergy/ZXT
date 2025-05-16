@@ -107,15 +107,16 @@
   display: flex;
   gap: 10rpx;
   justify-content: flex-end;
+  font-size: 26rpx;
 }
 
 .card-info-item-tabs-btn text {
   border-radius: 7rpx;
-  border: 1px solid #7b7c7c;
+  /* border: 1px solid #7b7c7c; */
   font-family: PingFang SC;
-  font-weight: 500;
+  /* font-weight: 500; */
   padding: 6rpx 20rpx;
-  font-size: 24rpx;
+  font-size: 26rpx;
   color: #333333;
 }
 

@@ -142,7 +142,8 @@
     "pages/blackTeche/cloudKey/index",
     "pages/blackTeche/cloudKeyApply/index",
     "pages/blackTeche/keyApply/index",
-    "pages/orderList/InquirySheet/index"
+    "pages/orderList/InquirySheet/index",
+    "pages/redShare/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

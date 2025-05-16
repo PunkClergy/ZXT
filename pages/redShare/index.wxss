@@ -1,0 +1,9 @@
+.poster-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.poster {
+  width: 100%; /* 根据实际大小调整 */
+  height: auto; /* 保持图片比例 */
+}

@@ -30,45 +30,86 @@
                 <text style="color: #333;font-size: 26rpx;">请选择所需功能</text>
               </block>
               <block wx:else>
-                <text style="color: #333;font-size: 22rpx;">{{g_core_functions[g_core_functions_index].name}}</text>
+                <text style="color: #333;font-size: 26rpx;">{{g_core_functions[g_core_functions_index].name}}</text>
               </block>
             </picker>
           </view>
         </block>
       </view>
       <!-- 子项 -->
-      <block>
+      <block wx:for="{{g_device_type_list}}">
         <view class="card-info-item">
-          <label style="font-weight: bold;">销售代号</label>
+          <label style="font-weight: bold;min-width: 20%;">销售代号</label>
           <block>
             <view class="card-info-item-tabs">
               <view class="card-info-item-tabs-btn">
-                Y22
+                <text style="font-weight: bold;"> {{item.name}}</text>
               </view>
             </view>
           </block>
         </view>
-        <view class="card-info-item">
-          <label>服务费</label>
+        <!-- 直客硬件价格 -->
+        <view class="card-info-item" wx:if="{{item.zkhardwareprice}}">
+          <label>直客硬件价格</label>
           <block>
             <view class="card-info-item-tabs">
               <view class="card-info-item-tabs-btn">
-                ￥245
+                <text>{{item.zkhardwareprice}}</text>
               </view>
             </view>
           </block>
         </view>
-        <view class="card-info-item">
-          <label>其他费用</label>
+        <!-- 直客服务费 -->
+        <view class="card-info-item" wx:if="{{item.zkserviceprice}}">
+          <label>直客服务费</label>
           <block>
             <view class="card-info-item-tabs">
               <view class="card-info-item-tabs-btn">
-                ￥245
+                <text> {{item.zkserviceprice}}/{{item.zkservicetype}}</text>
               </view>
-              <view class="tabs-footer">
-                <view class="card-info-item-tips">
-                  <view>说明：使用其他平台车载自助取还硬件的可以填入或留空</view>
-                </view>
+            </view>
+          </block>
+        </view>
+        <!-- 钥匙费 -->
+        <view class="card-info-item" wx:if="{{item.zkserviceprice}}">
+          <label>钥匙费</label>
+          <block>
+            <view class="card-info-item-tabs">
+              <view class="card-info-item-tabs-btn">
+                <text> {{item.zkserviceprice}}/{{item.keytype}}</text>
+              </view>
+            </view>
+          </block>
+        </view>
+        <!-- 安装费 -->
+        <view class="card-info-item" wx:if="{{item.installprice}}">
+          <label>安装费</label>
+          <block>
+            <view class="card-info-item-tabs">
+              <view class="card-info-item-tabs-btn">
+                <text> {{item.installprice}}</text>
+              </view>
+            </view>
+          </block>
+        </view>
+        <!-- 拆装费 -->
+        <view class="card-info-item" wx:if="{{item.transportprice}}">
+          <label>拆装费</label>
+          <block>
+            <view class="card-info-item-tabs">
+              <view class="card-info-item-tabs-btn">
+                <text> {{item.transportprice}}</text>
+              </view>
+            </view>
+          </block>
+        </view>
+        <!-- 钥匙复原费 -->
+        <view class="card-info-item" wx:if="{{item.restoreprice}}">
+          <label>钥匙复原费</label>
+          <block>
+            <view class="card-info-item-tabs">
+              <view class="card-info-item-tabs-btn">
+                <text> {{item.restoreprice}}</text>
               </view>
             </view>
           </block>
