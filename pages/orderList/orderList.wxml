@@ -1,7 +1,7 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
 
   <!-- 自定义头部 -->
-  <custom-header title="订单清单" />
+  <custom-header title="采购订单" />
   <!-- 搜索框 -->
   <view class="search-container" style="height:{{c_searchBarHeight+40}}px;margin-top: {{c_totalNavHeight}}px;">
     <view class="search-box">
@@ -19,7 +19,7 @@
   </view>
 
   <!-- 主要内容区域 -->
-  <scroll-view class="content-container" scroll-y="true" style="height: {{c_screen_height-c_searchBarHeight-c_statusBarHeight-c_navBarHeight -40-90-10}}px; top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+  <scroll-view class="content-container" scroll-y="true" style="height: {{c_screen_height-c_searchBarHeight-c_statusBarHeight-c_navBarHeight-40-60-4}}px; top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
     <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
       <view class="content-item" data-item="{{item}}">
         <view class="content-item-head">
