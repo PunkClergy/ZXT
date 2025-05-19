@@ -120,3 +120,4 @@
     </form>
   </view>
 </block>
+<custom-tab-bar selectedtext='一键下单' />

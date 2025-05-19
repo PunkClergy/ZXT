@@ -242,7 +242,7 @@ Page({
       });
       return;
     }
-    if (item.path === '/pages/carManager/buyOilDevice/buyOilDevice') {
+    if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList') {
       wx.switchTab({
         url: item.path
       });

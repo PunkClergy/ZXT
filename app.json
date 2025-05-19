@@ -3,8 +3,7 @@
     "custom": false,
     "color": "#8a8a8a",
     "selectedColor": "#ff4e00",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/desk/desk",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
@@ -14,25 +13,20 @@
         "pagePath": "pages/redShare/index",
         "iconPath": "/assets/images/index/sys@2x.png",
         "selectedIconPath": "/assets/images/index/sys_s@2x.png",
-        "text": "热点位置"
+        "text": "分享朋友"
       },
       {
-        "pagePath": "pages/oneClickOrdering/oneClickOrdering",
+        "pagePath": "pages/orderList/orderList",
         "iconPath": "/assets/images/index/work@2x.png",
         "selectedIconPath": "/assets/images/index/work_s@2x.png",
         "text": "一键下单"
       },
-      {
-        "pagePath": "pages/carManager/buyOilDevice/buyOilDevice",
-        "iconPath": "/assets/images/index/purchase@2x.png",
-        "selectedIconPath": "/assets/images/index/purchase_s@2x.png",
-        "text": "购买和充值"
-      },
+
       {
         "pagePath": "pages/system/managerInfo/userinfo",
         "iconPath": "/assets/images/index/setUp@2x.png",
         "selectedIconPath": "/assets/images/index/setUp_s@2x.png",
-        "text": "系统"
+        "text": "个人中心"
       }
     ]
   },
@@ -164,6 +158,9 @@
     },
     "scope.userInfo": {
       "desc": "你的公开信息将用于小程序功能"
+    },
+    "scope.writePhotosAlbum": {
+      "desc": "需要您的授权才能保存图片到相册"
     }
   },
   "sitemapLocation": "sitemap.json",
