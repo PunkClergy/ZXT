@@ -9,12 +9,16 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   byPost,
-  byPostJson
+  byPostJson,
+  byGet
 } = require('../../../utils/request/http')
 const {
   u_priceCalculation,
   u_getDeviceType,
-  u_buyDevice
+  u_buyDevice,
+  u_getIndustry,
+  u_getIntroduction,
+  u_isNeedCarInfo
 } = require('../../../utils/request/data_info')
 Page({
 
@@ -25,10 +29,13 @@ Page({
     s_platform_height: _handleDeviceInfo.platform == "ios" || _handleDeviceInfo.platform == "devtools" ? 95 : 60, //判断系统获取底部高度
     s_background_picture_of_the_front_page: '', //背景
     params: {},
-    g_device_type_list: [], //销售代号
-    g_device_type_index: null, //当前销售代号
+    g_core_functions: [], //所属功能
+    g_core_functions_index: null, //当前功能
+    g_industry: [], //所属行业
+    g_industry_index: null, //当前行业
     c_entry_method: 1, //当前选择录入方式
     file: null, //上传的图片
+    whether_vehicle: false, // 是否需要上次车辆信息
     snitems: null,
     tabs: [{
       id: 0,
@@ -36,7 +43,6 @@ Page({
     }],
     currentIndex: 0,
     scrollLeft: 0,
-    g_cost: 0,
     id: ''
   },
   // 全图背景
@@ -79,36 +85,73 @@ Page({
       return base64Data;
     } catch (err) {}
   },
-
-  // 销售代号数据
-  initialiDevicetype(evt) {
-    const {
-      g_device_type_id
-    } = this.data
-    byPost(getApp().data.k1swUrl + u_getDeviceType.URL, {},
-      (response) => {
-        const resp = response.data.content
-        this.setData({
-          g_device_type_list: resp
-        }, () => {
-          if (this.data.g_device_type_id) {
-            const g_device_type_index = resp.findIndex(
-              ele => ele.id === g_device_type_id
-            );
-            this.setData({
-              g_device_type_index: g_device_type_index == -1 ? null : g_device_type_index
-            })
-          }
-        })
-      });
-  },
-
-  // 销售代号发生变化
-  handleDeviceType(evt) {
+  // 选择功能之后回调
+  handleCoreType(evt) {
     this.setData({
-      g_device_type_index: evt.detail.value
+      g_core_functions_index: evt.detail.value
     }, () => {
-      this.handleCalculatePrice()
+      this.handleCalculate()
+    })
+  },
+  // 行业数据
+  initialiIndustry() {
+    byGet(getApp().data.k1swUrl + u_getIndustry.URL, {}).then(response => {
+      const list = response.data.content
+      const info = list.map(ele => {
+        let temp = {
+          id: ele,
+          name: ele
+        }
+        return temp
+      })
+      this.setData({
+        g_industry: info
+      })
+    })
+  },
+  // 功能数据
+  initialgetIntroduction() {
+    byGet(getApp().data.k1swUrl + u_getIntroduction.URL, {}).then(response => {
+      const list = response.data.content
+      const info = list.map(ele => {
+        let temp = {
+          id: ele,
+          name: ele
+        }
+        return temp
+      })
+      this.setData({
+        g_core_functions: info
+      })
+    })
+  },
+  // 所属行业变化回到
+  handleIndustryType(evt) {
+    this.setData({
+      g_industry_index: evt.detail.value
+    }, () => {
+      this.handleCalculate()
+    })
+  },
+  // 操作行业或数据后的回调
+  handleCalculate() {
+    const {
+      g_core_functions_index,
+      g_industry_index,
+      g_industry,
+      g_core_functions
+    } = this.data
+    if (g_industry_index == null || g_core_functions_index == null) return
+    const parmas = {
+      introduction: g_core_functions[g_core_functions_index]?.name,
+      industry: g_industry[g_industry_index]?.name
+    }
+    byGet(getApp().data.k1swUrl + u_isNeedCarInfo.URL, parmas).then(response => {
+      console.log(response)
+      const state = response.data.content
+      this.setData({
+        whether_vehicle: state
+      })
     })
   },
   // 切换录入方式
@@ -146,8 +189,6 @@ Page({
   handleNumBindinput(evt) {
     this.setData({
       deviceCount: evt.detail.value
-    }, () => {
-      this.handleCalculatePrice()
     })
   },
 
@@ -223,22 +264,31 @@ Page({
   handleSubmit() {
     const {
       id,
-      g_device_type_list = [],
-      g_device_type_index = -1,
       deviceCount = 0,
       params = {},
       file = null,
       snitems,
-      c_entry_method
+      c_entry_method,
+      whether_vehicle,
+      g_core_functions = [], //所属功能
+      g_core_functions_index = null, //当前功能
+      g_industry = [], //所属行业
+      g_industry_index = null, //当前行业
     } = this.data;
+
+
     const validateIndex = (list, index) => Array.isArray(list) && index >= 0 && index < list.length;
-    const getValidValue = (list, index) => validateIndex(list, index) ? list[index]?.id : null;
-    const deviceType = getValidValue(g_device_type_list, g_device_type_index);
-    const requiredBaseFields = g_device_type_list[g_device_type_index].id != 11 ? [{
-        value: deviceType,
-        name: '销售代号'
-      },
-      {
+    const getValidValue = (list, index) => validateIndex(list, index) ? list[index]?.id : null; //判断参数是否为空
+
+    const core_functions = getValidValue(g_core_functions, g_core_functions_index); //行业
+    const industry = getValidValue(g_industry, g_industry_index); //功能
+    const requiredBaseFields = !whether_vehicle ? [{
+        value: industry,
+        name: '行业'
+      }, {
+        value: core_functions,
+        name: '功能'
+      }, {
         value: deviceCount,
         name: '数量'
       },
@@ -247,14 +297,9 @@ Page({
         name: '收货信息'
       }
     ] : [{
-        value: deviceType,
-        name: '销售代号'
-      },
-      {
-        value: snitems,
-        name: '收货信息'
-      }
-    ];
+      value: snitems,
+      name: '收货信息'
+    }];
 
     const missingBaseField = requiredBaseFields.find(f => !f.value);
     if (missingBaseField) {
@@ -270,7 +315,7 @@ Page({
     }).filter(index => index !== null));
 
 
-    if (carIndices.size === 0 && g_device_type_list[g_device_type_index].id == 11 && c_entry_method == 1) {
+    if (carIndices.size === 0 && whether_vehicle && c_entry_method == 1) {
       showToast('列表数据不得为空');
       return;
     }
@@ -330,9 +375,10 @@ Page({
 
     const submitParams = {
       id,
-      deviceType,
+      core_functions,
+      industry,
       deviceCount: Number(deviceCount),
-      carList: g_device_type_list[g_device_type_index].id == 11 ? carList?.map(item => ({
+      carList: whether_vehicle ? carList?.map(item => ({
         ...item,
       })) : [],
       file: this.initialiUrlToBase64WithMimeType(file)
@@ -381,37 +427,6 @@ Page({
       }
     });
   },
-  // 计算价格
-  handleCalculatePrice() {
-    const {
-      g_device_type_list = [],
-        g_device_type_index = -1,
-        deviceCount = 0,
-    } = this.data;
-    const deviceType = g_device_type_list[g_device_type_index];
-    if (!deviceCount || deviceType?.id == 11) {
-      return;
-    }
-    const params = {
-      deviceType: deviceType.id,
-      deviceCount: Number(deviceCount),
-    };
-
-    byPostJson(
-      getApp().data.k1swUrl + u_priceCalculation.URL,
-      params,
-      (response) => {
-        try {
-          const resp = response.data.content;
-          if (resp) {
-            this.setData({
-              g_cost: resp,
-            });
-          }
-        } catch (error) {}
-      }
-    );
-  },
   // 获取编辑状态的初始值
   initOptions(evt) {
     if (evt.orderCarList.length < 1) {
@@ -426,12 +441,12 @@ Page({
         [`carserial${ele.id}`]: ele.carserial,
         [`carversion${ele.id}`]: ele.carversion,
         [`runtype${ele.id}`]: ele.runtype,
-        [`vin${ele.id}`]: ele.vin
+        [`vin${ele.id}`]: ele.vin,
+        [`num${ele.id}`]: ele.num
       };
       return temp
     });
     this.setData({
-      g_device_type_id: evt.deviceType, //当前销售代号
       deviceCount: evt.deviceCount,
       tabs: evt.orderCarList,
       params: Object.assign({}, ...params),
@@ -448,7 +463,8 @@ Page({
     if (options.item) {
       this.initOptions(JSON.parse(options.item))
     }
-    this.initialiDevicetype()
+    this.initialiIndustry()
+    this.initialgetIntroduction()
   },
 
   onReady() {},
@@ -458,6 +474,5 @@ Page({
     if (!this.data.snitems) {
       this.handleChoiceStorage()
     }
-
   },
 })

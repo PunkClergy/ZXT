@@ -260,12 +260,12 @@ Page({
     }, () => {
       if (scrollTop < 10) {
         this.setData({
-          g_th_crrntly_slctd_tr_nd: this.sections[0].id.slice(7),
+          g_th_crrntly_slctd_tr_nd: this.sections[0]?.id.slice(7),
           num: 0
         });
         return;
       }
-      const baseTop = scrollTop + (this.sections[0].top - 60);
+      const baseTop = scrollTop + (this.sections[0]?.top - 60);
       const resultId = this.sections.find(section => section.top > baseTop)?.id ?? '';
       if (this.data.num > 10) {
         this.setData({

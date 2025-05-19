@@ -11,7 +11,7 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/stationDispatch/stationDispatch",
+        "pagePath": "pages/redShare/index",
         "iconPath": "/assets/images/index/sys@2x.png",
         "selectedIconPath": "/assets/images/index/sys_s@2x.png",
         "text": "热点位置"

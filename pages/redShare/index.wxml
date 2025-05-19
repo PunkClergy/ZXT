@@ -1,1 +1,14 @@
-<canvas canvas-id="posterCanvas" style="width: 300px; height: 500px;"></canvas>
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="红人分享" />
+  <view class="share-container" style="top:{{c_statusBarHeight + c_navBarHeight}}px;">
+    <image src="{{imageUrl}}" mode="widthFix" class="share-image"></image>
+
+    <view class="button-group">
+      <button class="btn save-btn" bindtap="onSaveImage">保存图片</button>
+      <button class="btn share-btn" open-type="share">分享给好友</button>
+    </view>
+  </view>
+</view>
+<custom-tab-bar selectedtext='分享朋友' />

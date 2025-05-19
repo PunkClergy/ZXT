@@ -107,7 +107,12 @@ const u_getIntroduction = {
 const u_saleCode = {
   URL: fin3plusUrl + "deviceBuyApi/getSaleCode",
 }
+// 获取下单类型
+const u_isNeedCarInfo = {
+  URL: fin3plusUrl + "deviceBuyApi/isNeedCarInfo",
+}
 module.exports = {
+  u_isNeedCarInfo,
   u_saleCode,
   u_getIntroduction,
   u_getIndustry,

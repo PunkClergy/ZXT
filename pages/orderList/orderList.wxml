@@ -21,7 +21,7 @@
   <!-- 主要内容区域 -->
   <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
     <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
-      <view class="content-item" data-item="{{item}}" bindtap="handleView">
+      <view class="content-item" data-item="{{item}}">
         <view class="content-item-head">
           <view class="head-left">
             <view class="left-category">

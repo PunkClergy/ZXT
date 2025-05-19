@@ -8,22 +8,40 @@
       <text>下单采购</text>
     </view>
     <view class="card-info">
-      <!-- 销售代号 -->
+      <!-- 行业 -->
       <view class="card-info-item">
-        <label>销售代号<text>*</text></label>
-        <view class="card-info-item-input">
-          <picker range-key="name" range="{{g_device_type_list}}" bindchange="handleDeviceType">
-            <block wx:if="{{g_device_type_index==null}}">
-              <text>请选择销售代号</text>
-            </block>
-            <block wx:else>
-              <text style="color: #333;">{{g_device_type_list[g_device_type_index].name}}</text>
-            </block>
-          </picker>
-        </view>
+        <label>行业<text>*</text></label>
+        <block>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_industry}}" bindchange="handleIndustryType">
+              <block wx:if="{{g_industry_index==null}}">
+                <text style="color: #333;font-size: 26rpx; ">请选择所属行业</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;font-size: 26rpx;">{{g_industry[g_industry_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </block>
+      </view>
+      <!-- 功能 -->
+      <view class="card-info-item">
+        <label style="min-width: 20%;">功能<text>*</text></label>
+        <block>
+          <view class="card-info-item-input">
+            <picker range-key="name" range="{{g_core_functions}}" bindchange="handleCoreType">
+              <block wx:if="{{g_core_functions_index==null}}">
+                <text style="color: #333;font-size: 26rpx;">请选择所需功能</text>
+              </block>
+              <block wx:else>
+                <text style="color: #333;font-size: 26rpx;">{{g_core_functions[g_core_functions_index].name}}</text>
+              </block>
+            </picker>
+          </view>
+        </block>
       </view>
       <!-- 类别选择-开始 -->
-      <block wx:if="{{g_device_type_list[g_device_type_index].id == 11}}">
+      <block wx:if="{{whether_vehicle}}">
         <view class="card-info-item">
           <label>录入方式</label>
           <view class="card-info-item-tabs">
@@ -35,7 +53,7 @@
         </view>
       </block>
 
-      <view class="vehicle-card-info-item" wx:if="{{c_entry_method==1&&g_device_type_list[g_device_type_index].id == 11}}">
+      <view class="vehicle-card-info-item" wx:if="{{c_entry_method==1&&whether_vehicle}}">
         <view class="vehicle-container-info">
           <scroll-view scroll-x class="tabs-scroll" scroll-left="{{scrollLeft}}" scroll-with-animation>
             <view class="tabs-container">
@@ -92,7 +110,7 @@
           </view>
         </view>
       </view>
-      <view class="card-info-item" wx:if="{{c_entry_method==2&&g_device_type_list[g_device_type_index].id == 11}}">
+      <view class="card-info-item" wx:if="{{c_entry_method==2&&whether_vehicle}}">
         <label style="font-size: 26rpx;">上传照片<text>*</text></label>
         <view class="card-info-item-input" style="display: flex; align-items: center;gap: 10rpx;">
           <text src="{{file}}" class="card-upload" wx:if="{{file}}" bindtap="previewImage">预览</text>
@@ -101,7 +119,7 @@
       </view>
       <!-- 类别选择-结束 -->
       <!-- 数量 -->
-      <view class="card-info-item" wx:if="{{g_device_type_list[g_device_type_index].id != 11}}">
+      <view class="card-info-item" wx:if="{{!whether_vehicle}}">
         <label>数量<text>*</text></label>
         <view class="card-info-item-input">
           <input disabled="{{g_device_type_list[g_device_type_index].id == 11}}" style="opacity: {{g_device_type_list[g_device_type_index].id == 11?'0.5':'1'}};" type="number" placeholder="请输入数量" value="{{deviceCount}}" data-item="deviceCount" bindinput="handleNumBindinput" />
@@ -126,13 +144,6 @@
           <image src="/assets/images/home/right_1.png" style="width: 30rpx;height: 30rpx;" />
         </view>
 
-      </view>
-      <!-- 金额 -->
-      <view class="card-info-item" wx:if="{{g_cost}}">
-        <label>金额</label>
-        <view class="card-info-item-input">
-          <text style="font-weight: bold;color: red;">￥{{g_cost}}</text>
-        </view>
       </view>
     </view>
     <view class="card-footer">
