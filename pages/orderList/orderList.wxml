@@ -19,7 +19,7 @@
   </view>
 
   <!-- 主要内容区域 -->
-  <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+  <scroll-view class="content-container" scroll-y="true" style="height: {{c_screen_height-c_searchBarHeight-c_statusBarHeight-c_navBarHeight -40-90-10}}px; top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
     <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
       <view class="content-item" data-item="{{item}}">
         <view class="content-item-head">
@@ -120,4 +120,4 @@
     </form>
   </view>
 </block>
-<custom-tab-bar selectedtext='一键下单' />
+<custom-tab-bar selectedtext='采购下单' />
