@@ -45,20 +45,12 @@
       </view>
       <view class="middle-content-item-info">
         <view class="info-item  {{all_data.productTypeName.length > 8 ? 'long-info-item' : ''}}">
-          <label>产品类别 ：</label>
+          <label>行业 ：</label>
           <text>{{all_data.productTypeName||'-'}}</text>
         </view>
         <view class="info-item  {{all_data.deviceVersionName.length > 8 ? 'long-info-item' : ''}}">
-          <label>价格类型 ：</label>
+          <label>功能 ：</label>
           <text>{{all_data.deviceVersionName||'-'}}</text>
-        </view>
-        <view class="info-item  {{all_data.countryName.length > 8 ? 'long-info-item' : ''}}">
-          <label>国家地区 ：</label>
-          <text>{{all_data.countryName||'-'}}</text>
-        </view>
-        <view class="info-item  {{all_data.deviceTypeName.length > 8 ? 'long-info-item' : ''}}">
-          <label>销售代号 ：</label>
-          <text>{{all_data.deviceTypeName||'-'}}</text>
         </view>
         <view class="info-item  {{all_data.deviceCount.length > 8 ? 'long-info-item' : ''}}">
           <label>数量 ：</label>
@@ -98,6 +90,29 @@
           </view>
         </view>
       </scroll-view>
+    </view>
+    <!-- 底部卡片 -->
+    <view class="bottom-box">
+      <view class="content-item-head">
+        <view class="head-left">
+          <view class="left-category">
+            <text>报价信息</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="content-item-info">
+        <radio-group bindchange="handleRadioChange" class="offter" style="">
+          <view class="offter-label" wx:for="{{all_data.orderLogisticsList}}" wx:key="{{item.value}}">
+            <view class="weui-cell__bd">Y22销售报价：<text class="prcie">122</text></view>
+            <view class="weui-cell__hd">
+              <radio value="{{item.value}}" style="transform: scale(0.7);" checked="true" />
+            </view>
+
+          </view>
+        </radio-group>
+      </view>
+
     </view>
     <!-- 底部卡片 -->
     <view class="bottom-box">

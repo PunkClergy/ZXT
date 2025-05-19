@@ -8,7 +8,7 @@ Page({
     c_screen_height: _handleWindowInfo.screenHeight || 0, //全高度
     c_statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
     c_navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
-    imageUrl: '	https://5b0988e595225.cdn.sohucs.com/images/20180705/535f002edfe345d9a9e12e55f8b32013.jpeg' // 你的图片路径
+    imageUrl: '	https://5b0988e595225.cdn.sohucs.com/images/20180705/535f002edfe345d9a9e12e55f8b32013.jpeg'
   },
 
   // 保存图片
@@ -42,7 +42,7 @@ Page({
       title: '保存中...'
     })
     wx.downloadFile({
-      url: this.data.imageUrl,
+      url: `https://k1sw.wiselink.net.cn/img/inviteCode/5450.png`, // 下载文件的地址,
       success(res) {
         wx.saveImageToPhotosAlbum({
           filePath: res.tempFilePath,

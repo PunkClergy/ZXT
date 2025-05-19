@@ -150,3 +150,19 @@
   font-size: 32rpx;
   color: #ffffff;
 }
+.offter {
+  display: flex;
+  width: 100%;
+  gap: 20rpx;
+  justify-content: space-between;
+  flex-direction: column;
+  font-family: PingFang SC;
+  font-size: 26rpx;
+}
+.offter-label {
+  display: flex;
+  width: 100%;
+}
+.prcie {
+  color: red;
+}

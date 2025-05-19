@@ -19,6 +19,7 @@ Page({
     currentIndex: 0,
     scrollLeft: 0,
     scrollTop: 0,
+    items:[],
   },
 
   // 全屏背景
@@ -56,6 +57,18 @@ Page({
     console.log(evt)
     this.setData({
       all_data: evt
+    })
+  },
+  handleRadioChange() {
+    console.log('radio发生change事件，携带value值为：', e.detail.value)
+
+    const items = this.data.items
+    for (let i = 0, len = items.length; i < len; ++i) {
+      items[i].checked = items[i].value === e.detail.value
+    }
+
+    this.setData({
+      items
     })
   },
   // 车辆切换
