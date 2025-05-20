@@ -73,7 +73,7 @@
                   </view>
                 </view>
                 <view class="card-info-item">
-                  <label>年款<text>*</text></label>
+                  <label>年款</label>
                   <view class="card-info-item-input">
                     <input placeholder="请输入年款" value="{{ params['carversion' + item.id] }}" data-item="{{'carversion'+item.id}}" bindinput="handleBindinput" />
                   </view>
@@ -88,7 +88,7 @@
                   </view>
                 </view>
                 <view class="card-info-item">
-                  <label>车架号<text>*</text></label>
+                  <label>车架号</label>
                   <view class="card-info-item-input">
                     <input placeholder="请输入车架号" value="{{ params['vin' + item.id] }}" data-item="{{'vin'+item.id}}" bindinput="handleBindinput" />
                   </view>

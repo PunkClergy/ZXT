@@ -230,15 +230,14 @@ Page({
   // 提交参数
   handleSubmit() {
     const {
-      id,
       deviceCount = 0,
-      params = {},
-      snitems,
-      whether_vehicle,
-      g_core_functions = [], //所属功能
-      g_core_functions_index = null, //当前功能
-      g_industry = [], //所属行业
-      g_industry_index = null, //当前行业
+        params = {},
+        snitems,
+        whether_vehicle,
+        g_core_functions = [], //所属功能
+        g_core_functions_index = null, //当前功能
+        g_industry = [], //所属行业
+        g_industry_index = null, //当前行业
     } = this.data;
 
 
@@ -271,7 +270,6 @@ Page({
       showToast(`${missingBaseField.name}不得为空`);
       return;
     }
-    const REQUIRED_FIELDS_COUNT = 5;
     const CAR_FIELD_PATTERN = /^(\D+)(\d+)$/;
     const paramKeys = Object.keys(params);
     const carIndices = new Set(paramKeys.map(key => {
@@ -285,62 +283,26 @@ Page({
       return;
     }
     const carList = [];
-    const carErrors = [];
-
     Array.from(carIndices).sort((a, b) => a - b).forEach(index => {
       const carItem = {};
-      const actualFields = new Set();
-      const missingFields = [];
       paramKeys.forEach(key => {
         const match = key.match(new RegExp(`^(.+?)${index}$`));
         if (match) {
           const fieldName = match[1];
           const value = params[key]?.trim() || '';
-          actualFields.add(fieldName);
           carItem[fieldName] = value;
-          if (!value) {
-            missingFields.push(fieldName);
-          }
         }
       });
-
-      if (actualFields.size !== REQUIRED_FIELDS_COUNT) {
-        carErrors.push({
-          type: 'FIELD_COUNT',
-          model: carItem.carmodel || `车型${index + 1}`,
-          required: REQUIRED_FIELDS_COUNT,
-          actual: actualFields.size
-        });
-      }
-
-      // 空字段校验
-      if (missingFields.length > 0) {
-        carErrors.push({
-          type: 'EMPTY_FIELD',
-          model: carItem.carmodel || `车型${index + 1}`,
-          fields: missingFields
-        });
-      }
-      carList.push(carItem);
+      carList.push(carItem)
     });
-
-    if (carErrors.length > 0) {
-      const errorMessages = [];
-      const countErrors = carErrors.filter(e => e.type === 'FIELD_COUNT');
-      console.log(countErrors)
-      if (countErrors.length > 0) {
-        errorMessages.push(
-          countErrors.map(e =>
-            `【${e.model}】`
-          ).join('\n')
-        );
+    for (let i = 0; i < carList.length; i++) {
+      const car = carList[i];
+      if (!car.carmodel?.trim() || !car.carserial?.trim() || !car.runtype?.trim()) {
+        showToast(`请补全${car.carmodel}的信息`);
+        return false;
       }
-      showToast(`请补全${errorMessages.join('\n\n')}的数据`)
-      return;
     }
-
     const submitParams = {
-      id,
       core_functions,
       industry,
       deviceCount: Number(deviceCount),
