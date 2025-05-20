@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "油量计算器",
   "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
   },
   "navigationStyle": "custom",
   "disableScroll": true

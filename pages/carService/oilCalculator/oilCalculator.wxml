@@ -1,16 +1,7 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
 
   <!-- 自定义头部 -->
-  <view class="custom-navbar" style="height:{{totalNavHeight}}px;">
-    <view class="status-bar" style="height:{{statusBarHeight}}px;"></view>
-    <view class="nav-bar" style="height:{{navBarHeight}}px;">
-      <!-- 自定义导航栏内容 -->
-      <view class="title-container">
-        <image src="/assets/images/home/left.png" bindtap="handleJumpHome" />
-        <text class="title">油量计算器</text>
-      </view>
-    </view>
-  </view>
+  <custom-header title="油量计算器-手动" />
   <!-- 车辆基本信息Card -->
   <view class="vehicle-basic-info-container" style="height:{{searchBarHeight}}px;margin-top: {{totalNavHeight}}px">
     <view class="vehicle-basic-content-item">
