@@ -36,7 +36,6 @@
           </view>
           <view class="head-right">
             <image src="/assets/images/home/_see.png" data-item="{{item}}" bindtap="handleView" />
-            <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
             <image wx:if="{{!item.sn}}" src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />
           </view>
         </view>

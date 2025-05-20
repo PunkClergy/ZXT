@@ -40,20 +40,9 @@
           </view>
         </block>
       </view>
-      <!-- 类别选择-开始 -->
-      <block wx:if="{{whether_vehicle}}">
-        <view class="card-info-item">
-          <label>录入方式</label>
-          <view class="card-info-item-tabs">
-            <view class="card-info-item-tabs-btn">
-              <text class="{{c_entry_method==1?'tabs-active':''}}" data-item="1" bindtap="handleEntryMethod">手动输入</text>
-              <text class="{{c_entry_method==2?'tabs-active':''}}" data-item="2" bindtap="handleEntryMethod">拍照上传</text>
-            </view>
-          </view>
-        </view>
-      </block>
 
-      <view class="vehicle-card-info-item" wx:if="{{c_entry_method==1&&whether_vehicle}}">
+
+      <view class="vehicle-card-info-item" wx:if="{{whether_vehicle}}">
         <view class="vehicle-container-info">
           <scroll-view scroll-x class="tabs-scroll" scroll-left="{{scrollLeft}}" scroll-with-animation>
             <view class="tabs-container">
@@ -108,13 +97,6 @@
             </block>
 
           </view>
-        </view>
-      </view>
-      <view class="card-info-item" wx:if="{{c_entry_method==2&&whether_vehicle}}">
-        <label style="font-size: 26rpx;">上传照片<text>*</text></label>
-        <view class="card-info-item-input" style="display: flex; align-items: center;gap: 10rpx;">
-          <text src="{{file}}" class="card-upload" wx:if="{{file}}" bindtap="previewImage">预览</text>
-          <text class="card-upload" bindtap="chooseImage">{{file?'重新上传':'选择图片/拍照'}}</text>
         </view>
       </view>
       <!-- 类别选择-结束 -->

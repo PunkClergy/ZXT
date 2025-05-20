@@ -33,8 +33,6 @@ Page({
     g_core_functions_index: null, //当前功能
     g_industry: [], //所属行业
     g_industry_index: null, //当前行业
-    c_entry_method: 1, //当前选择录入方式
-    file: null, //上传的图片
     whether_vehicle: false, // 是否需要上次车辆信息
     snitems: null,
     tabs: [{
@@ -154,13 +152,7 @@ Page({
       })
     })
   },
-  // 切换录入方式
-  handleEntryMethod(evt) {
-    const flag = evt?.currentTarget?.dataset?.item
-    this.setData({
-      c_entry_method: flag
-    })
-  },
+
   // 输入框内容改变回调
   handleBindinput(evt) {
     const params = this.data?.params
@@ -192,33 +184,8 @@ Page({
     })
   },
 
-  // 上传图片或拍照
-  chooseImage() {
-    wx.chooseMedia({
-      count: 1, // 最多选择1张图片
-      mediaType: ['image'], // 只选择图片
-      sourceType: ['album', 'camera'], // 允许从相册选择或拍照
-      success: (res) => {
-        const tempFilePath = res.tempFiles[0].tempFilePath; // 获取图片临时路径
-        this.setData({
-          file: tempFilePath,
-        });
-      },
-      fail: (err) => {
-        showToast('选择图片失败');
-      },
-    });
-  },
-  // 预览图片
-  previewImage() {
-    if (!this.data.file) return;
-    wx.previewMedia({
-      sources: [{
-        url: this.data.file, // 图片路径
-        type: 'image',
-      }, ],
-    });
-  },
+
+
 
   // 切换tab
   handleSwitchTab(e) {
@@ -266,9 +233,7 @@ Page({
       id,
       deviceCount = 0,
       params = {},
-      file = null,
       snitems,
-      c_entry_method,
       whether_vehicle,
       g_core_functions = [], //所属功能
       g_core_functions_index = null, //当前功能
@@ -315,7 +280,7 @@ Page({
     }).filter(index => index !== null));
 
 
-    if (carIndices.size === 0 && whether_vehicle && c_entry_method == 1) {
+    if (carIndices.size === 0 && whether_vehicle) {
       showToast('列表数据不得为空');
       return;
     }
@@ -362,6 +327,7 @@ Page({
     if (carErrors.length > 0) {
       const errorMessages = [];
       const countErrors = carErrors.filter(e => e.type === 'FIELD_COUNT');
+      console.log(countErrors)
       if (countErrors.length > 0) {
         errorMessages.push(
           countErrors.map(e =>
@@ -381,7 +347,6 @@ Page({
       carList: whether_vehicle ? carList?.map(item => ({
         ...item,
       })) : [],
-      file: this.initialiUrlToBase64WithMimeType(file)
     };
     showLoading();
     try {
@@ -427,42 +392,9 @@ Page({
       }
     });
   },
-  // 获取编辑状态的初始值
-  initOptions(evt) {
-    if (evt.orderCarList.length < 1) {
-      this.setData({
-        c_entry_method: 2,
-        file: `${getApp().data.k1swUrl}img${evt.file}`
-      })
-    }
-    const params = evt.orderCarList.map(ele => {
-      let temp = {
-        [`carmodel${ele.id}`]: ele.carmodel,
-        [`carserial${ele.id}`]: ele.carserial,
-        [`carversion${ele.id}`]: ele.carversion,
-        [`runtype${ele.id}`]: ele.runtype,
-        [`vin${ele.id}`]: ele.vin,
-        [`num${ele.id}`]: ele.num
-      };
-      return temp
-    });
-    this.setData({
-      deviceCount: evt.deviceCount,
-      tabs: evt.orderCarList,
-      params: Object.assign({}, ...params),
-      snitems: {
-        address: evt.linkaddress,
-        linkperson: evt.linkman,
-        linkmobile: evt.linkmobile
-      },
-      id: evt.id
-    })
-  },
+
 
   onLoad(options) {
-    if (options.item) {
-      this.initOptions(JSON.parse(options.item))
-    }
     this.initialiIndustry()
     this.initialgetIntroduction()
   },
