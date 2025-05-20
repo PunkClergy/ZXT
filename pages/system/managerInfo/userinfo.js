@@ -9,7 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userInfo: {},
+    userInfo: getApp().data.userInfo || {},
     showModal: false,
     newPassword: '',
     confirNewPassword: '',
@@ -24,12 +24,17 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    that.setData({
-      userInfo: getApp().data.userInfo
-    })
+
+    // that.setData({
+    //   userInfo: getApp().data.userInfo
+    // })
   },
 
   onShow: function () {
+    console.log(getApp().data.userInfo)
+    this.setData({
+      userInfo: getApp().data.userInfo
+    })
     if (typeof this.getTabBar === 'function' &&
       this.getTabBar()) {
       this.getTabBar().setData({

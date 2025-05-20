@@ -1,19 +1,20 @@
-<view style="display: flex;background-color: #252C3B;height: 300rpx;">
+<view style="display: flex;background-color: #252C3B;height: 300rpx;justify-content: flex-start;align-items: center;">
   <image class='user-bg' src="../../../assets/images/user1.png"></image>
   <view>
-    <view class='page_title'>{{userInfo.realname}}</view>
-    <view class="username_title">{{userInfo.username}}</view>
+    <view class='page_title'>{{userInfo.companyName}}</view>
+    <view class="username_title">{{userInfo.realname}}</view>
+    <view class="username_title">{{userInfo.username||userInfo.mobile}}</view>
   </view>
 </view>
 <view class='container'>
 
-  <button class='info-btn' hover-class="btn_tapcolor" bindtap='balanceTap'>
+  <!-- <button class='info-btn' hover-class="btn_tapcolor" bindtap='balanceTap'>
     <image class='icon' mode='aspectFit' src='../../../assets/images/system/password_icon@2x.png'></image>
     <text class='info-btn-text'>余额充值</text>
     <view class='info-btn-img'>
       <image class='arrow' mode='aspectFit' src='../../../assets/images/system/arrow_right@2x.png'></image>
     </view>
-  </button>
+  </button> -->
 
   <!-- <button class='info-btn' hover-class="btn_tapcolor" bindtap='balanceTap'>
       <image class='icon'  mode='aspectFit' src='/assets/images/home/1111.png'></image>
@@ -97,4 +98,4 @@
 
   </view>
 </view>
-<custom-tab-bar selectedtext='系统' />
+<custom-tab-bar selectedtext='个人中心' />

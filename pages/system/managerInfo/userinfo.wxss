@@ -12,7 +12,7 @@ page {
 .user-bg {
   width: 180rpx;
   height: 180rpx;
-  margin-top: 60rpx;
+  /* margin-top: 60rpx; */
   margin-left: 40rpx;
 }
 
@@ -26,7 +26,7 @@ page {
 }
 
 .page_title {
-  margin-top: 80rpx;
+  /* margin-top: 80rpx; */
   margin-left: 40rpx; 
   color: white;
   font-family: "";
@@ -207,7 +207,7 @@ button{
 }
 
 .username_title {
-  margin-top: 20rpx;
+  /* margin-top: 20rpx; */
   margin-left: 40rpx; 
   color: white;
   font-family: "";

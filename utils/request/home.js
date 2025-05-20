@@ -27,7 +27,12 @@ const u_termialList = {
 const u_logo = {
   URL:'deskapi/logo',
 }
+// 获取最新的token
+const u_getUserinfo = {
+  URL:'deskapi/getUserInfo',
+}
 module.exports = {
+  u_getUserinfo,
   u_logo,
   u_navlist,
   u_bannerlist,

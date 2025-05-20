@@ -8,7 +8,8 @@ const {
   u_menulist,
   u_rightMenulist,
   u_termialList,
-  u_logo
+  u_logo,
+  u_getUserinfo
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -326,11 +327,24 @@ Page({
       child.childMethod('来自父组件的消息');
     }
   },
+  // 校验参数
+  initialGetUserInfo() {
+    console.log(111,333)
+    console.log(getApp())
+    byGet(getApp().data.k1swUrl + u_getUserinfo.URL, {}).then(response => {
+      if (response.data.code == 1000) {
+        wx.setStorageSync('userKey', response.data.content);
+      } else {
+        wx.clearStorageSync();
+      }
+    })
+  },
   onReady: function () {
     this.initialiImageBaseConversion()
   },
 
   onShow: function (e) {
+    this.initialGetUserInfo()
     this.initLogo()
     const scene = wx.getStorageSync('scene');
     this.setData({

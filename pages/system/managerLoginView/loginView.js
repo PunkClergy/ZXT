@@ -31,72 +31,81 @@ Page({
   },
 
   async onGetPhoneNumber(e) {
-    try {
-      // 基础校验
-      if (!e.detail?.code) {
-        console.warn('用户拒绝了授权');
-        return;
-      }
-
-      // 发送登录请求
-      const response = await new Promise((resolve, reject) => {
-        byPost(
-          `${this.data.c_link}userapi/wxLogin`, {
-            code: e.detail.code,
-            inviteCode:that.data.invit_code
-          },
-          (res) => {
-            if (res?.data?.content) {
-              resolve(res);
-            } else {
-              reject(new Error(res?.data?.message || '登录接口响应异常'));
+    wx.login({
+      success: async (loginres) => {
+        if (loginres.code) {
+          try {
+            // 基础校验
+            if (!e.detail?.code) {
+              console.warn('用户拒绝了授权');
+              return;
             }
-          },
-          (err) => reject(new Error(`网络请求失败: ${err.errMsg}`))
-        );
-      });
 
-      const userInfo = response.data.content;
-      const isTestUser = userInfo?.username == '13683187039*';
+            // 发送登录请求
+            const response = await new Promise((resolve, reject) => {
+              byPost(
+                `${this.data.c_link}userapi/wxLogin`, {
+                  code: e.detail.code,
+                  inviteCode: that.data.invit_code.content,
+                  wxCode: loginres.code
+                },
+                (res) => {
+                  if (res?.data?.content) {
+                    resolve(res);
+                  } else {
+                    reject(new Error(res?.data?.message || '登录接口响应异常'));
+                  }
+                },
+                (err) => reject(new Error(`网络请求失败: ${err.errMsg}`))
+              );
+            });
 
-      const urlConfig = {
-        k1swUrl: isTestUser ?
-          "https://k1swtest.wiselink.net.cn/" : "https://k3a.wiselink.net.cn/",
-        fin3Url: "https://fin3.wiselink.net.cn/fin/" // 固定地址
-      };
+            const userInfo = response.data.content;
+            const isTestUser = userInfo?.username == '13683187039*';
 
-      const storageTasks = [
-        [getApp().data.k1swUrlKey, urlConfig.k1swUrl],
-        [getApp().data.fin3UrlKey, urlConfig.fin3Url],
-        [getApp().data.userKey, userInfo]
-      ].map(([key, value]) => new Promise((resolve, reject) => {
-        appUtil.setStorage(key, value, success =>
-          success ? resolve() : reject(`存储失败: ${key}`)
-        );
-      }));
+            const urlConfig = {
+              k1swUrl: isTestUser ?
+                "https://k1swtest.wiselink.net.cn/" : "https://k3a.wiselink.net.cn/",
+              fin3Url: "https://fin3.wiselink.net.cn/fin/" // 固定地址
+            };
 
-      await Promise.all(storageTasks);
+            const storageTasks = [
+              [getApp().data.k1swUrlKey, urlConfig.k1swUrl],
+              [getApp().data.fin3UrlKey, urlConfig.fin3Url],
+              [getApp().data.userKey, userInfo]
+            ].map(([key, value]) => new Promise((resolve, reject) => {
+              appUtil.setStorage(key, value, success =>
+                success ? resolve() : reject(`存储失败: ${key}`)
+              );
+            }));
 
-      const app = getApp();
-      app.data.k1swUrl = urlConfig.k1swUrl;
-      app.data.fin3Url = urlConfig.fin3Url;
-      app.data.userInfo = userInfo;
+            await Promise.all(storageTasks);
 
-      wx.navigateBack({
-        delta: 1
-      });
-    } catch (error) {
-      console.error('处理流程异常:', error);
-      appUtil.showModal(
-        error.message.includes('存储失败') ?
-        "本地数据处理失败，请重新登录！" :
-        "操作失败，请检查网络后重试",
-        false,
-        () => {
-          /* 可添加重试逻辑 */
+            const app = getApp();
+            app.data.k1swUrl = urlConfig.k1swUrl;
+            app.data.fin3Url = urlConfig.fin3Url;
+            app.data.userInfo = userInfo;
+
+            wx.navigateBack({
+              delta: 1
+            });
+          } catch (error) {
+            console.error('处理流程异常:', error);
+            appUtil.showModal(
+              error.message.includes('存储失败') ?
+              "本地数据处理失败，请重新登录！" :
+              "操作失败，请检查网络后重试",
+              false,
+              () => {
+                /* 可添加重试逻辑 */
+              }
+            );
+          }
         }
-      );
-    }
+      },
+    })
+    return
+
   },
   initLogo() {
     const _this = this
