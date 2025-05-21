@@ -8,7 +8,8 @@ const {
   showToast
 } = require('../../../utils/Inspect/tips')
 const {
-  u_addOrUpdate
+  u_addOrUpdate,
+  u_addList 
 } = require('../../../utils/request/order')
 const {
   byGet,byPost 
@@ -129,7 +130,7 @@ Page({
     });
   },
   // 预览图片
-  previewImage(evt) {
+  handlePreviewImage(evt) {
     console.log(evt)
     const images = evt.currentTarget.dataset.item
     wx.previewMedia({
@@ -224,6 +225,7 @@ Page({
     })
   },
   handleSubmit() {
+  
     const {
       params,
       oilendDate,
@@ -242,7 +244,7 @@ Page({
       oilinvoiceimg: file || ''
     }
 
-    byPost(getApp().data.k1swUrl + u_addList.URL, temp, function (res) {
+    byPost(getApp().data.k1swUrl + u_addList.URL, temp,  (res)=> {
       console.log(res)
       if (res.data.code == 1000) {
         this.setData({
