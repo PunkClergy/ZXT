@@ -135,8 +135,7 @@
   justify-content: space-between;
   gap: 20rpx;
 }
-.form-item-date {
-}
+
 
 .label {
   display: block;
