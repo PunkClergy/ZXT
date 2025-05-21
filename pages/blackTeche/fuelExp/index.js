@@ -9,10 +9,11 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   u_addOrUpdate,
-  u_addList 
+  u_addList
 } = require('../../../utils/request/order')
 const {
-  byGet,byPost 
+  byGet,
+  byPost
 } = require('../../../utils/request/http')
 Page({
   data: {
@@ -225,7 +226,7 @@ Page({
     })
   },
   handleSubmit() {
-  
+
     const {
       params,
       oilendDate,
@@ -244,15 +245,20 @@ Page({
       oilinvoiceimg: file || ''
     }
 
-    byPost(getApp().data.k1swUrl + u_addList.URL, temp,  (res)=> {
+    byPost(getApp().data.k1swUrl + u_addList.URL, temp, (res) => {
       console.log(res)
       if (res.data.code == 1000) {
         this.setData({
           params: {},
           file: null,
-          c_activeTab: 1
+          c_activeTab: 1,
+
+          g_triggered: false,
+          g_page: 1,
+          g_items: []
         }, () => {
           this.handleCurrentDate()
+          this.getOrderList();
         })
       }
     });
