@@ -250,18 +250,15 @@ Page({
   },
   // 切换tabs标签
   handleSwitchTab(e) {
-    console.log(this.data.c_activeTab)
-    const {
-      c_activeTab
-    } = this.data
-    if (c_activeTab == 1) {
-      this.setData({
-        c_activeTab: 2
-      })
-    } else {
+    const flag = e._relatedInfo.anchorTargetText
+    if (flag == '车辆管控') {
       this.setData({
         c_activeTab: 1,
         btnState: '新增'
+      })
+    } else {
+      this.setData({
+        c_activeTab: 2,
       })
     }
   },
