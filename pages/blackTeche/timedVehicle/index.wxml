@@ -9,7 +9,7 @@
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
-      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
         <block wx:for="{{g_items}}" wx:key="index">
           <view class="content-item">
             <view class="content-item-head">

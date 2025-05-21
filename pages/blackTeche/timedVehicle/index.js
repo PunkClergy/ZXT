@@ -11,6 +11,11 @@ const {
   byGet,
   byPost
 } = require('../../../utils/request/http')
+const {
+  showLoading,
+  hideLoading,
+  showToast
+} = require('../../../utils/Inspect/tips')
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0, //屏幕高度
@@ -25,6 +30,7 @@ Page({
     totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_page: 1, //列表页码
     g_items: [], //列表数据
+    g_triggered: false, //下拉刷新状态
     c_tabs: [{
         name: '车辆管控',
         value: '1'
@@ -109,6 +115,22 @@ Page({
       }
     })
   },
+  handleLower() {
+    this.setData({
+      g_page: this.data.g_page + 1
+    }, () => {
+      this.initList();
+    });
+  },
+  handleRefresh() {
+    this.setData({
+      g_triggered: false,
+      g_page: 1,
+      g_items: []
+    }, () => {
+      this.initList();
+    });
+  },
   // 生成日期数据
   initDay() {
     const days = Array.from({
@@ -131,7 +153,7 @@ Page({
   handleCarList() {
     let temp = {
       title: this.data.title,
-      ...this.data.params,
+      params:this.data.params,
       starttime: this.data.starttime,
       endtime: this.data.endtime,
       allowuse: this.data.allowuse,

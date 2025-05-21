@@ -38,7 +38,8 @@ Page({
     ], //tabs切换签
     c_activeTab: 1,
     params: {},
-    file: null
+    file: null,
+    g_triggered: false, //下拉刷新状态
   },
   // 全屏背景图
   initialiImageBaseConversion() {
