@@ -4,42 +4,12 @@
   <custom-header title="订单清单" />
   <!-- 内容区 -->
   <view class="info-container" style="height:{{c_screen_height-(c_statusBarHeight + c_navBarHeight)}}px;margin-top: {{c_totalNavHeight}}px;">
-
-    <!-- 顶部卡片 -->
-    <view class="top-box">
-      <view class="content-item-head">
-        <view class="head-left">
-          <view class="left-category">
-            <text>客户信息</text>
-          </view>
-        </view>
-      </view>
-      <view class="content-item-info">
-        <view class="info-item  {{all_data.deviceCount.length > 15 ? 'long-info-item' : ''}}">
-          <label>客户名称 ：</label>
-          <text>{{all_data.deviceCount||'-'}}</text>
-        </view>
-
-        <view class="info-item  {{all_data.typeName.length > 15 ? 'long-info-item' : ''}}">
-          <label>客户号 ：</label>
-          <text>{{all_data.typeName||'-'}}</text>
-        </view>
-        <view class="info-item  {{all_data.linkman.length > 15 ? 'long-info-item' : ''}}">
-          <label>联系人 ：</label>
-          <text>{{all_data.linkman||'-'}}</text>
-        </view>
-        <view class="info-item  {{all_data.linkmobile.length > 15 ? 'long-info-item' : ''}}">
-          <label>联系电话 ：</label>
-          <text>{{all_data.linkmobile||'-'}}</text>
-        </view>
-      </view>
-    </view>
     <!-- 中部 -->
     <view class="middle-box">
       <view class="content-item-head">
         <view class="head-left">
           <view class="left-category">
-            <text>产品信息</text>
+            <text>基础信息</text>
           </view>
         </view>
       </view>
@@ -119,22 +89,61 @@
       <view class="content-item-head">
         <view class="head-left">
           <view class="left-category">
+            <text>钥匙寄送信息</text>
+          </view>
+        </view>
+      </view>
+      <view class="content-item-info">
+        <view class="info-item  {{item.num.length > 15 ? 'long-info-item' : ''}}">
+          <label>寄送状态 ：</label>
+          <text>{{item.num||'-'}}</text>
+        </view>
+        <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
+          <label>物流单号 ：</label>
+          <text>{{item.createdate||'-'}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="bottom-box">
+      <view class="content-item-head">
+        <view class="head-left">
+          <view class="left-category">
+            <text>安装信息</text>
+          </view>
+        </view>
+      </view>
+      <view class="content-item-info">
+        <view class="info-item  {{item.num.length > 15 ? 'long-info-item' : ''}}">
+          <label>安装状态 ：</label>
+          <text>{{item.num||'-'}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="top-box">
+      <view class="content-item-head">
+        <view class="head-left">
+          <view class="left-category">
             <text>物流信息</text>
           </view>
         </view>
       </view>
-      <view class="content-item-info" wx:for="{{all_data.orderLogisticsList}}">
-        <view class="info-item  {{item.num.length > 15 ? 'long-info-item' : ''}}">
-          <label>物流单号 ：</label>
-          <text>{{item.num||'-'}}</text>
+      <view class="content-item-info">
+        <view class="info-item  {{all_data.deviceCount.length > 15 ? 'long-info-item' : ''}}">
+          <label>物流信息 ：</label>
+          <text>{{all_data.deviceCount||'-'}}</text>
         </view>
-        <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
-          <label>发货时间 ：</label>
-          <text>{{item.createdate||'-'}}</text>
+
+        <view class="info-item  {{all_data.typeName.length > 15 ? 'long-info-item' : ''}}">
+          <label>客户号 ：</label>
+          <text>{{all_data.typeName||'-'}}</text>
         </view>
-        <view class="info-item  {{item.bak.length > 15 ? 'long-info-item' : ''}}">
-          <label>备注 ：</label>
-          <text>{{item.bak||'-'}}</text>
+        <view class="info-item  {{all_data.linkman.length > 15 ? 'long-info-item' : ''}}">
+          <label>联系人 ：</label>
+          <text>{{all_data.linkman||'-'}}</text>
+        </view>
+        <view class="info-item  {{all_data.linkmobile.length > 15 ? 'long-info-item' : ''}}">
+          <label>联系电话 ：</label>
+          <text>{{all_data.linkmobile||'-'}}</text>
         </view>
       </view>
     </view>
@@ -143,7 +152,8 @@
   <view class="levitation-button" bindtap="handleConfirm" wx:if="{{all_data.status == 2}}">
     <text>确认</text>
   </view>
-  <view class="levitation-button" bindtap="handleOneClickOrdering" wx:if="{{all_data.status == 3}}">
-    <text>去支付</text>
+  <view class="levitation-button">
+    <text bindtap="handleOneClickOrdering">去支付</text>
+    <label>取消订单</label>
   </view>
 </view>

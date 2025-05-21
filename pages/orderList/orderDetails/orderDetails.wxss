@@ -134,6 +134,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 20rpx;
 }
 
 .levitation-button text {
@@ -149,6 +151,10 @@
   font-weight: bold;
   font-size: 32rpx;
   color: #ffffff;
+}
+.levitation-button label {
+  color: #7b7b7b;
+  font-size: 24rpx;
 }
 .offter {
   display: flex;
