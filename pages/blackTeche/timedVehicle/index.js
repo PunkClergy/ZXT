@@ -96,7 +96,6 @@ Page({
   initList() {
     const param = {
       [u_scheduledCarList.page]: this.data.g_page,
-      [u_scheduledCarList.comParam]: this.data.g_comParam
     };
     byGet(getApp().data.k1swUrl + u_scheduledCarList.URL, param).then(response => {
       if (response.statusCode == 200) {
