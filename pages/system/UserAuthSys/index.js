@@ -3,14 +3,10 @@ const {
   _handleDeviceInfo
 } = require('../../../utils/public').default
 const {
-  u_scheduledCarList,
-  u_scheduledCarApiDel,
-  u_scheduledaddOrUpdate
-} = require('../../../utils/request/order')
-const {
   u_childUserList,
   u_delChildUser,
-  u_getMenuTree
+  u_getMenuTree,
+  u_addOrUpdateChildUser
 } = require('../../../utils/request/data_info')
 const {
   byGet,
@@ -37,21 +33,16 @@ Page({
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
     c_tabs: [{
-        name: '车辆管控',
+        name: '账号列表',
         value: '1'
       },
       {
-        name: '新增管控',
+        name: '新增账号',
         value: '2'
       }
     ], //tabs切换签
     c_activeTab: 1, // 默认选中的Tab索引
-    days: [],
     params: {}, //新增管控数据部分字段
-    starttime: '00:00', //开始管控时间
-    endtime: "08:00", //结束管控时间
-    allowuse: 1, //任务类型
-    vehids: null, //车辆
     btnState: '新增',
     id: '', //修改标志
     tree: []
@@ -183,7 +174,7 @@ Page({
           g_items: this.data.g_items.concat(response.data.content),
           g_total: Number(response.data.count || 0).toLocaleString()
         }, () => {
-          // hideLoading();
+          hideLoading();
         });
       } else {
         showToast('请求失败，请稍后再试');
@@ -191,6 +182,7 @@ Page({
       }
     })
   },
+  // 触底请求
   handleLower() {
     this.setData({
       g_page: this.data.g_page + 1
@@ -198,6 +190,7 @@ Page({
       this.initList();
     });
   },
+  // 下拉刷新
   handleRefresh() {
     this.setData({
       g_triggered: false,
@@ -207,42 +200,8 @@ Page({
       this.initList();
     });
   },
-  // 生成日期数据
-  initDay() {
-    const days = Array.from({
-      length: 7
-    }, (_, index) => {
-      const value = (index + 1) % 7
-      const labels = ['一', '二', '三', '四', '五', '六', '日']
-      const label = `周${labels[index]}`
-      return {
-        label,
-        value,
-        active: false
-      }
-    })
-    this.setData({
-      days
-    })
-  },
-  // 选择管控车辆
-  handleCarList() {
-    let temp = {
-      title: this.data.title,
-      params: this.data.params,
-      starttime: this.data.starttime,
-      endtime: this.data.endtime,
-      allowuse: this.data.allowuse,
-      dayofweek: this.data.days
-        .filter(item => item.active)
-        .map(item => item.value),
-      days: this.data.days
-    }
-    wx.navigateTo({
-      url: `/pages/carManager/carList/carList?source=/pages/blackTeche/timedVehicle/index&flagMulti=1&info=${JSON.stringify(temp)}`
-    })
-  },
-  // 新增管控车辆字段输入回调
+
+  // 新增账号字段输入回调
   handleBindinput(evt) {
     const {
       params
@@ -254,131 +213,165 @@ Page({
       }
     })
   },
-  // 设置开始管控时间
-  handleBindStartTimeChange(e) {
-    this.setData({
-      starttime: e.detail.value
-    });
-  },
-  // 设置结束管控时间
-  hadnlebindEndTimeChange(e) {
-    this.setData({
-      endtime: e.detail.value
-    });
-  },
-  // 任务类型单选切换
-  handleToggleEnable(evt) {
-    this.setData({
-      allowuse: evt.detail.value
-    })
-  },
-  // 生效日期选择
-  handleToggleDay(e) {
-    const dayValue = parseInt(e.currentTarget.dataset.day);
-    const days = this.data.days.map(item => {
-      if (item.value === dayValue) {
-        return {
-          ...item,
-          active: !item.active
-        };
-      }
-      return item;
-    });
-    this.setData({
-      days
-    });
-  },
-  // 提交管控数据
-  handleSubmit() {
+  //  处理提交的权限树数据
+  getCheckedIds(treeData) {
+    const checkedIds = [];
 
-    return
-    let temp = {
-      id: this.data.id,
-      title: this.data.title,
-      ...this.data.params,
-      starttime: this.data.starttime,
-      endtime: this.data.endtime,
-      allowuse: this.data.allowuse,
-      vehids: this.data.vehids,
-      dayofweek: this.data.days
-        .filter(item => item.active)
-        .map(item => item.value),
-
+    function traverse(nodes) {
+      nodes.forEach(node => {
+        if (node.checked === true) {
+          checkedIds.push(node.id);
+        }
+        if (node.children && node.children.length > 0) {
+          traverse(node.children);
+        }
+      });
     }
-    byPost(getApp().data.k1swUrl + u_scheduledaddOrUpdate.URL, temp, (response) => {
-      console.log(response)
-      this.setData({
-        title: '',
-        params: {},
-        starttime: "00:00",
-        endtime: "09:00",
-        allowuse: 1,
-        vehids: null,
-        c_activeTab: 1,
-        btnState: '新增',
-        g_page: 1, //列表页码
-        g_items: [],
-      }, () => {
-        this.initDay()
-        this.initList()
-      })
+    traverse(treeData);
+    return checkedIds;
+  },
+  //提交内容
+  handleSubmit() {
+    const checkedIds = this.getCheckedIds(this.data.tree).toString();
+    const {
+      params,
+      id
+    } = this.data;
+    const requiredFields = [{
+        key: 'username',
+        message: '请输入账号'
+      },
+      {
+        key: 'realname',
+        message: '请输入姓名'
+      },
+      {
+        key: 'password',
+        message: '请输入密码'
+      },
+      {
+        key: 'mobile',
+        message: '请输入手机号'
+      },
+    ];
 
-    });
+    // 检查必填字段
+    for (const {
+        key,
+        message
+      } of requiredFields) {
+      if (!params?.[key]) {
+        showToast(message);
+        return;
+      }
+    }
+
+    // 验证用户名长度
+    if (params.username.length < 6) {
+      showToast('账号不能小于6位');
+      return;
+    }
+
+    // 验证手机号长度
+    console.log(params.mobile.length)
+    if (params.mobile.length !== 11) {
+      showToast('手机号必须是11位');
+      return;
+    }
+
+    showLoading();
+    byPost(
+      `${getApp().data.k1swUrl}${u_addOrUpdateChildUser.URL}`, {
+        ...params,
+        abcc: checkedIds,
+        id
+      },
+      (response) => {
+        if (response?.data?.code != 1000) {
+          showToast(response?.data?.msg);
+          hideLoading();
+          return;
+        }
+        showToast('添加成功');
+        this.setData({
+          c_activeTab: 1,
+          params: {},
+          btnState: '新增',
+          g_triggered: false,
+          g_page: 1,
+          g_items: []
+        }, () => {
+          this.initList()
+          hideLoading()
+        })
+      },
+      (error) => {
+        hideLoading();
+        showToast('提交失败，请稍后重试');
+      }
+    );
   },
   // 修改管控
   handleEdit(evt) {
     const info = evt.currentTarget.dataset.item
     console.log(info)
-    const dayofweek = info.dayofweek.split(",").map(Number);
-    const days = this.data.days
-    const newDays = days.map(day => ({
-      ...day,
-      active: Array.isArray(dayofweek) ?
-        dayofweek.includes(day.value) : day.value === dayofweek
-    }));
     this.setData({
-      id: info?.id,
+      ...info,
       c_activeTab: 2,
       btnState: '修改',
-      ...info,
-      days: newDays,
+      id: info?.id,
       params: {
-        title: info.title,
-        bak: info.bak
+        password: info.password,
+        username: info.username,
+        realname: info.realname,
+        mobile: info.mobile,
       }
+    }, () => {
+      this.inittMenuTree()
     })
   },
   // 切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
+    console.log(flag)
     if (flag == '账号列表') {
       this.setData({
         c_activeTab: 1,
         btnState: '新增'
       })
-    } else {
-      this.setData({
-        c_activeTab: 2,
-      })
+    }
+    if (flag == '新增账号' || flag == '修改账号') {
+      if (this.data.c_activeTab != 2) {
+        this.setData({
+          c_activeTab: 2,
+        }, () => {
+          this.inittMenuTree()
+        })
+      }
     }
   },
 
-
   // 删除列表数据
   handleDelete(evt) {
-    const id = evt.currentTarget.dataset.item.id
-    byPost(getApp().data.k1swUrl + u_scheduledCarApiDel.URL, {
-      scheduledId: id
-    }, (response) => {
-      this.setData({
-        g_page: 1, //列表页码
-        g_items: [],
-      }, () => {
-        this.initList()
-      })
+    const _this = this
+    const id = evt?.currentTarget.dataset.id
+    const params = {
+      [u_delChildUser.id]: id
+    }
+    byGet(`${getApp().data.k1swUrl}${u_delChildUser.URL}`, params).then(allRes => {
+      if (allRes?.data?.code == 1000) {
+        _this.setData({
+          g_triggered: false,
+          g_page: 1,
+          g_items: []
+        }, () => {
+          _this.initList()
+        })
 
-    });
+      }
+    })
   },
+  // 处理权限数据
   convertMenuData(originalData) {
     const convertNode = (node) => {
       if (node.isdelete === 1) return null;
@@ -435,24 +428,17 @@ Page({
     })
   },
   onLoad(options) {
-    if (options.black) {
-      console.log(JSON.parse(options.info))
+    if (options.status) {
       this.setData({
-        ...JSON.parse(options.info),
-        days: JSON.parse(options.info)?.days,
-        vehids: options.black,
-        platenumbers: options.platenumbers,
         c_activeTab: 2
+      }, () => {
+        this.inittMenuTree()
       })
-    } else {
-      this.initDay()
     }
     this.initList()
 
-    this.inittMenuTree()
   },
   onShow() {
     this.initialiImageBaseConversion()
-
   },
 })

@@ -16,6 +16,7 @@ const u_companyImprove = {
 // 子账户列表
 const u_childUserList = {
   URL: fin3plusUrl + "companyapi/childUserList",
+  page: 'page'
 }
 // 创建或更新子账号
 const u_addOrUpdateChildUser = {
@@ -114,7 +115,7 @@ const u_isNeedCarInfo = {
 // 获取权限树接口
 const u_getMenuTree = {
   URL: fin3plusUrl + "userapi/getMenuTree",
-} 
+}
 module.exports = {
   u_getMenuTree,
   u_isNeedCarInfo,

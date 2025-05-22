@@ -55,21 +55,21 @@
             <view class="long-range-control-car-subitem">
               <label>密码<text>*</text></label>
               <view class="card-info-item-input">
-                <input placeholder="请输入密码" value="{{params.username}}" data-item="username" bindinput="handleBindinput" />
+                <input placeholder="请输入密码" value="{{params.password}}" data-item="password" bindinput="handleBindinput" />
               </view>
             </view>
             <!-- 姓名 -->
             <view class="long-range-control-car-subitem">
               <label>姓名<text>*</text></label>
               <view class="card-info-item-input">
-                <input placeholder="请输入姓名" value="{{params.username}}" data-item="username" bindinput="handleBindinput" />
+                <input placeholder="请输入姓名" value="{{params.realname}}" data-item="realname" bindinput="handleBindinput" />
               </view>
             </view>
             <!-- 手机号 -->
             <view class="long-range-control-car-subitem">
               <label>手机号<text>*</text></label>
               <view class="card-info-item-input">
-                <input placeholder="请输入手机号" value="{{params.username}}" data-item="username" bindinput="handleBindinput" />
+                <input placeholder="请输入手机号" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
               </view>
             </view>
           </block>
