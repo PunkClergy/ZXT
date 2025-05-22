@@ -88,7 +88,7 @@ Page({
   // 切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
-    if (flag == '报销记录') {
+    if (flag == '验证记录') {
       this.setData({
         c_activeTab: 1,
       })
@@ -257,7 +257,7 @@ Page({
           g_page: 1,
           g_items: []
         }, () => {
-          this.handleCurrentDate()
+          this.handleCurrentDate() 
           this.getOrderList();
         })
       }

@@ -1,10 +1,10 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="油费报销" />
+  <custom-header title="加油验证" />
   <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight + 10)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 切换部分 -->
     <view class="record-tabs" bindtap="handleSwitchTab">
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">报销记录</view>
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">{{btnState}}新增报销</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">验证记录</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">{{btnState}}新增验证</view>
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
@@ -71,7 +71,7 @@
               <input placeholder="请输入车牌号" value="{{params.platenumber}}" data-item="platenumber" bindinput="handleBindinput" />
             </view>
           </view>
-          <view class="card-info-item">
+          <!-- <view class="card-info-item">
             <label>车辆使用开始时间<text>*</text></label>
             <view class="modal-form-region">
               <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
@@ -85,8 +85,8 @@
                 </view>
               </picker>
             </view>
-          </view>
-          <view class="card-info-item">
+          </view> -->
+          <!-- <view class="card-info-item">
             <label>车辆使用结束时间<text>*</text></label>
             <view class="modal-form-region">
               <picker mode="date" data-index="endDate" bindchange="bindTimeChange">
@@ -100,7 +100,7 @@
                 </view>
               </picker>
             </view>
-          </view>
+          </view> -->
           <view class="card-info-item">
             <label>加油时间<text>*</text></label>
             <view class="modal-form-region">
@@ -123,26 +123,26 @@
               <input placeholder="请输入加油量" value="{{params.oil}}" data-item="oil" bindinput="handleBindinput" />
             </view>
           </view>
-          <view class="card-info-item">
+          <!-- <view class="card-info-item">
             <label>加油花费<text>*</text></label>
             <view class="card-info-item-input">
               <input placeholder="请输入加油花费" value="{{params.oilcost}}" data-item="oilcost" bindinput="handleBindinput" />
             </view>
-          </view>
+          </view> --> 
           <!-- 发票 -->
-          <view class="card-info-item">
+          <!-- <view class="card-info-item">
             <label style="font-size: 26rpx;">上传发票<text>*</text></label>
             <view class="card-info-item-input" style="display: flex; align-items: center;gap: 10rpx;">
               <text src="{{file}}" class="card-upload" wx:if="{{file}}" bindtap="previewImage">预览</text>
               <text class="card-upload" bindtap="chooseImage">{{file?'重新上传':'选择图片/拍照'}}</text>
             </view>
-          </view>
-          <view class="card-info-item">
+          </view> -->
+          <!-- <view class="card-info-item">
             <label>说明<text>*</text></label>
             <view class="card-info-item-input">
               <input placeholder="请输入用车说明" value="{{params.bak}}" data-item="bak" bindinput="handleBindinput" />
             </view>
-          </view>
+          </view> -->
         </view>
         <view class="card-footer">
           <view bindtap="handleSubmit">确认</view>

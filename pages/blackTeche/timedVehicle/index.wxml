@@ -1,5 +1,5 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="远程控车" />
+  <custom-header title="公车私用管理" />
   <!-- index.wxml -->
   <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight + 10)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 切换部分 -->
