@@ -111,7 +111,12 @@ const u_saleCode = {
 const u_isNeedCarInfo = {
   URL: fin3plusUrl + "deviceBuyApi/isNeedCarInfo",
 }
+// 获取权限树接口
+const u_getMenuTree = {
+  URL: fin3plusUrl + "userapi/getMenuTree",
+} 
 module.exports = {
+  u_getMenuTree,
   u_isNeedCarInfo,
   u_saleCode,
   u_getIntroduction,
