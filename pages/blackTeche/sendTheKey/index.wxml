@@ -3,7 +3,7 @@
   <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight + 10)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 切换部分 -->
     <view class="record-tabs" bindtap="handleSwitchTab">
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">车辆列表</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">发送钥匙</view>
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">{{btnState}}使用记录</view>
     </view>
     <!-- 详情区域部分 -->

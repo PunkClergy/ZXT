@@ -147,7 +147,7 @@ Page({
   // 切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
-    if (flag == '车辆列表') {
+    if (flag == '发送钥匙') {
       this.setData({
         c_activeTab: 1,
       })
