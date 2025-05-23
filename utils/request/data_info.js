@@ -123,10 +123,23 @@ const u_getRoles = {
 // 角色列表
 const u_roleapiList = {
   URL: fin3plusUrl + "roleapi/list",
+  page:'page'
+}
+// 角色删除
+const u_roleapidel = {
+  URL: fin3plusUrl + "roleapi/del",
+  page:'page'
+}
+// 角色删除
+const u_roleapiaddOrUpdate = {
+  URL: fin3plusUrl + "roleapi/addOrUpdate",
+  page:'page'
 }
 
 
 module.exports = {
+  u_roleapiaddOrUpdate,
+  u_roleapidel,
   u_roleapiList,
   u_getRoles,
   u_getMenuTree,

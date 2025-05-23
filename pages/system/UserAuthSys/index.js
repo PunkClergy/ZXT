@@ -5,7 +5,6 @@ const {
 const {
   u_childUserList,
   u_delChildUser,
-  u_getMenuTree,
   u_roleapiList,
   u_addOrUpdateChildUser
 } = require('../../../utils/request/data_info')
@@ -279,7 +278,9 @@ Page({
     if (flag == '人员列表') {
       this.setData({
         c_activeTab: 1,
-        btnState: '新增'
+        btnState: '新增',
+        params: {},
+        g_roleList_index: null
       })
     }
     if (flag == '新增人员' || flag == '修改人员') {

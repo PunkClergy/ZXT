@@ -3,10 +3,10 @@ const {
   _handleDeviceInfo
 } = require('../../../utils/public').default
 const {
-  u_childUserList,
-  u_delChildUser,
+  u_roleapidel,
   u_getMenuTree,
-  u_addOrUpdateChildUser
+  u_roleapiaddOrUpdate,
+  u_roleapiList
 } = require('../../../utils/request/data_info')
 const {
   byGet,
@@ -162,25 +162,29 @@ Page({
   },
   // 管控列表数据
   initList() {
+    showLoading()
     const param = {
-      [u_childUserList.page]: this.data.g_page,
+      // [u_roleapiList.page]: this.data.g_page,
     };
-    byGet(getApp().data.k1swUrl + u_childUserList.URL, param).then(response => {
-      if (response.statusCode == 200) {
-        if (this.data.g_page > 1 && response.data.content.length === 0) {
-          showToast(`已加载全部数据：共${this.data.g_items.length}条`);
+    byPost(
+      `${getApp().data.k1swUrl}${u_roleapiList.URL}`, param,
+      (response) => {
+        if (response.data.code == 1000) {
+          if (this.data.g_page > 1 && response.data.content.length === 0) {
+            showToast(`已加载全部数据：共${this.data.g_items.length}条`);
+          }
+          this.setData({
+            g_items: this.data.g_items.concat(response.data.content),
+            g_total: Number(response.data.count || 0).toLocaleString()
+          }, () => {
+            hideLoading();
+          });
         }
-        this.setData({
-          g_items: this.data.g_items.concat(response.data.content),
-          g_total: Number(response.data.count || 0).toLocaleString()
-        }, () => {
-          hideLoading();
-        });
-      } else {
-        showToast('请求失败，请稍后再试');
+      },
+      (error) => {
         hideLoading();
       }
-    })
+    );
   },
   // 触底请求
   handleLower() {
@@ -238,22 +242,9 @@ Page({
       id
     } = this.data;
     const requiredFields = [{
-        key: 'username',
-        message: '请输入账号'
-      },
-      {
-        key: 'realname',
-        message: '请输入姓名'
-      },
-      {
-        key: 'password',
-        message: '请输入密码'
-      },
-      {
-        key: 'mobile',
-        message: '请输入手机号'
-      },
-    ];
+      key: 'name',
+      message: '请输入角色名称'
+    }];
 
     // 检查必填字段
     for (const {
@@ -265,31 +256,17 @@ Page({
         return;
       }
     }
-
-    // 验证用户名长度
-    if (params.username.length < 6) {
-      showToast('账号不能小于6位');
-      return;
-    }
-
-    // 验证手机号长度
-    console.log(params.mobile.length)
-    if (params.mobile.length !== 11) {
-      showToast('手机号必须是11位');
-      return;
-    }
-
     showLoading();
     byPost(
-      `${getApp().data.k1swUrl}${u_addOrUpdateChildUser.URL}`, {
+      `${getApp().data.k1swUrl}${u_roleapiaddOrUpdate.URL}`, {
         ...params,
         abcc: checkedIds,
         id
       },
       (response) => {
+        hideLoading();
         if (response?.data?.code != 1000) {
           showToast(response?.data?.msg);
-          hideLoading();
           return;
         }
         showToast('添加成功');
@@ -302,7 +279,6 @@ Page({
           g_items: []
         }, () => {
           this.initList()
-          hideLoading()
         })
       },
       (error) => {
@@ -321,10 +297,8 @@ Page({
       btnState: '修改',
       id: info?.id,
       params: {
-        password: info.password,
-        username: info.username,
-        realname: info.realname,
-        mobile: info.mobile,
+        name: info.name,
+        bak: info.vak,
       }
     }, () => {
       this.inittMenuTree()
@@ -334,13 +308,14 @@ Page({
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
     console.log(flag)
-    if (flag == '账号列表') {
+    if (flag == '角色列表') {
       this.setData({
         c_activeTab: 1,
-        btnState: '新增'
+        btnState: '新增',
+        params:{}
       })
     }
-    if (flag == '新增账号' || flag == '修改账号') {
+    if (flag == '新增角色' || flag == '修改角色') {
       if (this.data.c_activeTab != 2) {
         this.setData({
           c_activeTab: 2,
@@ -356,9 +331,9 @@ Page({
     const _this = this
     const id = evt?.currentTarget.dataset.id
     const params = {
-      [u_delChildUser.id]: id
+      [u_roleapidel.id]: id
     }
-    byGet(`${getApp().data.k1swUrl}${u_delChildUser.URL}`, params).then(allRes => {
+    byGet(`${getApp().data.k1swUrl}${u_roleapidel.URL}`, params).then(allRes => {
       if (allRes?.data?.code == 1000) {
         _this.setData({
           g_triggered: false,
