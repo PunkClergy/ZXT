@@ -6,7 +6,6 @@ const {
   u_childUserList,
   u_delChildUser,
   u_getMenuTree,
-  u_roleapiList,
   u_addOrUpdateChildUser
 } = require('../../../utils/request/data_info')
 const {
@@ -45,17 +44,79 @@ Page({
     c_activeTab: 1, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
     btnState: '新增',
-    g_roleList: [],
-    g_roleList_index: null,
     id: '', //修改标志
+    tree: []
+  },
+  // 切换复选框状态
+  handleCheck(e) {
+    const id = e.currentTarget.dataset.id;
+    const tree = this.data.tree;
+    this.toggleCheck(tree, id);
+    this.updateParentStates(tree);
+    this.setData({
+      tree: [...tree]
+    });
   },
 
-
-  // 所属行业变化回到
-  handleIndustryType(evt) {
+  // 切换展开状态
+  toggleExpand(e) {
+    const id = e.currentTarget.dataset.id;
+    const tree = this.data.tree;
+    this.toggleNodeExpand(tree, id);
     this.setData({
-      g_roleList_index: evt.detail.value
-    })
+      tree: [...tree]
+    });
+  },
+
+  // 递归切换节点展开状态
+  toggleNodeExpand(nodes, targetId) {
+    nodes.forEach(node => {
+      if (node.id === targetId) {
+        node.isExpanded = !node.isExpanded;
+      } else if (node.children) {
+        this.toggleNodeExpand(node.children, targetId);
+      }
+    });
+  },
+
+  // 递归切换选中状态
+  toggleCheck(nodes, targetId) {
+    nodes.forEach(node => {
+      if (node.id === targetId) {
+        node.checked = !node.checked;
+        this.toggleChildren(node.children, node.checked);
+      } else if (node.children) {
+        this.toggleCheck(node.children, targetId);
+      }
+    });
+  },
+
+  // 切换子节点状态
+  toggleChildren(children, checked) {
+    if (!children) return;
+    children.forEach(child => {
+      child.checked = checked;
+      this.toggleChildren(child.children, checked);
+    });
+  },
+
+  // 更新所有父节点状态
+  updateParentStates(nodes) {
+    nodes.forEach(node => {
+      if (node.children && node.children.length) {
+        this.checkParentState(node);
+        this.updateParentStates(node.children);
+      }
+    });
+  },
+
+  // 计算父节点状态
+  checkParentState(node) {
+    const children = node.children;
+    const allChecked = children.every(child => child.checked);
+    const someChecked = children.some(child => child.checked || child.indeterminate);
+    node.checked = allChecked;
+    node.indeterminate = !allChecked && someChecked;
   },
   // 全屏背景图
   initialiImageBaseConversion() {
@@ -152,14 +213,29 @@ Page({
       }
     })
   },
+  //  处理提交的权限树数据
+  getCheckedIds(treeData) {
+    const checkedIds = [];
 
+    function traverse(nodes) {
+      nodes.forEach(node => {
+        if (node.checked === true) {
+          checkedIds.push(node.id);
+        }
+        if (node.children && node.children.length > 0) {
+          traverse(node.children);
+        }
+      });
+    }
+    traverse(treeData);
+    return checkedIds;
+  },
   //提交内容
   handleSubmit() {
+    const checkedIds = this.getCheckedIds(this.data.tree).toString();
     const {
       params,
-      id,
-      g_roleList,
-      g_roleList_index,
+      id
     } = this.data;
     const requiredFields = [{
         key: 'username',
@@ -176,7 +252,7 @@ Page({
       {
         key: 'mobile',
         message: '请输入手机号'
-      }
+      },
     ];
 
     // 检查必填字段
@@ -189,10 +265,6 @@ Page({
         return;
       }
     }
-    if (g_roleList_index == null) {
-      showToast('请选择角色');
-      return
-    }
 
     // 验证用户名长度
     if (params.username.length < 6) {
@@ -201,6 +273,7 @@ Page({
     }
 
     // 验证手机号长度
+    console.log(params.mobile.length)
     if (params.mobile.length !== 11) {
       showToast('手机号必须是11位');
       return;
@@ -210,13 +283,13 @@ Page({
     byPost(
       `${getApp().data.k1swUrl}${u_addOrUpdateChildUser.URL}`, {
         ...params,
-        id,
-        roleId: g_roleList[g_roleList_index]?.id
+        abcc: checkedIds,
+        id
       },
       (response) => {
-        hideLoading()
         if (response?.data?.code != 1000) {
           showToast(response?.data?.msg);
+          hideLoading();
           return;
         }
         showToast('添加成功');
@@ -229,6 +302,7 @@ Page({
           g_items: []
         }, () => {
           this.initList()
+          hideLoading()
         })
       },
       (error) => {
@@ -237,23 +311,10 @@ Page({
       }
     );
   },
-  initRole() {
-    byPost(
-      `${getApp().data.k1swUrl}${u_roleapiList.URL}`, {},
-      (response) => {
-        console.log(response)
-        this.setData({
-          g_roleList: response.data.content
-        })
-      },
-      (error) => {
-        hideLoading();
-      }
-    );
-  },
   // 修改管控
   handleEdit(evt) {
     const info = evt.currentTarget.dataset.item
+    console.log(info)
     this.setData({
       ...info,
       c_activeTab: 2,
@@ -266,10 +327,7 @@ Page({
         mobile: info.mobile,
       }
     }, () => {
-      const index = this.data.g_roleList.findIndex(item => item.id === info?.roleId);
-      this.setData({
-        g_roleList_index: index
-      })
+      this.inittMenuTree()
     })
   },
   // 切换tabs标签
@@ -287,11 +345,12 @@ Page({
         this.setData({
           c_activeTab: 2,
         }, () => {
-          this.initRole()
+          this.inittMenuTree()
         })
       }
     }
   },
+
   // 删除列表数据
   handleDelete(evt) {
     const _this = this
@@ -312,16 +371,74 @@ Page({
       }
     })
   },
+  // 处理权限数据
+  convertMenuData(originalData) {
+    const convertNode = (node) => {
+      if (node.isdelete === 1) return null;
+      const converted = {
+        id: node.id,
+        name: node.name,
+        checked: false,
+        indeterminate: false,
+        isExpanded: true,
+        children: []
+      };
+      if (node.children && node.children.length > 0) {
+        node.children.forEach(child => {
+          const convertedChild = convertNode(child);
+          if (convertedChild) {
+            converted.children.push(convertedChild);
+          }
+        });
+      }
+      return converted;
+    }
+    const result = [{
+      id: 1,
+      name: '全部',
+      checked: false,
+      indeterminate: false,
+      isExpanded: true,
+      children: []
+    }];
+    originalData.forEach(item => {
+      if (item.parentid === -1 && item.isdelete === 0) {
+        const converted = convertNode(item);
+        if (converted) {
+          result[0].children.push(converted);
+        }
+      }
+    });
+
+    return result;
+  },
+  // 获取权限树数据
+  inittMenuTree() {
+    byGet(getApp().data.k1swUrl + u_getMenuTree.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        const list = response.data.content
+        const convertedData = this.convertMenuData(list);
+        this.setData({
+          tree: convertedData
+        })
+      } else {
+        showToast('请求失败，请稍后再试');
+        hideLoading();
+      }
+    })
+  },
   onLoad(options) {
     if (options.status) {
       this.setData({
         c_activeTab: 2
+      }, () => {
+        this.inittMenuTree()
       })
     }
     this.initList()
+
   },
   onShow() {
     this.initialiImageBaseConversion()
-    this.initRole()
   },
 })

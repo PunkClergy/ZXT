@@ -28,6 +28,10 @@
                 <label>账号 ：</label>
                 <text>{{item.username||'-'}}</text>
               </view>
+              <view class="info-item  {{item.roleName.length > 15 ? 'long-info-item' : ''}}">
+                <label>角色 ：</label>
+                <text>{{item.roleName||'-'}}</text>
+              </view>
               <view class="info-item  {{item.mobile.length > 15 ? 'long-info-item' : ''}}">
                 <label>手机号 ：</label>
                 <text>{{item.mobile||'-'}}</text>
@@ -72,99 +76,27 @@
                 <input placeholder="请输入手机号" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
               </view>
             </view>
-          </block>
-
-          <view style="height: 30rpx;"></view>
-          <block>
-            <view class="card-head">
-              <text>权限设置</text>
-            </view>
+            <!-- 手机号 -->
             <view class="long-range-control-car-subitem">
-              <view class="tree-container">
-                <block wx:for="{{tree}}" wx:key="id">
-                  <view class="node">
-                    <!-- 一级节点 -->
-                    <view class="node-header">
-                      <view class="arrow {{item.isExpanded ? 'expanded' : ''}}" wx:if="{{item.children.length}}" bindtap="toggleExpand" data-id="{{item.id}}">▶</view>
-                      <view class="checkbox {{item.checked ? 'checked' : ''}} {{item.indeterminate ? 'indeterminate' : ''}}" data-id="{{item.id}}" bindtap="handleCheck">
-                        <view class="checkmark" wx:if="{{item.checked}}">✓</view>
-                        <view class="indeterminate-line" wx:if="{{item.indeterminate}}"></view>
-                      </view>
-                      <text class="node-name">{{item.name}}</text>
-                    </view>
-
-                    <!-- 二级节点 -->
-                    <view class="children" wx:if="{{item.children.length && item.isExpanded}}">
-                      <block wx:for="{{item.children}}" wx:key="id">
-                        <view class="child-node">
-                          <view class="node-header">
-                            <view class="arrow {{item.isExpanded ? 'expanded' : ''}}" wx:if="{{item.children.length}}" bindtap="toggleExpand" data-id="{{item.id}}">▶</view>
-                            <view class="checkbox {{item.checked ? 'checked' : ''}} {{item.indeterminate ? 'indeterminate' : ''}}" data-id="{{item.id}}" bindtap="handleCheck">
-                              <view class="checkmark" wx:if="{{item.checked}}">✓</view>
-                              <view class="indeterminate-line" wx:if="{{item.indeterminate}}"></view>
-                            </view>
-                            <text class="node-name">{{item.name}}</text>
-                          </view>
-
-                          <!-- 三级节点 -->
-                          <view class="children" wx:if="{{item.children.length && item.isExpanded}}">
-                            <block wx:for="{{item.children}}" wx:key="id">
-                              <view class="child-node">
-                                <view class="node-header">
-                                  <view class="arrow {{item.isExpanded ? 'expanded' : ''}}" wx:if="{{item.children.length}}" bindtap="toggleExpand" data-id="{{item.id}}">▶</view>
-                                  <view class="checkbox {{item.checked ? 'checked' : ''}} {{item.indeterminate ? 'indeterminate' : ''}}" data-id="{{item.id}}" bindtap="handleCheck">
-                                    <view class="checkmark" wx:if="{{item.checked}}">✓</view>
-                                    <view class="indeterminate-line" wx:if="{{item.indeterminate}}"></view>
-                                  </view>
-                                  <text class="node-name">{{item.name}}</text>
-                                </view>
-
-                                <!-- 四级节点 -->
-                                <view class="children" wx:if="{{item.children.length && item.isExpanded}}">
-                                  <block wx:for="{{item.children}}" wx:key="id">
-                                    <view class="child-node">
-                                      <view class="node-header">
-                                        <view class="arrow {{item.isExpanded ? 'expanded' : ''}}" wx:if="{{item.children.length}}" bindtap="toggleExpand" data-id="{{item.id}}">▶</view>
-                                        <view class="checkbox {{item.checked ? 'checked' : ''}} {{item.indeterminate ? 'indeterminate' : ''}}" data-id="{{item.id}}" bindtap="handleCheck">
-                                          <view class="checkmark" wx:if="{{item.checked}}">✓</view>
-                                          <view class="indeterminate-line" wx:if="{{item.indeterminate}}"></view>
-                                        </view>
-                                        <text class="node-name">{{item.name}}</text>
-                                      </view>
-
-                                      <!-- 五级节点 -->
-                                      <view class="children" wx:if="{{item.children.length && item.isExpanded}}">
-                                        <block wx:for="{{item.children}}" wx:key="id">
-                                          <view class="child-node">
-                                            <view class="node-header">
-                                              <view class="checkbox {{item.checked ? 'checked' : ''}}" data-id="{{item.id}}" bindtap="handleCheck">
-                                                <view class="checkmark" wx:if="{{item.checked}}">✓</view>
-                                              </view>
-                                              <text class="node-name">{{item.name}}</text>
-                                            </view>
-                                          </view>
-                                        </block>
-                                      </view>
-                                    </view>
-                                  </block>
-                                </view>
-                              </view>
-                            </block>
-                          </view>
-                        </view>
-                      </block>
-                    </view>
-                  </view>
-                </block>
-              </view>
-
+              <label>行业<text>*</text></label>
+              <block>
+                <view class="card-info-item-input">
+                  <picker range-key="name" range="{{g_roleList}}" bindchange="handleIndustryType">
+                    <block wx:if="{{g_roleList_index==null}}">
+                      <text style="color: rgb(129, 122, 122);font-size: 26rpx; ">请选择角色</text>
+                    </block>
+                    <block wx:else>
+                      <text style="color: #333;font-size: 26rpx;">{{g_roleList[g_roleList_index].name}}</text>
+                    </block>
+                  </picker>
+                </view>
+              </block>
             </view>
           </block>
           <view class="card-footer">
             <view bindtap="handleSubmit">确认{{btnState}}</view>
           </view>
         </view>
-
       </scroll-view>
     </block>
   </view>

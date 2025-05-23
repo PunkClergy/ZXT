@@ -120,8 +120,14 @@ const u_getMenuTree = {
 const u_getRoles = {
   URL: fin3plusUrl + "companyapi/getRoles",
 }
+// 角色列表
+const u_roleapiList = {
+  URL: fin3plusUrl + "roleapi/list",
+}
+
 
 module.exports = {
+  u_roleapiList,
   u_getRoles,
   u_getMenuTree,
   u_isNeedCarInfo,

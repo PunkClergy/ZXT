@@ -135,6 +135,7 @@
     "pages/blackTeche/keyApply/index",
     "pages/orderList/InquirySheet/index",
     "pages/redShare/index",
+    "pages/system/Jurisdiction/index",
     "pages/blackTeche/sendTheKey/index"
   ],
   "window": {
