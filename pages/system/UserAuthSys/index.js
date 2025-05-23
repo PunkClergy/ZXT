@@ -276,13 +276,13 @@ Page({
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
     console.log(flag)
-    if (flag == '账号列表') {
+    if (flag == '人员列表') {
       this.setData({
         c_activeTab: 1,
         btnState: '新增'
       })
     }
-    if (flag == '新增账号' || flag == '修改账号') {
+    if (flag == '新增人员' || flag == '修改人员') {
       if (this.data.c_activeTab != 2) {
         this.setData({
           c_activeTab: 2,

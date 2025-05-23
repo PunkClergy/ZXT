@@ -1,11 +1,11 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="账号管理" />
+  <custom-header title="人员管理" />
   <!-- index.wxml -->
   <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 切换部分 -->
     <view class="record-tabs" bindtap="handleSwitchTab">
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">账号列表</view>
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">{{btnState}}账号</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">人员列表</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">{{btnState}}人员</view>
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
@@ -78,7 +78,7 @@
             </view>
             <!-- 手机号 -->
             <view class="long-range-control-car-subitem">
-              <label>行业<text>*</text></label>
+              <label>角色<text>*</text></label>
               <block>
                 <view class="card-info-item-input">
                   <picker range-key="name" range="{{g_roleList}}" bindchange="handleIndustryType">
