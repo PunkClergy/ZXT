@@ -3,7 +3,8 @@
     "custom": false,
     "color": "#8a8a8a",
     "selectedColor": "#ff4e00",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/desk/desk",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
@@ -21,7 +22,6 @@
         "selectedIconPath": "/assets/images/index/work_s@2x.png",
         "text": "一键下单"
       },
-
       {
         "pagePath": "pages/system/managerInfo/userinfo",
         "iconPath": "/assets/images/index/setUp@2x.png",
@@ -134,7 +134,8 @@
     "pages/blackTeche/cloudKeyApply/index",
     "pages/blackTeche/keyApply/index",
     "pages/orderList/InquirySheet/index",
-    "pages/redShare/index"
+    "pages/redShare/index",
+    "pages/blackTeche/sendTheKey/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

@@ -3,7 +3,8 @@ const fin3plusUrl = '';
 const u_rentRecord = {
   URL: fin3plusUrl + 'rentKeyApi/rentRecord',
   vehId: 'vehId',
-  page: 'page'
+  page: 'page',
+  comParam: 'comParam'
 }
 const u_sendRentKey = {
   URL: fin3plusUrl + "rentKeyApi/sendRentKey",
