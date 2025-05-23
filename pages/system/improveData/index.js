@@ -6,7 +6,8 @@ const {
   u_getCitys,
   u_getProvinces,
   u_companyImprove,
-  u_companyInfo
+  u_companyInfo,
+  u_getRoles
 } = require('../../../utils/request/data_info')
 const {
   byPost,
@@ -25,9 +26,14 @@ Page({
     s_platform_height: _handleDeviceInfo.platform == "ios" || _handleDeviceInfo.platform == "devtools" ? 95 : 60, //判断系统获取底部高度
     s_background_picture_of_the_front_page: '', //背景大图
     params: {}, //提交参数
-    eye_show_hide: true, //密码显示和隐藏
-    s_show_renters: false, //是否勾选了角色的租车人
-    s_show_channel: false, //是否勾选了角色的渠道合作
+    area_items: [{
+      name: '国内',
+      value: '国内',
+    }, {
+      name: '国外',
+      value: '国外',
+    }],
+    currentArea: '国内',
     items: [{
       name: '客户',
       value: '0',
@@ -76,6 +82,34 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
+  // 请求区域数据
+  initGetRoles(evt) {
+    const params = {
+      area: evt
+    }
+    byGet(`${getApp().data.k1swUrl}${u_getRoles.URL}`, params).then(allRes => {
+      console.log(allRes)
+      const info = allRes.data.content
+      this.setData({
+        items: info
+      },()=>{
+          const {
+          items,
+          params
+        } = this.data;
+        console.log(items,params?.businessTypes)
+        const updatedItems = items.map(item => ({
+          id: item?.id,
+          name: item?.name,
+          checked: params?.businessTypes.includes((item?.id).toString())
+        }));
+        this.setData({
+          items: updatedItems
+        });
+      })
+
+    })
+  },
   // 文本内容输入回调
   handleBindinput(evt) {
     const {
@@ -88,6 +122,15 @@ Page({
       }
     })
   },
+  // 区域改变
+  handleAreaCheckboxChange(evt) {
+    const value = evt.detail.value
+    this.setData({
+      currentArea: value
+    }, () => {
+      this.initGetRoles(this.data.currentArea)
+    })
+  },
   // 选择角色改变
   handleCheckboxChange(evt) {
     const {
@@ -97,8 +140,6 @@ Page({
     evt.detail.value.some(item => item == 1)
     this.setData({
       ...params,
-      s_show_renters: evt.detail.value.some(item => item == '0'),
-      s_show_channel: evt.detail.value.some(item => item == '2')
     })
   },
   // 选择省份
@@ -145,13 +186,7 @@ Page({
       },
     });
   },
-  // 关闭或开启密码眼睛
-  handleshowHide() {
-    const eye = this.data.eye_show_hide
-    this.setData({
-      eye_show_hide: !eye
-    })
-  },
+
   // 初始化省份
   initialiProvinces() {
     const _this = this
@@ -166,10 +201,12 @@ Page({
   // 提交
   handleSubmit() {
     const {
-      params
+      params,
+      currentArea
     } = this.data
     byPost(`${getApp().data.k1swUrl}${u_companyImprove.URL}`, {
       ...params,
+      serviceArea:currentArea,
       businessTypes: params?.businessTypes?.join()
     }, (response) => {
       if (response?.data?.code != 1000) {
@@ -221,10 +258,10 @@ Page({
           largeCustomer: allRes.largeCustomer || '',
           bak: allRes?.bak || '',
           businessTypes: businessTypes || '',
+        
         },
         provincesIndex: ((index => index === -1 ? null : index)((_this.data.provinces || []).findIndex(item => item?.id == provinceId))),
-        s_show_renters: businessTypes.includes('0'),
-        s_show_channel: businessTypes.includes('2')
+        currentArea:allRes?.serviceArea
       };
       if (provinceId) {
         const cityResponse = await byGet(
@@ -237,17 +274,7 @@ Page({
         baseData.cityIndex = cities.findIndex(item => item?.id == city);
       }
       _this.setData(baseData, () => {
-        const {
-          items
-        } = _this.data;
-        const updatedItems = items.map(item => ({
-          value: item?.value,
-          name: item?.name,
-          checked: businessTypes.includes(item?.value)
-        }));
-        _this.setData({
-          items: updatedItems
-        });
+        this.initGetRoles(this.data.currentArea)
       });
 
     } catch (error) {
@@ -257,6 +284,7 @@ Page({
   },
   onLoad(options) {
     this.initialiProvinces()
+
   },
 
   onReady() {

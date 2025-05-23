@@ -116,7 +116,13 @@ const u_isNeedCarInfo = {
 const u_getMenuTree = {
   URL: fin3plusUrl + "userapi/getMenuTree",
 }
+// 获取完善信息数据
+const u_getRoles = {
+  URL: fin3plusUrl + "companyapi/getRoles",
+}
+
 module.exports = {
+  u_getRoles,
   u_getMenuTree,
   u_isNeedCarInfo,
   u_saleCode,
