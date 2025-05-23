@@ -188,11 +188,11 @@ Page({
   },
   // 触底请求
   handleLower() {
-    this.setData({
-      g_page: this.data.g_page + 1
-    }, () => {
-      this.initList();
-    });
+    // this.setData({
+    //   g_page: this.data.g_page + 1
+    // }, () => {
+    //   this.initList();
+    // });
   },
   // 下拉刷新
   handleRefresh() {
