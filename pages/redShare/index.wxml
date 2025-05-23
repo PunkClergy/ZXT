@@ -3,7 +3,7 @@
   <!-- 自定义头部 -->
   <custom-header title="红人分享" />
   <view class="share-container" style="top:{{c_statusBarHeight + c_navBarHeight}}px;">
-    <image src="{{imageUrl}}" mode="widthFix" class="share-image"></image>
+    <image src="{{personal_qr_code}}" mode="widthFix" class="share-image"></image>
 
     <view class="button-group">
       <button class="btn save-btn" bindtap="onSaveImage">保存图片</button>

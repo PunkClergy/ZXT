@@ -62,7 +62,13 @@ const u_comfirmMyCompany = {
   URL: fin3plusUrl + "companyapi/comfirmMyCompany",
   companyId:'companyId'
 }
+// 生成个人二维码
+const u_getInviteCodeImg = {
+  URL: fin3plusUrl + "userapi/getInviteCodeImg",
+}
+
 module.exports = {
+  u_getInviteCodeImg,
   u_comfirmMyCompany,
   u_resetMyCompanyPassword,
   u_addOrUpateMyCompany,

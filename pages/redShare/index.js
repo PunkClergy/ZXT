@@ -2,6 +2,12 @@ const {
   _handleWindowInfo,
   _handleDeviceInfo
 } = require('../../utils/public').default
+const {
+  byGet
+} = require('../../utils/request/http')
+const {
+  u_getInviteCodeImg
+} = require('../../utils/request/dispatch')
 Page({
   data: {
     s_background_picture_of_the_front_page: '', //背景
@@ -10,7 +16,8 @@ Page({
     c_navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
     imageUrl: '	https://5b0988e595225.cdn.sohucs.com/images/20180705/535f002edfe345d9a9e12e55f8b32013.jpeg',
     share_image: '/assets/images/login/logo.png',
-    scene: getApp().data.userInfo.personInviteCode
+    scene: getApp().data.userInfo.personInviteCode,
+    personal_qr_code: ''
 
   },
 
@@ -45,7 +52,7 @@ Page({
       title: '保存中...'
     })
     wx.downloadFile({
-      url: `https://k1sw.wiselink.net.cn/img/inviteCode/5450.png`, // 下载文件的地址,
+      url: this.data.personal_qr_code, // 下载文件的地址,
       success(res) {
         wx.saveImageToPhotosAlbum({
           filePath: res.tempFilePath,
@@ -104,9 +111,21 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
+  initQrCode() {
+    byGet(getApp().data.k1swUrl + u_getInviteCodeImg.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          personal_qr_code: response.data.content
+        })
+      } else {
+        showToast('请求失败，请稍后再试');
+      }
+    })
+  },
   onShow() {
     this.initialiImageBaseConversion()
     console.log(this.data.scene)
+    this.initQrCode()
   },
   // 分享功能
   onShareAppMessage() {
