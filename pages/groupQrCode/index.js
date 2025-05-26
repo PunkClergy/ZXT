@@ -57,7 +57,7 @@ Page({
   handlePreviewImage(evt) {
       wx.previewMedia({
         sources: [{
-          url: '/assets/images/1.jpg', // 图片路径
+          url: this.data.personal_qr_code, // 图片路径
           type: 'image',
         }, ],
       });

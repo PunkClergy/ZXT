@@ -219,6 +219,7 @@ Page({
   },
   // 判断当前为三行排列还是单行排列
   handleQuickEntry(evt) {
+    console.log(evt.detail.current)
     const currentIndex = evt.detail.current;
     const newData = {
       g_quickIndex: currentIndex,
@@ -228,7 +229,27 @@ Page({
   },
   // 跳转功能页面
   handleJumpPage: function (e) {
+    const _this  =this
     const item = e.currentTarget.dataset.item;
+    if(item.name == '退出登录'){
+    wx.showModal({
+      title: '提示',              
+      content: '确定要退出吗？', 
+      showCancel: true,           
+      cancelText: '取消',          
+      confirmText: '确定',    
+      success(res) {
+        getApp().data.userInfo = '';
+        try {
+          wx.clearStorageSync();
+        } catch (e) {
+          wx.clearStorage();
+        }
+        _this.handleGetMenuList(_this?.data?.g_before_passing_by_icon?.[0][0])
+      }
+    });
+      return
+    }
     if (!item.isdevelop) {
       wx.showToast({
         title: '暂未开通，敬请期待',
