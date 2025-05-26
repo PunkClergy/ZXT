@@ -2,7 +2,8 @@
   "navigationBarTitleText": "采购订单",
   "usingComponents": {
     "custom-header":"/components/CustomHeader/index",
-    "time-line":"/components/timeline/timeline"
+    "time-line":"/components/timeline/timeline",
+    "custom-tab-bar": "/custom-tab-bar/index"
   },
   "navigationStyle": "custom",
   "disableScroll": true

@@ -287,7 +287,7 @@ Page({
       })
       return
     }
-    if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList') {
+    if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList' || item.path === '/pages/groupQrCode/index') {
       wx.switchTab({
         url: item.path
       });

@@ -23,7 +23,7 @@
         "text": "一键下单"
       },
       {
-        "pagePath": "pages/system/managerInfo/userinfo",
+        "pagePath": "pages/groupQrCode/index",
         "iconPath": "/assets/images/index/setUp@2x.png",
         "selectedIconPath": "/assets/images/index/setUp_s@2x.png",
         "text": "个人中心"
