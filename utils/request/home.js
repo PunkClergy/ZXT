@@ -35,7 +35,21 @@ const u_getQrcodeImg = {
 const u_getUserinfo = {
   URL:'deskapi/getUserInfo',
 }
+// 修改用户名
+const u_updateUserName = {
+  URL: "api/updateUserName",
+  newUserName: 'newUserName',
+  userId: 'userId'
+}
+// 密码
+const u_updatePassword = {
+  URL:"api/updatePassword",
+  newPassword: 'newPassword',
+  userId: 'userId'
+}
 module.exports = {
+  u_updatePassword,
+  u_updateUserName,
   u_getQrcodeImg,
   u_getUserinfo,
   u_logo,

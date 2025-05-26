@@ -9,12 +9,20 @@ const {
   u_rightMenulist,
   u_termialList,
   u_logo,
-  u_getUserinfo
+  u_getUserinfo,
+  u_updateUserName,
+  u_updatePassword
 } = require('../../utils/request/home')
 const {
   byGet,
+  byPost,
   isLogin
 } = require('../../utils/request/http')
+const {
+  showLoading,
+  hideLoading,
+  showToast
+} = require('../../utils/Inspect/tips')
 Page({
   num: 0,
   data: {
@@ -44,6 +52,8 @@ Page({
     sn_specific_value: null,
     sn_state: false, //显示地图状态
     logoSrc: '/assets/images/login/logo.png',
+    c_send_key_show_momal: false,
+    c_send_key_show_type: null
   },
 
   // 转换背景图base64
@@ -229,27 +239,9 @@ Page({
   },
   // 跳转功能页面
   handleJumpPage: function (e) {
-    const _this  =this
+    const _this = this
     const item = e.currentTarget.dataset.item;
-    if(item.name == '退出登录'){
-    wx.showModal({
-      title: '提示',              
-      content: '确定要退出吗？', 
-      showCancel: true,           
-      cancelText: '取消',          
-      confirmText: '确定',    
-      success(res) {
-        getApp().data.userInfo = '';
-        try {
-          wx.clearStorageSync();
-        } catch (e) {
-          wx.clearStorage();
-        }
-        _this.handleGetMenuList(_this?.data?.g_before_passing_by_icon?.[0][0])
-      }
-    });
-      return
-    }
+
     if (!item.isdevelop) {
       wx.showToast({
         title: '暂未开通，敬请期待',
@@ -264,6 +256,37 @@ Page({
       });
       return;
     }
+    if (item.name == '退出登录') {
+      wx.showModal({
+        title: '提示',
+        content: '确定要退出吗？',
+        showCancel: true,
+        cancelText: '取消',
+        confirmText: '确定',
+        success(res) {
+          getApp().data.userInfo = '';
+          try {
+            wx.clearStorageSync();
+          } catch (e) {
+            wx.clearStorage();
+          }
+          _this.handleGetMenuList(_this?.data?.g_before_passing_by_icon?.[0][0])
+        }
+      });
+      return
+    }
+    if (item.name == '修改用户名密码') {
+      wx.showActionSheet({
+        itemList: ['修改用户名', '修改密码'],
+        success(res) {
+          _this.setData({
+            c_send_key_show_momal: true,
+            c_send_key_show_type: res.tapIndex
+          })
+        }
+      })
+      return
+    }
     if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList') {
       wx.switchTab({
         url: item.path
@@ -273,6 +296,63 @@ Page({
         url: item.path
       });
     }
+  },
+  // 确认修改用户名或密码
+  handleFormSubmit(evt) {
+    const _this = this
+    const {
+      name_1,
+      name_2
+    } = evt?.detail.value
+    if (name_1.length < 6) {
+      showToast('长度不能小于6位')
+    }
+    if (name_1 != name_2) {
+      showToast('两次输入不一致')
+    }
+    if (this.data.c_send_key_show_type == 0) {
+      // 修改用户名
+      console.log(u_updateUserName.newUserName, u_updateUserName.userId)
+      const params = {
+        [u_updateUserName.newUserName]: name_1,
+        [u_updateUserName.userId]: getApp().data.userInfo.id
+      }
+
+      byPost(getApp().data.k1swUrl + u_updateUserName.URL, params, (res) => {
+        const data = res.data;
+        if (data.code == 1000) {
+          showToast('修改成功')
+          _this.setData({
+            c_send_key_show_momal: false,
+            c_send_key_show_type: null
+          })
+        }
+      });
+    } else {
+      // 修改密码
+      const params = {
+        [u_updatePassword.newPassword]: name_1,
+        [u_updatePassword.userId]: getApp().data.userInfo.id
+      }
+
+      byPost(getApp().data.k1swUrl + u_updatePassword.URL, params, (res) => {
+        const data = res.data;
+        if (data.code == 1000) {
+          showToast('修改成功')
+          _this.setData({
+            c_send_key_show_momal: false,
+            c_send_key_show_type: null
+          })
+        }
+      });
+    }
+  },
+  // 取消修改用户名或密码
+  handleHideSengKeyModal() {
+    this.setData({
+      c_send_key_show_momal: false,
+      c_send_key_show_type: null
+    })
   },
   // 右侧面板滑动方法
   handleBinddragstart(evt) {
@@ -350,7 +430,7 @@ Page({
   },
   // 校验参数
   initialGetUserInfo() {
-    console.log(111,333)
+    console.log(111, 333)
     console.log(getApp())
     byGet(getApp().data.k1swUrl + u_getUserinfo.URL, {}).then(response => {
       if (response.data.code == 1000) {

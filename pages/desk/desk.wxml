@@ -96,4 +96,35 @@
 
   </view>
 </view>
+<!-- 发送电子钥匙弹窗 -->
+<block>
+  <view class="modal-mask" wx:if="{{c_send_key_show_momal}}" bindtap="handleHideSengKeyModal"></view>
+  <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}">
+    <form bindsubmit="handleFormSubmit">
+      <view class="modal-container">
+        <view class="modal-container-head">
+          <text>修改{{c_send_key_show_type ==0?'用户名':'密码'}}</text>
+          <image src="/assets/images/home/right_1.png" bindtap="handleHideSengKeyModal" />
+        </view>
+        <view class="modal-container-middle">
+          <view class="middle-form-item">
+            <label>请输入新{{c_send_key_show_type ==0?'用户名':'密码'}}</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入{{c_send_key_show_type==0?'用户名':'密码'}}" name='name_1' style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>请再次输入新{{c_send_key_show_type?'用户名':'密码'}}</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入{{c_send_key_show_type?'用户名':'密码'}}" name='name_2' style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+        </view>
+        <view class="modal-container-footer">
+          <button formType="submit">确认</button>
+        </view>
+      </view>
+    </form>
+  </view>
+</block>
 <custom-tab-bar selectedtext='首页' wx:if="{{!sn_state}}" />
