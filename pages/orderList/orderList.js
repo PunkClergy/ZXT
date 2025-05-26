@@ -8,9 +8,7 @@ const {
   showToast
 } = require('../../utils/Inspect/tips')
 const {
-  u_carList
-} = require('../../utils/request/car')
-const {
+  u_buyDevice,
   u_buyRecord,
   u_getIndustry,
   u_getIntroduction,
@@ -18,7 +16,7 @@ const {
 } = require('../../utils/request/data_info')
 const {
   byGet,
-  byPost
+  byPost,byPostJson 
 } = require('../../utils/request/http')
 
 Page({
@@ -321,7 +319,7 @@ Page({
   // 跳转到详情
   handleView(evt) {
     wx.navigateTo({
-      url: '/pages/orderList/orderDetails/orderDetails?info=' + evt.currentTarget.dataset.item,
+      url: '/pages/orderList/orderDetails/orderDetails?info=' + JSON.stringify(evt.currentTarget.dataset.item),
     })
   },
   // 提交参数
@@ -427,9 +425,8 @@ Page({
       })) : [],
     };
     console.log(submitParams)
-    return
-    showLoading();
-    try {
+
+   
       byPostJson(
         getApp().data.k1swUrl + u_buyDevice.URL,
         submitParams,
@@ -444,11 +441,7 @@ Page({
           }
         }
       );
-    } catch (error) {
-      showToast('网络连接异常，请检查网络设置');
-    } finally {
-      hideLoading();
-    }
+    
   },
   onLoad(options) {
     this.getOrderList()

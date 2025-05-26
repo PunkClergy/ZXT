@@ -51,7 +51,7 @@
             <view class="content-item-footer">
               <view class="footer-left">开单时间: {{item.createdate||'-'}}</view>
               <view class="footer-right" data-item="{{item}}">
-                {{item.status}}
+                {{item.statusName}}
               </view>
             </view>
           </view>
