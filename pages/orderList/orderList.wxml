@@ -1,122 +1,211 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-
-  <!-- 自定义头部 -->
-  <custom-header title="采购订单" />
-  <!-- 搜索框 -->
-  <view class="search-container" style="height:{{c_searchBarHeight+40}}px;margin-top: {{c_totalNavHeight}}px;">
-    <view class="search-box">
-      <icon type="search" size="16" class="search-icon" />
-      <input placeholder="搜索订单号" bindblur="handleBlur" class="search-input" />
+  <custom-header title="采购下单" />
+  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight + 10)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
+    <!-- 切换部分 -->
+    <view class="record-tabs" bindtap="handleSwitchTab">
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">采购订单</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">新增订单</view>
     </view>
-    <view class="search-drop">
-      <block wx:for="{{filter_aggregate}}" wx:key="index">
-        <drop-filter-com data-id="{{item.id}}" range="{{item.filter_work}}" filter="{{item.name}}" bindTransmit="bindPickerChange" />
-      </block>
-    </view>
-    <view class="search-count">
-      <text>共有{{g_total}}个工单</text>
-    </view>
-  </view>
-
-  <!-- 主要内容区域 -->
-  <scroll-view class="content-container" scroll-y="true" style="height: {{c_screen_height-c_searchBarHeight-c_statusBarHeight-c_navBarHeight-40-60-4}}px; top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
-    <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
-      <view class="content-item" data-item="{{item}}">
-        <view class="content-item-head">
-          <view class="head-left">
-            <view class="left-category">
-              <text>{{item.deviceTypeName||'-'}}</text>
+    <!-- 详情区域部分 -->
+    <block wx:if="{{c_activeTab == 1}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+        <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
+          <view class="content-item" data-item="{{item}}" bindtap="handleView">
+            <view class="content-item-head">
+              <view class="head-left">
+                <view class="left-category">
+                  <text>{{item.deviceTypeName||'-'}}</text>
+                </view>
+                <view class="left-brand">
+                  {{item.num||'-'}}
+                </view>
+                <view class="left-model">
+                  {{item.deviceVersionName||'-'}}
+                </view>
+              </view>
+              <view class="head-right">
+                <image src="/assets/images/home/_see.png" data-item="{{item}}" catchtap="handleView" />
+                <image wx:if="{{!item.sn}}" src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />
+              </view>
             </view>
-            <view class="left-brand">
-              {{item.num||'-'}}
+            <view class="content-item-info">
+              <view class="info-item  {{item.deviceCount.length > 15 ? 'long-info-item' : ''}}">
+                <label>设备数量 ：</label>
+                <text>{{item.deviceCount||'-'}}</text>
+              </view>
+
+              <view class="info-item  {{item.typeName.length > 15 ? 'long-info-item' : ''}}">
+                <label>客户名称 ：</label>
+                <text>{{item.typeName||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.linkman.length > 15 ? 'long-info-item' : ''}}">
+                <label>联系人 ：</label>
+                <text>{{item.linkman||'-'}}</text>
+              </view>
+
+              <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
+                <label>联系电话 ：</label>
+                <text>{{item.linkmobile||'-'}}</text>
+              </view>
             </view>
-            <view class="left-model">
-              {{item.deviceVersionName||'-'}}
+            <view class="content-item-footer">
+              <view class="footer-left">开单时间: {{item.createdate||'-'}}</view>
+              <view class="footer-right" data-item="{{item}}">
+                {{item.status}}
+              </view>
             </view>
           </view>
-          <view class="head-right">
-            <image src="/assets/images/home/_see.png" data-item="{{item}}" bindtap="handleView" />
-            <image wx:if="{{!item.sn}}" src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />
-          </view>
-        </view>
-        <view class="content-item-info">
-          <view class="info-item  {{item.deviceCount.length > 15 ? 'long-info-item' : ''}}">
-            <label>设备数量 ：</label>
-            <text>{{item.deviceCount||'-'}}</text>
-          </view>
-
-          <view class="info-item  {{item.typeName.length > 15 ? 'long-info-item' : ''}}">
-            <label>客户名称 ：</label>
-            <text>{{item.typeName||'-'}}</text>
-          </view>
-          <view class="info-item  {{item.linkman.length > 15 ? 'long-info-item' : ''}}">
-            <label>联系人 ：</label>
-            <text>{{item.linkman||'-'}}</text>
-          </view>
-
-          <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
-            <label>联系电话 ：</label>
-            <text>{{item.linkmobile||'-'}}</text>
-          </view>
-
-        </view>
-        <view class="content-item-footer">
-          <view class="footer-left">开单时间: {{item.createdate||'-'}}</view>
-          <view class="footer-right" data-item="{{item}}" bindtap="handleToPay">
-            <block wx:for="{{orderListStatus}}" wx:for-item="ele" wx:key="index">
-              <view wx:if="{{ele.value == item.status}}" style="color: {{ele.color}};">
-                {{ele.name}}
+        </block>
+      </scroll-view>
+    </block>
+    <block wx:if="{{c_activeTab == 2}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;">
+        <view class="card-info">
+          <!-- 行业 -->
+          <view class="card-info-item">
+            <label>行业<text>*</text></label>
+            <block>
+              <view class="card-info-item-input">
+                <picker range-key="name" range="{{g_industry}}" bindchange="handleIndustryType">
+                  <block wx:if="{{g_industry_index==null}}">
+                    <text style="color: #333;font-size: 26rpx; ">请选择所属行业</text>
+                  </block>
+                  <block wx:else>
+                    <text style="color: #333;font-size: 26rpx;">{{g_industry[g_industry_index].name}}</text>
+                  </block>
+                </picker>
               </view>
             </block>
           </view>
-        </view>
-      </view>
-    </block>
-  </scroll-view>
+          <!-- 功能 -->
+          <view class="card-info-item">
+            <label style="min-width: 20%;">功能<text>*</text></label>
+            <block>
+              <view class="card-info-item-input">
+                <picker range-key="name" range="{{g_core_functions}}" bindchange="handleCoreType">
+                  <block wx:if="{{g_core_functions_index==null}}">
+                    <text style="color: #333;font-size: 26rpx;">请选择所需功能</text>
+                  </block>
+                  <block wx:else>
+                    <text style="color: #333;font-size: 26rpx;">1.远程开关车门 2. 精准油量检测 3.远程拦截控车4. GPS</text>
+                  </block>
+                </picker>
+              </view>
+            </block>
+          </view>
+          <!-- 功能介绍 -->
+          <view class="card-info-item" wx:if="{{g_core_functions_index!=null}}">
+            <label style="min-width: 20%;">功能介绍</label>
+            <block>
+              <view class="card-info-item-input">
+                <text style="color: #333;font-size: 26rpx;">{{g_core_functions[g_core_functions_index].name}}</text>
+              </view>
+            </block>
+          </view>
 
-  <!-- 一键操作按钮 -->
-  <view class="levitation-button" bindtap="handleOneClickOrdering">
-    <text>一键下单</text>
-  </view>
+          <view class="vehicle-card-info-item" wx:if="{{whether_vehicle}}">
+            <view class="vehicle-container-info">
+              <scroll-view scroll-x class="tabs-scroll" scroll-left="{{scrollLeft}}" scroll-with-animation>
+                <view class="tabs-container">
+                  <block wx:for="{{tabs}}" wx:key="id">
+                    <view class="tab-item {{currentIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="handleSwitchVicheTab">
+                      {{params['carmodel' + item.id]?params['carmodel' + item.id]:item.title}}
+                      <view wx:if="{{tabs.length > 1}}" class="close" data-id="{{item.id}}" bindtap="hadnleCloseTab">×</view>
+                    </view>
+                  </block>
+                  <view class="add-btn" bindtap="hadnleAddTab">+</view>
+                </view>
+              </scroll-view>
 
-</view>
-<block>
-  <view class="modal-mask" wx:if="{{c_send_key_show_momal}}" bindtap="handleHideSengKeyModal"></view>
-  <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}">
-    <form bindsubmit="handleFormSubmit">
-      <view class="modal-container">
-        <view class="modal-container-head">
-          <text>支付</text>
-          <image src="/assets/images/home/off.png" bindtap="handleHideSengKeyModal" />
-        </view>
-        <view class="modal-container-middle">
-          <view class="middle-form-item">
-            <label>支付方式</label>
-            <view class="modal-form-region">
-              <radio-group bindchange="handleRadioChangePay" style="display: flex;align-items: center; color: #7b7c7c;">
-                <radio value="1" checked="{{c_pay_state == 1}}" style="transform:scale(0.7);">
-                  <text style="font-size: 34rpx;font-weight: 600;">余额支付</text>
-                </radio>
-                <radio value="2" checked="{{c_pay_state==2}}" style="transform:scale(0.7);">
-                  <text style="font-size: 34rpx;font-weight: 600;">微信支付</text>
-                </radio>
+              <view class="content">
+
+                <block wx:for="{{tabs}}" wx:key="id">
+                  <view wx:if="{{currentIndex === index}}">
+                    <view class="card-info-item">
+                      <label>车型<text>*</text></label>
+                      <view class="card-info-item-input">
+                        <input placeholder="请输入车型" value="{{ params['carmodel' + item.id] }}" data-item="{{'carmodel'+item.id}}" bindinput="handleBindinput" />
+                      </view>
+                    </view>
+                    <view class="card-info-item">
+                      <label>车系<text>*</text></label>
+                      <view class="card-info-item-input">
+                        <input placeholder="请输入车系" value="{{ params['carserial' + item.id] }}" data-item="{{'carserial'+item.id}}" bindinput="handleBindinput" />
+                      </view>
+                    </view>
+                    <view class="card-info-item">
+                      <label>年款</label>
+                      <view class="card-info-item-input">
+                        <input placeholder="请输入年款" value="{{ params['carversion' + item.id] }}" data-item="{{'carversion'+item.id}}" bindinput="handleBindinput" />
+                      </view>
+                    </view>
+                    <view class="card-info-item">
+                      <label>启动方式<text>*</text></label>
+                      <view class="card-info-item-tabs">
+                        <view class="card-info-item-tabs-btn">
+                          <text class="{{params['runtype' + item.id]  == '一键启动'?'tabs-active':''}}" data-id="{{item.id}}" data-item="一键启动" bindtap="handleBatterylift">一键启动</text>
+                          <text class="{{params['runtype' + item.id]  == '机械钥匙'?'tabs-active':''}}" data-id="{{item.id}}" data-item="机械钥匙" bindtap="handleBatterylift">机械钥匙</text>
+                        </view>
+                      </view>
+                    </view>
+                    <view class="card-info-item">
+                      <label>车架号</label>
+                      <view class="card-info-item-input">
+                        <input placeholder="请输入车架号" value="{{ params['vin' + item.id] }}" data-item="{{'vin'+item.id}}" bindinput="handleBindinput" />
+                      </view>
+                    </view>
+                  </view>
+                </block>
+
+              </view>
+            </view>
+          </view>
+          <!-- 类别选择-结束 -->
+          <!-- 数量 -->
+          <view class="card-info-item" wx:if="{{!whether_vehicle}}">
+            <label>数量<text>*</text></label>
+            <view class="card-info-item-input">
+              <input disabled="{{g_device_type_list[g_device_type_index].id == 11}}" style="opacity: {{g_device_type_list[g_device_type_index].id == 11?'0.5':'1'}};" type="number" placeholder="请输入数量" value="{{deviceCount}}" data-item="deviceCount" bindinput="handleNumBindinput" />
+            </view>
+          </view>
+          <!-- 是否安装 -->
+          <view class="card-info-item">
+            <label>是否安装<text>*</text></label>
+            <view class="card-info-item-input">
+              <radio-group bindchange="handleVicheRadioChange" style="display: flex;align-items: center;gap: 20rpx;">
+                <label wx:for="{{g_install_list}}" wx:key="index" style="display: flex;align-items: center;">
+                  <radio value="{{item.value}}" checked="{{g_install_index == item.value}}" style=" transform: scale(0.7);" />
+                  <view>{{item.name}}</view>
+                </label>
               </radio-group>
             </view>
           </view>
-          <view class="middle-form-item">
-            <block wx:if="{{c_pay_state==1}}">
-              <label>余额</label>
-              <view class="modal-form-region">
-                <text>￥{{balance}}</text>
-              </view>
-            </block>
+          <!-- 联系人 -->
+          <view class="card-info-item">
+            <label>收货人<text>*</text></label>
+            <view class="card-info-item-input">
+              <input placeholder="请输入收货人" value="{{linkperson}}" data-item="linkperson" bindinput="handlePersonBindinput" />
+            </view>
+          </view>
+          <!-- 联系电话 -->
+          <view class="card-info-item">
+            <label>联系电话<text>*</text></label>
+            <view class="card-info-item-input">
+              <input placeholder="请输入联系电话" value="{{linkmobile}}" data-item="linkmobile" bindinput="handleMobileBindinput" />
+            </view>
+          </view>
+          <!-- 联系电话 -->
+          <view class="card-info-item">
+            <label>收货地址<text>*</text></label>
+            <view class="card-info-item-input">
+              <input placeholder="请输入收货地址" value="{{address}}" data-item="address" bindinput="handleAddressBindinput" />
+            </view>
           </view>
         </view>
-        <view class="modal-container-footer">
-          <button formType="submit">确认支付</button>
+        <view class="card-footer">
+          <view bindtap="handleSubmit">确认提交</view>
         </view>
-      </view>
-    </form>
+      </scroll-view>
+    </block>
   </view>
-</block>
-<custom-tab-bar selectedtext='采购下单' />
+</view>

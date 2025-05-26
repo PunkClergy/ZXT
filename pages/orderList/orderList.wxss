@@ -1,134 +1,62 @@
 .container {
-  width: 100%;
-  height: 95vh;
+  height: 100vh;
+  padding: 10rpx 4rpx;
+}
+
+.record-container {
+  width: 96%;
+  margin: auto;
+  position: relative;
+  border-radius: 12rpx;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.record-tabs {
   display: flex;
-  flex-direction: column;
+  height: 50px;
+}
+
+.record-tabs-item {
+  border-radius: 12rpx;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   touch-action: pan-x;
-  position: relative;
-}
-
-/* 自定义头部容器 */
-.custom-navbar {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999;
-}
-
-/* 状态栏占位符 */
-.status-bar {
-  width: 100%;
-}
-
-/* 导航栏 */
-.nav-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  /* 使内容靠左对齐 */
-  padding-left: 16px;
-  /* 可选：增加一些左边距 */
-  box-sizing: border-box;
-  /* 确保padding不会影响总宽度 */
-}
-
-/* 标题容器 */
-.title-container {
-  display: flex;
-  align-items: center;
-  gap: 20rpx;
-  height: 100%;
-}
-
-.title-container image {
-  width: 40rpx;
-  height: 40rpx;
-}
-
-/* 标题文本 */
-.title {
   font-family: PingFang SC;
   font-weight: bold;
-  font-size: 33rpx;
+  font-size: 28rpx;
   color: #010101;
-  line-height: 30rpx;
 }
 
-/* 搜索框容器 */
-.search-container {
+.record-tabs-1 {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.search-drop {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  padding: 10rpx;
   justify-content: space-between;
-  width: 90%;
+  align-items: center;
 }
 
-.search-box-date {
-  width: 30rpx;
-  height: 30rpx;
-}
-
-/* 搜索框 */
-.search-box {
+.tabs-1-title {
   display: flex;
   align-items: center;
-  background-color: #ffffff;
-  border-radius: 200rpx;
-  padding: 8px 12px;
-  width: 90%;
+  gap: 6rpx;
 }
 
-/* 搜索图标 */
-.search-icon {
-  margin-right: 8px;
-  /* 图标与输入框之间留出间距 */
-}
-
-/* 输入框 */
-.search-input {
-  flex: 1;
-  border: none;
-  background-color: transparent;
-  outline: none;
-  font-size: 16px;
-}
-
-.search-count {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 90%;
-}
-
-.search-count text {
+.tabs-1-title text {
   font-family: PingFang SC;
-  font-weight: 500;
-  font-size: 22rpx;
-  color: #7b7c7c;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
 }
 
-/* 主要内容容器 */
-.content-container {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  overflow-y: auto;
-  /* 当内容超出高度时显示滚动条 */
+.tabs-1-title image {
+  width: 42rpx;
+  height: 46rpx;
 }
-
 /* 内容项 */
 .content-item {
   margin: 15rpx;
@@ -234,7 +162,6 @@
   flex-basis: 100% !important;
   /* 长内容时占满整行 */
 }
-
 .content-item-footer {
   display: flex;
   padding: 10rpx;
@@ -254,8 +181,8 @@
   align-items: center;
   font-family: PingFang SC;
   font-weight: bold;
-  font-size: 28rpx;
-  color: #f9461c;
+  font-size: 26rpx;
+  /* color: #f9461c; */
 }
 
 .footer-right-text {
@@ -297,122 +224,258 @@
   font-size: 32rpx;
   color: #ffffff;
 }
-/* 弹窗蒙版 */
-.modal-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 998;
+/* 下单部分style */
+.card-info-item-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-consignee text {
+  font-weight: bold;
+  font-size: 26rpx;
+}
+.card-information {
+  display: flex;
+  gap: 20rpx;
+}
+.card-information text {
+  font-size: 22rpx;
+  font-weight: 400;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 0 20rpx;
+  height: 30px;
 }
 
-.modal-base-map {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #fff;
-  border-radius: 20rpx;
-  z-index: 998;
+.card-head image {
+  width: 40rpx;
+  height: 30rpx;
+}
+
+.card-head text {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.card-info {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.card-info-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
   padding: 20rpx;
 }
 
-.modal-container {
-  height: 40vh;
+.card-info-item label {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 26rpx;
+  color: #333333;
   display: flex;
-  flex-direction: column;
+  gap: 6rpx;
+  align-items: flex-start;
+  min-width: 20%;
 }
 
-.modal-container-head {
+.card-info-item label text {
+  color: red;
+}
+
+.picker {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 26rpx;
+  color: #333333;
   display: flex;
-  justify-content: row;
-  justify-content: space-between;
   align-items: center;
-  height: 60rpx;
 }
 
-.modal-container-head text {
-  font-weight: bold;
-  font-size: 34rpx;
+.picker image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.card-info input {
+  text-align: right;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 26rpx;
+  color: #333333;
+}
+.viewText {
+  text-align: right;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 26rpx;
   color: #333333;
 }
 
-.modal-container-head image {
-  width: 40rpx;
-  height: 40rpx;
+.card-info-item-tabs {
 }
 
-.modal-container-middle {
-  flex: 1;
-  overflow-y: auto;
+.card-info-item-tabs-btn {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  gap: 10rpx;
+  justify-content: flex-end;
+}
+
+.card-info-item-tabs-btn text {
+  border-radius: 7rpx;
+  border: 1px solid #7b7c7c;
+  font-family: PingFang SC;
+  font-weight: 500;
+  padding: 6rpx 20rpx;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.tabs-footer {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 22rpx;
+  color: #7b7c7c;
+  display: flex;
+}
+
+.card-info-item-tips {
+  display: flex;
   flex-direction: column;
-  gap: 20rpx;
+  align-items: flex-end;
 }
 
-.modal-container-footer {
-  height: 80rpx;
+.tabs-active {
+  background: #1b64b1;
+  border-radius: 7rpx;
+  color: #ffffff !important;
+}
+
+.card-footer {
+  height: 50px;
+  margin: 20rpx 0;
+  color: white;
+  text-align: center;
   display: flex;
+  align-items: flex-start;
   justify-content: center;
-  align-items: center;
-}
-
-.modal-container-footer button {
-  background: linear-gradient(88deg, #1576dc, #1b64b1);
-  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
-  border-radius: 36rpx;
+  font-family: PingFang SC;
   font-weight: bold;
   font-size: 34rpx;
   color: #ffffff;
-  width: 50%;
-  height: 90%;
+}
+
+.card-footer view {
+  width: 40%;
+  background-color: #2196f3;
+  padding: 10rpx;
+  background: linear-gradient(88deg, #1576dc, #1b64b1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
+}
+.vehicle-container {
+  width: 96%;
+  margin: 30rpx auto;
+  padding: 10rpx;
+  border-radius: 8rpx;
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  font-size: 28rpx;
+}
+.vehicle-container-head {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+}
+picker {
+  font-size: 28rpx;
+  color: #7b7c7c;
+}
+.card-upload {
+  font-size: 26rpx;
+  color: #7b7c7c;
+  border: 1rpx solid #f0f0f0;
+  padding: 0rpx 20rpx;
+  border-radius: 8rpx;
+}
+.vehicle-card-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 0 0 0;
+  box-shadow: 0rpx 0rpx 0rpx 0rpx rgba(240, 240, 240, 0.31);
+}
+.vehicle-container-info {
+  width: 100%;
+}
+/* index.wxss */
+
+.tabs-scroll {
+  width: 100%;
+  white-space: nowrap;
+  height: 40px;
+}
+
+.tabs-container {
+  display: inline-flex;
+  height: 100%;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.tab-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 30px;
+  background: #fff;
+  border-radius: 8rpx;
+  margin-right: 10rpx;
+  font-size: 28rpx;
+  border: 1px solid #ddd;
+}
+
+.active {
+  background: #f0f0f0;
+  color: #333;
+  font-weight: bold;
+  border-color: #f0f0f0;
+}
+
+.add-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50rpx;
+  height: 50rpx;
+  background: #fff;
+  border-radius: 50%;
+  margin-left: 10rpx;
+  border: 1px solid #ddd;
+}
+
+.close {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  background: red;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
+  line-height: 1;
 }
 
-.middle-form-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 45rpx;
-  width: 80%;
-}
-
-.middle-form-item label {
-  font-family: PingFang SC;
-  font-weight: 600;
-  font-size: 28rpx;
-  color: #333333;
-}
-
-.modal-form-region {
-  display: flex;
-  gap: 10rpx;
-}
-
-.form-item-text {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 4rpx;
-  padding: 4rpx 2rpx 4rpx 10rpx;
-  gap: 20rpx;
-}
-
-.form-item-text text {
-  font-family: PingFang SC;
-  font-weight: 500;
-  font-size: 28rpx;
-  color: #7b7c7c;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.form-item-text image {
-  width: 30rpx;
-  height: 30rpx;
+.content {
+  padding: 20px;
+  font-size: 16px;
 }
