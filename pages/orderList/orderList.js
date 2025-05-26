@@ -318,8 +318,11 @@ Page({
       g_industry_index: evt.detail.value
     })
   },
-  handleView() {
-    console.log(111)
+  // 跳转到详情
+  handleView(evt) {
+    wx.navigateTo({
+      url: '/pages/orderList/orderDetails/orderDetails?info=' + evt.currentTarget.dataset.item,
+    })
   },
   // 提交参数
   handleSubmit() {
