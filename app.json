@@ -136,7 +136,8 @@
     "pages/orderList/InquirySheet/index",
     "pages/redShare/index",
     "pages/system/Jurisdiction/index",
-    "pages/blackTeche/sendTheKey/index"
+    "pages/blackTeche/sendTheKey/index",
+    "pages/groupQrCode/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

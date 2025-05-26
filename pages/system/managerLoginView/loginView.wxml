@@ -50,23 +50,12 @@
   <!-- 下部分：信息展示 -->
   <view class="info-area">
     <view class="info-card">
-      <text class="product-name">智前通手机汽车互联钥匙期MCCK
-        <!-- <text class="product-en">(mobile car connect key)</text> -->
-      </text>
-      <text class="core-title">核心功能</text>
-
-      <view class="function-list">
-        <!-- <view class="function-item">无人租车（自助起租 自动还车 降低取送车成本）</view>
-        <view class="function-item">起租油量精准检测 还租油量精准检测（避免油量损失）</view>
-        <view class="function-item">控制风控方案（轻点鼠标 远程安全控车）</view>
-        <view class="function-item">里程收集（实现按里程收费的小时租）</view> -->
-        <view class="function-item">无人租车</view>
-        <view class="function-item">起租还租油呈检测</view>
-        <view class="function-item">控车风控 </view>
-        <view class="function-item">里程收集</view>
-
-      </view>
-
+      <text class="product-name">智前通wiselink</text>
+      <view style="font-size: 26rpx;color: #575658;">商务合作咨询、更多产品了解，请点击、长按官方群二维码，有专属客服服务！</view>
+     <view style="display: flex;justify-content: center;">
+      <image src="{{init_qr_code}}" style="width: 300rpx;height: 300rpx;" bindtap="handlePreviewImage"/>
+     </view>
+ 
       <view class="contact-info">
         <text class="company-name">智信通·中国北京</text>
         <!-- <view class="contact-details">

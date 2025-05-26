@@ -6,7 +6,8 @@ const {
   byGet
 } = require('../../../utils/request/http')
 const {
-  u_logo
+  u_logo,
+  u_getQrcodeImg
 } = require('../../../utils/request/home')
 var that;
 var currentTime = 60;
@@ -25,11 +26,21 @@ Page({
     openId: '',
     type: 1,
     invit_code: '',
+    init_qr_code:'',
     c_link: 'https://k1sw.wiselink.net.cn/', //域名
     logoSrc: '/assets/images/login/logo.png',
     // c_link: 'http://192.168.43.23:8689/'
   },
 
+   // 预览图片
+   handlePreviewImage(evt) {
+    wx.previewMedia({
+      sources: [{
+        url: '/assets/images/1.jpg', // 图片路径
+        type: 'image',
+      }, ],
+    });
+  },
   async onGetPhoneNumber(e) {
     wx.login({
       success: async (loginres) => {
@@ -107,6 +118,16 @@ Page({
     return
 
   },
+  initQrCode(){
+    const _this = this
+    byGet(_this.data.c_link + u_getQrcodeImg.URL, {}).then(response => {
+      const rspns = response.data.content
+      console.log(rspns)
+      _this.setData({
+        init_qr_code:rspns?.img
+      })
+    })
+  },
   initLogo() {
     const _this = this
     byGet(_this.data.c_link + u_logo.URL, {}).then(response => {
@@ -145,10 +166,10 @@ Page({
     wx.getStorage({
       key: 'scene',
       success(res) {
-        _this.setData({
+        _this.setData({  
           invit_code: res.data
         })
-      },
+      },  
     })
     that.setData({
       getverbtnstatus: false,
@@ -157,6 +178,7 @@ Page({
     currentTime = 60;
     clearInterval(interval);
     this.initLogo()
+    this.initQrCode()
   },
 
 

@@ -6,7 +6,8 @@ const {
   byGet
 } = require('../../utils/request/http')
 const {
-  u_getInviteCodeImg
+  u_getInviteCodeImg,
+  u_getSharelinkTitleImg
 } = require('../../utils/request/dispatch')
 Page({
   data: {
@@ -17,7 +18,9 @@ Page({
     imageUrl: '	https://5b0988e595225.cdn.sohucs.com/images/20180705/535f002edfe345d9a9e12e55f8b32013.jpeg',
     share_image: '/assets/images/login/logo.png',
     scene: getApp().data.userInfo.personInviteCode,
-    personal_qr_code: ''
+    personal_qr_code: '',//海报
+    share_img:'',//分享出去的图片
+    share_title:'',//f分享出去的文案
 
   },
 
@@ -111,6 +114,7 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
+  // 海报
   initQrCode() {
     byGet(getApp().data.k1swUrl + u_getInviteCodeImg.URL, {}).then(response => {
       if (response.statusCode == 200) {
@@ -122,17 +126,31 @@ Page({
       }
     })
   },
+    // 分享内容
+    initShareQrCode() {
+      byGet(getApp().data.k1swUrl + u_getSharelinkTitleImg.URL, {}).then(response => {
+        if (response.statusCode == 200) {
+          const resp = response?.data.content
+          this.setData({
+            share_img:resp?.linkimg,//分享出去的图片
+            share_title:resp?.linktitle,//f分享出去的文案
+          })
+        } else {
+          showToast('请求失败，请稍后再试');
+        }
+      })
+    },
   onShow() {
     this.initialiImageBaseConversion()
     this.initQrCode()
+    this.initShareQrCode()
   },
   // 分享功能
   onShareAppMessage() {
-
     return {
-      title: '智信通汽车出行技术服务运营提供商',
+      title: this.data.share_title,
       path: '/pages/desk/desk?scene=' + this.data.scene,
-      imageUrl: 'https://k3a.wiselink.net.cn/img/inviteCode/001.png'
+      imageUrl: this.data.share_title
     }
   }
 })

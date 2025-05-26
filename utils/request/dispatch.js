@@ -66,8 +66,12 @@ const u_comfirmMyCompany = {
 const u_getInviteCodeImg = {
   URL: fin3plusUrl + "userapi/getInviteCodeImg",
 }
+const u_getSharelinkTitleImg = {
+  URL: fin3plusUrl + "shareApi/getSharelinkTitleImg",
+}
 
 module.exports = {
+  u_getSharelinkTitleImg,
   u_getInviteCodeImg,
   u_comfirmMyCompany,
   u_resetMyCompanyPassword,

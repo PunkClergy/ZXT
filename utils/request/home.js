@@ -27,11 +27,16 @@ const u_termialList = {
 const u_logo = {
   URL:'deskapi/logo',
 }
+// 获取群二维码
+const u_getQrcodeImg = {
+  URL:'deskapi/getQrcodeImg',
+}
 // 获取最新的token
 const u_getUserinfo = {
   URL:'deskapi/getUserInfo',
 }
 module.exports = {
+  u_getQrcodeImg,
   u_getUserinfo,
   u_logo,
   u_navlist,
