@@ -124,14 +124,13 @@ Page({
   },
   onShow() {
     this.initialiImageBaseConversion()
-    console.log(this.data.scene)
     this.initQrCode()
   },
   // 分享功能
   onShareAppMessage() {
 
     return {
-      title: '车联网技术的头部企业',
+      title: '智信通汽车出行技术服务运营提供商',
       path: '/pages/desk/desk?scene=' + this.data.scene,
       imageUrl: 'https://k3a.wiselink.net.cn/img/inviteCode/001.png'
     }
