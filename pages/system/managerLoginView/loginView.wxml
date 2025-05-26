@@ -8,7 +8,7 @@
         <image src="{{logoSrc}}" class="logo-img" />
         <text class="logo-text">智信通wiselink</text>
       </view>
-      <text class="slogan">领先的出行技术服务商</text>
+      <text class="slogan">智信通汽车出行技术服务运营提供商</text>
     </view>
 
     <!-- 登录方式选择 -->
