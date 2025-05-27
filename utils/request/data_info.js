@@ -135,16 +135,23 @@ const u_roleapiaddOrUpdate = {
   URL: fin3plusUrl + "roleapi/addOrUpdate",
   page:'page'
 }
+
 // 设置权限
 const u_setMenuTree = {
   URL: fin3plusUrl + "userapi/setMenuTree",
   roleId:'roleId',
   menuIds:'menuIds'
 }
+// 订单详情
+const u_getOrderDetial = {
+  URL: fin3plusUrl + "deviceBuyApi/getOrderDetial",
+  orderId:'orderId'
+}
 
 
 module.exports = {
   u_setMenuTree,
+  u_getOrderDetial,
   u_roleapiaddOrUpdate,
   u_roleapidel,
   u_roleapiList,
