@@ -18,9 +18,9 @@ Page({
     imageUrl: '	https://5b0988e595225.cdn.sohucs.com/images/20180705/535f002edfe345d9a9e12e55f8b32013.jpeg',
     share_image: '/assets/images/login/logo.png',
     scene: getApp().data.userInfo.personInviteCode,
-    personal_qr_code: '',//海报
-    share_img:'',//分享出去的图片
-    share_title:'',//f分享出去的文案
+    personal_qr_code: '', //海报
+    share_img: '', //分享出去的图片
+    share_title: '', //f分享出去的文案
 
   },
 
@@ -126,20 +126,20 @@ Page({
       }
     })
   },
-    // 分享内容
-    initShareQrCode() {
-      byGet(getApp().data.k1swUrl + u_getSharelinkTitleImg.URL, {}).then(response => {
-        if (response.statusCode == 200) {
-          const resp = response?.data.content
-          this.setData({
-            share_img:resp?.linkimg,//分享出去的图片
-            share_title:resp?.linktitle,//f分享出去的文案
-          })
-        } else {
-          showToast('请求失败，请稍后再试');
-        }
-      })
-    },
+  // 分享内容
+  initShareQrCode() {
+    byGet(getApp().data.k1swUrl + u_getSharelinkTitleImg.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        const resp = response?.data.content
+        this.setData({
+          share_img: resp?.linkimg, //分享出去的图片
+          share_title: resp?.linktitle, //f分享出去的文案
+        })
+      } else {
+        showToast('请求失败，请稍后再试');
+      }
+    })
+  },
   onShow() {
     this.initialiImageBaseConversion()
     this.initQrCode()
@@ -150,7 +150,7 @@ Page({
     return {
       title: this.data.share_title,
       path: '/pages/desk/desk?scene=' + this.data.scene,
-      imageUrl: this.data.share_title
+      imageUrl: this.data.share_img
     }
   }
 })
