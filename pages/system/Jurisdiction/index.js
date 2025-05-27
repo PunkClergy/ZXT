@@ -326,12 +326,12 @@ Page({
   // 切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
-    console.log(flag)
     if (flag == '角色列表') {
       this.setData({
         c_activeTab: 1,
         btnState: '新增',
-        params: {}
+        params: {},
+        id: ''
       })
     }
     if (flag == '新增角色' || flag == '修改角色') {
