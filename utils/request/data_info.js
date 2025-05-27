@@ -135,9 +135,16 @@ const u_roleapiaddOrUpdate = {
   URL: fin3plusUrl + "roleapi/addOrUpdate",
   page:'page'
 }
+// 设置权限
+const u_setMenuTree = {
+  URL: fin3plusUrl + "userapi/setMenuTree",
+  roleId:'roleId',
+  menuIds:'menuIds'
+}
 
 
 module.exports = {
+  u_setMenuTree,
   u_roleapiaddOrUpdate,
   u_roleapidel,
   u_roleapiList,

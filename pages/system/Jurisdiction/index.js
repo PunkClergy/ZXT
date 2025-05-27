@@ -6,7 +6,8 @@ const {
   u_roleapidel,
   u_getMenuTree,
   u_roleapiaddOrUpdate,
-  u_roleapiList
+  u_roleapiList,
+  u_setMenuTree
 } = require('../../../utils/request/data_info')
 const {
   byGet,
@@ -234,9 +235,26 @@ Page({
     traverse(treeData);
     return checkedIds;
   },
+  // 设置权限
+  handleSetMenuTree(evt) {
+    const checkedIds = this.getCheckedIds(this.data.tree).toString();
+    const params = {
+      [u_setMenuTree.roleId]: evt,
+      [u_setMenuTree.menuIds]: checkedIds
+    }
+    byPost(
+      `${getApp().data.k1swUrl}${u_setMenuTree.URL}`, params,
+      (response) => {
+        if (response.data.code == 1000) {
+
+        }
+      },
+      (error) => {}
+    );
+  },
   //提交内容
   handleSubmit() {
-    const checkedIds = this.getCheckedIds(this.data.tree).toString();
+
     const {
       params,
       id
@@ -260,7 +278,6 @@ Page({
     byPost(
       `${getApp().data.k1swUrl}${u_roleapiaddOrUpdate.URL}`, {
         ...params,
-        abcc: checkedIds,
         id
       },
       (response) => {
@@ -279,6 +296,8 @@ Page({
           g_items: []
         }, () => {
           this.initList()
+          // 设置权限
+          this.handleSetMenuTree(response?.data?.content?.id)
         })
       },
       (error) => {
@@ -298,7 +317,7 @@ Page({
       id: info?.id,
       params: {
         name: info.name,
-        bak: info.vak,
+        bak: info.bak,
       }
     }, () => {
       this.inittMenuTree()
@@ -312,7 +331,7 @@ Page({
       this.setData({
         c_activeTab: 1,
         btnState: '新增',
-        params:{}
+        params: {}
       })
     }
     if (flag == '新增角色' || flag == '修改角色') {
@@ -349,11 +368,11 @@ Page({
   // 处理权限数据
   convertMenuData(originalData) {
     const convertNode = (node) => {
-      if (node.isdelete === 1) return null;
+      // if (node.isdelete === 1) return null;
       const converted = {
         id: node.id,
         name: node.name,
-        checked: false,
+        checked: node?.checked,
         indeterminate: false,
         isExpanded: true,
         children: []
@@ -389,7 +408,9 @@ Page({
   },
   // 获取权限树数据
   inittMenuTree() {
-    byGet(getApp().data.k1swUrl + u_getMenuTree.URL, {}).then(response => {
+    byGet(getApp().data.k1swUrl + u_getMenuTree.URL, {
+      roleId: this.data.id || ''
+    }).then(response => {
       if (response.statusCode == 200) {
         const list = response.data.content
         const convertedData = this.convertMenuData(list);

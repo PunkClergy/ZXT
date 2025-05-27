@@ -24,9 +24,9 @@
               </view>
             </view>
             <view class="content-item-info">
-              <view class="info-item  {{item.username.length > 15 ? 'long-info-item' : ''}}">
+              <view class="info-item  {{item.bak.length > 15 ? 'long-info-item' : ''}}">
                 <label>说明 ：</label>
-                <text>{{item.username||'-'}}</text>
+                <text>{{item.bak||'-'}}</text>
               </view>
             </view>
           </view>
