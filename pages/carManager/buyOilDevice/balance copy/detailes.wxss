@@ -1,0 +1,267 @@
+.container {
+  width: 100%;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+}
+
+/* 自定义头部容器 */
+.custom-navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
+/* 状态栏占位符 */
+.status-bar {
+  width: 100%;
+}
+
+/* 导航栏 */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* 使内容靠左对齐 */
+  padding-left: 16px;
+  /* 可选：增加一些左边距 */
+  box-sizing: border-box;
+  /* 确保padding不会影响总宽度 */
+}
+
+/* 标题容器 */
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  height: 100%;
+}
+
+.title-container image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+/* 标题文本 */
+.title {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 33rpx;
+  color: #010101;
+  line-height: 30rpx;
+}
+
+/* 搜索框容器 */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+.search-drop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+}
+
+/* 搜索框 */
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 200rpx;
+  padding: 8px 12px;
+  width: 90%;
+}
+
+/* 搜索图标 */
+.search-icon {
+  margin-right: 8px;
+  /* 图标与输入框之间留出间距 */
+}
+
+/* 输入框 */
+.search-input {
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 16px;
+}
+
+.picker {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  font-family: PingFang SC;
+}
+
+.picker text {
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+/* 主要内容容器 */
+.content-container {
+  position: absolute;
+  bottom: 10rpx;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  /* 当内容超出高度时显示滚动条 */
+
+}
+
+/* 内容项 */
+.content-item {
+  margin: 15rpx;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-item-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 10rpx;
+}
+
+.head-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.left-category {
+  display: flex;
+  align-items: center;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.left-category image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.left-brand {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #1B64B1;
+  background: #EEF7FF;
+  border-radius: 5rpx;
+  padding: 0 15rpx;
+}
+
+.left-model {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.head-right {
+  display: flex;
+  flex-direction: row;
+  gap: 10rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-state {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #F56F48;
+
+}
+
+.right-special-state {
+  border-radius: 8rpx;
+  border: 1px solid #DD0B2D;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 20rpx;
+  color: #DD0B2D;
+  padding: 0 15rpx;
+}
+
+.content-item-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 10rpx;
+  gap: 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item {
+  flex: 0 0 48%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  transition: all 0.3s;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+
+}
+
+.long-info-item {
+  flex-basis: 100% !important;
+  /* 长内容时占满整行 */
+}
+
+.content-item-footer {
+  display: flex;
+  padding: 10rpx;
+  justify-content: space-between;
+}
+
+.footer-left {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.footer-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.footer-right-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 22rpx;
+  color: #ffffff;
+  background-color: #1B64B1;
+  border-radius: 8rpx;
+  padding: 4rpx 15rpx;
+}
+
+.green {
+  color: green;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 25rpx;
+}

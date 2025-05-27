@@ -1,0 +1,81 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+
+  <view class="custom-navbar" style="height:{{totalNavHeight}}px;">
+    <view class="status-bar" style="height:{{statusBarHeight}}px;"></view>
+    <view class="nav-bar" style="height:{{navBarHeight}}px;">
+      <!-- 自定义导航栏内容 -->
+      <view class="title-container">
+        <image src="/assets/images/home/left.png" bindtap="handleJumpBack"/>
+        <text class="title">交易记录</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索框 -->
+  <view class="search-container" style="height:{{searchBarHeight}}px;margin-top: {{totalNavHeight}}px;">
+    <view class="search-box">
+      <icon type="search" size="16" class="search-icon" />
+      <input placeholder="金额" class="search-input" />
+    </view>
+    <view class="search-drop">
+      <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+        <view class="picker">
+          <text>所有状态</text>
+          <image src="/assets/images/home/up.png" style="width: 20rpx;height: 30rpx;" />
+        </view>
+      </picker>
+      <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+        <view class="picker">
+          <text>所有类型</text>
+          <image src="/assets/images/home/up.png" style="width: 20rpx;height: 30rpx;" />
+        </view>
+      </picker>
+
+      <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+        <view class="picker">
+          <text>所有时间</text>
+          <image src="/assets/images/home/up.png" style="width: 20rpx;height: 30rpx;" />
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 主要内容区域 -->
+  <scroll-view class="content-container" scroll-y="true" style="top:{{statusBarHeight + navBarHeight + searchBarHeight+2}}px;">
+    <!-- 这里可以放置你的主要内容 -->
+    <block wx:for="{{items}}" wx:key="index">
+      <view class="content-item">
+        <view class="content-item-head">
+          <view class="head-left">
+            <view class="left-category">
+              <image src="/assets/images/home/01.png" />
+              <text>充值</text>
+            </view>
+          </view>
+          <view class="head-right">
+            <view class="right-state"> {{item.paydate}}</view>
+          </view>
+        </view>
+        <view class="content-item-info">
+
+          <view class="info-item  {{item.wxpayorder.length > 15 ? 'long-info-item' : ''}}">
+            <label>充值单号 ：</label>
+            <text>{{item.wxpayorder||'-'}}</text>
+          </view>
+
+          <view class="info-item  {{item.selfpayorder.length > 15 ? 'long-info-item' : ''}}">
+            <label>支付单号 ：</label>
+            <text>{{item.selfpayorder||'-'}}</text>
+          </view>
+        </view>
+        <view class="content-item-footer">
+          <view class="footer-left"></view>
+          <view class="footer-right green">
+            {{item.amount||0}}元
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>

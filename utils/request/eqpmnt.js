@@ -5,7 +5,7 @@ const u_blanceAndDeviceReport = {
 }
 
 const u_payRecord = {
-  URL: fin3plusUrl + "api/payRecord",
+  URL: fin3plusUrl + "deviceBuyApi/payRecord",
   companyId: 'companyId',
   page: 'page'
 }

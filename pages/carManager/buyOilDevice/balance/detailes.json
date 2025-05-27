@@ -1,7 +1,6 @@
 {
-  "navigationBarTitleText": "购买和充值",
   "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
   },
-  "navigationStyle": "custom",
-  "disableScroll": true
+  "navigationStyle": "custom"
 }
