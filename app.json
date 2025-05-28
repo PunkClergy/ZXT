@@ -137,7 +137,8 @@
     "pages/redShare/index",
     "pages/system/Jurisdiction/index",
     "pages/blackTeche/sendTheKey/index",
-    "pages/groupQrCode/index"
+    "pages/groupQrCode/index",
+    "pages/transferAdmin/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

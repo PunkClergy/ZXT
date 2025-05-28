@@ -1,12 +1,8 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="车务人员管理" />
+  <custom-header title="移交管理员" />
 
   <!-- 搜索框 -->
   <view class="search-container" style="height:{{c_searchBarHeight}}px;margin-top: {{c_totalNavHeight}}px;">
-    <view class="search-box">
-      <icon type="search" size="16" class="search-icon" />
-      <input placeholder="搜索车务人员" bindblur="handleBlur" class="search-input" />
-    </view>
     <view class="search-count">
       <text>共有{{g_total}}人员</text>
     </view>
@@ -19,18 +15,8 @@
         <view class="content-item-head">
           <view class="head-left">
             <view class="left-category">
-
-              <text>{{item.name}}</text>
+              <text>{{item.username}}</text>
             </view>
-            <view class="left-model">
-
-            </view>
-
-          </view>
-          <view class="head-right">
-
-            <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
-            <image wx:if="{{!item.sn}}" src="/assets/images/home/_delete.png" data-item="{{item}}" data-index="{{index}}" bindtap="handleDelete" />
           </view>
         </view>
         <view class="content-item-info">
@@ -49,20 +35,15 @@
 
 
         </view>
-        <view class="content-item-footer" wx:if="{{g_source}}">
+        <view class="content-item-footer">
           <view class="footer-left"></view>
           <view class="footer-right">
             <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump">
-              <text>选择此车</text>
+              <text>移交管理员</text>
             </view>
           </view>
         </view>
       </view>
     </block>
   </scroll-view>
-
-  <!-- 一键操作按钮 -->
-  <view class="levitation-button" wx:if="{{!g_source}}" bindtap="handleJumpInfo">
-    <text>新增人员</text>
-  </view>
 </view>

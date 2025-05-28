@@ -147,9 +147,15 @@ const u_getOrderDetial = {
   URL: fin3plusUrl + "deviceBuyApi/getOrderDetial",
   orderId:'orderId'
 }
+// 移交管理员
+const u_transferAdminUser = {
+  URL: fin3plusUrl + "userapi/transferAdminUser",
+  targetUserId:'targetUserId'
+}
 
 
 module.exports = {
+  u_transferAdminUser,
   u_setMenuTree,
   u_getOrderDetial,
   u_roleapiaddOrUpdate,
