@@ -54,7 +54,7 @@ Page({
     logoSrc: '/assets/images/login/logo.png',
     c_send_key_show_momal: false,
     c_send_key_show_type: null,
-    account: getApp().data.k1swUrl
+    account: null
   },
 
   // 转换背景图base64
@@ -452,9 +452,8 @@ Page({
   },
 
   onShow: function (e) {
-    console.log(getApp().data.userInfo.username)
     this.setData({
-      account: getApp()?.data?.userInfo?.username
+      account: getApp()?.data?.userInfo?.realname
     })
     this.initialGetUserInfo()
     this.initLogo()
