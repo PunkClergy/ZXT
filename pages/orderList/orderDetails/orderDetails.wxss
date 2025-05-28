@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  height: 95vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-repeat: no-repeat;
@@ -9,50 +9,82 @@
   touch-action: pan-x;
   position: relative;
 }
+
+.anchor-container {
+  display: flex;
+  flex-direction: column;
+  width: 96%;
+  margin: auto;
+}
+
+.nav-scroll {
+  width: 100%;
+  position: relative;
+}
+
+.nav-container {
+  padding: 20rpx 0rpx;
+  display: flex;
+  gap: 15rpx;
+}
+
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 40rpx;
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 600;
+  position: relative;
+  transition: all 0.3s;
+  background-color: rgb(211, 212, 212);
+  border-radius: 30rpx;
+}
+
+.nav-item.active {
+  color: #fff;
+  background-color: rgba(69, 135, 253, 1);
+}
+
+.nav-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40rpx;
+}
 .info-container {
   display: flex;
   flex-direction: column;
   gap: 30rpx;
-  width: 96%;
-  margin: auto;
 }
-/* 头部 */
-.top-box {
+/* 具体内容样式 */
+.main-content-area {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.content-item-head {
+.main-content-area-head {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid #f0f0f0;
   padding: 10rpx;
 }
-.head-left {
-  display: flex;
-  align-items: center;
-  gap: 20rpx;
-}
 
-.left-category {
-  display: flex;
-  align-items: center;
-  font-family: PingFang SC;
-  font-weight: bold;
-  font-size: 26rpx;
-  color: #333333;
-}
-.content-item-info {
+.main-content-area-info {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   padding: 10rpx;
   gap: 20rpx;
+  /* height: 500rpx; */
   border-bottom: 1px solid #f0f0f0;
 }
 
-.info-item {
+.main-content-area-info-item {
   flex: 0 0 48%;
   box-sizing: border-box;
   word-wrap: break-word;
@@ -64,43 +96,21 @@
 }
 .long-info-item {
   flex-basis: 100% !important;
-  /* 长内容时占满整行 */
 }
-/* 中部 */
-.middle-box {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.head-left {
+  font-size: 28rpx;
 }
-.middle-content-item-info {
-  display: flex;
-  flex-wrap: wrap;
-  min-height: 100rpx;
-  max-height: 50vh;
-  overflow-y: auto;
-  justify-content: flex-start;
-  padding: 10rpx;
-  gap: 20rpx;
-  /* border-bottom: 1px solid #f0f0f0; */
+.head-right {
+  font-size: 26rpx;
 }
-/* 底部 */
-.bottom-box {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.cost-main-order {
+  font-size: 26rpx;
+  font-weight: bold;
 }
-/* tabs 滚动容器 */
-.tabs-scroll {
-  width: 100%;
-  white-space: nowrap;
-  background: #fff;
-  border-bottom: 1rpx solid #eee;
-}
-/* tabs 容器 */
 .tabs-container {
   display: inline-block;
 }
-/* 单个 tab 样式 */
+
 .tab-item {
   display: inline-block;
   padding: 0 30rpx;
@@ -111,7 +121,7 @@
   transition: all 0.3s;
 }
 
-/* 激活状态样式 */
+
 .tab-item.active {
   color: #007aff;
   font-weight: bold;
@@ -128,47 +138,177 @@
   background: #007aff;
   border-radius: 2rpx;
 }
-.levitation-button {
-  position: absolute;
-  bottom: 60rpx;
-  width: 100%;
+.middle-content-item-info {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100rpx;
+  max-height: 50vh;
+  overflow-y: auto;
+  justify-content: flex-start;
+  padding: 10rpx;
+  gap: 20rpx;
+  /* border-bottom: 1px solid #f0f0f0; */
+}
+/* 寄送钥匙信息 */
+.mailing_address{
+  display: flex;gap: 40rpx;
+}
+.mailing_address label{
+  font-size: 26rpx;
+}
+.mailing_address text{
+  font-size: 24rpx;
+}
+.key-modular-num{
+  background: rgba(245, 111, 72, 1);padding: 5rpx 20rpx;border-radius: 10rpx;color: #fff;
+}
+.key-modular {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+/* 弹窗蒙版 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+}
+
+.modal-base-map {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 20rpx;
+  z-index: 998;
+  padding: 20rpx;
+}
+
+.modal-container {
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-container-head {
+  display: flex;
+  justify-content: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 60rpx;
+}
+
+.modal-container-head text {
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #333333;
+}
+
+.modal-container-head image {
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.modal-container-middle {
+  flex: 1;
+  overflow-y: auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   gap: 20rpx;
 }
 
-.levitation-button text {
+.modal-container-footer {
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container-footer button {
+  background: linear-gradient(88deg, #1576DC, #1B64B1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #FFFFFF;
+  width: 50%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.middle-form-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 45rpx;
+  width: 80%;
+
+}
+
+.middle-form-item label {
+  font-family: PingFang SC;
+  font-weight: 600;
+  font-size: 28rpx;
+  color: #333333;
+
+}
+
+.modal-form-region {
+  display: flex;
+  gap: 10rpx;
+}
+
+.form-item-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4rpx;
+  padding: 4rpx 2rpx 4rpx 10rpx;
+  gap: 20rpx;
+}
+
+.form-item-text text {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 28rpx;
+  color: #7B7C7C;
+  border-bottom: 1rpx solid #f0f0f0;
+
+}
+
+.form-item-text image {
+  width: 30rpx;
+  height: 30rpx;
+}
+.card-footer {
+  height: 50px;
+  margin: 20rpx 0;
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: flex-start;
   justify-content: center;
-  height: 75rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #ffffff;
+}
+
+.card-footer view {
   width: 40%;
+  background-color: #2196f3;
+  padding: 10rpx;
   background: linear-gradient(88deg, #1576dc, #1b64b1);
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
-  font-family: PingFang SC;
-  font-weight: bold;
-  font-size: 32rpx;
-  color: #ffffff;
-}
-.levitation-button label {
-  color: #7b7b7b;
-  font-size: 24rpx;
-}
-.offter {
-  display: flex;
-  width: 100%;
-  gap: 20rpx;
-  justify-content: space-between;
-  flex-direction: column;
-  font-family: PingFang SC;
-  font-size: 26rpx;
-}
-.offter-label {
-  display: flex;
-  width: 100%;
-}
-.prcie {
-  color: red;
 }

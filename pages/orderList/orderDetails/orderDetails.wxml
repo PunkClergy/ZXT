@@ -1,159 +1,305 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
 
   <!-- 自定义头部 -->
-  <custom-header title="订单清单" />
-  <!-- 内容区 -->
-  <view class="info-container" style="height:{{c_screen_height-(c_statusBarHeight + c_navBarHeight)}}px;margin-top: {{c_totalNavHeight}}px;">
-    <!-- 中部 -->
-    <view class="middle-box">
-      <view class="content-item-head">
-        <view class="head-left">
-          <view class="left-category">
-            <text>基础信息</text>
+  <custom-header title="订单详情" />
+  <view class="anchor-container" style="height:{{c_screen_height-(c_statusBarHeight + c_navBarHeight)}}px;margin-top: {{c_totalNavHeight}}px;">
+    <scroll-view enhanced show-scrollbar="{{false}}" scroll-x class="nav-scroll" scroll-left="{{navScrollLeft}}" scroll-with-animation style="white-space: nowrap;">
+      <view class="nav-container">
+        <block wx:for="{{navList}}" wx:key="index">
+          <view wx:if="{{ (item.id == 10) || (item.id == 11 && all_data.status > 1) || (item.id == 12 && all_data.isMailingKeys == 1) || (item.id == 13 && all_data.status > 7)|| (item.id == 14 && all_data.status > 7)}}" class="nav-item {{'section' + item.id == scrollIntoViewId ? 'active' : ''}}" data-id="{{item.id}}" bindtap="handleSwitchNav">
+            {{item.name}}
           </view>
-        </view>
+        </block>
       </view>
-      <view class="middle-content-item-info">
-        <view class="info-item  {{all_data.productTypeName.length > 8 ? 'long-info-item' : ''}}">
-          <label>行业 ：</label>
-          <text>{{all_data.productTypeName||'-'}}</text>
-        </view>
-        <view class="info-item  {{all_data.deviceVersionName.length > 8 ? 'long-info-item' : ''}}">
-          <label>功能 ：</label>
-          <text>{{all_data.deviceVersionName||'-'}}</text>
-        </view>
-        <view class="info-item  {{all_data.deviceCount.length > 8 ? 'long-info-item' : ''}}">
-          <label>数量 ：</label>
-          <text>{{all_data.deviceCount||'-'}}</text>
-        </view>
-      </view>
-      <scroll-view scroll-x class="tabs-scroll" scroll-with-animation scroll-left="{{scrollLeft}}" scroll-into-view="{{'tab' + currentIndex}}" style="height: 50px;">
-        <view class="tabs-container">
-          <block wx:for="{{all_data.orderCarList}}" wx:key="index">
-            <view id="tab{{index}}" class="tab-item {{currentIndex === index ? 'active' : ''}}" bindtap="handleSwitchTab" data-index="{{index}}" style="height:50px">
-              {{item.carmodel}}
+    </scroll-view>
+    <scroll-view enhanced show-scrollbar="{{false}}" scroll-y style="height:{{c_screen_height-(c_statusBarHeight + c_navBarHeight +45)}}px" scroll-into-view="{{scrollIntoViewId}}" scroll-with-animation>
+      <view class="info-container">
+        <view wx:for="{{navList}}" wx:key="index" id="{{'section' + item.id}}" wx:for-item="item">
+          <!-- 基础信息 -->
+          <block wx:if="{{item.id == 10}}">
+            <view class="main-content-area">
+              <view class="main-content-area-head">
+                <view class="head-left">
+                  {{item.name}}
+                </view>
+                <view class="head-right">
+                  {{all_data.statusName}}
+                </view>
+              </view>
+              <view class="main-content-area-info">
+                <view class="main-content-area-info-item  {{all_data.productTypeName.length > 15 ? 'long-info-item' : ''}}">
+                  <label>行业 ：</label>
+                  <text>{{all_data.productTypeName||'-'}}</text>
+                </view>
+                <view class="main-content-area-info-item  {{all_data.deviceVersionName.length > 15 ? 'long-info-item' : ''}}">
+                  <label>功能 ：</label>
+                  <text>{{all_data.deviceVersionName||'-'}}</text>
+                </view>
+                <view class="main-content-area-info-item  {{all_data.deviceCount.length > 15 ? 'long-info-item' : ''}}">
+                  <label>数量 ：</label>
+                  <text>{{all_data.deviceCount||'-'}}</text>
+                </view>
+                <scroll-view scroll-x class="tabs-scroll" scroll-with-animation scroll-left="{{scrollLeft}}" scroll-into-view="{{'tab' + currentIndex}}" style="height: 50px;">
+                  <view class="tabs-container">
+                    <block wx:for="{{item.list}}" wx:for-item="carModule" wx:for-index="index" wx:key="index">
+                      <view id="tab{{index}}" class="tab-item {{currentIndex === index ? 'active' : ''}}" bindtap="handleSwitchTab" data-index="{{index}}" style="height:50px">
+                        {{carModule.carmodel}}
+                      </view>
+                    </block>
+                  </view>
+                </scroll-view>
+                <scroll-view scroll-y class="content-scroll">
+                  <view class="middle-content-item-info">
+                    <view class="main-content-area-info-item  {{all_data.carList[currentIndex].carmodel.length > 8 ? 'long-info-item' : ''}}">
+                      <label>车型 ：</label>
+                      <text>{{all_data.carList[currentIndex].carmodel||'-'}}</text>
+                    </view>
+                    <view class="main-content-area-info-item  {{all_data.carList[currentIndex].carserial.length > 8 ? 'long-info-item' : ''}}">
+                      <label>车系 ：</label>
+                      <text>{{all_data.carList[currentIndex].carserial||'-'}}</text>
+                    </view>
+                    <view class="main-content-area-info-item  {{all_data.carList[currentIndex].carversion.length > 8 ? 'long-info-item' : ''}}">
+                      <label>年款 ：</label>
+                      <text>{{all_data.carList[currentIndex].carversion||'-'}}</text>
+                    </view>
+                    <view class="main-content-area-info-item  {{all_data.carList[currentIndex].runtype.length > 8 ? 'long-info-item' : ''}}">
+                      <label>启动方式 ：</label>
+                      <text>{{all_data.carList[currentIndex].runtype||'-'}}</text>
+                    </view>
+                    <view class="main-content-area-info-item  {{all_data.orderCarList[currentIndex].vin.length > 8 ? 'long-info-item' : ''}}">
+                      <label>车架号 ：</label>
+                      <text>{{all_data.orderCarList[currentIndex].vin||'-'}}</text>
+                    </view>
+                  </view>
+                </scroll-view>
+              </view>
             </view>
           </block>
-        </view>
-      </scroll-view>
-      <scroll-view scroll-y class="content-scroll">
-        <view class="middle-content-item-info">
-          <view class="info-item  {{all_data.orderCarList[currentIndex].carmodel.length > 8 ? 'long-info-item' : ''}}">
-            <label>车型 ：</label>
-            <text>{{all_data.orderCarList[currentIndex].carmodel||'-'}}</text>
-          </view>
-          <view class="info-item  {{all_data.orderCarList[currentIndex].carserial.length > 8 ? 'long-info-item' : ''}}">
-            <label>车系 ：</label>
-            <text>{{all_data.orderCarList[currentIndex].carserial||'-'}}</text>
-          </view>
-          <view class="info-item  {{all_data.orderCarList[currentIndex].carversion.length > 8 ? 'long-info-item' : ''}}">
-            <label>年款 ：</label>
-            <text>{{all_data.orderCarList[currentIndex].carversion||'-'}}</text>
-          </view>
-          <view class="info-item  {{all_data.orderCarList[currentIndex].runtype.length > 8 ? 'long-info-item' : ''}}">
-            <label>启动方式 ：</label>
-            <text>{{all_data.orderCarList[currentIndex].runtype||'-'}}</text>
-          </view>
-          <view class="info-item  {{all_data.orderCarList[currentIndex].vin.length > 8 ? 'long-info-item' : ''}}">
-            <label>车架号 ：</label>
-            <text>{{all_data.orderCarList[currentIndex].vin||'-'}}</text>
-          </view>
-        </view>
-      </scroll-view>
-    </view>
-    <!-- 底部卡片 -->
-    <view class="bottom-box">
-      <view class="content-item-head">
-        <view class="head-left">
-          <view class="left-category">
-            <text>报价信息</text>
-          </view>
-        </view>
-      </view>
+          <!-- 报价信息 -->
+          <block wx:if="{{item.id == 11&&all_data.status>1}}">
+            <view class="main-content-area">
+              <view class="main-content-area-head">
+                <view class="head-left">
+                  {{item.name}}
+                </view>
+                <view class="head-right">
+                  合计:{{all_data.cost}}
+                </view>
+              </view>
+              <view class="main-content-area-info">
+                <block wx:for="{{item.list}}" wx:for-item="module" wx:for-index="idx" wx:key="id">
+                  <label class="long-info-item cost-main-order">{{module.productname}}</label>
+                  <view class="main-content-area-info-item  {{module.costType.length > 15 ? 'long-info-item' : ''}}">
+                    <label>价格 ：</label>
+                    <text>{{module.costType||'-'}}</text>
+                  </view>
+                  <view class="main-content-area-info-item  {{module.count.length > 15 ? 'long-info-item' : ''}}">
+                    <label>数量 ：</label>
+                    <text>{{module.count||'-'}}</text>
+                  </view>
+                  <view class="main-content-area-info-item  {{module.cost.length > 15 ? 'long-info-item' : ''}}">
+                    <label>小计 ：</label>
+                    <text>{{module.cost||'-'}}</text>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </block>
+          <!-- 寄送钥匙 -->
+          <block wx:if="{{item.id == 12&&(all_data.status==5||all_data.status==6||all_data.status==7)||(all_data.isMailingKeys==1)}}">
+            <view class="main-content-area">
+              <view class="main-content-area-head">
+                <view class="head-left">
+                  {{item.name}}
+                </view>
+              </view>
+              <view class="main-content-area-info">
+                <label class="long-info-item cost-main-order">寄送地址</label>
+                <view class="long-info-item mailing_address">
+                  <label>智信通</label>
+                  <text>13676767654</text>
+                </view>
+                <view class="mailing_address">
+                  <text>北京市丰台区海鹰路智信通大厦2楼</text>
+                  <text style="color: rgba(69, 135, 253, 1);" bindtap="handleCopyAddress">复制</text>
+                </view>
+                <label class="long-info-item cost-main-order">寄送物流信息</label>
+                <block wx:for="{{item.list}}" wx:for-item="keymodule" wx:for-index="index" wx:key="id">
+                  <view class="main-content-area-info-item key-modular long-info-item}}">
+                    <label>快递公司 ：</label>
+                    <text>{{keymodule.name}}</text>
+                  </view>
+                  <view class="main-content-area-info-item key-modular long-info-item}}">
+                    <label>快递单号 ：</label>
+                    <text>{{keymodule.num}}</text>
+                    <text style="color: rgba(69, 135, 253, 1);" wx:if="{{keymodule.num}}" data-item="{{keymodule}}" bindtap="handleUploadTrackingNumber">修改</text>
+                    <text class="key-modular-num" wx:else bindtap="handleUploadTrackingNumber">上传单号</text>
+                  </view>
+                </block>
+                <block wx:if="{{item.list.length<1}}">
+                  <view bindtap="handleUploadTrackingNumber" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">上传单号</view>
+                </block>
+              </view>
+            </view>
+          </block>
+          <!-- 物流信息 -->
+          <block wx:if="{{item.id == 13 && all_data.status > 7}}">
+            <view class="main-content-area">
+              <view class="main-content-area-head">
+                <view class="head-left">
+                  {{item.name}}
+                </view>
+              </view>
+              <view class="main-content-area-info">
+                <label class="long-info-item cost-main-order">收货地址</label>
+                <view class="long-info-item mailing_address">
+                  <label>智信通</label>
+                  <text>13676767654</text>
+                </view>
+                <view class="mailing_address">
+                  <text>北京市丰台区海鹰路智信通大厦2楼</text>
 
-      <view class="content-item-info">
-        <radio-group bindchange="handleRadioChange" class="offter" style="">
-          <view class="offter-label" wx:for="{{all_data.orderLogisticsList}}" wx:key="{{item.value}}">
-            <view class="weui-cell__bd">Y22销售报价：<text class="prcie">122</text></view>
-            <view class="weui-cell__hd">
-              <radio value="{{item.value}}" style="transform: scale(0.7);" checked="true" />
+                </view>
+                <label class="long-info-item cost-main-order">收货物流信息</label>
+                <block wx:for="{{item.list}}" wx:for-item="keymodule" wx:for-index="index" wx:key="id">
+                  <view class="main-content-area-info-item key-modular long-info-item}}">
+                    <label>快递公司 ：</label>
+                    <text>{{keymodule.name}}</text>
+                  </view>
+                  <view class="main-content-area-info-item key-modular long-info-item}}">
+                    <label>快递单号 ：</label>
+                    <text>{{keymodule.num}}</text>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </block>
+          <!-- 安装信息 -->
+          <block wx:if="{{item.id == 14 && all_data.status > 7}}">
+            <view class="main-content-area">
+              <view class="main-content-area-head">
+                <view class="head-left">
+                  {{item.name}}
+                </view>
+              </view>
+              <block wx:for="{{item.list}}" wx:for-item="installmodule" wx:for-index="index" wx:key="index">
+                <view class="main-content-area-info">
+                  <view class="main-content-area-info-item  {{installmodule.personname.length > 15 ? 'long-info-item' : ''}}">
+                    <label>联系人 ：</label>
+                    <text>{{installmodule.personname||'-'}}</text>
+                  </view>
+                  <view class="main-content-area-info-item  {{installmodule.mobile.length > 15 ? 'long-info-item' : ''}}">
+                    <label>联系电话 ：</label>
+                    <text>{{installmodule.mobile||'-'}}</text>
+                  </view>
+                  <view class="main-content-area-info-item  {{installmodule.address.length > 8 ? 'long-info-item' : ''}}">
+                    <label>联系地址 ：</label>
+                    <text>{{installmodule.address||'-'}}</text>
+                  </view>
+                  <view class="main-content-area-info-item  {{installmodule.installdate.length > 15 ? 'long-info-item' : ''}}">
+                    <label>申请安装时间 ：</label>
+                    <text>{{installmodule.installdate||'-'}}</text>
+                  </view>
+
+                </view>
+              </block>
+              <block wx:if="{{item.list.length < 1}}">
+                <view bindtap="handleInstall" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">申请安装</view>
+              </block>
             </view>
 
-          </view>
-        </radio-group>
-      </view>
 
-    </view>
-    <!-- 底部卡片 -->
-    <view class="bottom-box">
-      <view class="content-item-head">
-        <view class="head-left">
-          <view class="left-category">
-            <text>钥匙寄送信息</text>
-          </view>
-        </view>
-      </view>
-      <view class="content-item-info">
-        <view class="info-item  {{item.num.length > 15 ? 'long-info-item' : ''}}">
-          <label>寄送状态 ：</label>
-          <text>{{item.num||'-'}}</text>
-        </view>
-        <view class="info-item  {{item.createdate.length > 15 ? 'long-info-item' : ''}}">
-          <label>物流单号 ：</label>
-          <text>{{item.createdate||'-'}}</text>
-        </view>
-      </view>
-    </view>
-    <view class="bottom-box">
-      <view class="content-item-head">
-        <view class="head-left">
-          <view class="left-category">
-            <text>安装信息</text>
-          </view>
-        </view>
-      </view>
-      <view class="content-item-info">
-        <view class="info-item  {{item.num.length > 15 ? 'long-info-item' : ''}}">
-          <label>安装状态 ：</label>
-          <text>{{item.num||'-'}}</text>
-        </view>
-      </view>
-    </view>
-    <view class="top-box">
-      <view class="content-item-head">
-        <view class="head-left">
-          <view class="left-category">
-            <text>物流信息</text>
-          </view>
-        </view>
-      </view>
-      <view class="content-item-info">
-        <view class="info-item  {{all_data.deviceCount.length > 15 ? 'long-info-item' : ''}}">
-          <label>物流信息 ：</label>
-          <text>{{all_data.deviceCount||'-'}}</text>
-        </view>
 
-        <view class="info-item  {{all_data.typeName.length > 15 ? 'long-info-item' : ''}}">
-          <label>客户号 ：</label>
-          <text>{{all_data.typeName||'-'}}</text>
-        </view>
-        <view class="info-item  {{all_data.linkman.length > 15 ? 'long-info-item' : ''}}">
-          <label>联系人 ：</label>
-          <text>{{all_data.linkman||'-'}}</text>
-        </view>
-        <view class="info-item  {{all_data.linkmobile.length > 15 ? 'long-info-item' : ''}}">
-          <label>联系电话 ：</label>
-          <text>{{all_data.linkmobile||'-'}}</text>
+          </block>
         </view>
       </view>
-    </view>
-  </view>
+      <view class="card-footer" wx:if="{{all_data.status == 2}}">
+        <view bindtap="handleOneClickOrdering">支付</view>
+      </view>
+    </scroll-view>
 
-  <view class="levitation-button" bindtap="handleConfirm" wx:if="{{all_data.status == 2}}">
-    <text>确认</text>
-  </view>
-  <view class="levitation-button">
-    <text bindtap="handleOneClickOrdering">去支付</text>
-    <label>取消订单</label>
   </view>
 </view>
+<!-- 上传单号弹窗 -->
+<block>
+  <view class="modal-mask" wx:if="{{c_send_key_show_momal}}" bindtap="handleHideSengKeyModal"></view>
+  <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}">
+    <form bindsubmit="handleFormSubmit">
+      <view class="modal-container">
+        <view class="modal-container-head">
+          <text>上传单号</text>
+          <image src="/assets/images/home/right_1.png" bindtap="handleHideSengKeyModal" />
+        </view>
+        <view class="modal-container-middle">
+          <view class="middle-form-item">
+            <label>快递名称</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入快递名称" name='name' value="{{key_params.name}}" style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>物流单号</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入快递单号" name='num' value="{{key_params.num}}" style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+        </view>
+        <view class="modal-container-footer">
+          <button formType="submit">确认</button>
+        </view>
+      </view>
+    </form>
+  </view>
+</block>
+<!-- 申请安装弹窗 -->
+<block>
+  <view class="modal-mask" wx:if="{{c_install_show_momal}}" bindtap="handleHideInstallModal"></view>
+  <view class="modal-base-map" wx:if="{{c_install_show_momal}}">
+    <form bindsubmit="handleFormInstallSubmit">
+      <view class="modal-container">
+        <view class="modal-container-head">
+          <text>申请安装</text>
+          <image src="/assets/images/home/right_1.png" bindtap="handleHideInstallModal" />
+        </view>
+        <view class="modal-container-middle">
+          <view class="middle-form-item">
+            <label>联系人</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入联系人" name='personname' value="{{install_params.personname}}" style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>联系电话</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入联系电话" name='mobile' value="{{install_params.mobile}}" style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>安装地址</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入安装地址" name='address' value="{{install_params.address}}" style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>开始时间</label>
+            <view class="modal-form-region">
+              <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{startDate}}</text>
+                </view>
+              </picker>
+              <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{startTime}}</text>
+                </view>
+              </picker>
+            </view>
+          </view>
+        </view>
+        <view class="modal-container-footer">
+          <button formType="submit">确认</button>
+        </view>
+      </view>
+    </form>
+  </view>
+</block>

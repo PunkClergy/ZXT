@@ -87,7 +87,7 @@
                     <text style="color: #333;font-size: 26rpx;">请选择所需功能</text>
                   </block>
                   <block wx:else>
-                    <text style="color: #333;font-size: 26rpx;">1.远程开关车门 2. 精准油量检测 3.远程拦截控车4. GPS</text>
+                    <text style="color: #333;font-size: 26rpx;">{{g_core_functions[g_core_functions_index].name}}</text>
                   </block>
                 </picker>
               </view>
@@ -98,7 +98,7 @@
             <label style="min-width: 20%;">功能介绍</label>
             <block>
               <view class="card-info-item-input">
-                <text style="color: #333;font-size: 26rpx;">{{g_core_functions[g_core_functions_index].name}}</text>
+                <text style="color: #333;font-size: 26rpx;">{{g_core_wholeness[g_core_functions_index].name}}</text>
               </view>
             </block>
           </view>

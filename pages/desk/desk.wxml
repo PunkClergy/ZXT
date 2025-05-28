@@ -101,7 +101,7 @@
 <!-- 发送电子钥匙弹窗 -->
 <block>
   <view class="modal-mask" wx:if="{{c_send_key_show_momal}}" bindtap="handleHideSengKeyModal"></view>
-  <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}">
+  <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}" style="margin-bottom: 60px;">
     <form bindsubmit="handleFormSubmit">
       <view class="modal-container">
         <view class="modal-container-head">

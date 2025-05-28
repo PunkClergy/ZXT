@@ -118,15 +118,24 @@ Page({
   initialgetIntroduction() {
     byGet(getApp().data.k1swUrl + u_getIntroduction.URL, {}).then(response => {
       const list = response.data.content
-      const info = list.map(ele => {
-        let temp = {
-          id: ele,
-          name: ele
+      console.log(list)
+      const simple_info = list.map(ele => {
+        let simple_temp = {
+          id: ele?.simple,
+          name: ele?.simple
         }
-        return temp
+        return simple_temp
+      })
+      const wholeness_info = list.map(ele => {
+        let wholeness_temp = {
+          id: ele?.wholeness,
+          name: ele?.wholeness
+        }
+        return wholeness_temp
       })
       this.setData({
-        g_core_functions: info
+        g_core_functions: simple_info,
+        g_core_wholeness:wholeness_info
       })
     })
   },
@@ -147,10 +156,10 @@ Page({
   getOrderList() {
     showLoading("加载中...");
     const param = {
-      [u_buyRecord.days]: this.data.g_days,
-      [u_buyRecord.orderTypes]: this.data.g_orderTypes,
-      [u_buyRecord.status]: this.data.g_status,
-      [u_buyRecord.comParam]: this.data.g_comParam,
+      // [u_buyRecord.days]: this.data.g_days,
+      // [u_buyRecord.orderTypes]: this.data.g_orderTypes,
+      // [u_buyRecord.status]: this.data.g_status,
+      // [u_buyRecord.comParam]: this.data.g_comParam,
       [u_buyRecord.page]: this.data.g_page,
     };
     byGet(getApp().data.k1swUrl + u_buyRecord.URL, param).then(response => {

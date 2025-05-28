@@ -123,38 +123,54 @@ const u_getRoles = {
 // 角色列表
 const u_roleapiList = {
   URL: fin3plusUrl + "roleapi/list",
-  page:'page'
+  page: 'page'
 }
 // 角色删除
 const u_roleapidel = {
   URL: fin3plusUrl + "roleapi/del",
-  page:'page'
+  page: 'page'
 }
 // 角色删除
 const u_roleapiaddOrUpdate = {
   URL: fin3plusUrl + "roleapi/addOrUpdate",
-  page:'page'
+  page: 'page'
 }
 
 // 设置权限
 const u_setMenuTree = {
   URL: fin3plusUrl + "userapi/setMenuTree",
-  roleId:'roleId',
-  menuIds:'menuIds'
+  roleId: 'roleId',
+  menuIds: 'menuIds'
 }
 // 订单详情
 const u_getOrderDetial = {
   URL: fin3plusUrl + "deviceBuyApi/getOrderDetial",
-  orderId:'orderId'
+  orderId: 'orderId'
 }
 // 移交管理员
 const u_transferAdminUser = {
   URL: fin3plusUrl + "userapi/transferAdminUser",
-  targetUserId:'targetUserId'
+  targetUserId: 'targetUserId'
 }
-
-
+// 提交寄送钥匙单号
+const u_submitKeymailing = {
+  URL: fin3plusUrl + "deviceBuyApi/submitKeymailing",
+  orderid: 'orderid',
+  num: 'num',
+  name: 'name'
+}
+// 申请安装
+const u_submitOrderInsall = {
+  URL: fin3plusUrl + "deviceBuyApi/submitOrderInsall",
+  orderid: 'orderid',
+  personname: 'personname',
+  mobile: 'mobile',
+  address: 'address',
+  installdate: 'installdate'
+}
 module.exports = {
+  u_submitOrderInsall,
+  u_submitKeymailing,
   u_transferAdminUser,
   u_setMenuTree,
   u_getOrderDetial,
