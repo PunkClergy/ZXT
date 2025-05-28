@@ -11,7 +11,7 @@
   <!-- 主要内容区域 -->
   <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+2}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
     <block wx:for="{{g_items}}" wx:key="index">
-      <view class="content-item" wx:if="{{item.username == user}}">
+      <view class="content-item" wx:if="{{item.username != user}}">
         <view class="content-item-head">
           <view class="head-left">
             <view class="left-category">
