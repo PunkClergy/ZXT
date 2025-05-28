@@ -7,6 +7,8 @@
       <view class="title-container">
         <image src="{{logoSrc}}" bindtap="handleJumpHome" />
         <text class="title">智信通wiselink</text>
+        <view wx:if="{{account}}" style="color: #575756;font-size: 26rpx;">{{account}}（已登录）</view>
+        <view wx:else style="color: #575756;font-size: 26rpx;" bindtap="handleLogin">请登录</view>
       </view>
     </view>
   </view>
@@ -24,7 +26,7 @@
       <swiper-item wx:for="{{g_before_passing_by_icon}}" wx:key="index">
         <view class="middle-swiper-item">
           <block wx:for="{{item}}" wx:key="index">
-            <view class="middle-swiper-container">
+            <view class="middle-swiper-container" style="background:{{item.id == menuId?'radial-gradient(circle, #ECF7FA, #ECF7FA)':'22'}};border-radius: 10rpx;">
               <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList" style="height: {{s_quick_entrance_height}}px;">
                 <image src="{{!item.icon ? '/assets/images/index/icon5.png' : c_link + 'img/' + item.icon}}" />
                 <text>{{item.name}}</text>

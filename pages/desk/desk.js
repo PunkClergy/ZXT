@@ -40,7 +40,7 @@ Page({
     g_before_passing_by_icon: [], //快捷入口数据
     s_background_image_of_the_tree: '', //树的背景图
     s_background_image_of_the_banner: '', //banner背景
-    s_quick_entrance_height: 80, //快捷入口高度 70为一行 140为两行 210为三行...
+    s_quick_entrance_height: 90, //快捷入口高度 70为一行 140为两行 210为三行...
     c_link: 'https://k1sw.wiselink.net.cn/', //域名
     g_tree_structure_data: [], //分类树结构
     s_platform_height: _handleDeviceInfo.platform == "ios" || _handleDeviceInfo.platform == "devtools" ? 95 : 60, //判断系统获取底部高度
@@ -53,7 +53,8 @@ Page({
     sn_state: false, //显示地图状态
     logoSrc: '/assets/images/login/logo.png',
     c_send_key_show_momal: false,
-    c_send_key_show_type: null
+    c_send_key_show_type: null,
+    account: getApp().data.k1swUrl
   },
 
   // 转换背景图base64
@@ -218,7 +219,8 @@ Page({
 
       _this.setData({
         g_tree_structure_data: processed,
-        sn_state: menuId == 540 ? true : false
+        sn_state: menuId == 540 ? true : false,
+        menuId:menuId
       }, () => {
         _this.handleSwitchChild(processed[0]?.id);
         _this.handleRightSideData({
@@ -440,11 +442,20 @@ Page({
       }
     })
   },
+  handleLogin() {
+    wx.navigateTo({
+      url: '/pages/system/managerLoginView/loginView',
+    })
+  },
   onReady: function () {
     this.initialiImageBaseConversion()
   },
 
   onShow: function (e) {
+    console.log(getApp().data.userInfo.username)
+    this.setData({
+      account: getApp()?.data?.userInfo?.username
+    })
     this.initialGetUserInfo()
     this.initLogo()
     const scene = wx.getStorageSync('scene');
