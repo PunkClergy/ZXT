@@ -15,7 +15,7 @@
             <view class="content-item-head">
               <view class="head-left">
                 <view class="left-category">
-                  <text>{{item.realname}}</text>
+                  <text>{{item.realname}}<text style="font-size: 22rpx;padding: 4rpx; border-radius: 6rpx;background: #f0f0f0; color: #575656;margin-left: 20rpx;" wx:if="{{item.acquiescent}}">超级管理员</text></text>
                 </view>
               </view>
               <view class="head-right">

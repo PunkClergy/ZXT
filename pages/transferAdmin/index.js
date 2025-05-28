@@ -37,6 +37,9 @@ Page({
   },
   onShow() {
     this.initialiImageBaseConversion()
+    this.setData({
+      user: getApp()?.data?.userInfo?.username
+    })
   },
 
   initialiImageBaseConversion() {
@@ -119,7 +122,7 @@ Page({
           `${getApp().data.k1swUrl}${u_transferAdminUser.URL}`, params,
           (response) => {
             if (response.data.code == 1000) {
-              showToast(response.data.content)
+              showToast(response.data.msg)
               wx.switchTab({
                 url: '/pages/desk/desk',
               })
