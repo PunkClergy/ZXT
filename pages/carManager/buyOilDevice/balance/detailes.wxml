@@ -1,7 +1,7 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
   <custom-header title="余额明细" />
   <!-- index.wxml -->
-  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight +90)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
+  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight +60)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 切换部分 -->
     <view class="record-tabs" bindtap="handleSwitchTab">
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">充值记录</view>
@@ -10,7 +10,7 @@
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
-      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight  + 50 + 90)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight  + 50 + 60)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
         <block wx:for="{{g_items}}" wx:key="index">
           <view class="content-item">
             <view class="content-item-head">
@@ -65,7 +65,7 @@
       </view>
     </block>
     <block wx:if="{{c_activeTab ==3}}">
-      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight  + 50 + 90 +10)}}px;">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight  + 50 + 60 +10)}}px;">
         <!-- <view class="" style="display: flex;justify-content: space-between;margin:10rpx;padding: 10rpx;background: #fff;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
           <text style="font-size: 26rpx;">可用余额：100</text>
           <text bindtap="handleRechargeJump" style="background: #409EFF; font-size: 26rpx;color: #fff;padding: 5rpx 20rpx;border-radius: 10rpx;">充值</text>
