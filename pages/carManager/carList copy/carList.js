@@ -29,7 +29,8 @@ Page({
     g_triggered: false, //下拉刷新是否开启
     g_total: 0, //列表总数
     g_black: [],
-    g_platenumbers: []
+    g_platenumbers: [],
+    batterylift: '一键启动', //启动方式
   },
 
   onLoad: function (options) {
