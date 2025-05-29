@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "车辆管理",
+  "usingComponents": {
+    "drop-filter-com": "/components/DropFilterCom/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}
+
