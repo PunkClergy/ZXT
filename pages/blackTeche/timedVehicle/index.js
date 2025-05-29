@@ -40,7 +40,7 @@ Page({
         value: '2'
       }
     ], //tabs切换签
-    c_activeTab: 1, // 默认选中的Tab索引
+    c_activeTab: 2, // 默认选中的Tab索引
     days: [],
     params: {}, //新增管控数据部分字段
     starttime: '00:00', //开始管控时间

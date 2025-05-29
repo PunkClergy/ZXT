@@ -122,7 +122,7 @@ map {
 }
 
 .info-lower-layer {
-  background-color: #FFFFFF;
+  background: radial-gradient(circle, #84adf7, #96b5ec);
   font-family: PingFang SC;
   font-weight: 500;
   font-size: 24rpx;

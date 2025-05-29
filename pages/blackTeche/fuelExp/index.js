@@ -38,7 +38,7 @@ Page({
         value: '2'
       }
     ], //tabs切换签
-    c_activeTab: 1,
+    c_activeTab: 2,
     params: {},
     file: null,
     g_triggered: false, //下拉刷新状态
