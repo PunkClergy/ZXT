@@ -98,8 +98,7 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-
-
+    console.log(options)
     if (options?.datails) {
       var carItem = JSON.parse(options.datails);
       console.log(options, 'Attached2')
