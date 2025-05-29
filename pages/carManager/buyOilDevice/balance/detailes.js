@@ -40,7 +40,7 @@ Page({
     g_page: 1, //列表页码
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
-    c_activeTab: 3, // 默认选中的Tab索引
+    c_activeTab: 2, // 默认选中的Tab索引
     amounts: [{
         label: '100元',
         value: '100'
