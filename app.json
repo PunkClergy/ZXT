@@ -3,8 +3,7 @@
     "custom": false,
     "color": "#8a8a8a",
     "selectedColor": "#ff4e00",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/desk/desk",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
@@ -21,6 +20,12 @@
         "iconPath": "/assets/images/index/work@2x.png",
         "selectedIconPath": "/assets/images/index/work_s@2x.png",
         "text": "一键下单"
+      },
+      {
+        "pagePath": "pages/carManager/buyOilDevice/balance/detailes",
+        "iconPath": "/assets/images/index/work@2x.png",
+        "selectedIconPath": "/assets/images/index/work_s@2x.png",
+        "text": "充值"
       },
       {
         "pagePath": "pages/groupQrCode/index",

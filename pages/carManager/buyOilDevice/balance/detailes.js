@@ -40,7 +40,7 @@ Page({
     g_page: 1, //列表页码
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
-    c_activeTab: 1, // 默认选中的Tab索引
+    c_activeTab: 3, // 默认选中的Tab索引
     amounts: [{
         label: '100元',
         value: '100'
@@ -58,11 +58,117 @@ Page({
     resultMessage: '',
     resultSuccess: false,
     selected: null,
-    amount: 0
+    amount: 0,
+    allChecked: false,
+    selectedCount: 0,
+    priceTotal: 0,
+    tableData: [{
+        product: '租车MCCK',
+        item: '服务费',
+        price: 5999.00,
+        checked: false
+      },
+      {
+        product: '车队MCCK',
+        item: '年度服务费',
+        price: 299.00,
+        checked: false
+      },
+      {
+        product: '网约车MCCK',
+        item: '月度服务费',
+        price: 399.00,
+        checked: false
+      },
+      {
+        product: '金融MCCK',
+        item: '试用转正式版服务费',
+        price: 19999.00,
+        checked: false
+      },
+      {
+        product: '国际租车分时出行MCCK',
+        item: '硬件更换费用',
+        price: 2499.00,
+        checked: false
+      }
+    ]
   },
 
 
+  // 切换单个复选框
+  toggleCheck(e) {
+    const index = e.currentTarget.dataset.value;
+    console.log(e)
+    const key = `tableData[${index}].checked`;
+    this.setData({
+      [key]: !this.data.tableData[index].checked
+    }, () => {
+      this.calculateSelected();
+      this.checkAllState();
+    });
+  },
 
+  // 全选/取消全选
+  toggleAll() {
+    const newValue = !this.data.allChecked;
+    const tableData = this.data.tableData.map(item => ({
+      ...item,
+      checked: newValue
+    }));
+
+    this.setData({
+      allChecked: newValue,
+      tableData
+    }, () => {
+      this.calculateSelected();
+    });
+  },
+
+  // 计算选中数量
+  calculateSelected() {
+    const count = this.data.tableData.filter(item => item.checked).length;
+    const total = (this.data.tableData.reduce((sum, item) => {
+      return item.checked ? sum + item.price : sum;
+    }, 0)).toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });;
+    this.setData({
+      selectedCount: count,
+      priceTotal: total
+    });
+  },
+
+  // 检查全选状态
+  checkAllState() {
+    const allChecked = this.data.tableData.every(item => item.checked);
+    this.setData({
+      allChecked
+    });
+  },
+  handleRechargeJump() {
+    this.setData({
+      c_activeTab: 2
+    })
+  },
+  // 提交操作
+  submit() {
+    const selectedItems = this.data.tableData.filter(item => item.checked);
+    if (selectedItems.length === 0) {
+      wx.showToast({
+        title: '请选择支付项目',
+        icon: 'none'
+      });
+      return;
+    }
+
+    wx.showModal({
+      title: '提示',
+      content: `此功能暂时缺失`,
+      showCancel: false
+    });
+  },
   // 全屏背景图
   initialiImageBaseConversion() {
     const _this = this;
@@ -145,12 +251,6 @@ Page({
       this.initList();
     });
   },
-
-
-
- 
-
-
   // 切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
@@ -164,6 +264,13 @@ Page({
       if (this.data.c_activeTab != 2) {
         this.setData({
           c_activeTab: 2,
+        })
+      }
+    }
+    if (flag == '待办服务单') {
+      if (this.data.c_activeTab != 3) {
+        this.setData({
+          c_activeTab: 3,
         })
       }
     }
@@ -284,6 +391,7 @@ Page({
       })
     }
     this.initList()
+    this.calculateSelected();
   },
   onShow() {
     this.initialiImageBaseConversion()

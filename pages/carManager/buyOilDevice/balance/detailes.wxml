@@ -1,15 +1,16 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
   <custom-header title="余额明细" />
   <!-- index.wxml -->
-  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
+  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight +90)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 切换部分 -->
     <view class="record-tabs" bindtap="handleSwitchTab">
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">充值记录</view>
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">充值</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_2:s_background_tabs_active_2}}');">待办服务单</view>
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
-      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight  + 50 + 90)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
         <block wx:for="{{g_items}}" wx:key="index">
           <view class="content-item">
             <view class="content-item-head">
@@ -38,31 +39,80 @@
     </block>
     <block wx:if="{{c_activeTab == 2}}">
       <view class="recharge-page">
-  <!-- 充值面额区 -->
-  <view class="various-denom">
-    <text class="various-denom-title">余额充值</text>
-    <view class="various-denom-list">
-      <view class="various-denom-item {{index ==selected?'active':'' }}" data-value="{{item.value}}" wx:for="{{amounts}}" wx:key="id" data-index="{{index}}" bindtap="handleVarious">
-        <text>{{item.label}}</text>
-      </view>
-    </view>
-    <view class="various-denom-custom {{selected == 'custom'?'active':''}}" bindtap="handleCustom">
-      <text>自定义面额</text>
-    </view>
-    <view class="various-denom-custom-num" wx:if="{{selected == 'custom'}}">
-      <input placeholder="请输入充值金额" bindinput="handleCustomBlur"/>
-    </view>
-  </view>
+        <!-- 充值面额区 -->
+        <view class="various-denom">
+          <text class="various-denom-title">余额充值</text>
+          <view class="various-denom-list">
+            <view class="various-denom-item {{index ==selected?'active':'' }}" data-value="{{item.value}}" wx:for="{{amounts}}" wx:key="id" data-index="{{index}}" bindtap="handleVarious">
+              <text>{{item.label}}</text>
+            </view>
+          </view>
+          <view class="various-denom-custom {{selected == 'custom'?'active':''}}" bindtap="handleCustom">
+            <text>自定义面额</text>
+          </view>
+          <view class="various-denom-custom-num" wx:if="{{selected == 'custom'}}">
+            <input placeholder="请输入充值金额" bindinput="handleCustomBlur" />
+          </view>
+        </view>
 
-  <view class="recharge-amount-total">
-    <view class="recharge-amount-title">合计</view>
-    <view class="recharge-amount-num">{{amount}}元</view>
-  </view>
-  <view class="recharge-btn" bindtap="handlePayment">
-    <text>充值 </text>
-  </view>
-</view>
+        <view class="recharge-amount-total">
+          <view class="recharge-amount-title">合计</view>
+          <view class="recharge-amount-num">{{amount}}元</view>
+        </view>
+        <view class="recharge-btn" bindtap="handlePayment">
+          <text>充值 </text>
+        </view>
+      </view>
+    </block>
+    <block wx:if="{{c_activeTab ==3}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight  + 50 + 90 +10)}}px;">
+        <!-- <view class="" style="display: flex;justify-content: space-between;margin:10rpx;padding: 10rpx;background: #fff;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+          <text style="font-size: 26rpx;">可用余额：100</text>
+          <text bindtap="handleRechargeJump" style="background: #409EFF; font-size: 26rpx;color: #fff;padding: 5rpx 20rpx;border-radius: 10rpx;">充值</text>
+        </view> -->
+        <view style="margin: 10rpx auto;padding: 5rpx;">
+          <!-- 表格标题行 -->
+          <view style="display: flex; border-bottom: 1px solid #e0e0e0; padding: 12rpx 0; background-color: #f5f5f5;">
+            <view style="flex: 2; text-align: center; font-weight: bold;font-size: 26rpx;">产品名称</view>
+            <view style="flex: 3; text-align: center; font-weight: bold;font-size: 26rpx;">消费项目</view>
+            <view style="flex: 1; text-align: center; font-weight: bold;font-size: 26rpx;">价格</view>
+            <view style="flex: 1; text-align: center; font-weight: bold;font-size: 26rpx;">
+              <checkbox checked="{{allChecked}}" bindtap="toggleAll" style="margin-left: 6rpx; transform: scale(0.8) " />
+            </view>
+          </view>
+
+          <!-- 表格数据行 -->
+          <view wx:for="{{tableData}}" wx:key="index" style="display: flex; border-bottom: 1px solid #eee; padding: 20rpx 0; align-items: center; background-color: {{index % 2 === 0 ? '#fff' : '#fafafa'}}">
+            <!-- 产品名称 -->
+            <view style="flex: 2; padding: 0 10rpx; text-align: center;font-size: 26rpx;">{{item.product}}</view>
+
+            <!-- 消费项目 -->
+            <view style="flex: 3; padding: 0 10rpx; text-align: center; color: #666;font-size: 26rpx;">{{item.item}}</view>
+
+            <!-- 价格 -->
+            <view style="flex: 1; padding: 0 10rpx; text-align: center; color: #e64340; font-weight: bold;font-size: 26rpx;">
+              ￥{{item.price}}
+            </view>
+
+            <!-- 复选框 -->
+            <view style="flex: 1; display: flex; justify-content: center;">
+              <checkbox data-value="{{index}}" checked="{{item.checked}}" bindtap="toggleCheck" style="transform: scale(0.8);" />
+            </view>
+          </view>
+
+          <!-- 底部操作栏 -->
+          <view style="width: 96%; background: #fff; padding: 10rpx; display: flex; justify-content: flex-end; align-items: center;margin-top: 20rpx;">
+            <view style="display: flex;align-items: center;gap: 20rpx;font-size: 28rpx;">
+              <text>已选：{{selectedCount}}项</text>
+              <text>总价: ￥{{priceTotal}}</text>
+              <text bindtap="submit" style="background: #07c160;color: #fff;font-size: 26rpx;padding: 5rpx 20rpx;border-radius: 10rpx;">支付</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
     </block>
   </view>
 
 </view>
+<custom-tab-bar selectedtext='充值' />

@@ -289,7 +289,8 @@ Page({
       })
       return
     }
-    if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList' || item.path === '/pages/groupQrCode/index') {
+    // 1、分享朋友 2、订单采购 3、群二维码 4、充值页面
+    if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList' || item.path === '/pages/groupQrCode/index'||item.path =='/pages/carManager/buyOilDevice/balance/detailes') {
       wx.switchTab({
         url: item.path
       });
