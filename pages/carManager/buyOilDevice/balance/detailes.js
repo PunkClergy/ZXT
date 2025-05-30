@@ -62,36 +62,37 @@ Page({
     allChecked: false,
     selectedCount: 0,
     priceTotal: 0,
-    tableData: [{
-        product: '租车MCCK',
-        item: '服务费',
-        price: 5999.00,
-        checked: false
-      },
+    tableData: [
+      // {
+      //   product: '租车MCCK',
+      //   item: '服务费',
+      //   price: 5999.00,
+      //   checked: false
+      // },
       {
         product: '车队MCCK',
         item: '年度服务费',
-        price: 299.00,
+        price: 360.00,
         checked: false
       },
-      {
-        product: '网约车MCCK',
-        item: '月度服务费',
-        price: 399.00,
-        checked: false
-      },
-      {
-        product: '金融MCCK',
-        item: '试用转正式版服务费',
-        price: 19999.00,
-        checked: false
-      },
-      {
-        product: '国际租车分时出行MCCK',
-        item: '硬件更换费用',
-        price: 2499.00,
-        checked: false
-      }
+      // {
+      //   product: '网约车MCCK',
+      //   item: '月度服务费',
+      //   price: 399.00,
+      //   checked: false
+      // },
+      // {
+      //   product: '金融MCCK',
+      //   item: '试用转正式版服务费',
+      //   price: 19999.00,
+      //   checked: false
+      // },
+      // {
+      //   product: '国际租车分时出行MCCK',
+      //   item: '硬件更换费用',
+      //   price: 2499.00,
+      //   checked: false
+      // }
     ]
   },
 
