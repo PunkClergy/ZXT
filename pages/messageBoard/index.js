@@ -68,9 +68,13 @@ Page({
       }, (response) => {
         if (response?.data?.code != 1000) {
           showToast(response?.data?.msg);
+       
           hideLoading();
           return
         }
+        wx.switchTab({
+          url: '/pages/desk/desk'
+        })
         showToast(response?.data?.msg);
       }, (error) => {
         hideLoading();
