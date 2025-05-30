@@ -201,7 +201,6 @@ Page({
   // 提交
   handleSubmit() {
     showToast('此功能暂无接口')
-    return
     const {
       params,
       currentArea

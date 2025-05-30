@@ -171,7 +171,11 @@ const u_submitOrderInsall = {
 const u_myCustomerService = {
   URL: fin3plusUrl + "deskapi/myCustomerService",
 }
+const u_addMessage = {
+  URL: fin3plusUrl + "userapi/addMessage",
+}
 module.exports = {
+  u_addMessage,
   u_myCustomerService,
   u_submitOrderInsall,
   u_submitKeymailing,
