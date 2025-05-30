@@ -168,7 +168,11 @@ const u_submitOrderInsall = {
   address: 'address',
   installdate: 'installdate'
 }
+const u_myCustomerService = {
+  URL: fin3plusUrl + "deskapi/myCustomerService",
+}
 module.exports = {
+  u_myCustomerService,
   u_submitOrderInsall,
   u_submitKeymailing,
   u_transferAdminUser,

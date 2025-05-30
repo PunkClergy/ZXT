@@ -57,7 +57,7 @@
       </view>
     </view>
     <!-- 所在省x -->
-    <view class="card-info-item">
+    <!-- <view class="card-info-item">
       <label>所在省</label>
       <view class="card-info-item-input">
         <picker value="{{provincesIndex}}" data-item="provinces" bindchange="handleProvincesPicker" range="{{provinces}}" range-key="name">
@@ -67,9 +67,9 @@
         </picker>
 
       </view>
-    </view>
+    </view> -->
     <!-- 所在市x -->
-    <view class="card-info-item">
+    <!-- <view class="card-info-item">
       <label>所在市</label>
       <view class="card-info-item-input">
         <picker value="{{cityIndex}}" data-item="citys" bindchange="handleCityPicker" range="{{citys}}" range-key="name" disabled="{{provincesIndex==null}}">
@@ -78,7 +78,7 @@
           </view>
         </picker>
       </view>
-    </view>
+    </view> -->
     <!-- 备注 -->
     <view class="card-info-item">
       <label>备注</label>

@@ -12,7 +12,7 @@
       </block>
       <block wx:else>
         <view class="card-info-item-input">
-          <input placeholder="请输入姓名" value="{{params.name}}" data-item="name" bindfocus="handleBindinput" />
+          <input placeholder="请输入姓名" value="{{params.name}}" data-item="name" bindinput="handleBindinput" />
         </view>
       </block>
 
@@ -25,34 +25,34 @@
       </block>
       <block wx:else>
         <view class="card-info-item-input">
-          <input placeholder="请输入联系电话" value="{{params.mobile}}" data-item="mobile" bindfocus="handleBindinput" />
+          <input placeholder="请输入联系电话" value="{{params.mobile}}" data-item="mobile" bindinput="handleBindinput" />
         </view>
       </block>
     </view>
     <!-- 年款 -->
-    <view class="card-info-item">
+    <!-- <view class="card-info-item">
       <label>身份证号<text>*</text></label>
       <block wx:if="{{page_nature=='see'}}">
         <view class="viewText">{{params.idcard||''}}</view>
       </block>
       <block wx:else>
         <view class="card-info-item-input">
-          <input placeholder="请输入身份证号" value="{{params.idcard}}" data-item="idcard" bindfocus="handleBindinput" />
+          <input placeholder="请输入身份证号" value="{{params.idcard}}" data-item="idcard" bindinput="handleBindinput" />
         </view>
       </block>
-    </view>
+    </view> -->
     <!-- 详细地址 -->
-    <view class="card-info-item">
+    <!-- <view class="card-info-item">
       <label>详细地址<text>*</text></label>
       <block wx:if="{{page_nature=='see'}}">
         <view class="viewText">{{params.address||''}}</view>
       </block>
       <block wx:else>
         <view class="card-info-item-input">
-          <input placeholder="请输入地址" value="{{params.address}}" data-item="address" bindfocus="handleBindinput" />
+          <input placeholder="请输入地址" value="{{params.address}}" data-item="address" bindinput="handleBindinput" />
         </view>
       </block>
-    </view>
+    </view> -->
    
   </view>
   <view class="card-footer">

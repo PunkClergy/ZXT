@@ -146,7 +146,8 @@
     "pages/groupQrCode/index",
     "pages/transferAdmin/index",
     "pages/messageBoard/index",
-    "pages/myProfile/index"
+    "pages/myProfile/index",
+    "pages/exclusive/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

@@ -1,0 +1,25 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="专属客服" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <view class="card-head">
+      <text>专属客服</text>
+    </view>
+    <view class="card-info">
+      <view wx:for="{{allRes}}" wx:key="index" style="border-bottom: 1rpx solid #f0f0f0;">
+        <!-- 姓名 -->
+        <view class="card-info-item">
+          <label>{{item.name}}</label>
+        </view>
+        <view class="card-info-item">
+          <label>{{item.mobile}}</label>
+        </view>
+        <view class="card-info-item">
+          <label>{{item.servicetime}}</label>
+        </view>
+      </view>
+      <!-- 备注 -->
+    </view>
+  </view>
+</view>

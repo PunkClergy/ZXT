@@ -436,5 +436,6 @@ Page({
   },
   onShow() {
     this.initialiImageBaseConversion()
+    this.inittMenuTree()
   },
 })
