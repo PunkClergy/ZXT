@@ -415,6 +415,7 @@ Page({
     this.initialGetBanner()
     this.handleTermialList()
     if (options?.scene || options?.query) {
+      console.log(options?.scene || options?.query)
       this.setData({
         sn_state: true,
         sn_specific_value: options?.scene || options?.query
@@ -459,11 +460,11 @@ Page({
       account: getApp()?.data?.userInfo?.realname
     })
     // 暂时取消更新token
-    // this.initialGetUserInfo()
+    this.initialGetUserInfo()
     this.initLogo()
     const scene = wx.getStorageSync('scene');
     this.setData({
-      sn_specific_value: scene || ''
+      sn_specific_value: this.data.sn_specific_value || ''
     })
   },
   onUnload: function () {
