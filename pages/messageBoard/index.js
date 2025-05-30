@@ -68,13 +68,22 @@ Page({
       }, (response) => {
         if (response?.data?.code != 1000) {
           showToast(response?.data?.msg);
-       
+
           hideLoading();
           return
         }
-        wx.switchTab({
-          url: '/pages/desk/desk'
+        // 在页面JS中触发确认款弹窗
+        wx.showModal({
+          title: '提示',
+          content: response?.data?.msg,
+          confirmText: '确认',
+          success: (res) => {
+            wx.switchTab({
+              url: '/pages/desk/desk'
+            })
+          }
         })
+
         showToast(response?.data?.msg);
       }, (error) => {
         hideLoading();
