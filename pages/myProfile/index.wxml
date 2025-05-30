@@ -1,7 +1,7 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
 
 <!-- 自定义头部 -->
-<custom-header title="税务和发票资料" />
+<custom-header title="智信通账号信息" />
 <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
   <view class="card-head">
     <text>我的资料</text>
@@ -57,7 +57,7 @@
       </view>
     </view>
     <!-- 所在省x -->
-    <!-- <view class="card-info-item">
+    <view class="card-info-item">
       <label>所在省</label>
       <view class="card-info-item-input">
         <picker value="{{provincesIndex}}" data-item="provinces" bindchange="handleProvincesPicker" range="{{provinces}}" range-key="name">
@@ -67,9 +67,9 @@
         </picker>
 
       </view>
-    </view> -->
+    </view>
     <!-- 所在市x -->
-    <!-- <view class="card-info-item">
+    <view class="card-info-item">
       <label>所在市</label>
       <view class="card-info-item-input">
         <picker value="{{cityIndex}}" data-item="citys" bindchange="handleCityPicker" range="{{citys}}" range-key="name" disabled="{{provincesIndex==null}}">
@@ -78,7 +78,7 @@
           </view>
         </picker>
       </view>
-    </view> -->
+    </view>
     <!-- 备注 -->
     <view class="card-info-item">
       <label>备注</label>
@@ -87,51 +87,6 @@
       </view>
     </view>
     <!-- 备注 -->
-    <view class="card-info-item">
-      <label style="font-weight:bold">开票信息</label>
-    </view>
-    <!-- 开票名称 -->
-    <view class="card-info-item">
-      <label>开票名称</label>
-      <view class="card-info-item-input">
-        <input placeholder="请输入开票名称" value="{{params.invoiceHeader}}" data-item="invoiceHeader" bindinput="handleBindinput" />
-      </view>
-    </view>
-    <!-- 纳税人识别码 -->
-    <view class="card-info-item">
-      <label>纳税人识别号</label>
-      <view class="card-info-item-input">
-        <input placeholder="请输入纳税人识别号" value="{{params.invoiceNum}}" data-item="invoiceNum" bindinput="handleBindinput" />
-      </view>
-    </view>
-    <!-- 电话 -->
-    <view class="card-info-item">
-      <label>电话</label>
-      <view class="card-info-item-input">
-        <input placeholder="请输入电话" value="{{params.invoiceMobile}}" data-item="invoiceMobile" bindinput="handleBindinput" />
-      </view>
-    </view>
-    <!-- 地址 -->
-    <view class="card-info-item">
-      <label>地址</label>
-      <view class="card-info-item-input">
-        <input placeholder="请输入地址" value="{{params.invoiceAddress}}" data-item="invoiceAddress" bindinput="handleBindinput" />
-      </view>
-    </view>
-    <!-- 开户行 -->
-    <view class="card-info-item">
-      <label>开户行</label>
-      <view class="card-info-item-input">
-        <input placeholder="请输入开户行" value="{{params.accountsBank}}" data-item="accountsBank" bindinput="handleBindinput" />
-      </view>
-    </view>
-    <!-- 开户行 -->
-    <view class="card-info-item">
-      <label>开户账号</label>
-      <view class="card-info-item-input">
-        <input placeholder="请输入开户账号" value="{{params.bankCardNumber}}" data-item="bankCardNumber" bindinput="handleBindinput" />
-      </view>
-    </view>
   </view>
   <view class="card-footer">
     <view bindtap="handleSubmit">确认修改</view>

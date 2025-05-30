@@ -220,7 +220,7 @@ Page({
       _this.setData({
         g_tree_structure_data: processed,
         sn_state: menuId == 540 ? true : false,
-        menuId:menuId
+        menuId: menuId
       }, () => {
         _this.handleSwitchChild(processed[0]?.id);
         _this.handleRightSideData({
@@ -290,7 +290,7 @@ Page({
       return
     }
     // 1、分享朋友 2、订单采购 3、群二维码 4、充值页面
-    if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList' || item.path === '/pages/groupQrCode/index'||item.path =='/pages/carManager/buyOilDevice/balance/detailes') {
+    if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList' || item.path === '/pages/groupQrCode/index' || item.path == '/pages/carManager/buyOilDevice/balance/detailes') {
       wx.switchTab({
         url: item.path
       });
@@ -433,15 +433,17 @@ Page({
   },
   // 校验参数
   initialGetUserInfo() {
-    console.log(111, 333)
-    console.log(getApp())
-    byGet(getApp().data.k1swUrl + u_getUserinfo.URL, {}).then(response => {
-      if (response.data.code == 1000) {
-        wx.setStorageSync('userKey', response.data.content);
-      } else {
-        wx.clearStorageSync();
-      }
-    })
+    console.log(getApp().data.k1swUrl)
+    if (getApp().data.k1swUrl.length) {
+      byGet(this.data.c_link + u_getUserinfo.URL, {}).then(response => {
+        console.log(response)
+        if (response.data.code == 1000) {
+          wx.setStorageSync('userKey', response.data.content);
+        } else {
+          wx.clearStorageSync();
+        }
+      })
+    }
   },
   handleLogin() {
     wx.navigateTo({
@@ -456,7 +458,8 @@ Page({
     this.setData({
       account: getApp()?.data?.userInfo?.realname
     })
-    this.initialGetUserInfo()
+    // 暂时取消更新token
+    // this.initialGetUserInfo()
     this.initLogo()
     const scene = wx.getStorageSync('scene');
     this.setData({

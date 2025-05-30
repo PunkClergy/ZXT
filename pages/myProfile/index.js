@@ -92,12 +92,12 @@ Page({
       const info = allRes.data.content
       this.setData({
         items: info
-      },()=>{
-          const {
+      }, () => {
+        const {
           items,
           params
         } = this.data;
-        console.log(items,params?.businessTypes)
+        console.log(items, params?.businessTypes)
         const updatedItems = items.map(item => ({
           id: item?.id,
           name: item?.name,
@@ -200,13 +200,15 @@ Page({
   },
   // 提交
   handleSubmit() {
+    showToast('此功能暂无接口')
+    return
     const {
       params,
       currentArea
     } = this.data
     byPost(`${getApp().data.k1swUrl}${u_companyImprove.URL}`, {
       ...params,
-      serviceArea:currentArea,
+      serviceArea: currentArea,
       businessTypes: params?.businessTypes?.join()
     }, (response) => {
       if (response?.data?.code != 1000) {
@@ -258,10 +260,10 @@ Page({
           largeCustomer: allRes.largeCustomer || '',
           bak: allRes?.bak || '',
           businessTypes: businessTypes || '',
-        
+
         },
         provincesIndex: ((index => index === -1 ? null : index)((_this.data.provinces || []).findIndex(item => item?.id == provinceId))),
-        currentArea:allRes?.serviceArea
+        currentArea: allRes?.serviceArea
       };
       if (provinceId) {
         const cityResponse = await byGet(
@@ -288,12 +290,12 @@ Page({
   },
 
   onReady() {
-    this.initialiImageBaseConversion()
+
   },
 
 
   onShow() {
-
+    this.initialiImageBaseConversion()
   },
 
 
