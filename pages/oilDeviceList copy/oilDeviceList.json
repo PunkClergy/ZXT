@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "油量设备管理",
-  "usingComponents": {
-    "mp-searchbar": "weui-miniprogram/searchbar/searchbar",
-    "mp-actionSheet": "weui-miniprogram/actionsheet/actionsheet",
-    "mp-half-screen-dialog": "weui-miniprogram/half-screen-dialog/half-screen-dialog",
-    "card-list":"/components/CardList/index"
-  }
-}
