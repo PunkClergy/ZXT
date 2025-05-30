@@ -145,7 +145,8 @@
     "pages/blackTeche/sendTheKey/index",
     "pages/groupQrCode/index",
     "pages/transferAdmin/index",
-    "pages/messageBoard/index"
+    "pages/messageBoard/index",
+    "pages/myProfile/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
