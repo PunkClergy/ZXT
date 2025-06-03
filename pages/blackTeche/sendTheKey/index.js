@@ -57,7 +57,8 @@ Page({
     startTime: '19:00', //历史轨迹查询时间
     endDate: '2025-03-20', //历史轨迹查询时间
     endTime: '19:00', //历史轨迹查询时间
-    copied: false
+    copied: false,
+    controlcode:''
   },
   // 获取当前年月日 时分
   handleCurrentDate() {
@@ -400,6 +401,13 @@ Page({
       }
     });
   },
+  handleForward(evt){
+    console.log(evt)
+    const controlcode = evt.currentTarget.dataset.item.controlcode
+    this.setData({
+      controlcode: controlcode,
+    });
+  },
   onLoad(options) {
     this.getOrderList()
     this.getKeySendingList()
@@ -414,5 +422,25 @@ Page({
     this.initialiImageBaseConversion()
     this.handleCurrentDate()
   },
+  // onShareAppMessage() {
+  //   const { controlcode  } = this.data;
+
+  //   return {
+  //     title: '我想分享的标题',
+  //     path: `/pages/desk/desk?scene=${controlcode}`, // 动态参数
+  //     success: function (res) {
+  //       console.log('转发成功');
+  //     },
+  //     fail: function (err) {
+  //       console.log('转发失败', err);
+  //     }
+  //   };
+  // },
+  onShareAppMessage() {
+    return {
+      title: '发送电子钥匙',
+      path: '/pages/desk/desk?scene=' + this.data.controlcode,
+    }
+  }
 
 })

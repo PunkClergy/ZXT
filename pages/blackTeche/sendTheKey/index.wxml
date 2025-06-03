@@ -62,7 +62,7 @@
       <view class="record-tabs-1">
         <view class="search-box">
           <icon type="search" size="16" class="search-icon" />
-          <input placeholder="车牌号/设备号/使用人" class="search-input" bindblur="bindblurSea"/>
+          <input placeholder="车牌号/设备号/使用人" class="search-input" bindblur="bindblurSea" />
         </view>
       </view>
       <view class="tabs-1-conut">共有{{y_total}}条记录</view>
@@ -83,7 +83,8 @@
             <view class="card-info">
               <time-line events="{{[{content:item.startAddress||'-',createdate:item.startdate||'-'},{content:item.endAddress||'-',createdate:item.enddate||'-'}]}}" />
             </view>
-            <view class="card-footer1" wx:if="{{!item.status}}"  >
+            <view class="card-footer1" wx:if="{{!item.status}}">
+              <button data-item="{{item}}" open-type="share" bindtap="handleForward">一键转发</button>
               <text bindtap="handleCopy" data-item="{{item}}">{{ copied ? '已复制' : '复制链接' }}</text>
               <text bindtap="handleCance" data-item="{{item}}">取消用车</text>
             </view>

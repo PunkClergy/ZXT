@@ -541,6 +541,18 @@
   background-color: #4587fd;
   color: #fff;
 }
+.card-footer1 button {
+  border: 1px solid #f0f0f0;
+  border-radius: 8rpx;
+  height: 58rpx;
+  font-size: 22rpx;
+  display: flex;
+  /* align-items: center; */
+  justify-content: flex-end;
+  background-color: #4587fd;
+  color: #fff;
+  margin: inherit;
+}
 
 .detection_button {
   position: absolute;

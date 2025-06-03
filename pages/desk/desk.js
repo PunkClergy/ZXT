@@ -266,13 +266,18 @@ Page({
         cancelText: '取消',
         confirmText: '确定',
         success(res) {
-          getApp().data.userInfo = '';
-          try {
-            wx.clearStorageSync();
-          } catch (e) {
-            wx.clearStorage();
+          if (res.confirm) {
+            getApp().data.userInfo = '';
+            try {
+              wx.clearStorageSync();
+            } catch (e) {
+              wx.clearStorage();
+            }
+            _this.handleGetMenuList(_this?.data?.g_before_passing_by_icon?.[0][0])
+            _this.setData({
+              account: null
+            })
           }
-          _this.handleGetMenuList(_this?.data?.g_before_passing_by_icon?.[0][0])
         }
       });
       return
@@ -456,9 +461,20 @@ Page({
   },
 
   onShow: function (e) {
-    this.setData({
-      account: getApp()?.data?.userInfo?.realname
-    })
+    const _this = this
+    wx.getStorage({
+      key: 'userKey', // 替换为你的缓存键值
+      success(res) {
+        console.log("获取成功", res.data); // 成功时的数据
+        _this.setData({
+          account: res?.data?.realname
+        })
+      },
+      fail(err) {
+        console.error("获取失败", err); // 失败时的错误信息
+      }
+    });
+
     // 暂时取消更新token
     this.initialGetUserInfo()
     this.initLogo()
