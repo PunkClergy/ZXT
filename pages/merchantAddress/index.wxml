@@ -1,0 +1,24 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="智信通收货地址" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <view class="card-info">
+      <view wx:for="{{allRes}}" wx:key="index" style="border-bottom: 1rpx solid #f0f0f0;">
+        <view class="card-info-item">
+          <label style="font-weight: bold;">收货地址</label>
+        </view>
+        <view class="card-info-item">
+          <label>{{item.linkperson}}</label>
+        </view>
+        <view class="card-info-item">
+          <label>{{item.linkmobile}}</label>
+        </view>
+        <view class="card-info-item">
+          <label>{{item.address}}</label>
+        </view>
+
+      </view>
+    </view>
+  </view>
+</view>

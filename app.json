@@ -147,7 +147,9 @@
     "pages/transferAdmin/index",
     "pages/messageBoard/index",
     "pages/myProfile/index",
-    "pages/exclusive/index"
+    "pages/exclusive/index",
+    "pages/merchantInfo/index",
+    "pages/merchantAddress/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

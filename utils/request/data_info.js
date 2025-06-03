@@ -174,7 +174,15 @@ const u_myCustomerService = {
 const u_addMessage = {
   URL: fin3plusUrl + "userapi/addMessage",
 }
+const u_zxtInvoicelnfo = {
+  URL: fin3plusUrl + "deskapi/zxtInvoiceInfo",
+}
+const u_zxtShippingAddress = {
+  URL: fin3plusUrl + "deskapi/zxtShippingAddress",
+}
 module.exports = {
+  u_zxtShippingAddress,
+  u_zxtInvoicelnfo,
   u_addMessage,
   u_myCustomerService,
   u_submitOrderInsall,
