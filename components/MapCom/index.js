@@ -434,6 +434,7 @@ Component({
 
     //底部 "按钮" 操作 
     handleFooterBtn(evt) {
+      console.log(evt)
       if (!this.data.sn) {
         showToast('无可用车辆')
         return
@@ -472,10 +473,10 @@ Component({
           return safeHideLoading();
         }
         const controlType = Number(evt?.currentTarget?.id) || 0;
-        if (![1, 2, 3, 4, 5].includes(controlType)) {
-          showToast('无效的控制类型');
-          return safeHideLoading();
-        }
+        // if (![1, 2, 3, 4, 5].includes(controlType)) {
+        //   showToast('无效的控制类型');
+        //   return safeHideLoading();
+        // }
         const requestParam = {
           [u_operation.sn]: sn,
           [u_operation.operationType]: controlType,

@@ -218,10 +218,11 @@ Page({
         showToast(response.data.msg);
         return
       }
+      console.log(this.data.carItem.xsgw)
       this.setData({
-        remaining_oil_quantity: info?.confirmOilRemainA,
+        remaining_oil_quantity: info?.typeOfReMailOil == 1 ? Number(this.data.carItem.xsgw) * Number(info?.confirmOilRemainA / 100) : info?.confirmOilRemainA,
         oilShowModal: true,
-        progress: ((info?.confirmOilRemainA / this.data.carItem.xsgw) * 100).toFixed(2)
+        progress: info?.typeOfReMailOil == 1 ? info?.confirmOilRemainA : ((info?.confirmOilRemainA / this.data.carItem.xsgw) * 100).toFixed(2)
       }, () => {
         this.drawProgressCircle(this.data.progress)
       });
@@ -412,6 +413,10 @@ Page({
   onReady: function () {
     // this.drawProgressCircle(this.data.progress);
   },
-
+  oilcancelButttonTap() {
+    this.setData({
+      oilShowModal: false
+    })
+  },
 
 })

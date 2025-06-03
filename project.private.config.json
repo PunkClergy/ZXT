@@ -22,23 +22,23 @@
     "miniprogram": {
       "list": [
         {
+          "name": "pages/desk/desk",
+          "pathName": "pages/desk/desk",
+          "query": "scene=29C1E887924E494284F2EAA81EF9ECCD",
+          "scene": null,
+          "launchMode": "default"
+        },
+        {
           "name": "dentistId=100",
           "pathName": "pages/suborClientsList/index",
           "query": "",
-          "scene": 1011,
-          "launchMode": "default"
+          "launchMode": "default",
+          "scene": 1011
         },
         {
           "name": "work sheet",
           "pathName": "pages/channel/workSheet/index",
           "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "pages/desk/desk",
-          "pathName": "pages/desk/desk",
-          "query": "scene=29C1E887924E494284F2EAA81EF9ECCD",
           "launchMode": "default",
           "scene": null
         },
