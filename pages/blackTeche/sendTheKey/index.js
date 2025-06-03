@@ -57,12 +57,13 @@ Page({
     startTime: '19:00', //历史轨迹查询时间
     endDate: '2025-03-20', //历史轨迹查询时间
     endTime: '19:00', //历史轨迹查询时间
+    copied: false
   },
   // 获取当前年月日 时分
   handleCurrentDate() {
     const formatDate = (date) => {
       const year = date.getFullYear();
-      const month = date.getMonth() + 1; 
+      const month = date.getMonth() + 1;
       const day = date.getDate();
       return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
     };
@@ -385,6 +386,17 @@ Page({
         });
       } else {
         showToast(response.data.msg)
+      }
+    });
+  },
+  handleCopy(evt) {
+    const text = evt.currentTarget.dataset.item.simplecode
+    wx.setClipboardData({
+      data: text,
+      success: () => {
+        this.setData({
+          copied: true
+        })
       }
     });
   },
