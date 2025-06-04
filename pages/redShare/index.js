@@ -18,7 +18,7 @@ Page({
     imageUrl: '	https://5b0988e595225.cdn.sohucs.com/images/20180705/535f002edfe345d9a9e12e55f8b32013.jpeg',
     share_image: '/assets/images/login/logo.png',
     scene: getApp().data.userInfo.personInviteCode,
-    personal_qr_code: '', //海报
+    personal_qr_code: 'https://k3a.wiselink.net.cn/deskapi/getPosterImg?userId='+getApp().data.userInfo.id, //海报
     share_img: '', //分享出去的图片
     share_title: '', //f分享出去的文案
 
@@ -142,7 +142,7 @@ Page({
   },
   onShow() {
     this.initialiImageBaseConversion()
-    this.initQrCode()
+    // this.initQrCode()
     this.initShareQrCode()
   },
   // 分享功能
@@ -150,7 +150,7 @@ Page({
     return {
       title: this.data.share_title,
       path: '/pages/desk/desk?scene=' + this.data.scene,
-      imageUrl: this.data.share_img
+      // imageUrl: this.data.share_img
     }
   }
 })
