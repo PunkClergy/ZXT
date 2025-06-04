@@ -4,9 +4,9 @@
   <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight +60)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 切换部分 -->
     <view class="record-tabs" bindtap="handleSwitchTab">
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">充值记录</view>
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">充值</view>
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_2:s_background_tabs_active_2}}');">待办服务单</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">交易记录</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_2:s_background_tabs_active_2}}');">待付款</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">充值及余额</view>
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
@@ -24,6 +24,10 @@
               </view>
             </view>
             <view class="content-item-info">
+              <view class="info-item  {{item.amount.length > 15 ? 'long-info-item' : ''}}">
+                <label>金额 ：</label>
+                <text>￥{{item.amount||'-'}}</text>
+              </view>
               <view class="info-item  {{item.wxpayorder.length > 15 ? 'long-info-item' : ''}}">
                 <label>充值单号 ：</label>
                 <text>{{item.wxpayorder||'-'}}</text>

@@ -40,7 +40,7 @@ Page({
     g_page: 1, //列表页码
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
-    c_activeTab: 2, // 默认选中的Tab索引
+    c_activeTab: 3, // 默认选中的Tab索引
     amounts: [{
         label: '100元',
         value: '100'
@@ -256,19 +256,19 @@ Page({
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
     console.log(flag)
-    if (flag == '充值记录') {
+    if (flag == '交易记录') {
       this.setData({
         c_activeTab: 1,
       })
     }
-    if (flag == '充值') {
+    if (flag == '充值及余额') {
       if (this.data.c_activeTab != 2) {
         this.setData({
           c_activeTab: 2,
         })
       }
     }
-    if (flag == '待办服务单') {
+    if (flag == '待付款') {
       if (this.data.c_activeTab != 3) {
         this.setData({
           c_activeTab: 3,

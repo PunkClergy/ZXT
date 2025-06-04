@@ -33,20 +33,12 @@ Page({
     g_page: 1, //列表页码
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
-    c_tabs: [{
-        name: '账号列表',
-        value: '1'
-      },
-      {
-        name: '新增账号',
-        value: '2'
-      }
-    ], //tabs切换签
-    c_activeTab: 2, // 默认选中的Tab索引
+    c_activeTab: 1, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
     btnState: '新增',
     id: '', //修改标志
-    tree: []
+    tree: [],
+    c_send_key_show_momal: false,
   },
   // 切换复选框状态
   handleCheck(e) {
@@ -259,21 +251,6 @@ Page({
       params,
       id
     } = this.data;
-    const requiredFields = [{
-      key: 'name',
-      message: '请输入角色名称'
-    }];
-
-    // 检查必填字段
-    for (const {
-        key,
-        message
-      } of requiredFields) {
-      if (!params?.[key]) {
-        showToast(message);
-        return;
-      }
-    }
     showLoading();
     byPost(
       `${getApp().data.k1swUrl}${u_roleapiaddOrUpdate.URL}`, {
@@ -308,10 +285,6 @@ Page({
   },
   // 修改管控
   handleEdit(evt) {
-    wx.navigateTo({
-      url: '/pages/system/roleSeparation/index',
-    })
-    return
     const info = evt.currentTarget.dataset.item
     console.log(info)
     this.setData({
@@ -330,7 +303,7 @@ Page({
   // 切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
-    if (flag == '角色列表') {
+    if (flag == '人员列表') {
       this.setData({
         c_activeTab: 1,
         btnState: '新增',
@@ -338,7 +311,7 @@ Page({
         id: ''
       })
     }
-    if (flag == '新增角色' || flag == '修改角色') {
+    if (flag == '权限管理') {
       if (this.data.c_activeTab != 2) {
         this.setData({
           c_activeTab: 2,
@@ -425,6 +398,18 @@ Page({
         showToast('请求失败，请稍后再试');
         hideLoading();
       }
+    })
+  },
+  // 新增人员
+  handleJumpInfo() {
+    this.setData({
+      c_send_key_show_momal: true
+    })
+  },
+  // 取消弹窗
+  handleHideSengKeyModal() {
+    this.setData({
+      c_send_key_show_momal: false
     })
   },
   onLoad(options) {

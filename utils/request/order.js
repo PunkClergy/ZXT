@@ -62,7 +62,12 @@ const u_retrunCar = {
 const u_vehicleApplyApiApproveKey = {
   URL: fin3plusUrl + 'vehicleApplyApi/approve',
 }
+const u_updateRentKey = {
+  URL: fin3plusUrl + 'rentKeyApi/updateRentKey',
+}
+// 修改的电子钥匙
 module.exports = {
+  u_updateRentKey,
   u_vehicleApplyApiApproveKey,
   u_retrunCar,
   u_vehicleApplyApiList,

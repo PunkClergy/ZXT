@@ -149,7 +149,8 @@
     "pages/myProfile/index",
     "pages/exclusive/index",
     "pages/merchantInfo/index",
-    "pages/merchantAddress/index"
+    "pages/merchantAddress/index",
+    "pages/system/roleSeparation/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

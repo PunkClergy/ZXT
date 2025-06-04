@@ -8,7 +8,8 @@ const {
   showToast
 } = require('../../../utils/Inspect/tips')
 const {
-  u_addOrUpdate
+  u_addOrUpdate,
+  u_updateRentKey
 } = require('../../../utils/request/order')
 const {
   u_carList
@@ -58,7 +59,9 @@ Page({
     endDate: '2025-03-20', //历史轨迹查询时间
     endTime: '19:00', //历史轨迹查询时间
     copied: false,
-    controlcode:''
+    controlcode: '',
+    c_edit_key_show_momal: false,
+    g_edit_info: {}
   },
   // 获取当前年月日 时分
   handleCurrentDate() {
@@ -177,6 +180,12 @@ Page({
     this.setData({
       cellData: {},
       c_send_key_show_momal: false
+    })
+  },
+  handleHideEditKeyModal() {
+    this.setData({
+      c_edit_key_show_momal: false,
+      g_edit_info: {}
     })
   },
   // 切换tabs标签
@@ -401,12 +410,57 @@ Page({
       }
     });
   },
-  handleForward(evt){
+  handleForward(evt) {
     console.log(evt)
     const controlcode = evt.currentTarget.dataset.item.controlcode
     this.setData({
       controlcode: controlcode,
     });
+  },
+  handleEditKey(evt) {
+    console.log(evt.currentTarget.dataset.item)
+    this.setData({
+      c_edit_key_show_momal: true,
+      g_edit_info: evt.currentTarget.dataset.item
+    })
+
+  },
+  handleFormEdit() {
+    const {
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      g_edit_info
+    } = this.data;
+    const buildDateTime = (date, time) =>
+      `${date || ''} ${time ? `${time}:00` : '00:00:00'}`.trim();
+    const requestParams = {
+      controlCode: g_edit_info.controlcode,
+      startDate: buildDateTime(startDate, startTime),
+      endDate: buildDateTime(endDate, endTime),
+    };
+
+    byPost(
+      `${getApp().data.k1swUrl}${u_updateRentKey.URL}`, requestParams,
+      (response) => {
+        if (response.data.code == 1000) {
+          this.setData({
+            g_edit_info: {},
+            c_edit_key_show_momal: false,
+            y_triggered: false,
+            y_page: 1,
+            y_items: []
+          }, () => {
+            this.getKeySendingList()
+          })
+        }
+      },
+      (error) => {
+
+      }
+    );
+    console.log(requestParams)
   },
   onLoad(options) {
     this.getOrderList()
