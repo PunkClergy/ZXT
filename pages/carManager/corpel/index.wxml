@@ -62,7 +62,7 @@
   </scroll-view>
 
   <!-- 一键操作按钮 -->
-  <view class="levitation-button" wx:if="{{!g_source}}" bindtap="handleJumpInfo">
+  <!-- <view class="levitation-button" wx:if="{{!g_source}}" bindtap="handleJumpInfo">
     <text>新增人员</text>
-  </view>
+  </view> -->
 </view>

@@ -192,29 +192,14 @@ Page({
       batterylift: this.data.batterylift,
       carOwnerName: this.data.carOwnerName == '智信通' ? this.data.carOwnerName : this.data.carOwnerNameValue
     };
-    const validations = [{
-        field: 'vehicleSerialName',
-        message: '请填写车系'
-      },
-      {
-        field: 'vehicleModeName',
-        message: '请填写车型'
-      },
-      {
-        field: 'ccdate',
-        message: '请填写年款'
-      },
+    const validations = [
       {
         field: 'platenumber',
         message: '请填写车牌号'
       },
       {
-        field: 'vin',
-        message: '请填写车架号'
-      },
-      {
-        field: 'xsgw',
-        message: '请填写油箱容积'
+        field: 'sn',
+        message: '请填写设备号'
       }
     ];
 
@@ -231,6 +216,7 @@ Page({
     showLoading();
     byPost(apiUrls.getCarStatus, param,
       (response) => {
+        
         hideLoading();
         if (response.data.code == 1000) {
           this.setData({
