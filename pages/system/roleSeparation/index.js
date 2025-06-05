@@ -6,7 +6,7 @@ const {
   u_roleapidel,
   u_getMenuTree,
   u_roleapiaddOrUpdate,
-  u_roleapiList,
+  u_childUserList,
   u_setMenuTree
 } = require('../../../utils/request/data_info')
 const {
@@ -39,6 +39,8 @@ Page({
     id: '', //修改标志
     tree: [],
     c_send_key_show_momal: false,
+    g_uesr_details: {},
+    user_text: '新增'
   },
   // 切换复选框状态
   handleCheck(e) {
@@ -153,31 +155,20 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
-  // 管控列表数据
+  // 人员列表
   initList() {
-    showLoading()
-    const param = {
-      // [u_roleapiList.page]: this.data.g_page,
-    };
-    byPost(
-      `${getApp().data.k1swUrl}${u_roleapiList.URL}`, param,
-      (response) => {
-        if (response.data.code == 1000) {
-          if (this.data.g_page > 1 && response.data.content.length === 0) {
-            showToast(`已加载全部数据：共${this.data.g_items.length}条`);
-          }
-          this.setData({
-            g_items: this.data.g_items.concat(response.data.content),
-            g_total: Number(response.data.count || 0).toLocaleString()
-          }, () => {
-            hideLoading();
-          });
+    byGet(`${getApp().data.k1swUrl}${u_childUserList.URL}`, {}).then(response => {
+      if (response.data.code == 1000) {
+        if (this.data.g_page > 1 && response.data.content.length === 0) {
+          showToast(`已加载全部数据：共${this.data.g_items.length}条`);
         }
-      },
-      (error) => {
-        hideLoading();
+        this.setData({
+          g_items: this.data.g_items.concat(response.data.content),
+          g_total: Number(response.data.count || 0).toLocaleString()
+        });
       }
-    );
+    })
+    return
   },
   // 触底请求
   handleLower() {
@@ -288,16 +279,9 @@ Page({
     const info = evt.currentTarget.dataset.item
     console.log(info)
     this.setData({
-      ...info,
-      c_activeTab: 2,
-      btnState: '修改',
-      id: info?.id,
-      params: {
-        name: info.name,
-        bak: info.bak,
-      }
-    }, () => {
-      this.inittMenuTree()
+      c_send_key_show_momal: true,
+      g_uesr_details: info,
+      user_text: '修改'
     })
   },
   // 切换tabs标签
@@ -409,7 +393,9 @@ Page({
   // 取消弹窗
   handleHideSengKeyModal() {
     this.setData({
-      c_send_key_show_momal: false
+      c_send_key_show_momal: false,
+      user_text: '新增',
+      g_uesr_details: {}
     })
   },
   onLoad(options) {
