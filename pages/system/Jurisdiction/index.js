@@ -324,9 +324,12 @@ Page({
     })
   },
   // 设置
-  handleSetUp() {
+  handleSetUp(evt) {
+    console.log(evt.currentTarget.dataset)
+    const info = evt.currentTarget.dataset.item
+
     wx.navigateTo({
-      url: '/pages/system/roleSeparation/index',
+      url: `/pages/system/roleSeparation/index?type=${info?.id}&name=${info.name}`,
     })
   },
   // 切换tabs标签

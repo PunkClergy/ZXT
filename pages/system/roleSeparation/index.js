@@ -40,7 +40,8 @@ Page({
     tree: [],
     c_send_key_show_momal: false,
     g_uesr_details: {},
-    user_text: '新增'
+    user_text: '新增',
+
   },
   // 切换复选框状态
   handleCheck(e) {
@@ -399,11 +400,13 @@ Page({
     })
   },
   onLoad(options) {
-    if (options.status) {
+    if (options.type) {
+      console.log(options?.type)
       this.setData({
-        c_activeTab: 2
-      }, () => {
-        this.inittMenuTree()
+        title_info: {
+          name: options?.name,
+          type: options?.type
+        }
       })
     }
     this.initList()
