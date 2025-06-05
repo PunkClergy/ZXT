@@ -20,6 +20,7 @@
               </view>
               <view class="head-right">
                 <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
+                <image src="/assets/images/home/SetUp.png" data-item="{{item}}" bindtap="handleSetUp" />
                 <image src="/assets/images/home/_delete.png" data-id="{{item.id}}" bindtap="handleDelete" />
               </view>
             </view>

@@ -150,7 +150,8 @@
     "pages/exclusive/index",
     "pages/merchantInfo/index",
     "pages/merchantAddress/index",
-    "pages/system/roleSeparation/index"
+    "pages/system/roleSeparation/index",
+    "pages/aboutInstall/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

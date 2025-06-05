@@ -90,7 +90,7 @@
 .head-right {
   display: flex;
   flex-direction: row;
-  gap: 20rpx;
+  gap: 40rpx;
   align-items: center;
   justify-content: center;
 }

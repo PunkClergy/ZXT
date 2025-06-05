@@ -308,10 +308,6 @@ Page({
   },
   // 修改管控
   handleEdit(evt) {
-    wx.navigateTo({
-      url: '/pages/system/roleSeparation/index',
-    })
-    return
     const info = evt.currentTarget.dataset.item
     console.log(info)
     this.setData({
@@ -325,6 +321,12 @@ Page({
       }
     }, () => {
       this.inittMenuTree()
+    })
+  },
+  // 设置
+  handleSetUp() {
+    wx.navigateTo({
+      url: '/pages/system/roleSeparation/index',
     })
   },
   // 切换tabs标签

@@ -1,0 +1,80 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="预约安装" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <view class="card-head">
+      <image src="/assets/images/home/car_icon.png" />
+      <text>车辆信息</text>
+    </view>
+
+
+    <view class="card-info">
+      <!-- 订单 -->
+      <view class="card-info-item">
+        <label>订单</label>
+        <view class="card-info-item-input">
+          <picker value="{{provincesIndex}}" data-item="provinces" bindchange="handleProvincesPicker" range="{{provinces}}" range-key="name">
+            <view class="picker">
+              {{provincesIndex!=null?provinces[provincesIndex]['name']:'请选择订单'}}
+            </view>
+          </picker>
+
+        </view>
+      </view>
+      <!-- 联系人 -->
+      <view class="card-info-item">
+        <label>联系人<text>*</text></label>
+        <block>
+          <view class="card-info-item-input">
+            <input placeholder="请输入联系人" value="{{params.vehicleSerialName}}" data-item="vehicleSerialName" bindinput="handleBindinput" />
+          </view>
+        </block>
+
+      </view>
+      <!-- 联系电话 -->
+      <view class="card-info-item">
+        <label>联系电话<text>*</text></label>
+
+        <block>
+          <view class="card-info-item-input">
+            <input placeholder="请输入联系电话" value="{{params.vehicleSerialName}}" data-item="vehicleSerialName" bindinput="handleBindinput" />
+          </view>
+        </block>
+
+      </view>
+      <!-- 地址 -->
+      <view class="card-info-item" style="display: flex;flex-direction: column;gap: 10rpx;">
+        <label>详细地址<text>*</text></label>
+        <block>
+          <view class="card-info-item-input">
+            <textarea placeholder="请输入详细地址" auto-height="true" placeholder-style="line-height:50rpx;font-size:26rpx" style="border-radius: 8rpx; border-bottom: 1rpx solid #f0f0f0;width: 100%;font-size: 28rpx;" />
+          </view>
+        </block>
+      </view>
+
+      <view class="card-info-item">
+        <label>安装时间<text>*</text></label>
+
+        <view class="modal-form-region">
+          <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
+            <view class="form-item-text">
+              <text>{{startDate}}</text>
+            </view>
+          </picker>
+          <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
+            <view class="form-item-text">
+              <text>{{startTime}}</text>
+            </view>
+          </picker>
+        </view>
+      </view>
+      <view class="card-info-item">
+        <label>您未购买安装服务，确定预约安装并支付安装费用</label>
+      </view>
+    </view>
+    <view class="card-footer">
+      <view bindtap="handleSubmit">确认修改</view>
+    </view>
+  </view>
+</view>
