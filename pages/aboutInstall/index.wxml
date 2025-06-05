@@ -1,80 +1,117 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-
-  <!-- 自定义头部 -->
   <custom-header title="预约安装" />
-  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
-    <view class="card-head">
-      <image src="/assets/images/home/car_icon.png" />
-      <text>车辆信息</text>
+  <!-- index.wxml -->
+  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
+    <!-- 切换部分 -->
+    <view class="record-tabs" bindtap="handleSwitchTab">
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">预约清单</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">预约安装</view>
     </view>
-
-
-    <view class="card-info">
-      <!-- 订单 -->
-      <view class="card-info-item">
-        <label>订单</label>
-        <view class="card-info-item-input">
-          <picker value="{{provincesIndex}}" data-item="provinces" bindchange="handleProvincesPicker" range="{{provinces}}" range-key="name">
-            <view class="picker">
-              {{provincesIndex!=null?provinces[provincesIndex]['name']:'请选择订单'}}
+    <!-- 详情区域部分 -->
+    <block wx:if="{{c_activeTab == 1}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+        <block wx:for="{{g_items}}" wx:key="index">
+          <view class="content-item">
+            <view class="content-item-head">
+              <view class="head-left">
+                <view class="left-category">
+                  <text>{{item.num}}</text>
+                </view>
+              </view>
+              <view class="head-right">
+                <image src="/assets/images/home/_delete.png" data-id="{{item.id}}" bindtap="handleDelete" />
+              </view>
             </view>
-          </picker>
+            <view class="content-item-info">
+              <view class="info-item  long-info-item">
+                <label>安装状态 ：</label>
+                <text>{{item.status||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.personname.length > 15 ? 'long-info-item' : ''}}">
+                <label>联系人 ：</label>
+                <text>{{item.personname||'-'}}</text>
+              </view>
 
+              <view class="info-item  {{item.mobile.length > 15 ? 'long-info-item' : ''}}">
+                <label>联系电话 ：</label>
+                <text>{{item.mobile||'-'}}</text>
+              </view>
+
+              <view class="info-item  {{item.finishdate.length > 15 ? 'long-info-item' : ''}}">
+                <label>预约安装时间 ：</label>
+                <text>{{item.finishdate||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.address.length > 15 ? 'long-info-item' : ''}}">
+                <label>预约安装地址 ：</label>
+                <text>{{item.address||'-'}}</text>
+              </view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </block>
+    <block wx:if="{{c_activeTab == 2}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;">
+        <view class="long-range-control-car">
+          <block>
+            <view class="long-range-control-car-subitem">
+              <label>订单<text>*</text></label>
+              <view class="card-info-item-input">
+                <picker value="{{provincesIndex}}" bindchange="handleProvincesPicker" range="{{g_order_list}}" range-key="name">
+                  <view class="picker">
+                    {{c_current_order}}
+                  </view>
+                </picker>
+              </view>
+            </view>
+            <!-- 标题 -->
+            <view class="long-range-control-car-subitem">
+              <label>联系人<text>*</text></label>
+              <view class="card-info-item-input">
+                <input placeholder="请输入联系人" value="{{c_current_info.linkman}}" data-item="linkman" bindinput="handleBindinput" />
+              </view>
+            </view>
+            <!-- 密码 -->
+            <view class="long-range-control-car-subitem">
+              <label>联系电话<text>*</text></label>
+              <view class="card-info-item-input">
+                <input placeholder="请输入联系电话" value="{{c_current_info.linkmobile}}" data-item="linkmobile" bindinput="handleBindinput" />
+              </view>
+            </view>
+            <view class="long-range-control-car-subitem">
+              <label>安装地址<text>*</text></label>
+              <view class="card-info-item-input">
+                <input placeholder="请输入安装地址" value="{{c_current_info.linkaddress}}" data-item="linkaddress" bindinput="handleBindinput" />
+              </view>
+            </view>
+            <view class="long-range-control-car-subitem">
+              <label>安装时间<text>*</text></label>
+
+              <view class="modal-form-region">
+                <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
+                  <view class="form-item-text">
+                    <text>{{startDate}}</text>
+                  </view>
+                </picker>
+                <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
+                  <view class="form-item-text">
+                    <text>{{startTime}}</text>
+                  </view>
+                </picker>
+              </view>
+            </view>
+            <view class="long-range-control-car-subitem">
+              <label>您未购买安装服务，确定预约安装并支付安装费用</label>
+            </view>
+          </block>
+          <view class="card-footer">
+            <view bindtap="handleSubmit">确认</view>
+            <!-- <view bindtap="handleConfirmPay">确认并支付</view> -->
+          </view>
         </view>
-      </view>
-      <!-- 联系人 -->
-      <view class="card-info-item">
-        <label>联系人<text>*</text></label>
-        <block>
-          <view class="card-info-item-input">
-            <input placeholder="请输入联系人" value="{{params.vehicleSerialName}}" data-item="vehicleSerialName" bindinput="handleBindinput" />
-          </view>
-        </block>
 
-      </view>
-      <!-- 联系电话 -->
-      <view class="card-info-item">
-        <label>联系电话<text>*</text></label>
-
-        <block>
-          <view class="card-info-item-input">
-            <input placeholder="请输入联系电话" value="{{params.vehicleSerialName}}" data-item="vehicleSerialName" bindinput="handleBindinput" />
-          </view>
-        </block>
-
-      </view>
-      <!-- 地址 -->
-      <view class="card-info-item" style="display: flex;flex-direction: column;gap: 10rpx;">
-        <label>详细地址<text>*</text></label>
-        <block>
-          <view class="card-info-item-input">
-            <textarea placeholder="请输入详细地址" auto-height="true" placeholder-style="line-height:50rpx;font-size:26rpx" style="border-radius: 8rpx; border-bottom: 1rpx solid #f0f0f0;width: 100%;font-size: 28rpx;" />
-          </view>
-        </block>
-      </view>
-
-      <view class="card-info-item">
-        <label>安装时间<text>*</text></label>
-
-        <view class="modal-form-region">
-          <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
-            <view class="form-item-text">
-              <text>{{startDate}}</text>
-            </view>
-          </picker>
-          <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
-            <view class="form-item-text">
-              <text>{{startTime}}</text>
-            </view>
-          </picker>
-        </view>
-      </view>
-      <view class="card-info-item">
-        <label>您未购买安装服务，确定预约安装并支付安装费用</label>
-      </view>
-    </view>
-    <view class="card-footer">
-      <view bindtap="handleSubmit">确认修改</view>
-    </view>
+      </scroll-view>
+    </block>
   </view>
+
 </view>

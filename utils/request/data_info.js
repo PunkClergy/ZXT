@@ -180,7 +180,30 @@ const u_zxtInvoicelnfo = {
 const u_zxtShippingAddress = {
   URL: fin3plusUrl + "deskapi/zxtShippingAddress",
 }
+// 预约安装列表
+const u_installapiList = {
+  URL: fin3plusUrl + "installapi/list",
+  page: 'page'
+}
+// 取消预约安装
+const u_installapiDel = {
+  URL: fin3plusUrl + "installapi/del",
+  id: 'id'
+}
+// 订单列表
+const u_installapiBuyRecord = {
+  URL: fin3plusUrl + "deviceBuyApi/buyRecord",
+}
+// 预约安装
+const u_installapiAddOrUpdate = {
+  URL: fin3plusUrl + "installapi/addOrUpdate",
+}
+
 module.exports = {
+  u_installapiAddOrUpdate,
+  u_installapiBuyRecord,
+  u_installapiDel,
+  u_installapiList,
   u_zxtShippingAddress,
   u_zxtInvoicelnfo,
   u_addMessage,
