@@ -64,6 +64,7 @@ Page({
     this.setData({
       provincesIndex: selectIndex,
       cityIndex: null,
+      countyIndex:null,
       params: {
         ...params,
         province: provinceId,
@@ -93,6 +94,7 @@ Page({
     const city = selectedProvince.id;
     this.setData({
       cityIndex: selectIndex,
+      countyIndex:null,
       params: {
         ...params,
         city: city,
@@ -119,12 +121,12 @@ Page({
       params
     } = this.data;
     const selectedProvince = countys?.[selectIndex];
-    const county = selectedProvince.id;
+    const area = selectedProvince.id;
     this.setData({
       countyIndex: selectIndex,
       params: {
         ...params,
-        county: county,
+        area: area,
       },
     }, () => {
       _this.getOrderList()

@@ -1,6 +1,6 @@
 const fin3plusUrl = '';
 const u_bannerlist = {
-  URL: fin3plusUrl + 'api/bannerlist',
+  URL: fin3plusUrl + 'deskapi/bannerlist',
   terminalId: 'terminalId',
 }
 const u_midMenulist = {
