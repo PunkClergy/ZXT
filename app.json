@@ -151,7 +151,8 @@
     "pages/merchantInfo/index",
     "pages/merchantAddress/index",
     "pages/system/roleSeparation/index",
-    "pages/aboutInstall/index"
+    "pages/aboutInstall/index",
+    "pages/Shops/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

@@ -1,0 +1,27 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="智信通商铺" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
+    <view style="display: flex;flex-direction:column ; align-items: center;gap: 30rpx;margin-top: 50rpx;">
+      <text style="color: #333;font-weight: bold;font-size: 28rpx;">使用「抖音APP」扫码查看店铺</text>
+      <image src="/assets/images/qr.png" style="width: 300rpx;height: 300rpx;" />
+      <text style="border: 1px solid #409EFF;padding: 10rpx 80rpx;border-radius: 8rpx;font-size: 26rpx;color: #409EFF;" bindtap="downloadImage">下载二维码</text>
+      <text style="border: 1px solid #409EFF;padding: 10rpx 90rpx;border-radius: 8rpx;font-size: 26rpx;color: #409EFF;" bindtap="showInputDialog">联系我们</text>
+     
+      <text style="color: #333;font-weight: 400;font-size: 28rpx;">可将二维码分享给朋友、客户，二维码长期有效</text>
+    </view>
+  </view>
+</view>
+<!-- 弹窗组件 -->
+<view wx:if="{{isShowInputModal}}" class="modal-mask">
+  <view class="modal-dialog">
+    <view class="modal-content">
+      <textarea class="modal-input" bindinput="onInput" placeholder="请输入内容" value="{{inputValue}}" />
+    </view>
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hideModal">取消</button>
+      <button class="btn-confirm" bindtap="submitInput">确定</button>
+    </view>
+  </view>
+  </view>
