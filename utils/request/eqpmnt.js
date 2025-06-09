@@ -36,8 +36,14 @@ const u_buyMcckDevice = {
 const u_mcckFileUpload = {
   URL: fin3plusUrl + "deviceBuyApi/mcckFileUpload",
 }
-
+// 安装商列表
+const u_installerapilist = {
+  URL: fin3plusUrl + "installerapi/list",
+  name: 'name',
+  page: 'page'
+}
 module.exports = {
+  u_installerapilist,
   u_blanceAndDeviceReport,
   u_payRecord,
   u_getCompanyInfo,

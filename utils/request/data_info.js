@@ -9,6 +9,11 @@ const u_getCitys = {
   URL: fin3plusUrl + "companyapi/getCitys",
   provinceId: 'provinceId'
 }
+// 获取区县
+const u_getAreas = {
+  URL: fin3plusUrl + "companyapi/getAreas",
+  cityId: 'cityId'
+}
 //公司信息完善
 const u_companyImprove = {
   URL: fin3plusUrl + "companyapi/companyImprove",
@@ -200,6 +205,7 @@ const u_installapiAddOrUpdate = {
 }
 
 module.exports = {
+  u_getAreas,
   u_installapiAddOrUpdate,
   u_installapiBuyRecord,
   u_installapiDel,

@@ -1,0 +1,73 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+
+
+  <custom-header title="安装商查询" />
+  <!-- 搜索框 -->
+  <view class="search-container" style="height:{{searchBarHeight}}px;margin-top: {{totalNavHeight}}px;">
+    <view class="search-box">
+      <icon type="search" size="16" class="search-icon" />
+      <input placeholder="地址" class="search-input" bindblur="handleSearch" />
+    </view>
+    <view class="search-drop">
+      <picker value="{{provincesIndex}}" data-item="provinces" bindchange="handleProvincesPicker" range="{{provinces}}" range-key="name">
+        <view class="picker">
+          <text> {{provincesIndex!=null?provinces[provincesIndex]['name']:'省份'}}</text>
+          <image src="/assets/images/home/up.png" style="width: 20rpx;height: 30rpx;" />
+        </view>
+      </picker>
+      <picker value="{{cityIndex}}" data-item="citys" bindchange="handleCityPicker" range="{{citys}}" range-key="name" disabled="{{provincesIndex==null}}" style="opacity: {{ provincesIndex == null ? '0.5' : '1' }}">
+        <view class="picker">
+          <text> {{(cityIndex!=null?citys[cityIndex]['name']:'城市')}}</text>
+          <image src="/assets/images/home/up.png" style="width: 20rpx;height: 30rpx;" />
+        </view>
+      </picker>
+
+      <picker value="{{countyIndex}}" data-item="county" bindchange="handleCityAreas" range="{{countys}}" range-key="name" disabled="{{cityIndex==null}}" style="opacity: {{ cityIndex == null ? '0.5' : '1' }}">
+        <view class="picker">
+          <text> {{countyIndex!=null?countys[countyIndex]['name']:'区县'}}</text>
+          <image src="/assets/images/home/up.png" style="width: 20rpx;height: 30rpx;" />
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 主要内容区域 -->
+  <scroll-view class="content-container" scroll-y="true" style="top:{{statusBarHeight + navBarHeight + searchBarHeight+2}}px;">
+    <!-- 这里可以放置你的主要内容 -->
+    <block wx:for="{{g_items}}" wx:key="index">
+      <view class="content-item">
+        <view class="content-item-head">
+          <view class="head-left">
+            <view class="left-category">
+              <text>{{item.name}}</text>
+            </view>
+          </view>
+          <view class="head-right">
+            <view class="right-state"> {{item.paydate}}</view>
+          </view>
+        </view>
+        <view class="content-item-info">
+
+          <view class="info-item  {{item.linkperson.length > 15 ? 'long-info-item' : ''}}">
+            <label>联系人 ：</label>
+            <text>{{item.linkperson||'-'}}</text>
+          </view>
+
+          <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
+            <label>联系电话 ：</label>
+            <text>{{item.linkmobile||'-'}}</text>
+          </view>
+          <view class="info-item long-info-item}}">
+            <label>营业时间 ：</label>
+            <text>{{item.workinghours||'-'}}</text>
+          </view>
+          <view class="info-item long-info-item}}">
+            <label>地址 ：</label>
+            <text>{{item.province||''}}{{item.city||''}}{{item.area||''}}{{item.address||''}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
