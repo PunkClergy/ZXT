@@ -22,7 +22,7 @@ const {
 } = require('../../utils/Inspect/tips')
 Page({
   data: {
-    c_screen_height: _handleWindowInfo.windowHeight || 0,
+    c_screen_height: _handleWindowInfo.screenHeight || 0,
     statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
     navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
     searchBarHeight: 80, // 搜索框高度，默认值

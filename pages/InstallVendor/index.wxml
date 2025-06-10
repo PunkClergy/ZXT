@@ -4,7 +4,7 @@
 
   <custom-header title="安装商查询" />
   <!-- 搜索框 -->
-  <view class="search-container" style="height:{{searchBarHeight}}px;margin-top: {{totalNavHeight}}px;">
+  <!-- <view class="search-container" style="height:{{searchBarHeight}}px;margin-top: {{totalNavHeight}}px;">
     <view class="search-box">
       <icon type="search" size="16" class="search-icon" />
       <input placeholder="地址" class="search-input" bindblur="handleSearch" />
@@ -30,10 +30,10 @@
         </view>
       </picker>
     </view>
-  </view>
+  </view> -->
 
   <!-- 主要内容区域 -->
-  <scroll-view class="content-container" scroll-y="true" style="top:{{statusBarHeight + navBarHeight + searchBarHeight+2}}px;">
+  <scroll-view class="content-container" scroll-y="true" style="top:{{statusBarHeight + navBarHeight+2}}px;">
     <!-- 这里可以放置你的主要内容 -->
     <block wx:for="{{g_items}}" wx:key="index">
       <view class="content-item">
