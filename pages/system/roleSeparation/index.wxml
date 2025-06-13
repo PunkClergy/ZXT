@@ -159,20 +159,20 @@
           <view class="middle-form-item">
             <label>账号</label>
             <view class="modal-form-region">
-              <input placeholder="请输入账号" value="{{g_uesr_details.username}}" name='personName' style="text-align: right;font-size: 28rpx;" />
+              <input placeholder="请输入账号" value="{{g_uesr_details.username}}" name='username' style="text-align: right;font-size: 28rpx;" />
             </view>
 
           </view>
           <view class="middle-form-item">
             <label>密码</label>
             <view class="modal-form-region">
-              <input placeholder="请输入密码" value="{{g_uesr_details.password}}" name='personName' style="text-align: right;font-size: 28rpx;" />
+              <input placeholder="请输入密码" value="{{g_uesr_details.password}}" name='password' style="text-align: right;font-size: 28rpx;" />
             </view>
           </view>
           <view class="middle-form-item">
             <label>姓名</label>
             <view class="modal-form-region">
-              <input placeholder="请输入姓名" value="{{g_uesr_details.realname}}" name='mobile' style="text-align: right;font-size: 28rpx;" />
+              <input placeholder="请输入姓名" value="{{g_uesr_details.realname}}" name='realname' style="text-align: right;font-size: 28rpx;" />
             </view>
 
           </view>

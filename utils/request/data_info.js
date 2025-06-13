@@ -20,12 +20,8 @@ const u_companyImprove = {
 }
 // 子账户列表
 const u_childUserList = {
-  URL: fin3plusUrl + "companyapi/childUserList",
+  URL: fin3plusUrl + "accountapi/childUserList",
   page: 'page'
-}
-// 创建或更新子账号
-const u_addOrUpdateChildUser = {
-  URL: fin3plusUrl + "companyapi/addOrUpdateChildUser",
 }
 // 获取公司信息
 const u_companyInfo = {
@@ -119,7 +115,7 @@ const u_isNeedCarInfo = {
 }
 // 获取权限树接口
 const u_getMenuTree = {
-  URL: fin3plusUrl + "userapi/getMenuTree",
+  URL: fin3plusUrl + "roleapi/getMenuTree",
 }
 // 获取完善信息数据
 const u_getRoles = {
@@ -132,7 +128,8 @@ const u_roleapiList = {
 }
 // 角色删除
 const u_roleapidel = {
-  URL: fin3plusUrl + "roleapi/del",
+  URL: fin3plusUrl + "accountapi/delChildUser",
+  id:'id',
   page: 'page'
 }
 // 角色删除
@@ -154,7 +151,7 @@ const u_getOrderDetial = {
 }
 // 移交管理员
 const u_transferAdminUser = {
-  URL: fin3plusUrl + "userapi/transferAdminUser",
+  URL: fin3plusUrl + "accountapi/transferAdminUser",
   targetUserId: 'targetUserId'
 }
 // 提交寄送钥匙单号
@@ -203,8 +200,17 @@ const u_installapiBuyRecord = {
 const u_installapiAddOrUpdate = {
   URL: fin3plusUrl + "installapi/addOrUpdate",
 }
+// 获取角色
+const u_GetRole = {
+  URL: fin3plusUrl + "roleapi/getRole",
+}
+// 新增账号
+const u_addOrUpdateChildUser ={
+  URL: fin3plusUrl + "accountapi/addOrUpdateChildUser",
+}
 
 module.exports = {
+  u_GetRole,
   u_getAreas,
   u_installapiAddOrUpdate,
   u_installapiBuyRecord,

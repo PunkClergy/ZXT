@@ -7,7 +7,8 @@ const {
   u_getMenuTree,
   u_roleapiaddOrUpdate,
   u_childUserList,
-  u_setMenuTree
+  u_setMenuTree,
+  u_GetRole,u_addOrUpdateChildUser
 } = require('../../../utils/request/data_info')
 const {
   byGet,
@@ -158,36 +159,15 @@ Page({
   },
   // 人员列表
   initList() {
-    byGet(`${getApp().data.k1swUrl}${u_childUserList.URL}`, {}).then(response => {
+    byGet(`${getApp().data.k1swUrl}${u_childUserList.URL}`, {roleId:this.data.id}).then(response => {
       if (response.data.code == 1000) {
-        if (this.data.g_page > 1 && response.data.content.length === 0) {
-          showToast(`已加载全部数据：共${this.data.g_items.length}条`);
-        }
         this.setData({
-          g_items: this.data.g_items.concat(response.data.content),
+          g_items: response.data.content,
           g_total: Number(response.data.count || 0).toLocaleString()
         });
       }
     })
     return
-  },
-  // 触底请求
-  handleLower() {
-    // this.setData({
-    //   g_page: this.data.g_page + 1
-    // }, () => {
-    //   this.initList();
-    // });
-  },
-  // 下拉刷新
-  handleRefresh() {
-    this.setData({
-      g_triggered: false,
-      g_page: 1,
-      g_items: []
-    }, () => {
-      this.initList();
-    });
   },
 
   // 新增账号字段输入回调
@@ -277,6 +257,7 @@ Page({
   },
   // 修改管控
   handleEdit(evt) {
+    console.log(evt.currentTarget.dataset.item)
     const info = evt.currentTarget.dataset.item
     console.log(info)
     this.setData({
@@ -399,9 +380,45 @@ Page({
       g_uesr_details: {}
     })
   },
+
+  // 获取角色列表
+  initGetRole(evt){
+    console.log(evt)
+    byGet(`${getApp().data.k1swUrl}${u_GetRole.URL}`, {roleName:evt,isAutoCreate:1}).then(response => {
+      if (response.data.code == 1000) {
+
+        this.setData({
+          id:response.data.content.id
+        },()=>{
+          this.inittMenuTree()
+          this.initList()
+        })
+      }
+    })
+  },
+  // 确认新增
+  handleFormSubmit(evt){
+    console.log(evt.detail.value)
+      const params = {
+        roleId:this.data.id,
+        ...evt.detail.value,
+        id:this.data?.g_uesr_details?.id||''
+      }
+    byPost(
+      `${getApp().data.k1swUrl}${u_addOrUpdateChildUser.URL}`, params,
+      (response) => {
+        if (response.data.code == 1000) {
+          this.setData({c_send_key_show_momal:false},()=>{
+            this.initList()
+          })
+ 
+        }
+      },
+      (error) => {}
+    );
+  },
   onLoad(options) {
     if (options.type) {
-      console.log(options?.type)
       this.setData({
         title_info: {
           name: options?.name,
@@ -409,11 +426,12 @@ Page({
         }
       })
     }
-    this.initList()
-
+    if(options?.name){
+      this.initGetRole(options?.name)
+    }
   },
   onShow() {
     this.initialiImageBaseConversion()
-    this.inittMenuTree()
+    
   },
 })
