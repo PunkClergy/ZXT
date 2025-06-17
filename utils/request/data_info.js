@@ -128,7 +128,7 @@ const u_roleapiList = {
 }
 // 角色删除
 const u_roleapidel = {
-  URL: fin3plusUrl + "accountapi/delChildUser",
+  URL: fin3plusUrl + "roleapi/del",
   id:'id',
   page: 'page'
 }
