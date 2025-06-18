@@ -100,7 +100,7 @@ Page({
     byGet(getApp().data.k1swUrl + u_shopApiList.URL, {}).then(response => {
       if (response.statusCode == 200) {
         this.setData({
-          imageUrl: response.data.content?.img||'',
+          imageUrl: response.data.content?.qrcode||'',
           codeText:response.data.content?.link||'',
         })
       } else {
