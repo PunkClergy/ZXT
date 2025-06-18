@@ -57,7 +57,7 @@ Page({
               byPost(
                 `${this.data.c_link}userapi/wxLogin`, {
                   code: e.detail.code,
-                  inviteCode: that.data.invit_code.content,
+                  inviteCode: that.data.invit_code||'',
                   wxCode: loginres.code
                 },
                 (res) => {

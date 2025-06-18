@@ -467,7 +467,7 @@ Page({
       success(res) {
         console.log("获取成功", res.data); // 成功时的数据
         _this.setData({
-          account: res?.data?.realname
+          account: res?.data?.realname||res?.data?.username
         })
       },
       fail(err) {
