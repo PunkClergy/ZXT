@@ -71,6 +71,7 @@
           <view class="content-card">
             <view class="card-head">
               <view class="card-head-left">
+                <text>{{item.platenumber}}</text>
                 <text>{{item.personname}}</text>
                 <text class="split-line"></text>
                 <text class="phone-text">{{item.mobile}}</text>
