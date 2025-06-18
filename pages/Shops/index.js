@@ -6,10 +6,12 @@ const {
   u_inquirySheet
 } = require('../../utils/request/data_info')
 const {
-  byPost
+  byPost,
+  byGet 
 } = require('../../utils/request/http')
 const {
-  u_addMessage
+  u_addMessage,
+  u_shopApiList,
 } = require('../../utils/request/data_info')
 const {
   FIELD_CONFIG
@@ -24,6 +26,7 @@ Page({
     isShowInputModal: false,
     inputValue: '',
     imageUrl: '/assets/images/qr.png', // 替换为你自己的图片 URL
+    codeText:'333',
     tempFilePath: '' // 用于存储下载后的临时路径
   },
 
@@ -65,7 +68,27 @@ Page({
       inputValue: '' // 清空输入框
     });
   },
-
+  onCopyCode() {
+    const { codeText } = this.data;
+    console.log(codeText)
+    wx.setClipboardData({
+      data: codeText,
+      success: () => {
+        wx.showToast({
+          title: '复制成功,请打开抖音',
+          icon: 'none',
+          duration: 3000
+        });
+      },
+      fail: () => {
+        wx.showToast({
+          title: '复制失败',
+          icon: 'none',
+          duration: 1500
+        });
+      }
+    });
+  },
   // 输入事件
   onInput(e) {
     this.setData({
@@ -73,6 +96,18 @@ Page({
     });
   },
 
+  initShopApiList(){
+    byGet(getApp().data.k1swUrl + u_shopApiList.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          imageUrl: response.data.content?.img||'',
+          codeText:response.data.content?.link||'',
+        })
+      } else {
+        showToast('请求失败，请稍后再试');
+      }
+    })
+  },
   submitInput() {
     if (this.data.inputValue) {
       byPost(`${getApp().data.k1swUrl}${u_addMessage.URL}`, {
@@ -108,6 +143,16 @@ Page({
       showToast('请输入内容');
     }
 
+  },
+  // 预览图片
+  handlePreviewImage(evt) {
+    console.log(evt)
+    wx.previewMedia({
+      sources: [{
+        url: this.data.imageUrl, // 图片路径
+        type: 'image',
+      }, ],
+    });
   },
   // 下载图片
   downloadImage() {
@@ -187,7 +232,7 @@ Page({
         });
       },
       complete() {
-        wx.hideLoading();
+        // wx.hideLoading();
       }
     });
   },
@@ -216,7 +261,7 @@ Page({
       isShowInputModal: false
     });
   },
-  
+
   onLoad(options) {},
 
 
@@ -226,6 +271,7 @@ Page({
 
   onShow() {
     this.initialiImageBaseConversion()
+    this.initShopApiList()
 
   },
 

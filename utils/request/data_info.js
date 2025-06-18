@@ -208,8 +208,12 @@ const u_GetRole = {
 const u_addOrUpdateChildUser ={
   URL: fin3plusUrl + "accountapi/addOrUpdateChildUser",
 }
+const u_shopApiList= {
+  URL: fin3plusUrl + "shopapi/list",
+}
 
 module.exports = {
+  u_shopApiList,
   u_GetRole,
   u_getAreas,
   u_installapiAddOrUpdate,
