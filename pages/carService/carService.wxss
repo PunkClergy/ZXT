@@ -162,7 +162,7 @@
 
 /* 油量检测记录部分 */
 .record-container {
-  margin: 15rpx;
+  margin: 30rpx 15rpx 0 15rpx;
   position: relative;
   border-radius: 8rpx;
   background-color: #fff;
