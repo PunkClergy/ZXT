@@ -29,7 +29,14 @@ const u_carManagerapi_del = {
   URL: fin3plusUrl + "/carManagerapi/del",
   id: 'id',
 }
+// 网约车列表
+const u_wycRentVehicleList = {
+  URL: fin3plusUrl + "/rentKeyApi/wycRentVehicleList",
+  page: 'page'
+}
+
 module.exports = {
+  u_wycRentVehicleList,
   u_carManagerapi_del,
   u_carManagerapi_addOrUpdate,
   u_carManagerapi_list,

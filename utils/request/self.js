@@ -9,6 +9,9 @@ const u_rentRecord = {
 const u_sendRentKey = {
   URL: fin3plusUrl + "rentKeyApi/sendRentKey",
 }
+const u_bindOrUpdateDriver = {
+  URL: fin3plusUrl + "rentKeyApi/bindOrUpdateDriver",
+}
 // 取消电子钥匙
 const u_cancelRentKey = {
   URL: fin3plusUrl + "rentKeyApi/cancelRentKey",
@@ -16,6 +19,7 @@ const u_cancelRentKey = {
 }
 
 module.exports = {
+  u_bindOrUpdateDriver,
   u_cancelRentKey,
   u_rentRecord,
   u_sendRentKey
