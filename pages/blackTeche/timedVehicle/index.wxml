@@ -28,6 +28,10 @@
                 <label>管控车辆 ：</label>
                 <text>{{item.platenumbers}}</text>
               </view>
+              <view class="info-item">
+                <label>管控状态 ：</label>
+                <text>{{item.allowuse ==1?'启用':'禁用'}}</text>
+              </view>
               <view class="info-item long-info-item">
                 <label>管控时间 ：</label>
                 <text>{{item.starttime}}-{{item.endtime}}</text>
