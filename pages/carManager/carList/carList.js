@@ -40,7 +40,44 @@ Page({
     brakingType: 1
   },
 
+  handleChangeBlack(evt) {
+    // 使用解构赋值一次性获取所有需要的数据
+    const {
+      id
+    } = evt.currentTarget.dataset.item;
+    const {
+      g_black,
+      g_platenumbers,
+      g_items
+    } = this.data;
 
+    // 转换为 Set 操作更高效
+    const blackSet = new Set(g_black);
+    const plateSet = new Set(g_platenumbers);
+
+    // 增加安全判断防止 undefined
+    const vehicle = g_items.find(item => item.id === id);
+    if (!vehicle) return;
+
+    // 统一操作逻辑：存在则删除，不存在则添加
+    if (blackSet.has(id)) {
+      blackSet.delete(id);
+      plateSet.delete(vehicle.platenumber); // 同步移除车牌号
+    } else {
+      blackSet.add(id);
+      plateSet.add(vehicle.platenumber); // 同步添加车牌号
+    }
+    // 单次 setData 更新所有数据
+    this.setData({
+      g_black: [...blackSet], // 使用展开运算符更简洁
+      g_platenumbers: [...plateSet]
+    });
+  },
+  handleJumpBlackInfo() {
+    wx.reLaunch({
+      url: `${this.data.g_source}?black=${this.data.g_black}&platenumbers=${this.data.g_platenumbers}&info=${JSON.stringify(this.data.info)}`,
+    })
+  },
   initCarryParams(evt) {
     const {
       source,

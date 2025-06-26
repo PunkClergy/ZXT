@@ -68,6 +68,7 @@
             </view>
           </view>
         </block>
+
       </scroll-view>
     </block>
     <block wx:if="{{c_activeTab == 2}}">
@@ -173,5 +174,7 @@
       </scroll-view>
     </block>
   </view>
-
+  <view class="levitation-button" wx:if="{{c_activeTab==1&&g_flagMulti&&g_black.length>0}}"  bindtap="handleJumpBlackInfo">
+    <text>确定</text>
+  </view>
 </view>
