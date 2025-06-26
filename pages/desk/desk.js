@@ -125,6 +125,12 @@ Page({
       s_banner_height: imageHeight
     });
   },
+  handleJumpInfo(evt){
+    const path = evt?.currentTarget?.dataset?.item?.path
+    wx.switchTab({
+      url: path,
+    })
+  },
   // 请求banner资源
   initialGetBanner: function () {
     const _this = this

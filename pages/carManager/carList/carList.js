@@ -78,6 +78,31 @@ Page({
       url: `${this.data.g_source}?black=${this.data.g_black}&platenumbers=${this.data.g_platenumbers}&info=${JSON.stringify(this.data.info)}`,
     })
   },
+  // 扫码按钮点击事件
+  scanCode() {
+    wx.scanCode({
+      onlyFromCamera: false, // 是否只允许相机扫码（false表示允许从相册选择）
+      scanType: ['qrCode', 'barCode'], // 扫码类型：二维码、条形码
+      success: (res) => {
+        console.log('扫码成功:', res)
+        this.handleScanResult(res.result)
+      },
+      fail: (err) => {
+        console.error('扫码失败:', err)
+        wx.showToast({
+          title: '扫码失败',
+          icon: 'error'
+        })
+      }
+    })
+  },
+  // 处理扫码结果
+  handleScanResult(result) {
+    const params = this.data.params
+    this.setData({
+     params: {...params,sn: result},
+    })
+  },
   initCarryParams(evt) {
     const {
       source,
@@ -229,8 +254,7 @@ Page({
       batterylift: this.data.batterylift,
       carOwnerName: this.data.carOwnerName == '智信通' ? this.data.carOwnerName : this.data.carOwnerNameValue
     };
-    const validations = [
-      {
+    const validations = [{
         field: 'platenumber',
         message: '请填写车牌号'
       },
@@ -253,7 +277,7 @@ Page({
     showLoading();
     byPost(apiUrls.getCarStatus, param,
       (response) => {
-        
+
         hideLoading();
         if (response.data.code == 1000) {
           this.setData({

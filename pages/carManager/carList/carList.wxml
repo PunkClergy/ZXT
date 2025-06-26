@@ -89,8 +89,9 @@
           <view class="card-info-item">
             <label>设备号<text>*</text></label>
             <block>
-              <view class="card-info-item-input">
+              <view class="card-info-item-input" style="display: flex;flex-direction: row;align-items: center;">
                 <input placeholder="请输入车型" value="{{params.sn}}" data-item="sn" bindinput="handleBindinput" />
+                <image src="/assets/images/ss.png" mode="" bindtap="scanCode" style="width: 50rpx;height: 50rpx;"/>
               </view>
             </block>
           </view>

@@ -16,7 +16,7 @@
   <view class="swiper-outer-container" style="background-image: url('{{s_background_image_of_the_banner}}');margin-top: {{totalNavHeight}}px;height: {{s_banner_height}}px;">
     <swiper class="banner-swiper" vertical="{{false}}" circular="{{false}}" autoplay="{{true}}" interval="3000" duration="500" style="height: {{s_banner_height}}px;">
       <swiper-item wx:for="{{g_banner_image}}" wx:key="index" style="height: 100%; overflow: hidden;">
-        <image src="{{c_link}}/img/{{item.img}}" class="slide-image" mode="aspectFill" bindload="initialiOnImageLoad" wx:if="{{item.fileType==1}}"/>
+        <image bindtap="handleJumpInfo" data-item="{{item}}"  show-menu-by-longpress="{{true}}"  src="{{c_link}}/img/{{item.img}}" class="slide-image" mode="aspectFill" bindload="initialiOnImageLoad" wx:if="{{item.fileType==1}}"/>
         <video wx:else src="{{c_link}}/img/{{item.img}}" style="width: 100%;"></video>
       </swiper-item>
     </swiper>

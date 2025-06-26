@@ -3,7 +3,7 @@
 <!-- 自定义头部 -->
 <custom-header title="群二维码" />
 <view class="share-container" style="top:{{c_statusBarHeight + c_navBarHeight}}px;">
-  <image src="{{personal_qr_code}}" mode="widthFix" class="share-image" bindtap="handlePreviewImage"></image>
+  <image src="{{personal_qr_code}}" mode="widthFix" show-menu-by-longpress="{{true}}" class="share-image" bindtap="handlePreviewImage"></image>
   <view style="font-size: 26rpx;color: #575857;">商务合作咨询、更多产品了解，请点击、长按官方群二维码，有专属客服服务！</view>
 </view>
 </view>
