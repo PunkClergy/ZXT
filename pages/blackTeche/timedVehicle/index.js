@@ -46,7 +46,7 @@ Page({
     starttime: '00:00', //开始管控时间
     endtime: "08:00", //结束管控时间
     allowuse: 1, //任务类型
-    vehids: null, //车辆
+    vehids: '', //车辆
     btnState: '新增',
     id: '', //修改标志
   },
@@ -220,7 +220,7 @@ Page({
       starttime: this.data.starttime,
       endtime: this.data.endtime,
       allowuse: this.data.allowuse,
-      vehids: this.data.vehids,
+      vehids: this.data.vehids||'',
       dayofweek: this.data.days
         .filter(item => item.active)
         .map(item => item.value),
@@ -234,7 +234,7 @@ Page({
         starttime: "00:00",
         endtime: "09:00",
         allowuse: 1,
-        vehids: null,
+        vehids: '',
         c_activeTab: 1,
         btnState: '新增',
         g_page: 1, //列表页码
@@ -306,7 +306,7 @@ Page({
       this.setData({
         ...JSON.parse(options.info),
         days: JSON.parse(options.info)?.days,
-        vehids: options.black,
+        vehids: options.black||'',
         platenumbers: options.platenumbers,
         c_activeTab: 2
       })
