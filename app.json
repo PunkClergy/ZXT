@@ -155,7 +155,8 @@
     "pages/system/roleSeparation/index",
     "pages/aboutInstall/index",
     "pages/Shops/index",
-    "pages/InstallVendor/index"
+    "pages/InstallVendor/index",
+    "pages/wealth/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
