@@ -1,15 +1,15 @@
 const fin3plusUrl = '';
 const u_carList = {
   // URL: fin3plusUrl + "dzBussinessMobileApi/getCarList",
-  URL:fin3plusUrl + "carapi/getCarList",
+  URL: fin3plusUrl + "carapi/getCarList",
   companyId: 'companyId',
   platenumber: 'platenumber',
   modelName: 'modelName',
   comParam: 'comParam',
   page: 'page'
 }
-const u_userInsureList ={
-  URL:fin3plusUrl + "insuranceApi/userInsureList",
+const u_userInsureList = {
+  URL: fin3plusUrl + "insuranceApi/userInsureList",
   page: 'page'
 }
 // 新增车辆
@@ -46,14 +46,23 @@ const u_safekeyapiList = {
   URL: fin3plusUrl + "/safekeyapi/list",
   page: 'page'
 }
-const u_getPayPrice ={
+const u_getPayPrice = {
   URL: fin3plusUrl + "insuranceApi/getPayPrice",
   page: 'page'
 }
-const u_newInsure ={
+const u_newInsure = {
   URL: fin3plusUrl + "insuranceApi/newInsure",
 }
+// 失联
+const u_loseInsureList = {
+  URL: fin3plusUrl + "insuranceApi/loseInsureList",
+}
+const u_newLoselnsure = {
+  URL: fin3plusUrl + "insuranceApi/newLoseInsure",
+}
 module.exports = {
+  u_newLoselnsure,
+  u_loseInsureList,
   u_userInsureList,
   u_newInsure,
   u_getPayPrice,

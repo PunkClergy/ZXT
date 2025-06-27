@@ -6,7 +6,9 @@ const {
 const {
   u_userInsureList,
   u_getPayPrice,
-  u_newInsure
+  u_newInsure,
+  u_loseInsureList,
+  u_newLoselnsure
 } = require('../../utils/request/car')
 const {
   byPost,
@@ -78,10 +80,12 @@ Page({
   },
   // 管控列表数据
   initList() {
+    console.log(this.data.insurance_type)
     const param = {
       [u_userInsureList.page]: this.data.g_page,
     };
-    byGet(getApp().data.k1swUrl + u_userInsureList.URL, param).then(response => {
+    const url = this.data.insurance_type == 1 ? u_loseInsureList : u_userInsureList
+    byGet(getApp().data.k1swUrl + url.URL, param).then(response => {
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
           showToast(`已加载全部数据：共${this.data.g_items.length}条`);
@@ -236,7 +240,92 @@ Page({
 
     return commonReg.test(plate) || newEnergyReg.test(plate);
   },
+  // 失联提交
+  handleInsuranceSubmit() {
+    const params = this.data.params;
+    const temp = {
+      otaname: params?.otaname,
+      platenumber: params?.platenumber,
+      rentdays: params?.rentdays,
+      rentendcity: params?.rentendcity,
+      rentendtime: params?.rentendtime,
+      rentorderno: params?.rentorderno,
+      rentstartcity: params?.rentstartcity,
+      rentstarttime: params?.rentstarttime,
+      sn: params?.sn,
+      ylname: params?.ylname,
+    };
 
+    // 字段校验配置（字段名: 中文提示）
+    const fieldValidations = {
+      rentorderno: '主单号',
+      sn: '设备号',
+      ylname: '运营商名称',
+      otaname: '平台名称',
+      platenumber: '车牌号',
+      rentdays: '租赁天数',
+      rentstarttime: '租车开始时间',
+      rentendtime: '租车结束时间',
+      rentendcity: '还车城市',
+      rentstartcity: '取车城市',
+    };
+
+    // 执行字段校验
+    for (const [field, fieldName] of Object.entries(fieldValidations)) {
+      const value = temp[field];
+
+      // 通用空值检查
+      if (value === undefined || value === null || value === '') {
+        wx.showToast({
+          title: `${fieldName}不能为空`,
+          icon: 'none',
+          duration: 3000
+        });
+        return; // 立即终止提交
+      }
+
+      // 特殊字段类型检查
+      if (field === 'rentdays') {
+        const days = Number(value);
+        if (isNaN(days) || days <= 0) {
+          wx.showToast({
+            title: '租赁天数必须为大于0的数字',
+            icon: 'none',
+            duration: 3000
+          });
+          return;
+        }
+        temp[field] = days; // 转换为数字类型
+      } else if (typeof value === 'string') {
+        temp[field] = value.trim(); // 去除字符串首尾空格
+      }
+    }
+
+    // 所有校验通过后发起请求
+    byPost(getApp().data.k1swUrl + u_newLoselnsure.URL, temp,
+      (response) => {
+        if (response.data.code == 1000) {
+          console.log(response?.data.content.guid);
+          wx.navigateTo({
+            url: '/pages/pay/index?info=' + JSON.stringify(response?.data.content),
+          });
+        } else {
+          wx.showToast({
+            title: response.data.msg || '投保失败',
+            icon: 'none',
+            duration: 3000
+          });
+        }
+      },
+      (error) => {
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none',
+          duration: 3000
+        });
+      }
+    );
+  },
   // 切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
@@ -256,11 +345,44 @@ Page({
       }
     }
   },
-
+  // 判断够买保险类型
+  initInsuranceType(evt) {
+    this.setData({
+      insurance_type: evt?.type
+    })
+  },
+  // 租车结束时间
+  handleOnEndDateChange(evt) {
+    const rentendtime = evt.detail.value
+    const params = this.data.params
+    this.setData({
+      params: {
+        ...params,
+        rentendtime
+      }
+    })
+  },
+  // 租车开始时间
+  handleOnStartDateChange(evt) {
+    const rentstarttime = evt.detail.value
+    const params = this.data.params
+    this.setData({
+      params: {
+        ...params,
+        rentstarttime
+      }
+    })
+  },
   onLoad(options) {
-    this.initList()
+
+    this.initInsuranceType(options)
   },
   onShow() {
+    this.setData({
+      c_activeTab: 1,
+      params: {}
+    })
+    this.initList()
     this.initialiImageBaseConversion()
     this.inituGetPayPrice()
   },
