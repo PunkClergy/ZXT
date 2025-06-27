@@ -509,7 +509,7 @@ var LogoinPar = {
  * 请求车辆位置
  */
 var RequestCarList = {
-  REQUEST_API: fin3plusUrl + 'h5Car/getCarPoisitonWx',
+  REQUEST_API: fin3plusUrl + 'renterApi/getCarPoisitonByCode',
   MANAGERID: 'managerId',
   CODE: 'code',
   OPENID: 'openId',

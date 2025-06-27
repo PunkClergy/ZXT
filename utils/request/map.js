@@ -33,7 +33,7 @@ const u_getOpenIdUrl = {
 }
 // 请求车辆位置
 const u_RequestCarList = {
-  REQUEST_API: fin3plusUrl + 'h5Car/getCarPoisitonWx',
+  REQUEST_API: fin3plusUrl + 'renterApi/getCarPoisitonByCode',
   MANAGERID: 'managerId',
   CODE: 'code',
   OPENID: 'openId',

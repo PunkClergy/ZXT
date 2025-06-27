@@ -750,7 +750,8 @@ Component({
         this.handleLocation()
         return
       }
-      byPost(this.data.c_fin3_link + u_RequestCarList.REQUEST_API, param, (response) => {
+    
+      byPost(this.data.c_k1sw_link + u_RequestCarList.REQUEST_API, param, (response) => {
         hideLoading();
         const resn = response?.data?.content
 
