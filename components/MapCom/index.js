@@ -791,7 +791,7 @@ Component({
     },
     // 开始导航
     handleStartNavigation() {
-      if (this.data.sn) {
+      if (!this.data.sn) {
         return
       }
       wx.openLocation({
