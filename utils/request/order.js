@@ -15,9 +15,10 @@ const u_getServiceFiled = {
 }
 // 查询订单支付敏感信息
 const u_pay = {
-  URL: fin3plusUrl + 'deviceBuyApi/pay',
-  orderNum: 'orderNum'
+  URL: fin3plusUrl + 'insuranceApi/insurncePay',
+  orderNum: 'bdGuid'
 }
+
 // 油费报销列表 需要修改
 const u_addOrUpdate = {
   URL: fin3plusUrl + 'oilReimbursementapi/list',

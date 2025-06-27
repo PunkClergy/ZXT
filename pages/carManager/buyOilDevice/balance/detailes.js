@@ -69,12 +69,12 @@ Page({
       //   price: 5999.00,
       //   checked: false
       // },
-      {
-        product: '车队MCCK',
-        item: '年度服务费',
-        price: 360.00,
-        checked: false
-      },
+      // {
+      //   product: '车队MCCK',
+      //   item: '年度服务费',
+      //   price: 360.00,
+      //   checked: false
+      // },
       // {
       //   product: '网约车MCCK',
       //   item: '月度服务费',

@@ -87,11 +87,20 @@
           </view>
           <!-- 设备号 -->
           <view class="card-info-item">
-            <label>设备号<text>*</text></label>
+            <label>设备号(sn)<text>*</text></label>
             <block>
               <view class="card-info-item-input" style="display: flex;flex-direction: row;align-items: center;">
                 <input placeholder="请输入车型" value="{{params.sn}}" data-item="sn" bindinput="handleBindinput" />
                 <image src="/assets/images/ss.png" mode="" bindtap="scanCode" style="width: 50rpx;height: 50rpx;"/>
+              </view>
+            </block>
+          </view>
+          <view class="card-info-item">
+            <label>code<text>*</text></label>
+            <block>
+              <view class="card-info-item-input" style="display: flex;flex-direction: row;align-items: center;">
+              <text wx:if="{{id!=''}}" style="font-size: 26rpx;">{{params.code||'空'}}</text>
+                <input wx:else placeholder="请输入code" value="{{params.code}}" data-item="code" bindinput="handleBindinput" />
               </view>
             </block>
           </view>

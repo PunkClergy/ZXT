@@ -156,7 +156,8 @@
     "pages/aboutInstall/index",
     "pages/Shops/index",
     "pages/InstallVendor/index",
-    "pages/wealth/index"
+    "pages/wealth/index",
+    "pages/buySwiper/buySwiper"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

@@ -290,6 +290,8 @@ Page({
             carOwnerName: '智信通', //所属平台
             brakingType: 1
           })
+          showToast(response.data.msg)
+          this.initList()
         } else {
           showToast(response.data.msg)
         }
@@ -311,7 +313,8 @@ Page({
         platenumber: info?.platenumber,
         vin: info?.vin,
         xsgw: info?.xsgw,
-        sn: info?.sn
+        sn: info?.sn,
+        code:info?.code
       },
       batterylift: info?.batterylift || '一键启动',
       brakingType: info?.brakingType,
@@ -327,6 +330,7 @@ Page({
         c_activeTab: 1,
         btnState: '新增',
         params: {},
+        id:'',
         g_roleList_index: null
       })
     }

@@ -67,8 +67,9 @@ Page({
         this.setData({
           balance: content.balance
         }, () => {
-          const cost = this.data.orderInfo.cost
+          const cost = this.data.orderInfo.cost||this.data.orderInfo.premium
           const balance = this.data.balance
+          console.log(cost,balance)
           if (Number(cost) > Number(balance)) {
             this.setData({
               isWechat: true
@@ -88,7 +89,7 @@ Page({
       console.log(1)
       // 微信支付
       const params = {
-        [urlUtil.pay.amount]: Math.abs(_this.data.orderInfo.cost),
+        [urlUtil.pay.amount]: Math.abs(_this.data.orderInfo.cost||this.data.orderInfo.premium),
         [urlUtil.pay.userId]: getApp().data.userInfo.id
       };
       appUtil.showLoading("处理中...")
@@ -105,7 +106,7 @@ Page({
             paySign: content.paySign,
             success(res) {
               const params_pay = {
-                [u_pay.orderNum]: _this.data.orderInfo.num
+                [u_pay.orderNum]: _this.data.orderInfo.num||_this.data.orderInfo.guid
               }
               byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
                 if (resp.data.code == 1000) {
@@ -114,8 +115,8 @@ Page({
                     content: '支付成功',
                     showCancel: false,
                     success: function (res) {
-                      wx.reLaunch({
-                        url: '/pages/orderList/orderList',
+                      wx.navigateBack({
+                        delta: 1  // 返回的页面数，1表示上一页
                       })
                     }
                   })
@@ -127,7 +128,7 @@ Page({
       });
     } else {
       const params_pay = {
-        [u_pay.orderNum]: _this.data.orderInfo.num
+        [u_pay.orderNum]: _this.data.orderInfo.num||_this.data.orderInfo.guid
       }
       byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
         if (resp.data.code == 1000) {

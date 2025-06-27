@@ -8,6 +8,10 @@ const u_carList = {
   comParam: 'comParam',
   page: 'page'
 }
+const u_userInsureList ={
+  URL:fin3plusUrl + "insuranceApi/userInsureList",
+  page: 'page'
+}
 // 新增车辆
 const u_addOrUpdateCar = {
   URL: fin3plusUrl + "carapi/addOrUpdateCar",
@@ -42,7 +46,17 @@ const u_safekeyapiList = {
   URL: fin3plusUrl + "/safekeyapi/list",
   page: 'page'
 }
+const u_getPayPrice ={
+  URL: fin3plusUrl + "insuranceApi/getPayPrice",
+  page: 'page'
+}
+const u_newInsure ={
+  URL: fin3plusUrl + "insuranceApi/newInsure",
+}
 module.exports = {
+  u_userInsureList,
+  u_newInsure,
+  u_getPayPrice,
   u_safekeyapiaddOrUpdate,
   u_wycRentVehicleList,
   u_carManagerapi_del,
