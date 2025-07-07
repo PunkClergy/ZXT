@@ -16,7 +16,7 @@
   <view class="swiper-outer-container" style="background-image: url('{{s_background_image_of_the_banner}}');margin-top: {{totalNavHeight}}px;height: {{s_banner_height}}px;">
     <swiper class="banner-swiper" vertical="{{false}}" circular="{{false}}" autoplay="{{true}}" interval="3000" duration="500" style="height: {{s_banner_height}}px;">
       <swiper-item wx:for="{{g_banner_image}}" wx:key="index" style="height: 100%; overflow: hidden;">
-        <image bindtap="handleJumpInfo" data-item="{{item}}"  show-menu-by-longpress="{{true}}"  src="{{c_link}}/img/{{item.img}}" class="slide-image" mode="aspectFill" bindload="initialiOnImageLoad" wx:if="{{item.fileType==1}}"/>
+        <image bindtap="handleJumpInfo" data-item="{{item}}" show-menu-by-longpress="{{true}}" src="{{c_link}}/img/{{item.img}}" class="slide-image" mode="aspectFill" bindload="initialiOnImageLoad" wx:if="{{item.fileType==1}}" />
         <video wx:else src="{{c_link}}/img/{{item.img}}" style="width: 100%;"></video>
       </swiper-item>
     </swiper>
@@ -87,9 +87,12 @@
                 </block>
               </view>
             </block>
-            <view wx:else class="classification-department-item {{item.isdevelop == 0?'developed':'not-developed'}}" data-item="{{item}}" bindtap="handleJumpPage">
+            <view wx:else class="classification-department-item {{item.isdevelop == 0?'developed':'not-developed'}}" data-item="{{item}}" bindtap="handleJumpPage" style="position: relative;">
               <image style="width: 80rpx;height: 80rpx;" src="/assets/images/home/01.png" />
-              <view style="color: #333;font-size: 23rpx;">{{item.name}}</view>
+              <view style="color: #333;font-size: 23rpx;">
+                <text>{{item.name}}</text>
+                <!-- <text style="position: absolute;top: 15rpx;background-color: red;width: 10rpx;height: 10rpx;border-radius: 50%;left: 60%;"></text> -->
+              </view>
             </view>
           </view>
         </scroll-view>

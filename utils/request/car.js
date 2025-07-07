@@ -53,6 +53,10 @@ const u_getPayPrice = {
 const u_newInsure = {
   URL: fin3plusUrl + "insuranceApi/newInsure",
 }
+// 批量
+const u_batchNewWycInsure = {
+  URL: fin3plusUrl + "insuranceApi/batchNewLoseInsure",
+}
 // 失联
 const u_loseInsureList = {
   URL: fin3plusUrl + "insuranceApi/loseInsureList",
@@ -60,7 +64,13 @@ const u_loseInsureList = {
 const u_newLoselnsure = {
   URL: fin3plusUrl + "insuranceApi/newLoseInsure",
 }
+// 批量
+const u_batchNewLoseInsure = {
+  URL: fin3plusUrl + "insuranceApi/batchNewWycInsure",
+}
 module.exports = {
+  u_batchNewWycInsure,
+  u_batchNewLoseInsure,
   u_newLoselnsure,
   u_loseInsureList,
   u_userInsureList,

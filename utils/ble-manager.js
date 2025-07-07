@@ -1,7 +1,7 @@
 /**
  * 控制ble的所有状态
  */
-const app = getApp();
+
 //获取工具类
 const utils = require('byte-util.js');
 //获取控制命令类
@@ -10,6 +10,8 @@ const controlCmds = require('device-control-cmds.js');
 const parseUtil = require('parse-util.js');
 //系统api
 const appUtil = require('app-util.js');
+//日志
+const logger = require('logger.js');
 
 
 var gWriteService = '';
@@ -47,7 +49,7 @@ var lastSendData = '';
 //连接状态
 var connected = false;
 //所有请求类型
-const equireTypeArray = [1, 2, 3, 4, 5, 6, 7, 8];
+const equireTypeArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
 //扫描超时时间
 const devicesDiscoveryTimeOut = 15000;
 //最后一次点击的名称
@@ -61,7 +63,7 @@ var sendRepetTimeOut;
 //每条指令最大重复发送4次,共发送5次
 var sendMaxTime = 4;
 //重复发送间隔时间
-const repeatSendTime=100;
+const repeatSendTime = 100;
 //最后一次接受到的数据
 var lastReceiverData;
 //搜索设备超时
@@ -80,6 +82,16 @@ var DEFAULT_CONTROL_CMDS = {
   CONTROL_CLOSE_DOOR_OUTAGE: 'B511',
   //鸣笛
   CONTROL_REMOTE_LOOK_FOR_CAR: 'B400',
+  //断电
+  CONTROL_CATCHCAR: 'B100',
+  //上电
+  CONTROL_RELEASECAR: 'B101',
+  //后备箱
+  CONTROL_OPEN_TRUNK: 'B600',
+  //升窗
+  CONTROL_UP_WND: 'BA00',
+  //降窗
+  CONTROL_DOWN_WND: 'BA01',
 };
 
 /**
@@ -107,7 +119,7 @@ var DEFAULT_BLUETOOTH_STATE = {
   //发送失败
   BLUETOOTH_SEND_FAILED: 7,
   //无响应
-  BLUETOOTH_NO_RESPONSE:8
+  BLUETOOTH_NO_RESPONSE: 8
 };
 
 /**
@@ -129,7 +141,38 @@ var DEFAULT_CMD_TYPE = {
   //读取车辆状态
   READ_CAR_STATE_TYPE: equireTypeArray[6],
   //读取电量、续航里程
-  READ_CAR_POWR_MILEAGE: equireTypeArray[7]
+  READ_CAR_POWR_MILEAGE: equireTypeArray[7],
+  //通电
+  CONTROL_RELEASECAR_TYPE: equireTypeArray[9],
+  //断电
+  CONTROL_CATCHCAR_TYPE: equireTypeArray[10], 
+  //VIN
+  READ_CAR_VIN: equireTypeArray[11],
+  //油量
+  READ_CAR_OIL: equireTypeArray[12],
+  //调试指令
+  DEBUG_CMD: equireTypeArray[13],  
+  //后备箱指令
+  CONTROL_OPENTRUNK_TYPE: equireTypeArray[14], 
+  //升窗指令
+  CONTROL_UPWND_TYPE: equireTypeArray[15],
+  //降窗指令
+  CONTROL_DOWNWND_TYPE: equireTypeArray[16],
+  //胎压
+  READ_CAR_TIRE: equireTypeArray[17],
+  //保养原车数据
+  READ_CAR_MAIN: equireTypeArray[18],
+  //保养查询参数
+  READ_DEV_MAIN: equireTypeArray[19], 
+  //保养查询参数
+  READ_DEV_SPINFO: equireTypeArray[20], 
+}
+
+/**
+ * 返回连接状态
+ */
+function getBLEConnectionState() {
+  return connected;
 }
 
 /**
@@ -137,7 +180,7 @@ var DEFAULT_CMD_TYPE = {
  */
 function onBLEConnectionStateChange(onStateChanged) {
   wx.onBLEConnectionStateChange(function (res) {
-    console.log(`device ${res.deviceId} state has changed, connected: ${res.connected}`)
+    logger.e(`device ${res.deviceId} state has changed, connected: ${res.connected}`)
     onStateChanged(res.connected);
   });
 }
@@ -150,12 +193,12 @@ function stopScanBle() {
     success: function (res) {
       console.log(res);
       discovering = false;
-      console.log('--------------stopScanBle-true-------discovering:' + discovering);
+      logger.e('stopScanBle-true discovering:' + discovering);
     },
     fail: function (res) {
       console.log(res);
       discovering = false;
-      console.log('--------------stopScanBle-false-------discovering:' + discovering);
+      logger.e('stopScanBle-false discovering:' + discovering);
     }
   })
 }
@@ -165,7 +208,7 @@ function stopScanBle() {
  */
 function onBluetoothAdapterStateChange() {
   wx.onBluetoothAdapterStateChange(function (res) {
-    console.log(`adapterState changed, now is`, res);
+    logger.e(`adapterState changed, now is`, res);
     setBLEAdapterState(res.available, res.discovering);
   })
 }
@@ -180,6 +223,19 @@ function onBluetoothAdapterStateChange() {
    * 6.读取gps
    * 7.读取车辆状态
    * 8.读取电量、续航里程
+   * 9.回复6001
+   * 10.上电
+   * 11.断电
+   * 12.读取VIN
+   * 13.读取油量
+   * 14.调试指令(DEBUG)
+   * 15.后备箱
+   * 16.升窗
+   * 17.降窗
+   * 18.胎压
+   * 19.保养原车数据
+   * 20.保养查询参数
+   * 21.特殊数据查询
    */
 function parseCmd() {
   var cmd = '';
@@ -217,6 +273,47 @@ function parseCmd() {
     case 9://回复通用应答6001
       cmd = controlCmds.getNormalCmd(serialNum);
       break;
+    case 10://上电
+      lastControlCmd = DEFAULT_CONTROL_CMDS.CONTROL_RELEASECAR;
+      cmd = controlCmds.getDeviceControlCmd(lastControlCmd, gPwd);
+      break;
+    case 11://断电
+      lastControlCmd = DEFAULT_CONTROL_CMDS.CONTROL_CATCHCAR;
+      cmd = controlCmds.getDeviceControlCmd(lastControlCmd, gPwd);
+      break;
+    case 12://读取VIN
+      cmd = controlCmds.getDeviceCarVIN();
+      break;
+    case 13://读取油量
+      cmd = controlCmds.getDeviceCarOIL();
+      break;
+    case 14://DEBUG指令
+      cmd = controlCmds.getDEBUGDataCmd();
+      break;
+    case 15: //后备箱
+      lastControlCmd = DEFAULT_CONTROL_CMDS.CONTROL_OPEN_TRUNK;
+      cmd = controlCmds.getDeviceControlCmd(lastControlCmd, gPwd);
+      break;
+    case 16://升窗
+      lastControlCmd = DEFAULT_CONTROL_CMDS.CONTROL_UP_WND;
+      cmd = controlCmds.getDeviceControlCmd(lastControlCmd, gPwd);
+      break;
+    case 17://降窗
+      lastControlCmd = DEFAULT_CONTROL_CMDS.CONTROL_DOWN_WND;
+      cmd = controlCmds.getDeviceControlCmd(lastControlCmd, gPwd);
+      break;
+    case 18://读取胎压
+      cmd = controlCmds.getDeviceCarTIRE();
+      break;
+    case 19://保养原车数据
+      cmd = controlCmds.getDeviceCarMAIN();
+      break;
+    case 20://保养查询参数
+      cmd = controlCmds.getDeviceDevMAIN();
+      break;
+    case 21://特殊数据查询
+      cmd = controlCmds.getDeviceDevSPINFO();
+      break;
   }
   return cmd;
 }
@@ -233,31 +330,25 @@ function setBLEAdapterState(ava, discovery) {
  * 打开蓝牙适配器
  */
 function openBluetoothAdapter(cOpenBluetoothAdapter) {
-  // appUtil.getAuthState(appUtil.SCOPE_TYPE.SCOPE_BLUETOOTH, function(auth) {
-  //   if (auth) {
-      wx.openBluetoothAdapter({
-        success: function (res) {
-          console.log(res);
-          isBLEAdapterOpen = true;
-          cOpenBluetoothAdapter(true);
-        },
-        fail: function (res) {
-          console.log(res);
-          isBLEAdapterOpen = false;
-          setBLEAdapterState(false, false);
-          cOpenBluetoothAdapter(false);
-        }
-      })
-    // }else{
-    //   appUtil.showModal('请打开蓝牙!', true, function(res) {
-    //     if (res) {
-    //       wx.openSetting({
-    //         success(res) {}
-    //       })
-    //     }
-    //   });
-    // }
-  // })
+  wx.openBluetoothAdapter({
+    success: function (res) {
+      console.log(res);
+      isBLEAdapterOpen = true;
+      cOpenBluetoothAdapter(true);
+    },
+    fail: function (res) {
+      console.log(res);
+      if(res.errMsg!="openBluetoothAdapter:fail already opened"){
+        isBLEAdapterOpen = false;
+        setBLEAdapterState(false, false);
+        cOpenBluetoothAdapter(false);
+      }
+      else{
+        isBLEAdapterOpen = true;
+        cOpenBluetoothAdapter(true);
+      }
+    }
+  })
 }
 
 /**
@@ -297,43 +388,33 @@ function startBluetoothDevicesDiscovery() {
   //开始搜索
   wx.startBluetoothDevicesDiscovery({
     //services: [WRITE_SERVICE_SHORTHAND],
-    /*success: function (res) {
-      console.log(res);
-      discovering = res.isDiscovering;
-      setTimeout(function(){
-          //wx.stopBluetoothDevicesDiscovery();
-          wx.getBluetoothDevices({
-            success: function (res) {
-              console.log(res)
-              //if (res.devices[0]) {
-              //  console.log(ab2hex(res.devices[0].advertisData))
-              //}
-            }
-          })
-        },
-        3000
-      )
-    },*/
     success: function (res) {
       console.log(res);
       discovering = res.isDiscovering;
     },
     fail: function (res) {
-      console.log(res);
-      discovering = res.isDiscovering;
-      gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
-      gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_DEVICES_DISCOVERY_FAILD);
+      if(res.errMsg!="startBluetoothDevicesDiscovery:fail already discovering devices"){
+        console.log(res);
+        discovering = false;
+        gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
+        gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_DEVICES_DISCOVERY_FAILD);
+      }
+      else{
+        console.log(res);
+        discovering = true;
+      }
     }
   });
   discoverTimeout = setTimeout(function () {
     if (discovering) {
       gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
       gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND);
-      stopScanBle();
-      if (isBLEAdapterOpen) {
-        console.log('--------关闭适配器---------');
-        closeBluetoothAdapter();
-      }
+      releaseBle();
+      //   stopScanBle();
+    //   if (isBLEAdapterOpen) {
+    //     logger.e('关闭适配器');
+    //     closeBluetoothAdapter();
+    //   }
     }
   }, devicesDiscoveryTimeOut);
 }
@@ -344,8 +425,10 @@ function startBluetoothDevicesDiscovery() {
 function getBluetoothAdapterState(onBleAdapterState) {
   wx.getBluetoothAdapterState({
     success: function (res) {
+        console.log(res);
       onBleAdapterState(res);
     }, fail: function (res) {
+        console.log(res);
       onBleAdapterState(res);
     }
   })
@@ -442,8 +525,8 @@ function getBLEDeviceServices() {
           gReadService = res.services[i].uuid;
         }
       }
-      console.log('device设备的读服务id:', gWriteService);
-      console.log('device设备的写服务id:', gReadService);
+      logger.e('device设备的读服务id:', gWriteService);
+      logger.e('device设备的写服务id:', gReadService);
       if (gWriteService != '' && gReadService != '' && (gWriteCharacteristic == '' || gReadCharacteristic == '')) {
         getBLEDeviceReadCharacteristics();
       }
@@ -464,7 +547,7 @@ function getBLEDeviceReadCharacteristics() {
           gReadCharacteristic = res.characteristics[i].uuid;
         }
       }
-      console.log('device设备的读特征值id:' + gReadCharacteristic);
+      logger.e('device设备的读特征值id:' + gReadCharacteristic);
       if (gReadCharacteristic != '') {
         notifyBLECharacteristicValueChange();
       }
@@ -489,6 +572,44 @@ function notifyBLECharacteristicValueChange() {
       if (gWriteCharacteristic == '') {
         getBLEDeviceWriteCharacteristics();
       }
+      appUtil.getSystemInfoComplete(function (res) {
+        var system = res.system;
+        var blankIndex = system.indexOf(' ');
+        var pointIndex = system.indexOf('.');
+        if (blankIndex != -1 && pointIndex != -1) {
+          systemType = system.substring(0, blankIndex);
+          systemVersion = system.substring(blankIndex + 1, pointIndex + 2);
+        }
+      }, function () {
+        //判断版本是否支持
+        // if (systemType.toLowerCase() == 'android' && systemVersion > 8) {
+          console.log(
+            wx.getBLEMTU({
+              deviceId: deviceId,
+            }));
+            wx.setBLEMTU({
+              deviceId: deviceId,
+              mtu: 240,
+              success: function(res){
+                console.log("MTU modify success");
+              },
+              fail: function(res){
+                console.log("MTU modify fail");
+              }
+            })
+          // wx.setBLEMTU({
+          //   deviceId: 'deviceId',
+          //   mtu: 23,
+          //   success: function(res){
+          //     console.log(res);
+          //   },
+          //   fail: function(res){
+          //     console.log(res);
+          //   }
+          // })
+        // } 
+      })
+      
     },
     fail: function (res) {
       console.log(res);
@@ -513,7 +634,7 @@ function getBLEDeviceWriteCharacteristics() {
           }
         }
       }
-      console.log('device设备的写特征值id:' + gWriteCharacteristic);
+      logger.e('device设备的写特征值id:' + gWriteCharacteristic);
     }, fail: function (res) {
       console.log(res);
     }
@@ -528,34 +649,34 @@ function onBLECharacteristicValueChange() {
     var resultArrayBufferData = characteristic.value;
     var receiverHexData = utils.buf2hex(resultArrayBufferData);
     var arrayData = utils.hexStringToArray(receiverHexData);
-    console.log('characteristic array value:', arrayData + "  hex value:" + receiverHexData);
+    logger.e('characteristic array value:', arrayData + "  hex value:" + receiverHexData);
     for (var response = parseUtil.filterOnePage(arrayData); response != null; response = parseUtil.filterOnePage(null)) {
       if (response != null) {
         //成功获取一包数据
         var hex = utils.buf2hex(response);
-        console.log("-----------收到一条完整的包数据----array value：" + response + "  hex value:" + hex);
-        if (lastReceiverData==hex){
-          //收到两次相同的结果，原因：回复6001太慢，出发设备重发机制，重发间隔500ms
-          console.log("收到两次相同的结果，原因：回复6001太慢，出发设备重发机制，重发间隔500ms");
+        logger.e("收到一条完整的包数据 array value：" + response + "  hex value:" + hex);
+        if (lastReceiverData == hex) {
+          //收到两次相同的结果，原因：回复6001太慢，触发设备重发机制，重发间隔500ms
+          logger.e("收到两次相同的结果，原因：回复6001太慢，触发设备重发机制，重发间隔500ms");
           return;
         }
-        lastReceiverData=hex;
+        lastReceiverData = hex;
         //解析完整包数据
         parseUtil.receiveData(response, lastControlCmd, DEFAULT_CONTROL_CMDS, function (data) {
           if (data.reply && (controlCmds.lastSendSerialNum = data.serilalOBDNum)) {
             //发送6001通用应答
-            console.log('--------------------回复6001通用应答-----------------');
-            dispatcherSend(controlCmds.getNormalCmd(data.serilalOBDNum),true);
+            logger.e('回复6001通用应答');
+            dispatcherSend(controlCmds.getNormalCmd(data.serilalOBDNum), true);
           }
           //controlType：控制类型 1，gps 2,状态读取 3，里程电量 4，控制 0,收到6001
-          if (data.controlType == 0){
+          if (data.controlType == 0) {
             if (sendRepetTimeOut) {
-              console.log('-----------------取消重复发送------------:'+(new Date().getTime()));
+              logger.e('取消重复发送:' + (new Date().getTime()));
               clearTimeout(sendRepetTimeOut);
               sendRepetTimeOut = '';
-              sendMaxTime=4;
+              sendMaxTime = 4;
             }
-          }else{
+          } else {
             gOnReceiveValue(data);
           }
         });
@@ -570,9 +691,9 @@ function onBLECharacteristicValueChange() {
 function onBluetoothDeviceFound() {
   //安卓手机6.0系统及以上 必须开启微信定位权限才能使用 蓝牙搜索功能
   wx.onBluetoothDeviceFound(function (devices) {
-    console.log('------------------found:' + devices.devices[0].name);
-    if (gIdc == devices.devices[0].name || gIdc == devices.devices[0].localName || 
-      utils.hexCharCodeToStr(utils.buf2hex(devices.devices[0].advertisData)).indexOf(gIdc)!=-1) {
+    logger.e('device found:' + devices.devices[0].name);
+    if (gIdc == devices.devices[0].name || gIdc == devices.devices[0].localName ||
+      utils.hexCharCodeToStr(utils.buf2hex(devices.devices[0].advertisData)).indexOf(gIdc) != -1) {
       deviceId = devices.devices[0].deviceId;
       //监听连接状态
       onBLEConnectionStateChange(function (connectState) {
@@ -582,8 +703,8 @@ function onBluetoothDeviceFound() {
           gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_SUCESS);
         } else {
           gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
-          gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED);
-          releaseBle();
+          //gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED);
+          //releaseBle();
         }
       });
       /**
@@ -611,7 +732,7 @@ function isQuickStart(quickName) {
   var isQuick = false;
   var currentTime = new Date().getTime();
   if (lastClickName == quickName && currentTime - lastExecuteTime < 800) {
-    console.log("-------------禁止重复操作---------------");
+    console.log("禁止重复操作");
     isQuick = true;
   }
   lastExecuteTime = currentTime;
@@ -642,9 +763,8 @@ function initSendData(idc, pwd, sendType, bluetoothState, onReceiveValue) {
   if (gOnReceiveValue != onReceiveValue) {
     gOnReceiveValue = onReceiveValue;
   }
-  if (!gIdc) {
+  if (gIdc != idc) {
     gIdc = idc;
-    //onBluetoothDeviceFound();
   }
   onBluetoothDeviceFound();
   sendMaxTime = 4;
@@ -685,7 +805,7 @@ function isSupportedBLE(isSupported) {
 
 function sendMyData(idc, pwd, sendType, bluetoothState, onReceiveValue, isIntercept) {
   if (isIntercept && isQuickStart('sendMyData')) {
-    console.log('--------不可以频繁点击--------');
+    console.log('不可以频繁点击');
     bluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_SEND_FREQUENTLY);
     return;
   }
@@ -697,10 +817,10 @@ function sendMyData(idc, pwd, sendType, bluetoothState, onReceiveValue, isInterc
 
   if (connected) {
     // 已连接，发送数据
-    dispatcherSend(parseCmd(),false);
+    dispatcherSend(parseCmd(), false);
   } else {
     isSupportedBLE(function (isSupported) {
-      if (isSupported) {
+      if (isSupported) {      
         isBLEAdapterAvailable(function (ava) {
           if (ava) {
             if (needScan()) {
@@ -732,7 +852,7 @@ function sendMyData(idc, pwd, sendType, bluetoothState, onReceiveValue, isInterc
  * onReceiveValue:接收数据
  */
 function sendData(idc, pwd, sendType, bluetoothState, onReceiveValue) {
-  sendMyData(idc, pwd, sendType, bluetoothState, onReceiveValue, true);
+    sendMyData(idc, pwd, sendType, bluetoothState, onReceiveValue, true);
 }
 
 /**
@@ -757,6 +877,17 @@ function dispatcherSend(sendData, noRepeat) {
   }
 }
 
+function sleep(numberMillis) {
+  var now = new Date();
+  var exitTime = now.getTime() + numberMillis;
+  while (true) {
+      now = new Date();
+      if (now.getTime() > exitTime){
+          return;
+      }
+  }
+}
+
 /**
  * 延时发送，不要超过150ms
  */
@@ -775,65 +906,71 @@ function send(hex, noRepeat) {
   //发送数据
   var typedArray = utils.hexStringToArrayBuffer(hex);
   var buffer = typedArray.buffer
-  console.log(typedArray);
-  console.log("---------发送数据：" + hex);
-  writeBLECharacteristicValue(buffer, function (isSuccess) {
-    if (isSuccess) {
-      console.log("-----------指令发送成功-----------" + (new Date().getTime()));
-      sendRepet(true, noRepeat);
-    } else {
-      console.log("-----------指令发送失败-----------" + (new Date().getTime()));
-      sendRepet(false, noRepeat);
-    }
-  });
+  logger.e(typedArray);
+  logger.e("发送数据：" + hex);
+  if(connected){
+    writeBLECharacteristicValue(buffer, function (isSuccess) {
+      if (isSuccess) {
+        logger.e("指令发送成功:" + (new Date().getTime()));
+        if(noRepeat) 
+          releaseBle();
+        else
+          sendRepet(true, noRepeat);
+      } else {
+        logger.e("指令发送失败:" + (new Date().getTime()));
+        sendRepet(false, noRepeat);
+      }
+    });
+  }
+
 }
 
 /**
  * 重复发送
  */
 function sendRepet(isSuccess, noRepeat) {
-  if (sendRepetTimeOut){
-    console.log('----------------连续发送----取消上次设置的重复发送');
+  if (sendRepetTimeOut) {
+    logger.e('连续发送,取消上次设置的重复发送');
     clearTimeout(sendRepetTimeOut);
-    sendRepetTimeOut='';
+    sendRepetTimeOut = '';
   }
-  if(isSuccess){
-    sendMaxTime = 4;
-    if (!noRepeat){
-      // console.log('----------------设置--500ms后---重新发送------------------');
+  if (isSuccess) {
+    //sendMaxTime = 4;
+    if (!noRepeat) {
+      console.log('设置--500ms后,重新发送');
       sendRepetTimeOut = setTimeout(function () {
-        //方案1.发送成功，500ms没有回复则重新发送
+        // //方案1.发送成功，500ms没有回复则重新发送
         if (sendMaxTime > 0) {
-          console.log(`------------重复发送${sendMaxTime}---------:` + lastSendData);
+          console.log(`重复发送${sendMaxTime}:` + lastSendData);
           sendMaxTime--;
           dispatcherSend(lastSendData, noRepeat);
         } else {
-          console.log('------------4次发送无相应---------:' + lastSendData);
+          console.log('4次发送无响应:' + lastSendData);
           sendMaxTime = 4;
           gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
           gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NO_RESPONSE);
         }
         ////方案2.发送成功，等待5秒没有回复则超时,发送6001指令没有回复，则不用计时
-        // console.log('----------------等待5秒，没有收到回复则超时------------------');
+        // logger.e('等待5秒，没有收到回复则超时');
         // gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
         // gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NO_RESPONSE);
-      }, repeatSendTime * 100);
+      }, repeatSendTime * 50);
     }
-  }else{
+  } else {
     sendRepetTimeOut = setTimeout(function () {
       if (sendMaxTime > 0) {
-        console.log(`------------重复发送${sendMaxTime}---------:` + lastSendData);
+        logger.e(`重复发送${sendMaxTime}:` + lastSendData);
         sendMaxTime--;
         dispatcherSend(lastSendData, noRepeat);
       } else {
-        console.log('------------4次发送失败---------:' + lastSendData);
+        logger.e('4次发送失败:' + lastSendData);
         sendMaxTime = 4;
         gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
         gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_SEND_FAILED);
       }
     }, repeatSendTime);
   }
- 
+
 }
 
 /**
@@ -842,16 +979,16 @@ function sendRepet(isSuccess, noRepeat) {
 function releaseBle() {
   //判断是否在扫描
   if (discovering) {
-    console.log('--------停止扫描---------');
+    logger.e('停止扫描');
     stopScanBle();
   };
   //判断是否连接
   if (connected) {
-    console.log('--------断开连接---------');
+    logger.e('断开连接');
     disConnect();
   };
   if (isBLEAdapterOpen) {
-    console.log('--------关闭适配器---------');
+    logger.e('关闭适配器');
     closeBluetoothAdapter();
   }
   releaseData();
@@ -860,7 +997,7 @@ function releaseBle() {
 /**
  * 释放数据
  */
-function releaseData(){
+function releaseData() {
   deviceId = '';
 }
 
@@ -869,4 +1006,6 @@ module.exports = {
   sendData: sendData,
   releaseBle: releaseBle,
   DEFAULT_BLUETOOTH_STATE: DEFAULT_BLUETOOTH_STATE,
+  getBLEConnectionState: getBLEConnectionState,
+  sleep: sleep,
 }

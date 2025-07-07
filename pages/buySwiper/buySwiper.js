@@ -6,13 +6,14 @@ const {
 const {
   u_userInsureList,
   u_getPayPrice,
-  u_newInsure,
+  u_batchNewLoseInsure,
   u_loseInsureList,
-  u_newLoselnsure
+  u_batchNewWycInsure
 } = require('../../utils/request/car')
 const {
   byPost,
-  byGet
+  byGet,
+  byPostJson
 } = require('../../utils/request/http')
 const {
   _handleWindowInfo,
@@ -35,6 +36,12 @@ Page({
     g_triggered: false, //下拉刷新状态
     c_activeTab: 1, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
+    datalist: [
+      { applicantName: '', applicantIdcard: '', plateNumber: '' }
+    ],
+    datalistOne: [
+      { rentorderno: '', sn: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
+    ]
   },
   // 全屏背景图
   initialiImageBaseConversion() {
@@ -54,7 +61,7 @@ Page({
     }, {
       path: '/assets/images/home/2-2.png',
       key: 's_background_tabs_active_2'
-    }, ];
+    },];
     const promises = imageMap.map(item =>
       new Promise((resolve, reject) => {
         wx.getFileSystemManager().readFile({
@@ -107,12 +114,8 @@ Page({
     const _this = this
     byGet(getApp().data.k1swUrl + u_getPayPrice.URL, {}).then(response => {
       if (response.statusCode == 200) {
-        const params = _this.data.params
         this.setData({
-          params: {
-            ...params,
-            service_charge: response?.data.content
-          }
+          service_charge: response?.data.content
         })
       }
     })
@@ -135,79 +138,81 @@ Page({
       this.initList();
     });
   },
+  // 增加数据
+  handleAddListOne() {
+    const datalistOne = this.data.datalistOne
+    let temp = { rentorderno: '', sn: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
+    datalistOne.push(temp)
+    this.setData({
+      datalistOne
+    })
+  },
+  // 增加一条数据
+  handleAddList() {
+    const datalist = this.data.datalist
+    let temp = {
+      applicantName: '', applicantIdcard: '', plateNumber: ''
+    }
+    datalist.push(temp)
+    this.setData({
+      datalist
+    })
+  },
+  handleDeteleListOne(evt) {
+    const datalistOne = this.data.datalistOne
+    const index = evt.currentTarget.dataset.index
+    const newList = datalistOne.filter((_, i) => i !== index);
+    this.setData({
+      datalistOne: newList
+    })
+  },
+  // 删除数据
+  handleDeteleList(evt) {
+    const datalist = this.data.datalist
+    const index = evt.currentTarget.dataset.index
+    const newList = datalist.filter((_, i) => i !== index);
+    this.setData({
+      datalist: newList
+    })
+  },
   // 内容输入回调
   handleBindinput(evt) {
-    const {
-      params
-    } = this.data
-    params[evt.currentTarget.dataset.item] = evt.detail.value
-    this.setData({
-      params: {
-        ...params
-      }
-    })
+    const insurance_type = this.data.insurance_type
+    if (insurance_type == 1) {
+      const index = evt.currentTarget.dataset.index
+      const key = evt.currentTarget.dataset.item
+      const datalistOne = this.data.datalistOne
+      datalistOne[index][key] = evt.detail.value
+      this.setData({
+        datalistOne
+      })
+    } else {
+      const index = evt.currentTarget.dataset.index
+      const key = evt.currentTarget.dataset.item
+      const datalist = this.data.datalist
+      datalist[index][key] = evt.detail.value
+      this.setData({
+        datalist
+      })
+    }
+
   },
 
   //提交内容
   handleSubmit() {
-    const params = this.data.params;
-    const temp = {
-      applicantName: params?.applicantName,
-      applicantIdcard: params?.applicantIdcard,
-      plateNumber: params?.plateNumber
-    };
-
-    // 1. 被保险人非空校验
-    if (!temp.applicantName || !temp.applicantName.trim()) {
-      wx.showToast({
-        title: '被保险人不能为空',
-        icon: 'none'
-      });
-      return;
-    }
-
-    // 2. 身份证号格式校验
-    if (!this.isValidIdCard(temp.applicantIdcard)) {
-      wx.showToast({
-        title: '请输入有效的身份证号码',
-        icon: 'none'
-      });
-      return;
-    }
-
-    // 3. 车牌号格式校验
-    if (!this.isValidPlateNumber(temp.plateNumber)) {
-      wx.showToast({
-        title: '请输入有效的车牌号码',
-        icon: 'none'
-      });
-      return;
-    }
-
-    // 所有校验通过后发起请求
-    byPost(getApp().data.k1swUrl + u_newInsure.URL, temp,
-      (response) => {
-        if (response.data.code == 1000) {
-          console.log(response?.data.content.guid);
-          wx.navigateTo({
-            url: '/pages/pay/index?info=' + JSON.stringify(response?.data.content),
-          });
-        } else {
-          // 处理接口返回的错误
-          wx.showToast({
-            title: response.data.msg || '投保失败',
-            icon: 'none'
-          });
-        }
-      },
-      (error) => {
-        // 网络请求错误处理
+    byPostJson(getApp().data.k1swUrl + u_batchNewLoseInsure.URL, JSON.stringify(this.data.datalist), function (response) {
+      if (response.data.code == 1000) {
+        wx.navigateTo({
+          url: '/pages/pay/index?info=' + JSON.stringify(response?.data.content),
+        });
+      } else {
+        // 处理接口返回的错误
         wx.showToast({
-          title: '网络请求失败',
+          title: response.data.msg || '投保失败',
           icon: 'none'
         });
       }
-    );
+    });
   },
 
   // 身份证校验函数（支持15位/18位，包含X校验）
@@ -242,89 +247,21 @@ Page({
   },
   // 失联提交
   handleInsuranceSubmit() {
-    const params = this.data.params;
-    const temp = {
-      otaname: params?.otaname,
-      platenumber: params?.platenumber,
-      rentdays: params?.rentdays,
-      rentendcity: params?.rentendcity,
-      rentendtime: params?.rentendtime,
-      rentorderno: params?.rentorderno,
-      rentstartcity: params?.rentstartcity,
-      rentstarttime: params?.rentstarttime,
-      sn: params?.sn,
-      ylname: params?.ylname,
-    };
-
-    // 字段校验配置（字段名: 中文提示）
-    const fieldValidations = {
-      rentorderno: '主单号',
-      sn: '设备号',
-      ylname: '运营商名称',
-      otaname: '平台名称',
-      platenumber: '车牌号',
-      rentdays: '租赁天数',
-      rentstarttime: '租车开始时间',
-      rentendtime: '租车结束时间',
-      rentendcity: '还车城市',
-      rentstartcity: '取车城市',
-    };
-
-    // 执行字段校验
-    for (const [field, fieldName] of Object.entries(fieldValidations)) {
-      const value = temp[field];
-
-      // 通用空值检查
-      if (value === undefined || value === null || value === '') {
-        wx.showToast({
-          title: `${fieldName}不能为空`,
-          icon: 'none',
-          duration: 3000
-        });
-        return; // 立即终止提交
-      }
-
-      // 特殊字段类型检查
-      if (field === 'rentdays') {
-        const days = Number(value);
-        if (isNaN(days) || days <= 0) {
-          wx.showToast({
-            title: '租赁天数必须为大于0的数字',
-            icon: 'none',
-            duration: 3000
-          });
-          return;
-        }
-        temp[field] = days; // 转换为数字类型
-      } else if (typeof value === 'string') {
-        temp[field] = value.trim(); // 去除字符串首尾空格
-      }
-    }
-
+    const info = this.data.datalistOne
     // 所有校验通过后发起请求
-    byPost(getApp().data.k1swUrl + u_newLoselnsure.URL, temp,
-      (response) => {
-        if (response.data.code == 1000) {
-          console.log(response?.data.content.guid);
-          wx.navigateTo({
-            url: '/pages/pay/index?info=' + JSON.stringify(response?.data.content),
-          });
-        } else {
-          wx.showToast({
-            title: response.data.msg || '投保失败',
-            icon: 'none',
-            duration: 3000
-          });
-        }
-      },
-      (error) => {
+    byPostJson(getApp().data.k1swUrl + u_batchNewWycInsure.URL, JSON.stringify(this.data.datalistOne), function (response) {
+      if (response.data.code == 1000) {
+        wx.navigateTo({
+          url: '/pages/pay/index?info=' + JSON.stringify(response?.data.content),
+        });
+      } else {
+        // 处理接口返回的错误
         wx.showToast({
-          title: '网络请求失败',
-          icon: 'none',
-          duration: 3000
+          title: response.data.msg || '投保失败',
+          icon: 'none'
         });
       }
-    );
+    });
   },
   // 切换tabs标签
   handleSwitchTab(e) {
@@ -353,28 +290,25 @@ Page({
   },
   // 租车结束时间
   handleOnEndDateChange(evt) {
-    const rentendtime = evt.detail.value
-    const params = this.data.params
+    const index = evt.currentTarget.dataset.index
+    const key = evt.currentTarget.dataset.item
+    const datalistOne = this.data.datalistOne
+    datalistOne[index][key] = evt.detail.value
     this.setData({
-      params: {
-        ...params,
-        rentendtime
-      }
+      datalistOne
     })
   },
   // 租车开始时间
   handleOnStartDateChange(evt) {
-    const rentstarttime = evt.detail.value
-    const params = this.data.params
+    const index = evt.currentTarget.dataset.index
+    const key = evt.currentTarget.dataset.item
+    const datalistOne = this.data.datalistOne
+    datalistOne[index][key] = evt.detail.value
     this.setData({
-      params: {
-        ...params,
-        rentstarttime
-      }
+      datalistOne
     })
   },
   onLoad(options) {
-
     this.initInsuranceType(options)
   },
   onShow() {

@@ -100,7 +100,10 @@ Page({
   handleScanResult(result) {
     const params = this.data.params
     this.setData({
-     params: {...params,sn: result},
+      params: {
+        ...params,
+        sn: result
+      },
     })
   },
   initCarryParams(evt) {
@@ -252,7 +255,8 @@ Page({
       ...this.data.params,
       brakingType: this.data.brakingType,
       batterylift: this.data.batterylift,
-      carOwnerName: this.data.carOwnerName == '智信通' ? this.data.carOwnerName : this.data.carOwnerNameValue
+      carOwnerName: this.data.carOwnerName == '智信通' ? this.data.carOwnerName : this.data.carOwnerNameValue,
+      id: this.data.id || ''
     };
     const validations = [{
         field: 'platenumber',
@@ -314,7 +318,7 @@ Page({
         vin: info?.vin,
         xsgw: info?.xsgw,
         sn: info?.sn,
-        code:info?.code
+        code: info?.code
       },
       batterylift: info?.batterylift || '一键启动',
       brakingType: info?.brakingType,
@@ -330,7 +334,7 @@ Page({
         c_activeTab: 1,
         btnState: '新增',
         params: {},
-        id:'',
+        id: '',
         g_roleList_index: null
       })
     }

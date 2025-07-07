@@ -260,7 +260,8 @@ Component({
             content: createCallout(car),
             display: 'BYCLICK',
             padding: 8
-          }
+          },
+          deviceType:car?.deviceType
         }));
 
         const processMain = () => {
@@ -328,6 +329,7 @@ Component({
 
     // 点击地图车辆标记点
     handleOnMarkerTap(evt) {
+      console.log(evt)
       if (this.data.source == 'carDetail') {
         try {
           const {
@@ -349,7 +351,10 @@ Component({
           if (JSON.stringify(this.data.markers) !== JSON.stringify(updatedMarkers)) {
             this.setData({
               markers: updatedMarkers,
-              showModalState: false
+              showModalState: false,
+              idc:updatedMarkers?.[1]?.idc,
+              blueKey:updatedMarkers?.[1]?.blueKey,
+              deviceType:updatedMarkers?.[1]?.deviceType
             }, () => {
               this.triggerEvent('myMethod', {
                 info: updatedMarkers.find(item => item?.callout?.display == 'ALWAYS')
@@ -523,10 +528,13 @@ Component({
     },
     // 蓝牙控制车辆
     handleExecuteBluetooth(type) {
+      console.log(this.data.idc,'000------')
       const COMMAND_MAPPING = {
         5: 5, // 远程寻车
-        1: 3, // 锁门
-        3: 2 // 开门
+        1: this?.data?.deviceType ? 4 : 3, // 锁门
+        3: this?.data?.deviceType == 'F1' ? 1 : 2, // 开门
+        6:10,//取消拦截
+        8:11//风控拦截
       };
 
       const BLUETOOTH_HANDLERS = {
@@ -537,32 +545,32 @@ Component({
           hideLoading();
         },
         [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ADAPTER_UNAVAILABLE]: () => {
-          showModal('请打开蓝牙', false);
+          showToast('请打开蓝牙', false);
           hideLoading();
         },
         [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND]: () => {
-          this.isAndroid6((isAndroid) => {
-            const message = isAndroid ?
-              '请确定已经打开手机定位和微信定位权限!' :
-              '请重试!';
-            showModal(`没有发现设备，${message}`, false);
-          });
+          // this.isAndroid6((isAndroid) => {
+          //   const message = isAndroid ?
+          //     '请确定已经打开手机定位和微信定位权限!' :
+          //     '请重试!';
+          //     showToast(`没有发现设备，${message}`, false);
+          // });
           hideLoading();
         },
         [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED]: () => {
-          showModal('蓝牙连接失败，请重试!', false);
+          showToast('蓝牙连接失败，请重试!', false);
           hideLoading();
         },
         [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_UNSUPPORTED]: () => {
-          showModal('您的手机不支持低功耗蓝牙', false);
+          showToast('您的手机不支持低功耗蓝牙', false);
           hideLoading();
         },
         [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_SEND_FAILED]: () => {
-          showModal('数据发送失败，请重试!', false);
+          showToast('数据发送失败，请重试!', false);
           hideLoading();
         },
         [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NO_RESPONSE]: () => {
-          showModal('设备超时无响应，请重试!', false);
+          showToast('设备超时无响应，请重试!', false);
           hideLoading();
         }
       };
@@ -577,7 +585,26 @@ Component({
             command,
             state => BLUETOOTH_HANDLERS[state]?.(),
             data => {
-              hideLoading();
+              hideLoading()
+              if (data.controlType === 4) {
+                showToast(data.result);
+                if (data.result.includes("控制成功")) {
+                  // 上传服务器逻辑
+                }
+              }
+            }
+          );
+          return;
+        }
+        if (type == 8||type ==6) {
+          console.log(12323232323)
+          bleManager.sendData(
+            this.data.idc,
+            this.data.blueKey,
+            command,
+            state => BLUETOOTH_HANDLERS[state]?.(),
+            data => {
+              hideLoading()
               if (data.controlType === 4) {
                 showToast(data.result);
                 if (data.result.includes("控制成功")) {
@@ -589,7 +616,16 @@ Component({
           return;
         }
         if ([1, 3].includes(type)) {
-          this.sendData(command, this.data.blueKey);
+          bleManager.sendData(this.data.idc, this.data.blueKey, command, state => BLUETOOTH_HANDLERS[state]?.(),
+            data => {
+              hideLoading();
+              if (data.controlType === 4) {
+                showToast(data.result);
+                if (data.result.includes("控制成功")) {
+                  // 上传服务器逻辑
+                }
+              }
+            });
         }
       } finally {
         //  统一清理 (如果需要)
@@ -750,7 +786,7 @@ Component({
         this.handleLocation()
         return
       }
-    
+
       byPost(this.data.c_k1sw_link + u_RequestCarList.REQUEST_API, param, (response) => {
         hideLoading();
         const resn = response?.data?.content
@@ -770,7 +806,8 @@ Component({
             ],
             g_plateNumber: resn.plateNumber,
             blueKey: resn?.blueKey,
-            idc: resn.idc
+            idc: resn.idc,
+            deviceType: resn.deviceType
           }, () => {
             this.handleGetCarPostion(response?.data?.content?.sn)
           })

@@ -90,8 +90,14 @@
             <label>设备号(sn)<text>*</text></label>
             <block>
               <view class="card-info-item-input" style="display: flex;flex-direction: row;align-items: center;">
+              <block wx:if="{{id!=''}}">
+                <text wx:if="{{id!=''}}" style="font-size: 26rpx;">{{params.sn||'空'}}</text>
+              </block>
+              <block wx:else>
                 <input placeholder="请输入车型" value="{{params.sn}}" data-item="sn" bindinput="handleBindinput" />
                 <image src="/assets/images/ss.png" mode="" bindtap="scanCode" style="width: 50rpx;height: 50rpx;"/>
+              </block>
+      
               </view>
             </block>
           </view>

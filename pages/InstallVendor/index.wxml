@@ -56,7 +56,7 @@
 
           <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
             <label>联系电话 ：</label>
-            <text>{{item.linkmobile||'-'}}</text>
+            <text data-item="{{item.linkmobile}}" bindtap="makeCall" style="color: cornflowerblue;">{{item.linkmobile||'-'}}</text>
           </view>
           <view class="info-item long-info-item}}">
             <label>营业时间 ：</label>

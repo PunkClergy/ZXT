@@ -50,6 +50,23 @@ Page({
   onReady: function () {
 
   },
+  makeCall(evt) {
+    console.log(evt)
+    const info = evt?.currentTarget?.dataset?.item
+    wx.makePhoneCall({
+      phoneNumber: info, // 替换为你需要拨打的电话号码
+      success: () => {
+        console.log("成功调起拨号界面");
+      },
+      fail: (err) => {
+        console.error("拨号失败", err);
+        wx.showToast({
+          title: "拨号失败",
+          icon: "none"
+        });
+      }
+    });
+  },
   // 选择省份
   handleProvincesPicker(evt) {
     const _this = this
