@@ -39,13 +39,9 @@
                 <label>油箱容积 ：</label>
                 <text>{{item.xsgw?item.xsgw+'L':'-' }}</text>
               </view>
-              <view class="info-item">
-                <label>车辆类型 ：</label>
-                <text>{{item.sn?'自助取还':'非自助取还'}}</text>
-              </view>
-              <view class="info-item  {{item.carOwnerName.length > 15 ? 'long-info-item' : ''}}">
-                <label>设备平台 ：</label>
-                <text>{{item.carOwnerName||'-'}}</text>
+              <view class="info-item  {{item.batterylift.length > 15 ? 'long-info-item' : ''}}">
+                <label>启动方式 ：</label>
+                <text>{{item.batterylift||'-'}}</text>
               </view>
               <view class="info-item  {{item.sn.length > 15 ? 'long-info-item' : ''}}">
                 <label>设备号 ：</label>

@@ -12,6 +12,10 @@ const u_sendRentKey = {
 const u_bindOrUpdateDriver = {
   URL: fin3plusUrl + "rentKeyApi/bindOrUpdateDriver",
 }
+// 解绑车辆和司机关系
+const u_unBindDriver={
+  URL: fin3plusUrl + "rentKeyApi/unBindDriver",
+}
 // 取消电子钥匙
 const u_cancelRentKey = {
   URL: fin3plusUrl + "rentKeyApi/cancelRentKey",
@@ -19,6 +23,7 @@ const u_cancelRentKey = {
 }
 
 module.exports = {
+  u_unBindDriver,
   u_bindOrUpdateDriver,
   u_cancelRentKey,
   u_rentRecord,

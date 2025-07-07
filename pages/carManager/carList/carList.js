@@ -292,7 +292,9 @@ Page({
             batterylift: '一键启动', //启动方式
             carOwnerNameValue: '',
             carOwnerName: '智信通', //所属平台
-            brakingType: 1
+            brakingType: 1,
+            g_page: 1, //列表页码
+            g_items: [], //列表数据
           })
           showToast(response.data.msg)
           this.initList()

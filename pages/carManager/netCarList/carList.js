@@ -8,6 +8,10 @@ const {
   u_addOrUpdateCar
 } = require('../../../utils/request/car')
 const {
+  u_bindOrUpdateDriver,
+  u_unBindDriver
+} = require('../../../utils/request/self')
+const {
   byPost,
   byGet
 } = require('../../../utils/request/http')
@@ -37,7 +41,14 @@ Page({
     batterylift: '一键启动', //启动方式
     carOwnerNameValue: '',
     carOwnerName: '智信通', //所属平台
-    brakingType: 1
+    brakingType: 1,
+    g_source: '',
+    g_flagMulti: '',
+    net_send_key_show_momal: false,
+    startDate: '2025-03-20', //历史轨迹查询时间
+    startTime: '19:00', //历史轨迹查询时间
+    endDate: '2025-03-20', //历史轨迹查询时间
+    endTime: '19:00', //历史轨迹查询时间
   },
 
 
@@ -61,6 +72,145 @@ Page({
       url: `${this.data.g_source}?datails=${JSON.stringify(item)}`
     })
   },
+  // 绑定司机
+  handleShowSendNetKeyModal(evt) {
+    console.log(evt)
+    const info = evt.currentTarget.dataset.item
+    console.log(info)
+    this.setData({
+      cellData: info,
+      net_send_key_show_momal: true,
+      vehId: info.id
+    });
+  },
+  handleHideSengKeyModal() {
+    this.setData({
+      cellData: {},
+      c_send_key_show_momal: false,
+      net_send_key_show_momal: false
+    })
+  },
+  // 获取当前年月日 时分
+  handleCurrentDate() {
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+    };
+
+    const formatTime = (date) => {
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+    };
+
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1); // 改为获取明天
+
+    const currentDate = formatDate(now);
+    const tomorrowDate = formatDate(tomorrow);
+    const currentTime = formatTime(now);
+
+    this.setData({
+      oilendDate: currentDate,
+      oilendTime: currentTime,
+      startDate: currentDate, // 今天作为开始日期
+      endDate: tomorrowDate, // 明天作为结束日期
+      startTime: currentTime,
+      endTime: currentTime
+    });
+  },
+  // 绑定司机
+  handleNetFormSubmit(evt) {
+    const {
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      vehId
+    } = this.data;
+    const formData = evt.detail.value;
+    const validations = [{
+      field: formData.personName,
+      message: '请输入使用人'
+    },
+    {
+      field: formData.mobile,
+      message: '请输入手机号'
+    }
+    ];
+
+    const validationError = validations.find(({
+      field
+    }) => !field);
+    if (validationError) {
+      showToast(validationError.message);
+      return;
+    }
+
+    const buildDateTime = (date, time) =>
+      `${date || ''} ${time ? `${time}:00` : '00:00:00'}`.trim();
+
+    const requestParams = {
+      vehId: vehId,
+      rentstartdate: buildDateTime(startDate, startTime),
+      rentenddate: buildDateTime(endDate, endTime),
+      drivername: formData.personName,
+      drivermobile: formData.mobile
+    };
+
+    const API_ENDPOINTS = {
+      baseURL: getApp().data.k1swUrl,
+      sendRentKey: u_bindOrUpdateDriver.URL
+    };
+
+    const submitRequest = async () => {
+      try {
+        byPost(
+          `${API_ENDPOINTS.baseURL}${API_ENDPOINTS.sendRentKey}`, requestParams,
+          (response) => {
+            if (response.data.code == 1000) {
+              showToast('绑定成功');
+              this.setData({
+                net_send_key_show_momal: false,
+                g_items: [],
+                y_items: [],
+                y_page: 1,
+              }, () => {
+                this.initList()
+                this.handleCurrentDate()
+              });
+            }
+          },
+          (error) => {
+
+          }
+        );
+      } catch (error) {
+        showToast(error.message || '请求失败，请稍后重试');
+      }
+    };
+
+    submitRequest();
+  },
+  // 解绑司机
+  handleUnBindDriver(evt) {
+    const driverId = evt?.currentTarget?.dataset?.item?.id || ''
+    byPost(getApp().data.k1swUrl + u_unBindDriver.URL, { driverId }, (response) => {
+      if (response?.data.code == 1000) {
+        showToast('解绑成功')
+        this.setData({
+          g_page: 1, //列表页码
+          g_items: [], //列表数据
+        }, () => {
+          this.initList()
+        })
+
+      }
+    });
+  },
   // 全屏背景图
   initialiImageBaseConversion() {
     const _this = this;
@@ -79,7 +229,7 @@ Page({
     }, {
       path: '/assets/images/home/2-2.png',
       key: 's_background_tabs_active_2'
-    }, ];
+    },];
     const promises = imageMap.map(item =>
       new Promise((resolve, reject) => {
         wx.getFileSystemManager().readFile({
@@ -204,9 +354,9 @@ Page({
     ];
 
     for (const {
-        field,
-        message
-      } of validations) {
+      field,
+      message
+    } of validations) {
       if (!param[field]?.trim()) {
         showToast(message);
         return;
@@ -216,7 +366,7 @@ Page({
     showLoading();
     byPost(apiUrls.getCarStatus, param,
       (response) => {
-        
+
         hideLoading();
         if (response.data.code == 1000) {
           this.setData({
@@ -243,14 +393,14 @@ Page({
       btnState: '修改',
       id: info?.id,
       params: {
-        vehicleSerialName: info?.vehicleSerialName,
-        vehicleModeName: info?.vehicleModeName,
-        ccdate: info?.ccdate,
-        introduction: info?.introduction,
-        platenumber: info?.platenumber,
-        vin: info?.vin,
-        xsgw: info?.xsgw,
-        sn: info?.sn
+        vehicleSerialName: info?.vehicleSerialName || "",
+        vehicleModeName: info?.vehicleModeName || "",
+        ccdate: info?.ccdate || "",
+        introduction: info?.introduction || "",
+        platenumber: info?.platenumber || "",
+        vin: info?.vin || "",
+        xsgw: info?.xsgw || "",
+        sn: info?.sn || ""
       },
       batterylift: info?.batterylift || '一键启动',
       brakingType: info?.brakingType,
@@ -284,5 +434,8 @@ Page({
   },
   onShow() {
     this.initialiImageBaseConversion()
+  },
+  onReady() {
+    this.handleCurrentDate()
   },
 })

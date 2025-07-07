@@ -36,23 +36,19 @@
                 <label>车辆类型 ：</label>
                 <text>{{item.sn?'自助取还':'非自助取还'}}</text>
               </view>
-              <view class="info-item  {{item.carOwnerName.length > 15 ? 'long-info-item' : ''}}">
-                <label>设备平台 ：</label>
-                <text>{{item.carOwnerName||'-'}}</text>
-              </view>
-              <view class="info-item  {{item.sn.length > 15 ? 'long-info-item' : ''}}">
-                <label>设备号 ：</label>
-                <text>{{item.sn||'-'}}</text>
+              <view class="info-item  {{item.batterylift.length > 15 ? 'long-info-item' : ''}}">
+                <label>启动方式 ：</label>
+                <text>{{item.batterylift||'-'}}</text>
               </view>
               <view class="info-item  long-info-item">
                 <label>绑定司机 ：</label>
-                <block wx:for="{{item.driverList}}"  wx:for-item="g_item">
-                <view style="display: flex;gap: 15rpx;">
-                <text>{{g_item.drivername}}</text>
-                <text>{{g_item.drivermobile}}</text>
-                <text style="color:#1b64b1;">解绑</text>
-                <text style="color:#1b64b1;" data-item="{{item}}" data-gitem="{{g_item}}" bindtap="handleShowSendKeyModal">发送钥匙</text>
-                </view>
+                <block wx:for="{{item.driverList}}" wx:for-item="g_item">
+                  <view style="display: flex;gap: 15rpx;">
+                    <text>{{g_item.drivername}}</text>
+                    <text>{{g_item.drivermobile}}</text>
+                    <text style="color:#1b64b1;">解绑</text>
+                    <text style="color:#1b64b1;" data-item="{{item}}" data-gitem="{{g_item}}" bindtap="handleShowSendKeyModal">发送钥匙</text>
+                  </view>
                 </block>
               </view>
 
