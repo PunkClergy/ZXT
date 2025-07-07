@@ -1,0 +1,135 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <custom-header title="事故停运补偿险" />
+  <!-- index.wxml -->
+  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
+    <!-- 切换部分 -->
+    <view class="record-tabs" bindtap="handleSwitchTab">
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">理赔记录</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">理赔提交</view>
+    </view>
+    <!-- 详情区域部分 -->
+    <block wx:if="{{c_activeTab == 1}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+        <block wx:for="{{g_items}}" wx:key="index">
+
+          <view class="content-item">
+            <view class="content-item-head">
+              <view class="head-left">
+                <view class="left-category">
+                  <text>保险单号：{{item.insuranceNo||'-'}}</text>
+                </view>
+              </view>
+            </view>
+            <view class="content-item-info">
+              <view class="info-item  {{item.informantName.length > 15 ? 'long-info-item' : ''}}">
+                <label>报案人 ：</label>
+                <text>{{item.informantName||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.mobile.length > 15 ? 'long-info-item' : ''}}">
+                <label>联系电话 ：</label>
+                <text>{{item.mobile||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.informantTime.length > 15 ? 'long-info-item' : ''}}">
+                <label>事故发生时间 ：</label>
+                <text>{{item.informantTime||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.alipayAccount.length > 15 ? 'long-info-item' : ''}}">
+                <label>支付宝账号 ：</label>
+                <text>{{item.alipayAccount||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.claimReason.length > 15 ? 'long-info-item' : ''}}">
+                <label>理赔事由 ：</label>
+                <text>{{item.claimReason||'-'}}</text>
+              </view>
+
+
+            </view>
+          </view>
+        </block>
+
+      </scroll-view>
+    </block>
+    <block wx:if="{{c_activeTab == 2}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;">
+        <view class="content-item">
+          <view class="card-info">
+            <!-- 主单号 -->
+            <view class="card-info-item">
+              <label>保险单号<text>*</text></label>
+              <block>
+                <view class="card-info-item-input">
+                  <picker bindchange="bindPickerChange" value="{{warrantyIndex}}" range="{{warrantyList}}" range-key="name">
+                    <view class="picker">
+                      {{warrantyList[warrantIndex].name}}
+                    </view>
+                  </picker>
+                </view>
+              </block>
+            </view>
+            <!-- 报案人 -->
+            <view class="card-info-item">
+              <label>报案人<text>*</text></label>
+              <block>
+                <view class="card-info-item-input">
+                  <input placeholder="请输入报案人" data-index="{{index}}" value="{{item.informantName}}" data-item="informantName" bindinput="handleBindinput" />
+                </view>
+              </block>
+            </view>
+            <!-- 联系电话 -->
+            <view class="card-info-item">
+              <label>联系电话<text>*</text></label>
+              <block>
+                <view class="card-info-item-input">
+                  <input placeholder="请输入联系电话" data-index="{{index}}" value="{{item.mobile}}" data-item="mobile" bindinput="handleBindinput" />
+                </view>
+              </block>
+            </view>
+            <!-- 事故发生时间 -->
+            <view class="card-info-item">
+              <label>事故发生时间<text>*</text></label>
+              <block>
+                <view class="card-info-item-input" style="display: flex;gap: 20rpx;color: #333;font-size: 28rpx;">
+                  <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
+                    <view class="form-item-text">
+                      <text>{{startDate}}</text>
+                    </view>
+                  </picker>
+                  <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
+                    <view class="form-item-text">
+                      <text>{{startTime}}</text>
+                    </view>
+                  </picker>
+                  <!-- <input placeholder="请输入平台名称" data-index="{{index}}" value="{{item.informantTime}}" data-item="informantTime" bindinput="handleBindinput" /> -->
+                </view>
+              </block>
+            </view>
+
+            <!-- 支付宝账号 -->
+            <view class="card-info-item">
+              <label>支付宝账号<text>*</text></label>
+              <block>
+                <view class="card-info-item-input">
+                  <input placeholder="请输入支付宝账号" data-index="{{index}}" value="{{item.alipayAccount}}" data-item="alipayAccount" bindinput="handleBindinput" />
+                </view>
+              </block>
+            </view>
+
+            <!-- 理赔事由 -->
+            <view class="card-info-item">
+              <label>理赔事由</label>
+              <block>
+                <view class="card-info-item-input">
+                  <input placeholder="请输入租车天数" data-index="{{index}}" value="{{item.claimReason}}" data-item="claimReason" bindinput="handleBindinput" />
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+
+        <view class="card-footer">
+          <view bindtap="handleSubmit">确认提交</view>
+        </view>
+      </scroll-view>
+    </block>
+  </view>
+</view>

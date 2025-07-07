@@ -68,7 +68,18 @@ const u_newLoselnsure = {
 const u_batchNewLoseInsure = {
   URL: fin3plusUrl + "insuranceApi/batchNewWycInsure",
 }
+// 停运险理赔保单
+const u_shutdownClaimList = {
+  URL: fin3plusUrl + "insuranceApi/shutdownClaimList",
+  page: 'page'
+}
+const u_newShutdownClaim = {
+  URL: fin3plusUrl + "insuranceApi/newShutdownClaim",
+
+}
 module.exports = {
+  u_newShutdownClaim,
+  u_shutdownClaimList,
   u_batchNewWycInsure,
   u_batchNewLoseInsure,
   u_newLoselnsure,

@@ -47,7 +47,6 @@
     "pages/carManager/oilDeviceList/oilDeviceList",
     "pages/mapSelection/map",
     "pages/oneClickOrdering/oneClickOrdering",
-
     "pages/system/carManager/carManager",
     "pages/carManager/carList/carList",
     "pages/carManager/netCarList/carList",
@@ -149,7 +148,8 @@
     "pages/Shops/index",
     "pages/InstallVendor/index",
     "pages/wealth/index",
-    "pages/buySwiper/buySwiper"
+    "pages/buySwiper/buySwiper",
+    "pages/settlementOfClaims/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
