@@ -33,6 +33,7 @@ Page({
     searchBarHeight: 80, // 搜索框高度，默认值
     totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_page: 1, //列表页码
+    imgUrl: 'https://k3a.wiselink.net.cn/' + 'img/',
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
     c_activeTab: 1, // 默认选中的Tab索引
@@ -46,9 +47,34 @@ Page({
     ]
   },
   // 查看保单
-  handlePolicy(evt){
-    wx.navigateTo({
-      url: '/pages/policy/index?souce=' + evt?.currentTarget.dataset.item,
+  handlePolicy(evt) {
+    console.log(this.data.imgUrl + evt?.currentTarget.dataset.item)
+    wx.downloadFile({
+      url: this.data.imgUrl + evt?.currentTarget.dataset.item,
+      success: (res) => {
+        const filePath = res.tempFilePath
+        wx.openDocument({
+          filePath: filePath,
+          fileType: 'pdf',
+          success: (res) => {
+            console.log('打开PDF成功')
+          },
+          fail: (err) => {
+            console.error('打开PDF失败', err)
+            wx.showToast({
+              title: '打开文件失败',
+              icon: 'none'
+            })
+          }
+        })
+      },
+      fail: (err) => {
+        console.error('下载失败', err)
+        wx.showToast({
+          title: '文件下载失败',
+          icon: 'none'
+        })
+      }
     })
   },
   handleCarList(evt) {
@@ -389,6 +415,7 @@ Page({
   },
   onShow() {
     this.setData({
+      g_items: [],
       params: {}
     })
     this.initList()
