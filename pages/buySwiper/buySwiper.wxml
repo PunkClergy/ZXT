@@ -76,6 +76,10 @@
                 <label>车牌号 ：</label>
                 <text>{{item.plateNumber||'-'}}</text>
               </view>
+              <view class="info-item" wx:if="{{item.insuranceUrl}}">
+                <label>保单 ：</label>
+                <text style="color: cornflowerblue;" data-item="{{item.insuranceUrl}}" bindtap="handlePolicy">查看</text>
+              </view>
               <view class="info-item  {{item.startDate.length > 15 ? 'long-info-item' : ''}}">
                 <label>保险起期 ：</label>
                 <text>{{item.startDate||'-'}}</text>

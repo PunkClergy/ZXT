@@ -45,6 +45,12 @@ Page({
       { rentorderno: '', sn: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
     ]
   },
+  // 查看保单
+  handlePolicy(evt){
+    wx.navigateTo({
+      url: '/pages/policy/index?souce=' + evt?.currentTarget.dataset.item,
+    })
+  },
   handleCarList(evt) {
     if (this.data.insurance_type == 1) {
 
