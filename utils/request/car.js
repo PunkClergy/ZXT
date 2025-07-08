@@ -83,7 +83,11 @@ const u_improveShutdownClaimFile = {
 const u_getBatchWycPrice = {
   URL: fin3plusUrl + "insuranceApi/getBatchWycPrice",
 }
+const u_getBatchLosePrice={
+  URL: fin3plusUrl + "insuranceApi/getBatchLosePrice",
+}
 module.exports = {
+  u_getBatchLosePrice,
   u_getBatchWycPrice,
   u_improveShutdownClaimFile,
   u_newShutdownClaim,

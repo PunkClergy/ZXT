@@ -9,7 +9,8 @@ const {
   u_batchNewLoseInsure,
   u_loseInsureList,
   u_batchNewWycInsure,
-  u_getBatchWycPrice
+  u_getBatchWycPrice,
+  u_getBatchLosePrice
 } = require('../../utils/request/car')
 const {
   byPost,
@@ -43,7 +44,7 @@ Page({
       { applicantName: '', applicantIdcard: '', plateNumber: '' }
     ],
     datalistOne: [
-      { rentorderno: '', sn: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
+      { rentorderno: '', sn: '', insuredamount: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
     ]
   },
   // 查看保单
@@ -248,6 +249,23 @@ Page({
       this.handlePrice()
     })
   },
+  handleTypePrice() {
+    byPostJson(getApp().data.k1swUrl + u_getBatchLosePrice.URL, JSON.stringify(this.data.datalistOne), (response) => {
+      if (response.data.code == 1000) {
+        console.log(response)
+        this.setData({
+          price: response.data.content
+        })
+      } else {
+        // 处理接口返回的错误
+        wx.showToast({
+          title: response.data.msg || '投保失败',
+          icon: 'none'
+        });
+      }
+    });
+
+  },
   // 内容输入回调
   handleBindinput(evt) {
     const insurance_type = this.data.insurance_type
@@ -258,6 +276,10 @@ Page({
       datalistOne[index][key] = evt.detail.value
       this.setData({
         datalistOne
+      }, () => {
+        if (evt?.currentTarget.dataset.price) {
+          this.handleTypePrice()
+        }
       })
     } else {
       const index = evt.currentTarget.dataset.index

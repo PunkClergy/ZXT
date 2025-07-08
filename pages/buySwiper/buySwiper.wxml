@@ -41,6 +41,10 @@
                 <label>车牌号：</label>
                 <text>{{item.platenumber||'-'}}</text>
               </view>
+              <view class="info-item  {{item.insuredamount.length > 15 ? 'long-info-item' : ''}}">
+                <label>投保金额</label>
+                <text>{{item.insuredamount||'-'}}</text>
+              </view>
               <view class="info-item  {{item.rentdays.length > 15 ? 'long-info-item' : ''}}">
                 <label>租车天数：</label>
                 <text>{{item.rentdays||'-'}}</text>
@@ -133,6 +137,14 @@
               <block>
                 <view class="card-info-item-input">
                   <input placeholder="请输入设备号" data-index="{{index}}" value="{{item.sn}}" data-item="sn" bindinput="handleBindinput" />
+                </view>
+              </block>
+            </view>
+            <view class="card-info-item">
+              <label>投保金额<text>*</text></label>
+              <block>
+                <view class="card-info-item-input">
+                  <input placeholder="请输入投保金额" data-price="1" data-index="{{index}}" value="{{item.insuredamount}}" data-item="insuredamount" bindinput="handleBindinput" />
                 </view>
               </block>
             </view>
@@ -276,7 +288,7 @@
           </view>
         </view>
         <view class="card-footer">
-          <view bindtap="handleInsuranceSubmit" wx:if="{{insurance_type==1}}">确认支付</view>
+          <view bindtap="handleInsuranceSubmit" wx:if="{{insurance_type==1}}">确认支付 {{price}}</view>
           <view bindtap="handleSubmit" wx:else>确认支付 {{price}}</view>
         </view>
       </scroll-view>
