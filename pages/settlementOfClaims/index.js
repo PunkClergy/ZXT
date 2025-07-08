@@ -8,6 +8,7 @@ const {
   u_loseInsureList,
   u_shutdownClaimList,
   u_userInsureList,
+  u_improveShutdownClaimFile
 
 } = require('../../utils/request/car')
 const {
@@ -41,7 +42,22 @@ Page({
     params: {},
     startDate: '2025-03-20', //历史轨迹查询时间
     startTime: '19:00', //历史轨迹查询时间
+    claimGuid: '',
   },
+  // 查看
+  handleView(evt) {
+    console.log(evt)
+    wx.navigateTo({
+      url: '/pages/wycclaimDetail/wycclaimDetail?claimGuid=' + evt?.currentTarget.dataset.item.guid + '&edit=0'
+    })
+  },
+  handleEdit(evt) {
+    console.log(evt)
+    wx.navigateTo({
+      url: '/pages/wycclaimDetail/wycclaimDetail?claimGuid=' + evt?.currentTarget.dataset.item.guid + '&edit=1'
+    })
+  },
+
   // 全屏背景图
   initialiImageBaseConversion() {
     const _this = this;
@@ -175,6 +191,7 @@ Page({
   },
   //提交内容
   handleSubmit() {
+    const _this = this
     const {
       startDate,
       startTime,
@@ -188,7 +205,9 @@ Page({
     }
     byPost(getApp().data.k1swUrl + u_newShutdownClaim.URL, info, function (response) {
       if (response.data.code == 1000) {
-        console.log(response)
+        wx.navigateTo({
+          url: '/pages/wycclaim/wycclaim?claimGuid=' + response?.data?.content?.guid,
+        })
       } else {
         // 处理接口返回的错误
         wx.showToast({
@@ -198,10 +217,10 @@ Page({
       }
     });
   },
+
   // 切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
-    console.log(flag)
     if (flag == '理赔记录') {
       this.setData({
         c_activeTab: 1,
@@ -238,6 +257,7 @@ Page({
       }
     })
   },
+  // 处理时间
   bindTimeChange(evt) {
     const category = evt.currentTarget.dataset.index
     const value = evt.detail.value
@@ -248,16 +268,18 @@ Page({
   },
   onLoad(options) {
     this.handleCurrentDate()
-  },
-  onShow() {
     this.setData({
       c_activeTab: 1,
       params: {}
     })
     this.initList()
     this.initialiImageBaseConversion()
-  },
-  onReady() {
     this.initWarranty()
   },
+  onShow() {
+
+  },
+  onReady() {
+
+  }
 })

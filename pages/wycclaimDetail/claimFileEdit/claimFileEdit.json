@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "图片资料编辑",
+  "usingComponents": {
+    "mp-uploader": "weui-miniprogram/uploader/uploader"
+  }
+}

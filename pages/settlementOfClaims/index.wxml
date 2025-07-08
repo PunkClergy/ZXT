@@ -11,13 +11,17 @@
     <block wx:if="{{c_activeTab == 1}}">
       <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
         <block wx:for="{{g_items}}" wx:key="index">
-
           <view class="content-item">
             <view class="content-item-head">
               <view class="head-left">
                 <view class="left-category">
                   <text>保险单号：{{item.insuranceNo||'-'}}</text>
                 </view>
+              </view>
+              <view class="head-right">
+                <image data-item="{{item}}" bindtap="handleView" src="/assets/images/home/_see.png" />
+                <image data-item="{{item}}" bindtap="handleEdit" src="/assets/images/home/_edit.png" />
+                <image src="/assets/images/home/_delete.png" />
               </view>
             </view>
             <view class="content-item-info">
@@ -51,84 +55,84 @@
     </block>
     <block wx:if="{{c_activeTab == 2}}">
       <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;">
-        <view class="content-item">
-          <view class="card-info">
-            <!-- 主单号 -->
-            <view class="card-info-item">
-              <label>保险单号<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <picker bindchange="bindPickerChange" value="{{warrantyIndex}}" range="{{warrantyList}}" range-key="name">
-                    <view class="picker">
-                      {{warrantyList[warrantIndex].name}}
+          <block>
+            <view class="content-item">
+              <view class="card-info">
+                <!-- 主单号 -->
+                <view class="card-info-item">
+                  <label>保险单号<text>*</text></label>
+                  <block>
+                    <view class="card-info-item-input">
+                      <picker bindchange="bindPickerChange" value="{{warrantyIndex}}" range="{{warrantyList}}" range-key="name">
+                        <view class="picker">
+                          {{warrantyList[warrantIndex].name}}
+                        </view>
+                      </picker>
                     </view>
-                  </picker>
+                  </block>
                 </view>
-              </block>
-            </view>
-            <!-- 报案人 -->
-            <view class="card-info-item">
-              <label>报案人<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入报案人" data-index="{{index}}" value="{{item.informantName}}" data-item="informantName" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-            <!-- 联系电话 -->
-            <view class="card-info-item">
-              <label>联系电话<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入联系电话" data-index="{{index}}" value="{{item.mobile}}" data-item="mobile" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-            <!-- 事故发生时间 -->
-            <view class="card-info-item">
-              <label>事故发生时间<text>*</text></label>
-              <block>
-                <view class="card-info-item-input" style="display: flex;gap: 20rpx;color: #333;font-size: 28rpx;">
-                  <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
-                    <view class="form-item-text">
-                      <text>{{startDate}}</text>
+                <!-- 报案人 -->
+                <view class="card-info-item">
+                  <label>报案人<text>*</text></label>
+                  <block>
+                    <view class="card-info-item-input">
+                      <input placeholder="请输入报案人" data-index="{{index}}" value="{{item.informantName}}" data-item="informantName" bindinput="handleBindinput" />
                     </view>
-                  </picker>
-                  <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
-                    <view class="form-item-text">
-                      <text>{{startTime}}</text>
+                  </block>
+                </view>
+                <!-- 联系电话 -->
+                <view class="card-info-item">
+                  <label>联系电话<text>*</text></label>
+                  <block>
+                    <view class="card-info-item-input">
+                      <input placeholder="请输入联系电话" data-index="{{index}}" value="{{item.mobile}}" data-item="mobile" bindinput="handleBindinput" />
                     </view>
-                  </picker>
-                  <!-- <input placeholder="请输入平台名称" data-index="{{index}}" value="{{item.informantTime}}" data-item="informantTime" bindinput="handleBindinput" /> -->
+                  </block>
                 </view>
-              </block>
-            </view>
-
-            <!-- 支付宝账号 -->
-            <view class="card-info-item">
-              <label>支付宝账号<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入支付宝账号" data-index="{{index}}" value="{{item.alipayAccount}}" data-item="alipayAccount" bindinput="handleBindinput" />
+                <!-- 事故发生时间 -->
+                <view class="card-info-item">
+                  <label>事故发生时间<text>*</text></label>
+                  <block>
+                    <view class="card-info-item-input" style="display: flex;gap: 20rpx;color: #333;font-size: 28rpx;">
+                      <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
+                        <view class="form-item-text">
+                          <text>{{startDate}}</text>
+                        </view>
+                      </picker>
+                      <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
+                        <view class="form-item-text">
+                          <text>{{startTime}}</text>
+                        </view>
+                      </picker>
+                    </view>
+                  </block>
                 </view>
-              </block>
-            </view>
 
-            <!-- 理赔事由 -->
-            <view class="card-info-item">
-              <label>理赔事由</label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入租车天数" data-index="{{index}}" value="{{item.claimReason}}" data-item="claimReason" bindinput="handleBindinput" />
+                <!-- 支付宝账号 -->
+                <view class="card-info-item">
+                  <label>支付宝账号<text>*</text></label>
+                  <block>
+                    <view class="card-info-item-input">
+                      <input placeholder="请输入支付宝账号" data-index="{{index}}" value="{{item.alipayAccount}}" data-item="alipayAccount" bindinput="handleBindinput" />
+                    </view>
+                  </block>
                 </view>
-              </block>
-            </view>
-          </view>
-        </view>
 
-        <view class="card-footer">
-          <view bindtap="handleSubmit">确认提交</view>
-        </view>
+                <!-- 理赔事由 -->
+                <view class="card-info-item">
+                  <label>理赔事由</label>
+                  <block>
+                    <view class="card-info-item-input">
+                      <input placeholder="请输入租车天数" data-index="{{index}}" value="{{item.claimReason}}" data-item="claimReason" bindinput="handleBindinput" />
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </view>
+            <view class="card-footer">
+              <view bindtap="handleSubmit">下一步</view>
+            </view>
+          </block>
       </scroll-view>
     </block>
   </view>

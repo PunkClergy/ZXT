@@ -1,0 +1,35 @@
+
+.container{
+    width: 100%;
+  
+    position: relative;
+  
+  }
+.login_btn
+{
+  margin-top: 40rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  background-color: #007BFD;
+  height: 90rpx;
+  color: white;
+  text-align: bottom;
+  font-size: 40rpx;
+  line-height: 90rpx;
+}
+.btn_tapcolor
+  {
+    background-color: #575757;
+  }
+
+  .tipView
+{
+  margin: 0rpx auto;
+  margin-top: 40rpx;
+  width: 500rpx;
+  text-align: center;
+  height: 40rpx;
+  text-align: bottom;
+  font-size: 20rpx;
+  line-height: 40rpx;
+}

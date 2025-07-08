@@ -847,7 +847,16 @@ var rentRecord = {
   vehId: 'vehId',
   page: 'page'
 }
+var getShutdownClaim = {
+  URL: fin3plusUrl + "insuranceApi/getShutdownClaim",
+  claimGuid: 'claimGuid',
+}
+var improveShutdownClaimFile = {
+  URL: fin3plusUrl + 'insuranceApi/improveShutdownClaimFile',
+}
 module.exports = {
+  improveShutdownClaimFile,
+  getShutdownClaim,
   rentRecord: rentRecord,
   slfAdd: slfAdd,
   cancelRentKey: cancelRentKey,

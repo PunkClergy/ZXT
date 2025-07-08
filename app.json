@@ -149,7 +149,10 @@
     "pages/InstallVendor/index",
     "pages/wealth/index",
     "pages/buySwiper/buySwiper",
-    "pages/settlementOfClaims/index"
+    "pages/settlementOfClaims/index",
+    "pages/wycclaim/wycclaim",
+    "pages/wycclaimDetail/wycclaimDetail",
+    "pages/wycclaimDetail/claimFileEdit/claimFileEdit"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

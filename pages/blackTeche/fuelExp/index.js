@@ -15,6 +15,7 @@ const {
   byGet,
   byPost
 } = require('../../../utils/request/http')
+const FormData = require('../../../utils/formData.js');
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0, //屏幕高度
@@ -194,7 +195,7 @@ Page({
   // 上传图片或拍照
   chooseImage() {
     wx.chooseMedia({
-      count: 1, // 最多选择1张图片
+      count: 2, // 最多选择1张图片
       mediaType: ['image'], // 只选择图片
       sourceType: ['album', 'camera'], // 允许从相册选择或拍照
       success: (res) => {

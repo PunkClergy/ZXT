@@ -75,9 +75,13 @@ const u_shutdownClaimList = {
 }
 const u_newShutdownClaim = {
   URL: fin3plusUrl + "insuranceApi/newShutdownClaim",
-
+}
+// 停运险理赔第二部
+const u_improveShutdownClaimFile = {
+  URL: fin3plusUrl + "insuranceApi/improveShutdownClaimFile",
 }
 module.exports = {
+  u_improveShutdownClaimFile,
   u_newShutdownClaim,
   u_shutdownClaimList,
   u_batchNewWycInsure,

@@ -22,7 +22,7 @@
       "list": [
         {
           "name": "dentistId=100",
-          "pathName": "pages/oilList/oilList",
+          "pathName": "pages/wycclaim/wycclaim",
           "query": "",
           "launchMode": "default",
           "scene": 1011

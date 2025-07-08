@@ -688,3 +688,78 @@
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
 }
+
+page {
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  position: relative;
+  font-weight: 200;
+}
+
+.page_title {
+  margin-top: 25rpx;
+  color: white;
+  font-size: 25rpx;
+}
+
+.bg-img {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+}
+
+.info-btn1 {
+  color: black;
+  text-align: center;
+  background-color: white;
+  font-size: 25rpx;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  position: relative; 
+}
+
+.info-btn {
+  margin-top: 20rpx;
+  color: black;
+  text-align: center;
+  background-color: white;
+  font-size: 25rpx;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  position: relative;
+}
+
+.arrow {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.btn_tapcolor {
+  background-color: #575757;
+}
+
+.submit_btn {
+  background-color: #045f33;
+  height: 90rpx;
+  color: white;
+  font-size: 35rpx;
+  line-height: 90rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  position: fixed;
+  width: 670rpx;
+  bottom: 20rpx;
+}

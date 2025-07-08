@@ -3,8 +3,8 @@
  */
 var SCOPE_TYPE = {
   SCOPE_LOCATION: 'scope.userLocation',
-  SCOPE_CAMERA:'scope.camera',
-  SCOPE_BLUETOOTH:'scope.bluetooth'
+  SCOPE_CAMERA: 'scope.camera',
+  SCOPE_BLUETOOTH: 'scope.bluetooth'
 };
 
 
@@ -53,7 +53,7 @@ function showModal(msg, showCancel, behavior) {
     title: '提示',
     content: msg,
     showCancel: showCancel,
-    success: function(res) {
+    success: function (res) {
       if (res.confirm) {
         behavior(true);
       } else if (res.cancel) {
@@ -68,7 +68,7 @@ function showModal(msg, showCancel, behavior) {
  */
 function getSystemInfo(systemInfo) {
   wx.getSystemInfo({
-    success: function(res) {
+    success: function (res) {
       systemInfo(res);
     }
   })
@@ -76,10 +76,10 @@ function getSystemInfo(systemInfo) {
 
 function getSystemInfoComplete(systemInfo, complete) {
   wx.getSystemInfo({
-    success: function(res) {
+    success: function (res) {
       systemInfo(res);
     },
-    complete: function() {
+    complete: function () {
       complete();
     }
   })
@@ -91,10 +91,10 @@ function getSystemInfoComplete(systemInfo, complete) {
 function getWXLocation(location) {
   wx.getLocation({
     type: 'gcj02', //返回可以用于wx.openLocation的经纬度
-    success: function(res) {
+    success: function (res) {
       location(res);
     },
-    fail: function(res) {
+    fail: function (res) {
       location(res);
     }
   })
@@ -142,8 +142,7 @@ function byGet(url, param, result) {
   header['content-type'] = 'application/x-www-form-urlencoded';
   var userInfo = getApp().data.userInfo;
   console.log(getApp())
-  if(!isEmpty(userInfo))
-  {
+  if (!isEmpty(userInfo)) {
     header['username'] = userInfo.username;
     header['token'] = userInfo.token;
     header['timestamp'] = Date.parse(new Date());
@@ -154,11 +153,11 @@ function byGet(url, param, result) {
     url: url,
     data: param,
     header,
-    success: function(res) {
+    success: function (res) {
       result(res);
       log(res.data);
     },
-    fail: function(res) {
+    fail: function (res) {
       result(res);
     }
   })
@@ -179,27 +178,26 @@ function byPost(url, param, result) {
   header['content-type'] = 'application/x-www-form-urlencoded';
   var userInfo = getApp().data.userInfo;
   console.log(getApp())
-  if(!isEmpty(userInfo))
-  {
+  if (!isEmpty(userInfo)) {
     header['username'] = userInfo.username;
     header['token'] = userInfo.token;
     header['timestamp'] = Date.parse(new Date());
   }
   printLog(url, param);
   return wx.request({
-    timeout:20000,
+    timeout: 20000,
     url: url, //仅为示例，并非真实的接口地址
     data: param,
     header: header,
     method: 'POST',
-    success: function(res) {
+    success: function (res) {
       result(res);
       log(res.data);
     },
-    fail: function(res) {
-      log(res); 
+    fail: function (res) {
+      log(res);
       result(false);
-   
+
     }
   })
 }
@@ -209,27 +207,26 @@ function byPostJson(url, param, result) {
   var header = {};
   header['content-type'] = 'application/json';
   var userInfo = getApp().data.userInfo;
-  if(!isEmpty(userInfo))
-  {
+  if (!isEmpty(userInfo)) {
     header['username'] = userInfo.username;
     header['token'] = userInfo.token;
     header['timestamp'] = Date.parse(new Date());
   }
   printLog(url, param);
   return wx.request({
-    timeout:20000,
+    timeout: 20000,
     url: url, //仅为示例，并非真实的接口地址
     data: param,
     header: header,
     method: 'POST',
-    success: function(res) {
+    success: function (res) {
       result(res);
       log(res.data);
     },
-    fail: function(res) {
-      log(res); 
+    fail: function (res) {
+      log(res);
       result(false);
-   
+
     }
   })
 }
@@ -241,10 +238,10 @@ function getStorage(key, data) {
   if (key) {
     wx.getStorage({
       key: key,
-      success: function(res) {
+      success: function (res) {
         data(res.data);
       },
-      fail: function(res) {
+      fail: function (res) {
         data(false);
       }
     })
@@ -292,13 +289,13 @@ function clearStorage() {
  */
 function getNetworkType(getNetworkType) {
   wx.getNetworkType({
-    success: function(res) {
+    success: function (res) {
       // 返回网络类型, 有效值：
       // wifi/2g/3g/4g/unknown(Android下不常见的网络类型)/none(无网络)
       // var networkType = res.networkType
       getNetworkType(res.networkType != 'none');
     },
-    fail: function(res) {
+    fail: function (res) {
       getNetworkType(true);
     }
   })
@@ -308,7 +305,7 @@ function getNetworkType(getNetworkType) {
  * 监听网络状态变化
  */
 function onNetworkStatusChange(onNetworkStatusChange) {
-  wx.onNetworkStatusChange(function(res) {
+  wx.onNetworkStatusChange(function (res) {
     // console.log(res.isConnected);
     // console.log(res.networkType);
     onNetworkStatusChange(res);
@@ -335,15 +332,13 @@ function isEmpty(obj) {
 }
 
 function isNumber(obj) {
-  var zz= /^[0-9]*$/
-    if (!zz.test(obj)) 
-    {
-      return false;
-    }
-    else
-    {
-      return true;
-    }
+  var zz = /^[0-9]*$/
+  if (!zz.test(obj)) {
+    return false;
+  }
+  else {
+    return true;
+  }
 }
 
 /**
@@ -389,10 +384,10 @@ function chooseImageDefault(result) {
 function getImageInfo(src, result) {
   wx.getImageInfo({
     src: src,
-    success: function(res) {
+    success: function (res) {
       result(res);
     },
-    fail: function() {
+    fail: function () {
       result(false)
     }
   })
@@ -404,10 +399,10 @@ function getImageInfo(src, result) {
 function takePhoto(ctx, result) {
   ctx.takePhoto({
     quality: 'high',
-    success: function(res) {
+    success: function (res) {
       result(res);
     },
-    fail: function() {
+    fail: function () {
       result(false);
     }
   })
@@ -434,59 +429,56 @@ function uploadFile(url, path, param, result) {
       log(res);
       result(res);
     },
-    fail: function() {
+    fail: function () {
       result(false);
     }
   });
 }
 
-function uploadFile2(url, fileName,path, param, result) { 
-  if(isEmpty(path))
-  {
-    byPost(url,param, result)
+function uploadFile2(url, fileName, path, param, result) {
+  if (isEmpty(path)) {
+    byPost(url, param, result)
   }
-  else
-  {
-  var header = {};
-  header['content-type'] = 'multipart/form-data';
-  var userInfo = getApp().data.userInfo;
-  if(!isEmpty(userInfo))
-  {
-    header['username'] = userInfo.username;
-    header['token'] = userInfo.token;
-    header['timestamp'] = Date.parse(new Date());
-  }
-  printLog(url, param);
-  return wx.uploadFile({
-    url: url,
-    filePath: path,
-    name: fileName,
-    header: header,
-    formData: param,
-    success(res) {
-      log(res);
-      result(res);
-    },
-    fail: function() {
-       result(false);
-      console.log("上传发生错误")
+  else {
+    var header = {};
+    header['content-type'] = 'multipart/form-data';
+    var userInfo = getApp().data.userInfo;
+    if (!isEmpty(userInfo)) {
+      header['username'] = userInfo.username;
+      header['token'] = userInfo.token;
+      header['timestamp'] = Date.parse(new Date());
     }
-  });
-}
+    printLog(url, param);
+    return wx.uploadFile({
+      url: url,
+      filePath: path,
+      name: fileName,
+      header: header,
+      formData: param,
+      success(res) {
+        log(res);
+        result(res);
+      },
+      fail: function () {
+        result(false);
+        console.log("上传发生错误")
+      }
+    });
+  }
 }
 
-function jsDateFormatter (date) {    
-  var seperator1 = "-";    
-  var seperator2 = ":";    
-  var month = date.getMonth() + 1;    
-  var strDate = date.getDate();    
-  if (month >= 1 && month <= 9) {        
-      month = "0" + month;    
-  }    
-  if (strDate >= 0 && strDate <= 9) {        
-      strDate = "0" + strDate;    
-  }    
-  var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate + " " + date.getHours() + seperator2 + date.getMinutes()+ seperator2 + date.getSeconds();    
+function jsDateFormatter(date) {
+  var seperator1 = "-";
+  var seperator2 = ":";
+  var month = date.getMonth() + 1;
+  var strDate = date.getDate();
+  if (month >= 1 && month <= 9) {
+    month = "0" + month;
+  }
+  if (strDate >= 0 && strDate <= 9) {
+    strDate = "0" + strDate;
+  }
+  var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate + " " + date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
   return currentdate;
 }
 
@@ -502,21 +494,46 @@ function log(obj) {
 /**
  * 是否已登录
  */
-function isLogin()
-{
+function isLogin() {
   var userInfo = getApp().data.userInfo;
-  if(isEmpty(userInfo))
-  {
+  if (isEmpty(userInfo)) {
     return false;
   }
-  else
-  {
+  else {
     return true;
   }
 
 }
+function byPostFormData(url, contentType, data, result) {
+  //添加公共参数
+  var header = {};
+  header['content-type'] = contentType;
+  var userInfo = getApp().data.userInfo;
+  if (!isEmpty(userInfo)) {
+    header['username'] = userInfo.username;
+    header['token'] = userInfo.token;
+    header['timestamp'] = Date.parse(new Date());
+  }
+  printLog(url, data);
+  return wx.request({
+    timeout: 20000,
+    url: url, //仅为示例，并非真实的接口地址
+    data: data,
+    header: header,
+    method: 'POST',
+    success: function (res) {
+      result(res);
+      log(res.data);
+    },
+    fail: function (res) {
+      log(res);
+      result(false);
 
+    }
+  })
+}
 module.exports = {
+  byPostFormData,
   showToast: showToast,
   showLoading: showLoading,
   hideLoading: hideLoading,
@@ -527,7 +544,7 @@ module.exports = {
   getWXLocation: getWXLocation,
   byGet: byGet,
   byPost: byPost,
-  byPostJson:byPostJson,
+  byPostJson: byPostJson,
   SCOPE_TYPE: SCOPE_TYPE,
   getAuthState: getAuthState,
   authorize: authorize,
@@ -538,7 +555,7 @@ module.exports = {
   onNetworkStatusChange: onNetworkStatusChange,
   openLocation: openLocation,
   isEmpty: isEmpty,
-  isNumber : isNumber ,
+  isNumber: isNumber,
   navigateTo: navigateTo,
   SHOW_TYPE: SHOW_TYPE,
   chooseImageDefault: chooseImageDefault,
@@ -546,7 +563,7 @@ module.exports = {
   getImageInfo: getImageInfo,
   uploadFile: uploadFile,
   uploadFile2: uploadFile2,
-  jsDateFormatter:jsDateFormatter,
+  jsDateFormatter: jsDateFormatter,
   log: log,
-  isLogin:isLogin
+  isLogin: isLogin
 }
