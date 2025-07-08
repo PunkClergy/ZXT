@@ -155,7 +155,8 @@
               <label>车牌号<text>*</text></label>
               <block>
                 <view class="card-info-item-input">
-                  <input placeholder="请输入车牌号" data-index="{{index}}" value="{{item.platenumber}}" data-item="platenumber" bindinput="handleBindinput" />
+                  <text style="font-size: 26rpx;color: #333;" wx:if="{{item.plateNumber}}">{{item.plateNumber}}</text>
+                  <text style="font-size: 26rpx;color: rgb(95, 91, 91);" data-item="{{index}}" bindtap="handleCarList" wx:else>请选择车辆</text>
                 </view>
               </block>
             </view>
@@ -242,7 +243,9 @@
 
               <block>
                 <view class="card-info-item-input">
-                  <input placeholder="请输入车牌号" data-index="{{index}}" value="{{item.plateNumber}}" data-item="plateNumber" bindinput="handleBindinput" />
+                  <text style="font-size: 26rpx;color: #333;" wx:if="{{item.plateNumber}}">{{item.plateNumber}}</text>
+                  <text style="font-size: 26rpx;color: rgb(95, 91, 91);" data-item="{{index}}" bindtap="handleCarList" wx:else>请选择车辆</text>
+                  <!-- <input placeholder="请输入车牌号" data-index="{{index}}" value="{{item.plateNumber}}" data-item="plateNumber" bindinput="handleBindinput" /> -->
                 </view>
               </block>
             </view>
@@ -268,10 +271,9 @@
 
           </view>
         </view>
-
         <view class="card-footer">
           <view bindtap="handleInsuranceSubmit" wx:if="{{insurance_type==1}}">确认支付</view>
-          <view bindtap="handleSubmit" wx:else>确认支付</view>
+          <view bindtap="handleSubmit" wx:else>确认支付 {{price}}</view>
         </view>
       </scroll-view>
     </block>

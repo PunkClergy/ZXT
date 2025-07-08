@@ -8,7 +8,8 @@ const {
   u_getPayPrice,
   u_batchNewLoseInsure,
   u_loseInsureList,
-  u_batchNewWycInsure
+  u_batchNewWycInsure,
+  u_getBatchWycPrice
 } = require('../../utils/request/car')
 const {
   byPost,
@@ -36,12 +37,31 @@ Page({
     g_triggered: false, //下拉刷新状态
     c_activeTab: 1, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
+    price: 0,
     datalist: [
       { applicantName: '', applicantIdcard: '', plateNumber: '' }
     ],
     datalistOne: [
       { rentorderno: '', sn: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
     ]
+  },
+  handleCarList(evt) {
+    if (this.data.insurance_type == 1) {
+
+    }
+    const sourcePath = '/pages/buySwiper/buySwiper';
+    const params = {
+
+      index: evt.currentTarget.dataset.item,  // 事件参数
+      c: 2,                                  // 固定值
+      datalist: JSON.stringify(this.data.insurance_type == 1 ? this.data.datalistOne : this.data.datalist),           // 组件数据
+      insurance_type: this.data.insurance_type // 组件数据
+    };
+    const type = this.data.insurance_type == 1 ? 1 : 0
+    const encodedParams = JSON.stringify(params);
+    wx.navigateTo({
+      url: `/pages/carManager/carList/carList?source=${sourcePath}&allParams=${encodedParams}&type=${type}`
+    });
   },
   // 全屏背景图
   initialiImageBaseConversion() {
@@ -138,6 +158,22 @@ Page({
       this.initList();
     });
   },
+  handlePrice() {
+    byPostJson(getApp().data.k1swUrl + u_getBatchWycPrice.URL, JSON.stringify(this.data.datalist), (response) => {
+      if (response.data.code == 1000) {
+        console.log(response)
+        this.setData({
+          price: response.data.content
+        })
+      } else {
+        // 处理接口返回的错误
+        wx.showToast({
+          title: response.data.msg || '投保失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
   // 增加数据
   handleAddListOne() {
     const datalistOne = this.data.datalistOne
@@ -149,6 +185,7 @@ Page({
   },
   // 增加一条数据
   handleAddList() {
+    const _this = this
     const datalist = this.data.datalist
     let temp = {
       applicantName: '', applicantIdcard: '', plateNumber: ''
@@ -156,6 +193,8 @@ Page({
     datalist.push(temp)
     this.setData({
       datalist
+    }, () => {
+      this.handlePrice()
     })
   },
   handleDeteleListOne(evt) {
@@ -173,6 +212,8 @@ Page({
     const newList = datalist.filter((_, i) => i !== index);
     this.setData({
       datalist: newList
+    }, () => {
+      this.handlePrice()
     })
   },
   // 内容输入回调
@@ -284,9 +325,33 @@ Page({
   },
   // 判断够买保险类型
   initInsuranceType(evt) {
-    this.setData({
-      insurance_type: evt?.type
-    })
+    if (evt.datails) {
+      const allParams = JSON.parse(evt.allParams)
+      const datalist = JSON.parse(allParams?.datalist)
+      const datails = JSON.parse(evt?.datails)
+      datalist[allParams.index].plateNumber = datails?.platenumber
+      datalist[allParams.index].vehId = datails?.id
+      console.log(datalist, allParams.c)
+      if (evt.type == 1) {
+        this.setData({
+          c_activeTab: allParams.c,
+          datalistOne: datalist,
+          insurance_type: evt?.type
+        })
+      } else {
+        this.setData({
+          c_activeTab: allParams.c,
+          datalist: datalist,
+          insurance_type: evt?.type
+        })
+      }
+
+    } else {
+      this.setData({
+        insurance_type: evt?.type
+      })
+    }
+
   },
   // 租车结束时间
   handleOnEndDateChange(evt) {
@@ -310,14 +375,19 @@ Page({
   },
   onLoad(options) {
     this.initInsuranceType(options)
+    if (options?.type == 1) {
+
+    } else {
+      this.handlePrice()
+    }
   },
   onShow() {
     this.setData({
-      c_activeTab: 1,
       params: {}
     })
     this.initList()
     this.initialiImageBaseConversion()
     this.inituGetPayPrice()
+
   },
 })

@@ -110,21 +110,33 @@ Page({
     const {
       source,
       flagMulti,
-      info
+      info,
+      allParams,
+      type
     } = evt
+
     this.setData({
       g_source: source,
       g_flagMulti: flagMulti,
-      info: info && JSON.parse(info)
+      info: info && JSON.parse(info),
+      allParams:allParams,
+      type:type
     })
   },
   handleSelectJump(evt) {
     const {
       item
     } = evt.currentTarget.dataset
-    wx.redirectTo({
-      url: `${this.data.g_source}?datails=${JSON.stringify(item)}`
-    })
+    if(this.data.allParams){
+      wx.redirectTo({
+        url: `${this.data.g_source}?datails=${JSON.stringify(item)}&allParams=${this.data.allParams}&type=${this.data.type}`
+      })
+    }else{
+      wx.redirectTo({
+        url: `${this.data.g_source}?datails=${JSON.stringify(item)}`
+      })
+    }
+   
   },
   // 全屏背景图
   initialiImageBaseConversion() {
