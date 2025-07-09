@@ -5,8 +5,8 @@ const {
 } = require('../../utils/Inspect/tips')
 const {
   u_newShutdownClaim,
-  u_shutdownClaimList,
-  u_userInsureList,
+  u_loseClaimList,
+  u_loseInsureList,
 } = require('../../utils/request/car')
 const {
   byPost,
@@ -36,7 +36,6 @@ Page({
     params: {}, //新增管控数据部分字段
     warrantyList: [],
     warrantIndex: 0,
-    params: {},
     startDate: '2025-03-20', //历史轨迹查询时间
     startTime: '19:00', //历史轨迹查询时间
     claimGuid: '',
@@ -100,9 +99,9 @@ Page({
   // 理赔记录
   initList() {
     const param = {
-      [u_shutdownClaimList.page]: this.data.g_page,
+      [u_loseClaimList.page]: this.data.g_page,
     };
-    byGet(getApp().data.k1swUrl + u_shutdownClaimList.URL, param).then(response => {
+    byGet(getApp().data.k1swUrl + u_loseClaimList.URL, param).then(response => {
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
           showToast(`已加载全部数据：共${this.data.g_items.length}条`);
@@ -186,6 +185,20 @@ Page({
       }
     })
   },
+  handleCarList(evt) {
+    const sourcePath = '/pages/lostClaims/index';
+    const params = {
+      index: this.data.warrantIndex,  // 事件参数
+      c: 2,                                  // 固定值         // 组件数据
+      params: this.data.params
+    };
+    console.log(params)
+    const encodedParams = JSON.stringify(params);
+    console.log(encodedParams)
+    wx.navigateTo({
+      url: `/pages/carManager/carList/carList?source=${sourcePath}&allParams=${encodedParams}`
+    });
+  },
   //提交内容
   handleSubmit() {
     const _this = this
@@ -200,6 +213,8 @@ Page({
       insuranceId: this.data.warrantyList[this.data.warrantIndex]?.id,
       ...this.data.params
     }
+    console.log(info)
+    return
     byPost(getApp().data.k1swUrl + u_newShutdownClaim.URL, info, function (response) {
       if (response.data.code == 1000) {
         wx.navigateTo({
@@ -234,13 +249,13 @@ Page({
   },
   // 请求保单列表
   initWarranty() {
-    byGet(getApp().data.k1swUrl + u_userInsureList.URL, {}).then(response => {
+    byGet(getApp().data.k1swUrl + u_loseInsureList.URL, {}).then(response => {
       if (response.statusCode == 200) {
         const resn = response.data.content
         const info = resn.map(ele => {
           let objectInfo = {
-            value: ele?.insuranceNo || '',
-            name: ele?.insuranceNo || '',
+            value: ele?.rentorderno || '',
+            name: ele?.rentorderno || '',
             id: ele?.id
           }
           return objectInfo
@@ -263,12 +278,24 @@ Page({
     })
 
   },
+  handleInitInsuranceType(evt) {
+    console.log(evt)
+    if (evt.datails) {
+      const allParams = JSON.parse(evt?.allParams)
+      const datails = JSON.parse(evt?.datails)
+      const params = allParams?.params
+      params.plateNumber = datails?.platenumber
+      params.vehId = datails?.id
+      this.setData({
+        c_activeTab: 2,
+        params: params,
+        warrantIndex:allParams?.index
+      })
+    }
+  },
   onLoad(options) {
+    this.handleInitInsuranceType(options)
     this.handleCurrentDate()
-    this.setData({
-      c_activeTab: 1,
-      params: {}
-    })
     this.initList()
     this.initialiImageBaseConversion()
     this.initWarranty()

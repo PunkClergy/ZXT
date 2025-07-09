@@ -153,7 +153,8 @@
     "pages/wycclaim/wycclaim",
     "pages/wycclaimDetail/wycclaimDetail",
     "pages/wycclaimDetail/claimFileEdit/claimFileEdit",
-    "pages/policy/index"
+    "pages/policy/index",
+    "pages/lostClaims/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

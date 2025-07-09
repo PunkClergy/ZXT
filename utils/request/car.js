@@ -12,6 +12,10 @@ const u_userInsureList = {
   URL: fin3plusUrl + "insuranceApi/userInsureList",
   page: 'page'
 }
+const u_loseInsureList = {
+  URL: fin3plusUrl + "insuranceApi/loseInsureList",
+  page: 'page'
+}
 // 新增车辆
 const u_addOrUpdateCar = {
   URL: fin3plusUrl + "carapi/addOrUpdateCar",
@@ -57,10 +61,6 @@ const u_newInsure = {
 const u_batchNewWycInsure = {
   URL: fin3plusUrl + "insuranceApi/batchNewLoseInsure",
 }
-// 失联
-const u_loseInsureList = {
-  URL: fin3plusUrl + "insuranceApi/loseInsureList",
-}
 const u_newLoselnsure = {
   URL: fin3plusUrl + "insuranceApi/newLoseInsure",
 }
@@ -71,6 +71,11 @@ const u_batchNewLoseInsure = {
 // 停运险理赔保单
 const u_shutdownClaimList = {
   URL: fin3plusUrl + "insuranceApi/shutdownClaimList",
+  page: 'page'
+}
+// 失联险保单列表
+const u_loseClaimList = {
+  URL: fin3plusUrl + "insuranceApi/loseClaimList",
   page: 'page'
 }
 const u_newShutdownClaim = {
@@ -91,7 +96,7 @@ const u_stopShutDowninsure = {
   URL: fin3plusUrl + "insuranceApi/stopShutDownInsure",
 }
 // 失联险停保
-const u_stopLossContact ={
+const u_stopLossContact = {
   URL: fin3plusUrl + "insuranceApi/stopLoseInsure",
 }
 // 停运险投保变更
@@ -104,6 +109,7 @@ const u_updateLoseInsure = {
 }
 
 module.exports = {
+  u_loseClaimList,
   u_updateLoseInsure,
   u_stopLossContact,
   u_updateShutDownInsure,
