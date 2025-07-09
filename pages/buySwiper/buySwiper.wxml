@@ -19,6 +19,9 @@
                   <text>保险单号：{{item.insuranceNo||'-'}}</text>
                 </view>
               </view>
+              <view class="head-right">
+                <image src="/assets/images/stop.png" data-id="{{item.id}}" bindtap="handleStop" />
+              </view>
             </view>
             <view class="content-item-info" wx:if="{{insurance_type==1}}">
               <view class="info-item  {{item.rentorderno.length > 15 ? 'long-info-item' : ''}}">

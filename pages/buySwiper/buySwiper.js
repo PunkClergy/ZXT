@@ -10,7 +10,8 @@ const {
   u_loseInsureList,
   u_batchNewWycInsure,
   u_getBatchWycPrice,
-  u_getBatchLosePrice
+  u_getBatchLosePrice,
+  u_stopShutDowninsure
 } = require('../../utils/request/car')
 const {
   byPost,
@@ -46,6 +47,79 @@ Page({
     datalistOne: [
       { rentorderno: '', sn: '', insuredamount: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
     ]
+  },
+  // 停保
+  handleStop(evt) {
+    const that = this;
+    const insurance_type = this.data.insurance_type;
+    const id = evt?.currentTarget?.dataset.id; // 获取传入的id
+
+    // 显示确认对话框
+    wx.showModal({
+      title: '确认停保',
+      content: insurance_type == 1 ? '确定要执行失联险停保吗？' : '确定要执行停运险停保吗？',
+      success(res) {
+        if (res.confirm) {
+          if (insurance_type == 1) {
+            // 失联停保逻辑
+            that.executeLossContactStop(id);
+          } else {
+            // 停运险停保逻辑
+            that.executeShutdownInsureStop(id);
+          }
+        }
+      }
+    });
+  },
+
+  // 执行失联停保
+  executeLossContactStop(id) {
+    // 这里替换实际的失联停保API调用
+    byPost(getApp().data.k1swUrl + u_stopLossContact.URL, { id }, (res) => {
+      this.handleStopResult(res);
+    }, (err) => {
+      this.handleStopError(err);
+    });
+  },
+
+  // 执行停运险停保
+  executeShutdownInsureStop(id) {
+    byPost(getApp().data.k1swUrl + u_stopShutDowninsure.URL, { id }, (res) => {
+      this.handleStopResult(res);
+    }, (err) => {
+      this.handleStopError(err);
+    });
+  },
+
+  // 处理成功结果
+  handleStopResult(res) {
+    console.log('停保结果:', res);
+    if (res.data.code === 1000) {
+      wx.showModal({
+        title: '操作成功',
+        content: res.data.msg,
+        showCancel: false,
+        confirmText: '关闭'
+      });
+    } else {
+      wx.showModal({
+        title: '操作异常',
+        content: res.msg || '停保操作未完成，请重试',
+        showCancel: false,
+        confirmText: '关闭'
+      });
+    }
+  },
+
+  // 处理失败错误
+  handleStopError(err) {
+    console.error('停保失败:', err);
+    wx.showModal({
+      title: '请求失败',
+      content: err.errMsg || '网络请求失败，请检查网络',
+      showCancel: false,
+      confirmText: '关闭'
+    });
   },
   // 查看保单
   handlePolicy(evt) {
@@ -310,36 +384,6 @@ Page({
     });
   },
 
-  // 身份证校验函数（支持15位/18位，包含X校验）
-  isValidIdCard(id) {
-    const reg = /(^\d{15}$)|(^\d{17}(\d|X|x)$)/;
-    if (!reg.test(id)) return false;
-
-    // 18位身份证校验码验证
-    if (id.length === 18) {
-      const factors = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-      const codes = '10X98765432';
-      let sum = 0;
-
-      for (let i = 0; i < 17; i++) {
-        sum += parseInt(id.charAt(i)) * factors[i];
-      }
-      const checkCode = codes.charAt(sum % 11);
-      return checkCode === id.charAt(17).toUpperCase();
-    }
-    return true; // 15位身份证直接通过
-  },
-
-  // 车牌号校验（支持新能源/普通车牌）
-  isValidPlateNumber(plate) {
-    // 普通车牌：汉字 + A-Z + 5位数字/字母（不含I/O）
-    const commonReg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼][A-HJ-NP-Z][A-HJ-NP-Z0-9]{4,5}[A-HJ-NP-Z0-9挂学警港澳]$/;
-
-    // 新能源车牌：汉字 + A-Z + [DF]开头 + 6位数字
-    const newEnergyReg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼][A-HJ-NP-Z](?:[0-9]{5}[DF]|[DF][0-9]{6})$/;
-
-    return commonReg.test(plate) || newEnergyReg.test(plate);
-  },
   // 失联提交
   handleInsuranceSubmit() {
     const info = this.data.datalistOne

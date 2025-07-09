@@ -86,7 +86,12 @@ const u_getBatchWycPrice = {
 const u_getBatchLosePrice={
   URL: fin3plusUrl + "insuranceApi/getBatchLosePrice",
 }
+// 停运险停保
+const u_stopShutDowninsure={
+  URL: fin3plusUrl + "insuranceApi/stopShutDownInsure",
+}
 module.exports = {
+  u_stopShutDowninsure,
   u_getBatchLosePrice,
   u_getBatchWycPrice,
   u_improveShutdownClaimFile,
