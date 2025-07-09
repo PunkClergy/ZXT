@@ -11,7 +11,10 @@ const {
   u_batchNewWycInsure,
   u_getBatchWycPrice,
   u_getBatchLosePrice,
-  u_stopShutDowninsure
+  u_stopShutDowninsure,
+  u_updateShutDownInsure,
+  u_stopLossContact,
+  u_updateLoseInsure,
 } = require('../../utils/request/car')
 const {
   byPost,
@@ -41,6 +44,9 @@ Page({
     c_activeTab: 1, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
     price: 0,
+    edit: 0,//是否编辑
+    datails_params: {},//停运险单个提交
+    datails_one_params: {},//停运险单个提交
     datalist: [
       { applicantName: '', applicantIdcard: '', plateNumber: '' }
     ],
@@ -48,82 +54,165 @@ Page({
       { rentorderno: '', sn: '', insuredamount: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
     ]
   },
-  // 停保
+  // 停保统一处理方法
   handleStop(evt) {
-    const that = this;
     const insurance_type = this.data.insurance_type;
-    const id = evt?.currentTarget?.dataset.id; // 获取传入的id
+    const id = evt?.currentTarget?.dataset?.id;
 
-    // 显示确认对话框
+    if (!id) {
+      wx.showToast({
+        title: '参数错误',
+        icon: 'error'
+      });
+      return;
+    }
+
     wx.showModal({
       title: '确认停保',
-      content: insurance_type == 1 ? '确定要执行失联险停保吗？' : '确定要执行停运险停保吗？',
+      content: insurance_type == 1 ?
+        '确定要执行失联险停保吗？' :
+        '确定要执行停运险停保吗？',
       success(res) {
         if (res.confirm) {
-          if (insurance_type == 1) {
-            // 失联停保逻辑
-            that.executeLossContactStop(id);
-          } else {
-            // 停运险停保逻辑
-            that.executeShutdownInsureStop(id);
-          }
+          const url = insurance_type == 1 ?
+            getApp().data.k1swUrl + u_stopLossContact.URL :
+            getApp().data.k1swUrl + u_stopShutDowninsure.URL;
+
+          byPost(url, { id },
+            (res) => {
+              console.log('停保结果:', res);
+              const title = res.data.code === 1000 ? '操作成功' : '操作异常';
+              const content = res.data.code === 1000 ?
+                res.data.msg :
+                (res.msg || '停保操作未完成，请重试');
+
+              wx.showModal({
+                title,
+                content,
+                showCancel: false,
+                confirmText: '关闭'
+              });
+            },
+            (err) => {
+              console.error('停保失败:', err);
+              wx.showModal({
+                title: '请求失败',
+                content: err.errMsg || '网络请求失败，请检查网络',
+                showCancel: false,
+                confirmText: '关闭'
+              });
+            }
+          );
         }
       }
     });
   },
+  // 编辑场景下input输入回调
+  handleEditBindinput(evt) {
+    const { insurance_type } = this.data;
+    // 配置映射：保险类型 => 对应的数据对象键名
+    const dataKeyMap = {
+      1: 'datails_one_params',
+      2: 'datails_params'  // 假设保险类型2对应停运险
+    };
 
-  // 执行失联停保
-  executeLossContactStop(id) {
-    // 这里替换实际的失联停保API调用
-    byPost(getApp().data.k1swUrl + u_stopLossContact.URL, { id }, (res) => {
-      this.handleStopResult(res);
-    }, (err) => {
-      this.handleStopError(err);
-    });
-  },
+    // 获取对应的数据键名
+    const dataKey = dataKeyMap[insurance_type];
 
-  // 执行停运险停保
-  executeShutdownInsureStop(id) {
-    byPost(getApp().data.k1swUrl + u_stopShutDowninsure.URL, { id }, (res) => {
-      this.handleStopResult(res);
-    }, (err) => {
-      this.handleStopError(err);
-    });
-  },
-
-  // 处理成功结果
-  handleStopResult(res) {
-    console.log('停保结果:', res);
-    if (res.data.code === 1000) {
-      wx.showModal({
-        title: '操作成功',
-        content: res.data.msg,
-        showCancel: false,
-        confirmText: '关闭'
-      });
-    } else {
-      wx.showModal({
-        title: '操作异常',
-        content: res.msg || '停保操作未完成，请重试',
-        showCancel: false,
-        confirmText: '关闭'
-      });
+    if (!dataKey) {
+      console.error('未知保险类型:', insurance_type);
+      return;
     }
-  },
 
-  // 处理失败错误
-  handleStopError(err) {
-    console.error('停保失败:', err);
-    wx.showModal({
-      title: '请求失败',
-      content: err.errMsg || '网络请求失败，请检查网络',
-      showCancel: false,
-      confirmText: '关闭'
+    // 使用安全导航操作符防止undefined
+    const dataObj = this.data[dataKey] || {};
+    const field = evt.currentTarget.dataset.item;
+    const value = evt.detail.value || '';
+
+    // 更新数据对象
+    this.setData({
+      [dataKey]: {
+        ...dataObj,
+        [field]: value
+      }
+    });
+  },
+  // 投保变更
+  handleEditSubmit() {
+    const { insurance_type } = this.data;
+    const typeConfig = {
+      1: {
+        dataKey: 'datails_one_params',
+        fieldMap: {
+          rentorderno: 'rentorderno',
+          sn: 'sn',
+          insuredamount: 'insuredamount',
+          ylname: 'ylname',
+          otaname: 'otaname',
+          platenumber: 'platenumber',
+          rentdays: 'rentdays',
+          rentstarttime: 'rentstarttime',
+          rentendtime: 'rentendtime',
+          rentstartcity: 'rentstartcity',
+          rentendcity: 'rentendcity',
+          id: 'id'
+        },
+        callback: res => showToast(res?.data?.msg || '操作成功')
+      },
+      2: {
+        dataKey: 'datails_params',
+        fieldMap: {
+          applicantName: 'applicantName',
+          applicantIdcard: 'applicantIdcard',
+          plateNumber: 'plateNumber',
+          vehId: 'vehId',
+          id: 'id'
+        },
+        callback: res => showToast(res?.data?.msg || '操作成功')
+      }
+    };
+
+    const config = typeConfig[insurance_type];
+    if (!config) {
+      console.error('未知保险类型:', insurance_type);
+      return;
+    }
+
+    // 获取数据源
+    const info = this.data[config.dataKey] || {};
+
+    // 通过字段映射构建请求参数
+    const payload = Object.entries(config.fieldMap).reduce((acc, [key, sourceKey]) => {
+      acc[key] = info[sourceKey] ?? '';
+      return acc;
+    }, {});
+
+    // 发送请求
+    const url = `${getApp().data.k1swUrl}${u_updateShutDownInsure.URL}`;
+    byPost(url, payload, config.callback);
+  },
+  // 点击编辑更新保单
+  handleEdit(evt) {
+    const params = evt?.currentTarget?.dataset?.item;
+    const { insurance_type } = this.data;
+
+    // 配置映射：保险类型 => 对应的数据键名
+    const dataKeyMap = {
+      1: 'datails_one_params',
+      2: 'datails_params'
+    };
+
+    // 获取对应的数据键名，默认为 datails_params
+    const dataKey = dataKeyMap[insurance_type] || 'datails_params';
+
+    this.setData({
+      [dataKey]: params,  // 动态键名设置
+      edit: 1,
+      c_activeTab: 2
     });
   },
   // 查看保单
   handlePolicy(evt) {
-    console.log(this.data.imgUrl + evt?.currentTarget.dataset.item)
     wx.downloadFile({
       url: this.data.imgUrl + evt?.currentTarget.dataset.item,
       success: (res) => {
@@ -152,17 +241,16 @@ Page({
       }
     })
   },
+  // 点击选择车辆
   handleCarList(evt) {
-    if (this.data.insurance_type == 1) {
-
-    }
     const sourcePath = '/pages/buySwiper/buySwiper';
     const params = {
-
       index: evt.currentTarget.dataset.item,  // 事件参数
       c: 2,                                  // 固定值
       datalist: JSON.stringify(this.data.insurance_type == 1 ? this.data.datalistOne : this.data.datalist),           // 组件数据
-      insurance_type: this.data.insurance_type // 组件数据
+      insurance_type: this.data.insurance_type, // 组件数据
+      edit: this.data.edit,//是否编辑
+      params: this.data.insurance_type == 1 ? this.data.datails_one_params : this.data.datails_params,//停运险单个提交
     };
     const type = this.data.insurance_type == 1 ? 1 : 0
     const encodedParams = JSON.stringify(params);
@@ -212,9 +300,8 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
-  // 管控列表数据
+  // 购买历史列表数据
   initList() {
-    console.log(this.data.insurance_type)
     const param = {
       [u_userInsureList.page]: this.data.g_page,
     };
@@ -236,9 +323,8 @@ Page({
       }
     })
   },
-  // 获取服务费
+  // 获取服务费-停运险
   inituGetPayPrice() {
-    const _this = this
     byGet(getApp().data.k1swUrl + u_getPayPrice.URL, {}).then(response => {
       if (response.statusCode == 200) {
         this.setData({
@@ -265,6 +351,7 @@ Page({
       this.initList();
     });
   },
+  // 获取总价-停运险
   handlePrice() {
     byPostJson(getApp().data.k1swUrl + u_getBatchWycPrice.URL, JSON.stringify(this.data.datalist), (response) => {
       if (response.data.code == 1000) {
@@ -281,28 +368,34 @@ Page({
       }
     });
   },
-  // 增加数据
+  // 增加数据-失联险
   handleAddListOne() {
-    const datalistOne = this.data.datalistOne
-    let temp = { rentorderno: '', sn: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
-    datalistOne.push(temp)
     this.setData({
-      datalistOne
-    })
+      datalistOne: [
+        ...this.data.datalistOne,
+        {
+          rentorderno: '',
+          sn: '',
+          ylname: '',
+          otaname: '',
+          platenumber: '',
+          rentdays: '',
+          rentstarttime: '',
+          rentendtime: '',
+          rentstartcity: '',
+          rentendcity: ''
+        }
+      ]
+    });
   },
   // 增加一条数据
   handleAddList() {
-    const _this = this
-    const datalist = this.data.datalist
-    let temp = {
-      applicantName: '', applicantIdcard: '', plateNumber: ''
-    }
-    datalist.push(temp)
     this.setData({
-      datalist
-    }, () => {
-      this.handlePrice()
-    })
+      datalist: [
+        ...this.data.datalist,
+        { applicantName: '', applicantIdcard: '', plateNumber: '' }
+      ]
+    }, this.handlePrice);
   },
   handleDeteleListOne(evt) {
     const datalistOne = this.data.datalistOne
@@ -386,7 +479,6 @@ Page({
 
   // 失联提交
   handleInsuranceSubmit() {
-    const info = this.data.datalistOne
     // 所有校验通过后发起请求
     byPostJson(getApp().data.k1swUrl + u_batchNewWycInsure.URL, JSON.stringify(this.data.datalistOne), function (response) {
       if (response.data.code == 1000) {
@@ -410,6 +502,7 @@ Page({
       this.setData({
         c_activeTab: 1,
         params: {},
+        edit: 0
       })
     }
     if (flag == '购买保险') {
@@ -424,32 +517,72 @@ Page({
   // 判断够买保险类型
   initInsuranceType(evt) {
     if (evt.datails) {
-      const allParams = JSON.parse(evt.allParams)
-      const datalist = JSON.parse(allParams?.datalist)
+      const allParams = JSON.parse(evt?.allParams)
       const datails = JSON.parse(evt?.datails)
-      datalist[allParams.index].plateNumber = datails?.platenumber
-      datalist[allParams.index].vehId = datails?.id
-      console.log(datalist, allParams.c)
-      if (evt.type == 1) {
-        this.setData({
-          c_activeTab: allParams.c,
-          datalistOne: datalist,
-          insurance_type: evt?.type
-        })
+      if (allParams.edit == 1) {
+        if (evt.type == 1) {
+          const params = allParams?.params
+          params.plateNumber = datails?.platenumber
+          params.vehId = datails?.id
+          this.setData({
+            c_activeTab: allParams.c,
+            insurance_type: evt?.type,
+            datails_one_params: params,
+            edit: allParams?.edit,
+          })
+        } else {
+          const params = allParams?.params
+          params.plateNumber = datails?.platenumber
+          params.vehId = datails?.id
+          this.setData({
+            datails_params: params,
+            edit: allParams?.edit,
+            c_activeTab: allParams.c,
+            insurance_type: evt?.type
+          })
+        }
       } else {
-        this.setData({
-          c_activeTab: allParams.c,
-          datalist: datalist,
-          insurance_type: evt?.type
-        })
+        const allParams = JSON.parse(evt.allParams)
+        const datalist = JSON.parse(allParams?.datalist)
+        datalist[allParams.index].plateNumber = datails?.platenumber
+        datalist[allParams.index].vehId = datails?.id
+        console.log(datalist, allParams.c)
+        if (evt.type == 1) {
+          this.setData({
+            c_activeTab: allParams.c,
+            datalistOne: datalist,
+            insurance_type: evt?.type
+          })
+        } else {
+          this.setData({
+            c_activeTab: allParams.c,
+            datalist: datalist,
+            insurance_type: evt?.type
+          })
+        }
       }
-
     } else {
       this.setData({
         insurance_type: evt?.type
       })
     }
-
+  },
+  handleEditOnStartDateChange(evt) {
+    const key = evt.currentTarget.dataset.item
+    const datails_one_params = this.data.datails_one_params
+    datails_one_params[key] = evt.detail.value
+    console.log(datails_one_params)
+    this.setData({
+      datails_one_params
+    })
+  },
+  handleEditOnEndDateChange(evt) {
+    const key = evt.currentTarget.dataset.item
+    const datails_one_params = this.data.datails_one_params
+    datails_one_params[key] = evt.detail.value
+    this.setData({
+      datails_one_params
+    })
   },
   // 租车结束时间
   handleOnEndDateChange(evt) {

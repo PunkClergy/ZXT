@@ -11,7 +11,6 @@
     <block wx:if="{{c_activeTab == 1}}">
       <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
         <block wx:for="{{g_items}}" wx:key="index">
-
           <view class="content-item">
             <view class="content-item-head">
               <view class="head-left">
@@ -19,8 +18,9 @@
                   <text>保险单号：{{item.insuranceNo||'-'}}</text>
                 </view>
               </view>
-              <view class="head-right">
-                <image src="/assets/images/stop.png" data-id="{{item.id}}" bindtap="handleStop" />
+              <view class="head-right" style="display: flex;justify-content: center;align-items: center;">
+                <image src="/assets/images/stop.png" data-id="{{item.id}}" bindtap="handleStop" style="width: 45rpx;height: 45rpx;" />
+                <image src="/assets/images/home/_edit.png" data-id="{{item.id}}" data-item="{{item}}" bindtap="handleEdit" style="width: 35rpx;height: 35rpx;" />
               </view>
             </view>
             <view class="content-item-info" wx:if="{{insurance_type==1}}">
@@ -104,195 +104,373 @@
     </block>
     <block wx:if="{{c_activeTab == 2}}">
       <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;">
-        <view class="content-item" wx:for="{{insurance_type==1?datalistOne:datalist}}" wx:key="index">
-          <view class="content-item-head">
-            <view class="head-left">
-              <view class="left-category">
-                <text>序号：{{index+1}}</text>
+        <block wx:if="{{edit == 1}}">
+          <block wx:if="{{insurance_type==1}}">
+            <view class="card-info">
+              <!-- 主单号 -->
+              <view class="card-info-item">
+                <label>主单号<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入主单号" value="{{datails_one_params.rentorderno}}" data-item="rentorderno" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 设备号 -->
+              <view class="card-info-item">
+                <label>设备号(sn)<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入设备号" value="{{datails_one_params.sn}}" data-item="sn" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
+              </view>
+              <view class="card-info-item">
+                <label>投保金额<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入投保金额" data-price="1" value="{{datails_one_params.insuredamount}}" data-item="insuredamount" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 运营商名称 -->
+              <view class="card-info-item">
+                <label>运营商名称<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入运营商名称" value="{{datails_one_params.ylname}}" data-item="ylname" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 平台名称 -->
+              <view class="card-info-item">
+                <label>平台名称<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入平台名称" value="{{datails_one_params.otaname}}" data-item="otaname" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 车牌号 -->
+              <view class="card-info-item">
+                <label>车牌号<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <text style="font-size: 26rpx;color: #333;" wx:if="{{datails_one_params.plateNumber}}" bindtap="handleCarList">{{datails_one_params.plateNumber}}</text>
+                    <text style="font-size: 26rpx;color: rgb(95, 91, 91);" bindtap="handleCarList" wx:else>请选择车辆</text>
+                  </view>
+                </block>
+              </view>
+
+              <!-- 租车天数 -->
+              <view class="card-info-item">
+                <label>租车天数<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入租车天数" value="{{datails_one_params.rentdays}}" data-item="rentdays" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 租车时间 -->
+              <view class="card-info-item">
+                <label>租车开始时间<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <picker mode="date" value="{{datails_one_params.rentstarttime}}" data-item="rentstarttime" bindchange="handleEditOnStartDateChange">
+                      <view class="picker">
+                        {{datails_one_params.rentstarttime || '请选择租车开始时间'}}
+                      </view>
+                    </picker>
+                  </view>
+                </block>
+              </view>
+              <!-- 还车时间 -->
+              <view class="card-info-item">
+                <label>租车结束时间<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <picker mode="date" value="{{datails_one_params.rentendtime}}" data-item="rentendtime" bindchange="handleEditOnEndDateChange">
+                      <view class="picker">
+                        {{datails_one_params.rentendtime || '请选择租车结束时间'}}
+                      </view>
+                    </picker>
+                  </view>
+                </block>
+              </view>
+              <!-- 取车城市 -->
+              <view class="card-info-item">
+                <label>取车城市<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入取车城市" value="{{datails_one_params.rentstartcity}}" data-item="rentstartcity" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 还车城市 -->
+              <view class="card-info-item">
+                <label>还车城市<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入还车城市" value="{{datails_one_params.rentendcity}}" data-item="rentendcity" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
               </view>
             </view>
-            <view class="head-right">
-              <block wx:if="{{insurance_type==1}}">
-                <image src="/assets/images/home/add.png" wx:if="{{index+1==datalistOne.length}}" style="width: 40rpx;height: 40rpx;" bindtap="handleAddListOne" />
-                <image src="/assets/images/home/_delete.png" wx:if="{{datalistOne.length !=1 }}" data-index="{{index}}" bindtap="handleDeteleListOne" />
-              </block>
+          </block>
+          <block wx:else>
+            <view class="card-info">
+              <!-- 司机姓名 -->
+              <view class="card-info-item">
+                <label>司机姓名<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入司机姓名" value="{{datails_params.applicantName}}" data-item="applicantName" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
 
-              <block wx:else>
-                <image src="/assets/images/home/add.png" wx:if="{{index+1==datalist.length}}" style="width: 40rpx;height: 40rpx;" bindtap="handleAddList" />
-                <image src="/assets/images/home/_delete.png" wx:if="{{datalist.length !=1 }}" data-index="{{index}}" bindtap="handleDeteleList" />
-              </block>
+              </view>
+              <!-- 身份证号 -->
+              <view class="card-info-item">
+                <label>身份证号<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入身份证号" value="{{datails_params.applicantIdcard}}" data-item="applicantIdcard" bindinput="handleEditBindinput" />
+                  </view>
+                </block>
+
+
+              </view>
+              <!-- 车牌号 -->
+              <view class="card-info-item">
+                <label>车牌号<text>*</text></label>
+
+                <block>
+                  <view class="card-info-item-input">
+                    <text style="font-size: 26rpx;color: #333;" wx:if="{{datails_params.plateNumber}}" bindtap="handleCarList">{{datails_params.plateNumber}}</text>
+                    <text style="font-size: 26rpx;color: rgb(95, 91, 91);" bindtap="handleCarList" wx:else>请选择车辆</text>
+                  </view>
+                </block>
+              </view>
+              <!-- 保险时长 -->
+              <view class="card-info-item">
+                <label>保险时长</label>
+                <block>
+                  <view class="card-info-item-input">
+                    <text style="font-size: 26rpx;">一年(共365天)</text>
+                  </view>
+                </block>
+              </view>
+
+              <!-- 服务费 -->
+              <view class="card-info-item">
+                <label>服务费</label>
+                <block>
+                  <view class="card-info-item-input">
+                    <text style="font-size: 26rpx;">{{service_charge}}</text>
+                  </view>
+                </block>
+              </view>
+
+            </view>
+          </block>
+        </block>
+        <block wx:else>
+          <view class="content-item" wx:for="{{insurance_type==1?datalistOne:datalist}}" wx:key="index">
+            <view class="content-item-head">
+              <view class="head-left">
+                <view class="left-category">
+                  <text>序号：{{index+1}}</text>
+                </view>
+              </view>
+              <view class="head-right">
+                <block wx:if="{{insurance_type==1}}">
+                  <image src="/assets/images/home/add.png" wx:if="{{index+1==datalistOne.length}}" style="width: 40rpx;height: 40rpx;" bindtap="handleAddListOne" />
+                  <image src="/assets/images/home/_delete.png" wx:if="{{datalistOne.length !=1 }}" data-index="{{index}}" bindtap="handleDeteleListOne" />
+                </block>
+
+                <block wx:else>
+                  <image src="/assets/images/home/add.png" wx:if="{{index+1==datalist.length}}" style="width: 40rpx;height: 40rpx;" bindtap="handleAddList" />
+                  <image src="/assets/images/home/_delete.png" wx:if="{{datalist.length !=1 }}" data-index="{{index}}" bindtap="handleDeteleList" />
+                </block>
+
+              </view>
+            </view>
+            <view class="card-info" wx:if="{{insurance_type==1}}">
+              <!-- 主单号 -->
+              <view class="card-info-item">
+                <label>主单号<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入主单号" data-index="{{index}}" value="{{item.rentorderno}}" data-item="rentorderno" bindinput="handleBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 设备号 -->
+              <view class="card-info-item">
+                <label>设备号(sn)<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入设备号" data-index="{{index}}" value="{{item.sn}}" data-item="sn" bindinput="handleBindinput" />
+                  </view>
+                </block>
+              </view>
+              <view class="card-info-item">
+                <label>投保金额<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入投保金额" data-price="1" data-index="{{index}}" value="{{item.insuredamount}}" data-item="insuredamount" bindinput="handleBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 运营商名称 -->
+              <view class="card-info-item">
+                <label>运营商名称<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入运营商名称" data-index="{{index}}" value="{{item.ylname}}" data-item="ylname" bindinput="handleBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 平台名称 -->
+              <view class="card-info-item">
+                <label>平台名称<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入平台名称" data-index="{{index}}" value="{{item.otaname}}" data-item="otaname" bindinput="handleBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 车牌号 -->
+              <view class="card-info-item">
+                <label>车牌号<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <text style="font-size: 26rpx;color: #333;" wx:if="{{item.plateNumber}}">{{item.plateNumber}}</text>
+                    <text style="font-size: 26rpx;color: rgb(95, 91, 91);" data-item="{{index}}" bindtap="handleCarList" wx:else>请选择车辆</text>
+                  </view>
+                </block>
+              </view>
+
+              <!-- 租车天数 -->
+              <view class="card-info-item">
+                <label>租车天数<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入租车天数" data-index="{{index}}" value="{{item.rentdays}}" data-item="rentdays" bindinput="handleBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 租车时间 -->
+              <view class="card-info-item">
+                <label>租车开始时间<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <picker mode="date" data-index="{{index}}" value="{{item.rentstarttime}}" data-item="rentstarttime" bindchange="handleOnStartDateChange">
+                      <view class="picker">
+                        {{item.rentstarttime || '请选择租车开始时间'}}
+                      </view>
+                    </picker>
+                  </view>
+                </block>
+              </view>
+              <!-- 还车时间 -->
+              <view class="card-info-item">
+                <label>租车结束时间<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <picker mode="date" data-index="{{index}}" value="{{item.rentendtime}}" data-item="rentendtime" bindchange="handleOnEndDateChange">
+                      <view class="picker">
+                        {{item.rentendtime || '请选择租车结束时间'}}
+                      </view>
+                    </picker>
+                  </view>
+                </block>
+              </view>
+              <!-- 取车城市 -->
+              <view class="card-info-item">
+                <label>取车城市<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入取车城市" data-index="{{index}}" value="{{item.rentstartcity}}" data-item="rentstartcity" bindinput="handleBindinput" />
+                  </view>
+                </block>
+              </view>
+              <!-- 还车城市 -->
+              <view class="card-info-item">
+                <label>还车城市<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入还车城市" data-index="{{index}}" value="{{item.rentendcity}}" data-item="rentendcity" bindinput="handleBindinput" />
+                  </view>
+                </block>
+              </view>
+            </view>
+            <view class="card-info" wx:else>
+              <!-- 司机姓名 -->
+              <view class="card-info-item">
+                <label>司机姓名<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入司机姓名" data-index="{{index}}" value="{{item.applicantName}}" data-item="applicantName" bindinput="handleBindinput" />
+                  </view>
+                </block>
+
+              </view>
+              <!-- 身份证号 -->
+              <view class="card-info-item">
+                <label>身份证号<text>*</text></label>
+                <block>
+                  <view class="card-info-item-input">
+                    <input placeholder="请输入身份证号" data-index="{{index}}" value="{{item.applicantIdcard}}" data-item="applicantIdcard" bindinput="handleBindinput" />
+                  </view>
+                </block>
+
+
+              </view>
+              <!-- 车牌号 -->
+              <view class="card-info-item">
+                <label>车牌号<text>*</text></label>
+
+                <block>
+                  <view class="card-info-item-input">
+                    <text style="font-size: 26rpx;color: #333;" wx:if="{{item.plateNumber}}">{{item.plateNumber}}</text>
+                    <text style="font-size: 26rpx;color: rgb(95, 91, 91);" data-item="{{index}}" bindtap="handleCarList" wx:else>请选择车辆</text>
+                    <!-- <input placeholder="请输入车牌号" data-index="{{index}}" value="{{item.plateNumber}}" data-item="plateNumber" bindinput="handleBindinput" /> -->
+                  </view>
+                </block>
+              </view>
+              <!-- 保险时长 -->
+              <view class="card-info-item">
+                <label>保险时长</label>
+                <block>
+                  <view class="card-info-item-input">
+                    <text style="font-size: 26rpx;">一年(共365天)</text>
+                  </view>
+                </block>
+              </view>
+
+              <!-- 服务费 -->
+              <view class="card-info-item">
+                <label>服务费</label>
+                <block>
+                  <view class="card-info-item-input">
+                    <text style="font-size: 26rpx;">{{service_charge}}</text>
+                  </view>
+                </block>
+              </view>
 
             </view>
           </view>
-          <view class="card-info" wx:if="{{insurance_type==1}}">
-            <!-- 主单号 -->
-            <view class="card-info-item">
-              <label>主单号<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入主单号" data-index="{{index}}" value="{{item.rentorderno}}" data-item="rentorderno" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-            <!-- 设备号 -->
-            <view class="card-info-item">
-              <label>设备号(sn)<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入设备号" data-index="{{index}}" value="{{item.sn}}" data-item="sn" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-            <view class="card-info-item">
-              <label>投保金额<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入投保金额" data-price="1" data-index="{{index}}" value="{{item.insuredamount}}" data-item="insuredamount" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-            <!-- 运营商名称 -->
-            <view class="card-info-item">
-              <label>运营商名称<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入运营商名称" data-index="{{index}}" value="{{item.ylname}}" data-item="ylname" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-            <!-- 平台名称 -->
-            <view class="card-info-item">
-              <label>平台名称<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入平台名称" data-index="{{index}}" value="{{item.otaname}}" data-item="otaname" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-            <!-- 车牌号 -->
-            <view class="card-info-item">
-              <label>车牌号<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <text style="font-size: 26rpx;color: #333;" wx:if="{{item.plateNumber}}">{{item.plateNumber}}</text>
-                  <text style="font-size: 26rpx;color: rgb(95, 91, 91);" data-item="{{index}}" bindtap="handleCarList" wx:else>请选择车辆</text>
-                </view>
-              </block>
-            </view>
+        </block>
 
-            <!-- 租车天数 -->
-            <view class="card-info-item">
-              <label>租车天数<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入租车天数" data-index="{{index}}" value="{{item.rentdays}}" data-item="rentdays" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-            <!-- 租车时间 -->
-            <view class="card-info-item">
-              <label>租车开始时间<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <picker mode="date" data-index="{{index}}" value="{{item.rentstarttime}}" data-item="rentstarttime" bindchange="handleOnStartDateChange">
-                    <view class="picker">
-                      {{item.rentstarttime || '请选择租车开始时间'}}
-                    </view>
-                  </picker>
-                </view>
-              </block>
-            </view>
-            <!-- 还车时间 -->
-            <view class="card-info-item">
-              <label>租车结束时间<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <picker mode="date" data-index="{{index}}" value="{{item.rentendtime}}" data-item="rentendtime" bindchange="handleOnEndDateChange">
-                    <view class="picker">
-                      {{item.rentendtime || '请选择租车结束时间'}}
-                    </view>
-                  </picker>
-                </view>
-              </block>
-            </view>
-            <!-- 取车城市 -->
-            <view class="card-info-item">
-              <label>取车城市<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入取车城市" data-index="{{index}}" value="{{item.rentstartcity}}" data-item="rentstartcity" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-            <!-- 还车城市 -->
-            <view class="card-info-item">
-              <label>还车城市<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入还车城市" data-index="{{index}}" value="{{item.rentendcity}}" data-item="rentendcity" bindinput="handleBindinput" />
-                </view>
-              </block>
-            </view>
-          </view>
-          <view class="card-info" wx:else>
-            <!-- 司机姓名 -->
-            <view class="card-info-item">
-              <label>司机姓名<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入司机姓名" data-index="{{index}}" value="{{item.applicantName}}" data-item="applicantName" bindinput="handleBindinput" />
-                </view>
-              </block>
-
-            </view>
-            <!-- 身份证号 -->
-            <view class="card-info-item">
-              <label>身份证号<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入身份证号" data-index="{{index}}" value="{{item.applicantIdcard}}" data-item="applicantIdcard" bindinput="handleBindinput" />
-                </view>
-              </block>
-
-
-            </view>
-            <!-- 车牌号 -->
-            <view class="card-info-item">
-              <label>车牌号<text>*</text></label>
-
-              <block>
-                <view class="card-info-item-input">
-                  <text style="font-size: 26rpx;color: #333;" wx:if="{{item.plateNumber}}">{{item.plateNumber}}</text>
-                  <text style="font-size: 26rpx;color: rgb(95, 91, 91);" data-item="{{index}}" bindtap="handleCarList" wx:else>请选择车辆</text>
-                  <!-- <input placeholder="请输入车牌号" data-index="{{index}}" value="{{item.plateNumber}}" data-item="plateNumber" bindinput="handleBindinput" /> -->
-                </view>
-              </block>
-            </view>
-            <!-- 保险时长 -->
-            <view class="card-info-item">
-              <label>保险时长</label>
-              <block>
-                <view class="card-info-item-input">
-                  <text style="font-size: 26rpx;">一年(共365天)</text>
-                </view>
-              </block>
-            </view>
-
-            <!-- 服务费 -->
-            <view class="card-info-item">
-              <label>服务费</label>
-              <block>
-                <view class="card-info-item-input">
-                  <text style="font-size: 26rpx;">{{service_charge}}</text>
-                </view>
-              </block>
-            </view>
-
-          </view>
-        </view>
         <view class="card-footer">
-          <view bindtap="handleInsuranceSubmit" wx:if="{{insurance_type==1}}">确认支付 {{price}}</view>
-          <view bindtap="handleSubmit" wx:else>确认支付 {{price}}</view>
+          <block wx:if="{{edit == 1}}">
+            <view bindtap="handleEditSubmit">确认提交</view>
+          </block>
+          <block wx:else>
+            <view bindtap="handleInsuranceSubmit" wx:if="{{insurance_type==1}}">确认支付 {{price}}</view>
+            <view bindtap="handleSubmit" wx:else>确认支付 {{price}}</view>
+          </block>
         </view>
       </scroll-view>
     </block>

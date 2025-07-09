@@ -112,7 +112,7 @@ Page({
       flagMulti,
       info,
       allParams,
-      type
+      type,
     } = evt
 
     this.setData({
