@@ -15,14 +15,14 @@ Page({
     reportRecordCertificateFiles: [],  //身份证
     carAgreementFiles: [],  //网约车合同
     carRentalContractFiles: [],  //车辆租赁购买合同
-    accidentVerificationFiles: [],  //事故对应的订单
+    vehicleAssetProofFiles: [],  //事故对应的订单
     sesameCreditCertificateFiles: [], //保险公司定损单
     carInvoiceFiles: [],  //驾驶证
     carOwnershipCertificateFiles: [],  //行驶证
     loanAgreementFiles: [],  //事故现场照片
     insurancePolicyFiles: [],  //网络预约出租汽车驾驶员证
     netDrivingLicenseFiles: [],  //网络预约出租汽车运输证
-    compensationProofFiles: [],  //原车商业险保险公司赔付的证明
+    businessLicenseFiles: [],  //原车商业险保险公司赔付的证明
     scrollHihgt: '',
   },
 
@@ -47,75 +47,77 @@ Page({
     var param = {};
     appUtil.showLoading("加载中...")
     appUtil.byGet(getApp().data.k1swUrl + urlUtil.getLoseClaim.URL, { claimGuid: that.data.claimGuid }, function (res) {
-      console.log(res, '222222')
       appUtil.hideLoading();
       if (res) {
         var data = res.data;
         if (data.code == 1000) {
           that.setData({
             item: data.content,
+          },()=>{
+            for (var i = 0; i < that.data.item.fileList.length; i++) {
+              var file = that.data.item.fileList[i];
+              file.filePath = file.filePath.replace(/\\/g, "/");
+              if (file.type == 1) {
+                that.setData({
+                  carInvoiceFiles: that.data.carInvoiceFiles.concat(file)
+                })
+              }
+              else if (file.type == 2) {
+                that.setData({
+                  carOwnershipCertificateFiles: that.data.carOwnershipCertificateFiles.concat(file)
+                })
+              }
+              else if (file.type == 3) {
+                that.setData({
+                  reportRecordCertificateFiles: that.data.reportRecordCertificateFiles.concat(file)
+                })
+              }
+              else if (file.type == 4) {
+                that.setData({
+                  carRentalContractFiles: that.data.carRentalContractFiles.concat(file)
+                })
+              }
+              else if (file.type == 5) {
+                that.setData({
+                  loanAgreementFiles: that.data.loanAgreementFiles.concat(file)
+                })
+              }
+              else if (file.type == 6) {
+                console.log(file,'222222')
+                that.setData({
+                  vehicleAssetProofFiles: that.data.vehicleAssetProofFiles.concat(file)
+                })
+              }
+              else if (file.type == 7) {
+                that.setData({
+                  sesameCreditCertificateFiles: that.data.sesameCreditCertificateFiles.concat(file)
+                })
+              }
+              else if (file.type == 8) {
+                that.setData({
+                  businessLicenseFiles: that.data.businessLicenseFiles.concat(file)
+                })
+              }
+              else if (file.type == 9) {
+                that.setData({
+                  insurancePolicyFiles: that.data.insurancePolicyFiles.concat(file)
+                })
+              }
+              else if (file.type == 10) {
+                that.setData({
+                  netDrivingLicenseFiles: that.data.netDrivingLicenseFiles.concat(file)
+                })
+              }
+              else if (file.type == 11) {
+                that.setData({
+                  carAgreementFiles: that.data.carAgreementFiles.concat(file)
+                })
+              }
+  
+            }
           })
 
-          for (var i = 0; i < that.data.item.fileList.length; i++) {
-            var file = that.data.item.fileList[i];
-            file.filePath = file.filePath.replace(/\\/g, "/");
-            if (file.type == 1) {
-              that.setData({
-                carInvoiceFiles: that.data.carInvoiceFiles.concat(file)
-              })
-            }
-            else if (file.type == 2) {
-              that.setData({
-                carOwnershipCertificateFiles: that.data.carOwnershipCertificateFiles.concat(file)
-              })
-            }
-            else if (file.type == 3) {
-              that.setData({
-                reportRecordCertificateFiles: that.data.reportRecordCertificateFiles.concat(file)
-              })
-            }
-            else if (file.type == 4) {
-              that.setData({
-                carRentalContractFiles: that.data.carRentalContractFiles.concat(file)
-              })
-            }
-            else if (file.type == 5) {
-              that.setData({
-                loanAgreementFiles: that.data.loanAgreementFiles.concat(file)
-              })
-            }
-            else if (file.type == 6) {
-              that.setData({
-                accidentVerificationFiles: that.data.accidentVerificationFiles.concat(file)
-              })
-            }
-            else if (file.type == 7) {
-              that.setData({
-                sesameCreditCertificateFiles: that.data.sesameCreditCertificateFiles.concat(file)
-              })
-            }
-            else if (file.type == 8) {
-              that.setData({
-                compensationProofFiles: that.data.compensationProofFiles.concat(file)
-              })
-            }
-            else if (file.type == 9) {
-              that.setData({
-                insurancePolicyFiles: that.data.insurancePolicyFiles.concat(file)
-              })
-            }
-            else if (file.type == 10) {
-              that.setData({
-                netDrivingLicenseFiles: that.data.netDrivingLicenseFiles.concat(file)
-              })
-            }
-            else if (file.type == 11) {
-              that.setData({
-                carAgreementFiles: that.data.carAgreementFiles.concat(file)
-              })
-            }
-
-          }
+          
         }
         else {
           appUtil.showModal(data.msg, false, function () { });
@@ -152,14 +154,14 @@ Page({
       reportRecordCertificateFiles: [],  //身份证
       carAgreementFiles: [],  //网约车合同
       carRentalContractFiles: [],  //车辆租赁购买合同
-      accidentVerificationFiles: [],  //事故对应的订单
+      vehicleAssetProofFiles: [],  //事故对应的订单
       sesameCreditCertificateFiles: [], //保险公司定损单
       carInvoiceFiles: [],  //驾驶证
       carOwnershipCertificateFiles: [],  //行驶证
       loanAgreementFiles: [],  //事故现场照片
       insurancePolicyFiles: [],  //网络预约出租汽车驾驶员证
       netDrivingLicenseFiles: [],  //网络预约出租汽车运输证
-      compensationProofFiles: [],  //网络预约出租汽车运输证
+      businessLicenseFiles: [],  //网络预约出租汽车运输证
     })
     that.getLoseClaim();
   },

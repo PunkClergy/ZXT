@@ -14,7 +14,7 @@ Page({
     reportRecordCertificateFiles: [],  //身份证
     carAgreementFiles: [],  //网约车合同
     carRentalContractFiles: [],  //事故对应的订单
-    accidentVerificationFiles: [],  //事故认定书
+    vehicleAssetProofFiles: [],  //事故认定书
     sesameCreditCertificateFiles: [], //保险公司定损单
     carInvoiceFiles: [],  //驾驶证
     carOwnershipCertificateFiles: [],  //行驶证
@@ -80,11 +80,11 @@ Page({
       that.setData({ loanAgreementFiles: files });
     }
     else if (id == 6) {
-      let files = that.data.accidentVerificationFiles;
+      let files = that.data.vehicleAssetProofFiles;
       e.detail.urls.forEach((url) => {
         files.push({ url, });
       });
-      that.setData({ accidentVerificationFiles: files });
+      that.setData({ vehicleAssetProofFiles: files });
     }
     else if (id == 7) {
       let files = that.data.sesameCreditCertificateFiles;
@@ -146,7 +146,7 @@ Page({
       appUtil.showToast('请选择要上传的图片');
       return;
     }
-    else if (that.data.type == 6 && that.data.accidentVerificationFiles.length == 0) {
+    else if (that.data.type == 6 && that.data.vehicleAssetProofFiles.length == 0) {
       appUtil.showToast('请选择要上传的图片');
       return;
     }
@@ -181,8 +181,8 @@ Page({
     for (var i = 0; i < that.data.carRentalContractFiles.length; i++) {
       formData.appendFile("carRentalContractFiles", that.data.carRentalContractFiles[i].url);
     }
-    for (var i = 0; i < that.data.accidentVerificationFiles.length; i++) {
-      formData.appendFile("accidentVerificationFiles", that.data.accidentVerificationFiles[i].url);
+    for (var i = 0; i < that.data.vehicleAssetProofFiles.length; i++) {
+      formData.appendFile("vehicleAssetProofFiles", that.data.vehicleAssetProofFiles[i].url);
     }
     for (var i = 0; i < that.data.sesameCreditCertificateFiles.length; i++) {
       formData.appendFile("sesameCreditCertificateFiles", that.data.sesameCreditCertificateFiles[i].url);
