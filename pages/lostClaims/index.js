@@ -4,7 +4,7 @@ const {
   showToast
 } = require('../../utils/Inspect/tips')
 const {
-  u_newShutdownClaim,
+  u_newLoseClaim,
   u_loseClaimList,
   u_loseInsureList,
 } = require('../../utils/request/car')
@@ -44,13 +44,13 @@ Page({
   handleView(evt) {
     console.log(evt)
     wx.navigateTo({
-      url: '/pages/wycclaimDetail/wycclaimDetail?claimGuid=' + evt?.currentTarget.dataset.item.guid + '&edit=0'
+      url: '/pages/wycclaimDetail1/wycclaimDetail?claimGuid=' + evt?.currentTarget.dataset.item.guid + '&edit=0'
     })
   },
   handleEdit(evt) {
     console.log(evt)
     wx.navigateTo({
-      url: '/pages/wycclaimDetail/wycclaimDetail?claimGuid=' + evt?.currentTarget.dataset.item.guid + '&edit=1'
+      url: '/pages/wycclaimDetail1/wycclaimDetail?claimGuid=' + evt?.currentTarget.dataset.item.guid + '&edit=1'
     })
   },
 
@@ -213,12 +213,10 @@ Page({
       insuranceId: this.data.warrantyList[this.data.warrantIndex]?.id,
       ...this.data.params
     }
-    console.log(info)
-    return
-    byPost(getApp().data.k1swUrl + u_newShutdownClaim.URL, info, function (response) {
+    byPost(getApp().data.k1swUrl + u_newLoseClaim.URL, info, function (response) {
       if (response.data.code == 1000) {
         wx.navigateTo({
-          url: '/pages/wycclaim/wycclaim?claimGuid=' + response?.data?.content?.guid,
+          url: '/pages/wycclaim1/wycclaim?claimGuid=' + response?.data?.content?.guid,
         })
       } else {
         // 处理接口返回的错误

@@ -1,0 +1,99 @@
+<scroll-view class='container' style="height: {{scrollHihgt}}px;" scroll-y="true">
+<view style="width:95%;margin:0rpx auto;">
+
+<mp-uploader title="司机驾驶证" max-count="5" files="{{driverLicenseFiles }}" upload="{{uploadFn}}" wx:if="{{type ==1}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="1"
+	title="司机驾驶证" 
+	tips="上传司机驾驶证照片"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+<mp-uploader title="车辆行驶证" max-count="5" files="{{drivingLicenseFiles }}" upload="{{uploadFn}}" wx:if="{{type ==2}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="2"
+	title="车辆行驶证" 
+	tips="上传车辆行驶证照片"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+<mp-uploader title="身份证" max-count="5" files="{{personLicenseFiles }}" upload="{{uploadFn}}" wx:if="{{type ==3}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="3"
+	title="身份证" 
+	tips="上传身份证正反面照片"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+<mp-uploader  title="事故对应的订单" max-count="5" files="{{accidentOrderFiles}}" upload="{{uploadFn}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="4" wx:if="{{type ==4}}"
+	title="事故对应的订单" 
+	tips="上传包含有订单号的网约车截图"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+<mp-uploader title="事故现场影像" max-count="5" files="{{accidentSceneFiles }}" upload="{{uploadFn}}" wx:if="{{type ==5}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="5"
+	title="事故现场影像" 
+	tips="上传事故现场影像"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+<mp-uploader title="事故认定书" max-count="5" files="{{accidentVerificationFiles}}" upload="{{uploadFn}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="6"
+wx:if="{{type ==6}}" title="事故认定书" 
+	tips="上传事故认定书图片"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+<mp-uploader title="保险公司定损单" max-count="5" files="{{lossAssessmentFormFiles}}" upload="{{uploadFn}}" wx:if="{{type ==7}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="7"
+	title="保险公司定损单" 
+	tips="上传保险公司定损单照片"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+
+<mp-uploader title="原车商业险保险公司赔付的证明" max-count="5" files="{{compensationProofFiles }}" upload="{{uploadFn}}" wx:if="{{type ==8}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="8"
+	title="原车商业险保险公司赔付的证明" 
+	tips="上传原车商业险保险公司赔付的证明照片"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+
+<mp-uploader title="网络预约出租汽车驾驶员证" max-count="2" files="{{netDriverLicenseFiles }}" upload="{{uploadFn}}" wx:if="{{type ==9}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="9"
+	title="网络预约出租汽车驾驶员证" 
+	tips="上传网络预约出租汽车驾驶员证照片"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+<mp-uploader title="网络预约出租汽车运输证" max-count="2" files="{{netDrivingLicenseFiles }}" upload="{{uploadFn}}" wx:if="{{type ==10}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="10"
+	title="网络预约出租汽车运输证" 
+	tips="上传网络预约出租汽车运输证照片"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+<mp-uploader title="网络车合同" max-count="2" files="{{carAgreementFiles }}" upload="{{uploadFn}}" wx:if="{{type ==11}}" binddelete="uploadDelete" showDelete='{{true}}'  max-size="{{10 * 1024 * 1024}}" id="11"
+	title="网络车合同" 
+	tips="上传网络车合同照片"
+	size-type="{{sizeType}}" 
+	sourceType="{{sourceType}}" 
+ bindsuccess="uploadSuccess" >
+</mp-uploader>
+
+
+
+<button class='login_btn' hover-class="btn_tapcolor" bindtap='insuranceSubmitTwo'>确定</button>
+<view class="tipView">请上传此类资料的全部图片</view>
+</view>
+</scroll-view>

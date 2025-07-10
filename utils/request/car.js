@@ -85,6 +85,10 @@ const u_newShutdownClaim = {
 const u_improveShutdownClaimFile = {
   URL: fin3plusUrl + "insuranceApi/improveShutdownClaimFile",
 }
+// 失联险第二部
+const u_improveLoseClaimFile={
+  URL: fin3plusUrl + "insuranceApi/improveLoseClaimFile",
+}
 const u_getBatchWycPrice = {
   URL: fin3plusUrl + "insuranceApi/getBatchWycPrice",
 }
@@ -107,8 +111,12 @@ const u_updateShutDownInsure = {
 const u_updateLoseInsure = {
   URL: fin3plusUrl + "insuranceApi/updateLoseInsure",
 }
-
+const u_newLoseClaim = {
+  URL: fin3plusUrl + "insuranceApi/newLoseClaim",
+}
 module.exports = {
+  u_improveLoseClaimFile,
+  u_newLoseClaim,
   u_loseClaimList,
   u_updateLoseInsure,
   u_stopLossContact,

@@ -851,10 +851,20 @@ var getShutdownClaim = {
   URL: fin3plusUrl + "insuranceApi/getShutdownClaim",
   claimGuid: 'claimGuid',
 }
+// 获取失联险理赔数据
+var getLoseClaim = {
+  URL: fin3plusUrl + "insuranceApi/getLoseClaim",
+  claimGuid: 'claimGuid',
+}
 var improveShutdownClaimFile = {
   URL: fin3plusUrl + 'insuranceApi/improveShutdownClaimFile',
 }
+var improveLoseClaimFile = {
+  URL: fin3plusUrl + 'insuranceApi/improveLoseClaimFile',
+}
 module.exports = {
+  improveLoseClaimFile,
+  getLoseClaim,
   improveShutdownClaimFile,
   getShutdownClaim,
   rentRecord: rentRecord,

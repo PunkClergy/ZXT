@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "上传理赔材料",
+  "usingComponents": {
+    "mp-uploader": "weui-miniprogram/uploader/uploader"
+  }
+}
