@@ -41,7 +41,6 @@ Page({
     batterylift: '一键启动', //启动方式
     carOwnerNameValue: '',
     carOwnerName: '智信通', //所属平台
-    brakingType: 1,
     g_source: '',
     g_flagMulti: '',
     net_send_key_show_momal: false,
@@ -313,13 +312,6 @@ Page({
     })
   },
   // 点击内容回调
-  handleBrakingType(evt) {
-    const brakingType = evt.currentTarget.dataset.item
-    this.setData({
-      brakingType
-    })
-  },
-  // 点击内容回调
   handleCarOwnerName(evt) {
     const carOwnerName = evt.currentTarget.dataset.item
     this.setData({
@@ -337,8 +329,8 @@ Page({
       getCarStatus: getApp().data.k1swUrl + u_addOrUpdateCar.URL
     };
     const param = {
+      id: this.data?.id || '',
       ...this.data.params,
-      brakingType: this.data.brakingType,
       batterylift: this.data.batterylift,
       carOwnerName: this.data.carOwnerName == '智信通' ? this.data.carOwnerName : this.data.carOwnerNameValue
     };
@@ -350,7 +342,11 @@ Page({
       {
         field: 'sn',
         message: '请填写设备号'
-      }
+      },
+      {
+        field: 'code',
+        message: '请填写code'
+      },
     ];
 
     for (const {
@@ -366,7 +362,7 @@ Page({
     showLoading();
     byPost(apiUrls.getCarStatus, param,
       (response) => {
-
+console.log(response)
         hideLoading();
         if (response.data.code == 1000) {
           this.setData({
@@ -377,7 +373,10 @@ Page({
             batterylift: '一键启动', //启动方式
             carOwnerNameValue: '',
             carOwnerName: '智信通', //所属平台
-            brakingType: 1
+            g_items:[],
+            g_page:1
+          },()=>{
+            this.initList()
           })
         } else {
           showToast(response.data.msg)
@@ -400,10 +399,10 @@ Page({
         platenumber: info?.platenumber || "",
         vin: info?.vin || "",
         xsgw: info?.xsgw || "",
-        sn: info?.sn || ""
+        sn: info?.sn || "",
+        code:info?.code||''
       },
       batterylift: info?.batterylift || '一键启动',
-      brakingType: info?.brakingType,
       carOwnerName: info?.carOwnerName,
     })
   },
@@ -414,6 +413,7 @@ Page({
     if (flag == '车辆列表') {
       this.setData({
         c_activeTab: 1,
+        id: '',
         btnState: '新增',
         params: {},
         g_roleList_index: null

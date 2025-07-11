@@ -8,7 +8,7 @@ const {
   u_roleapiaddOrUpdate,
   u_childUserList,
   u_setMenuTree,
-  u_GetRole,u_addOrUpdateChildUser
+  u_GetRole, u_addOrUpdateChildUser
 } = require('../../../utils/request/data_info')
 const {
   byGet,
@@ -133,7 +133,7 @@ Page({
     }, {
       path: '/assets/images/home/2-2.png',
       key: 's_background_tabs_active_2'
-    }, ];
+    },];
     const promises = imageMap.map(item =>
       new Promise((resolve, reject) => {
         wx.getFileSystemManager().readFile({
@@ -159,7 +159,7 @@ Page({
   },
   // 人员列表
   initList() {
-    byGet(`${getApp().data.k1swUrl}${u_childUserList.URL}`, {roleId:this.data.id}).then(response => {
+    byGet(`${getApp().data.k1swUrl}${u_childUserList.URL}`, { roleId: this.data.id }).then(response => {
       if (response.data.code == 1000) {
         this.setData({
           g_items: response.data.content,
@@ -213,7 +213,7 @@ Page({
 
         }
       },
-      (error) => {}
+      (error) => { }
     );
   },
   //提交内容
@@ -226,13 +226,14 @@ Page({
     showLoading();
     byPost(
       `${getApp().data.k1swUrl}${u_roleapiaddOrUpdate.URL}`, {
-        ...params,
-        id
-      },
+      ...params,
+      id
+    },
       (response) => {
+        console.log(response)
         hideLoading();
         if (response?.data?.code != 1000) {
-          showToast(response?.data?.msg);
+          showToast(response?.msg);
           return;
         }
         showToast('添加成功');
@@ -382,14 +383,14 @@ Page({
   },
 
   // 获取角色列表
-  initGetRole(evt){
+  initGetRole(evt) {
     console.log(evt)
-    byGet(`${getApp().data.k1swUrl}${u_GetRole.URL}`, {roleName:evt,isAutoCreate:1}).then(response => {
+    byGet(`${getApp().data.k1swUrl}${u_GetRole.URL}`, { roleName: evt, isAutoCreate: 1 }).then(response => {
       if (response.data.code == 1000) {
 
         this.setData({
-          id:response.data.content.id
-        },()=>{
+          id: response.data.content.id
+        }, () => {
           this.inittMenuTree()
           this.initList()
         })
@@ -397,24 +398,26 @@ Page({
     })
   },
   // 确认新增
-  handleFormSubmit(evt){
+  handleFormSubmit(evt) {
     console.log(evt.detail.value)
-      const params = {
-        roleId:this.data.id,
-        ...evt.detail.value,
-        id:this.data?.g_uesr_details?.id||''
-      }
+    const params = {
+      roleId: this.data.id,
+      ...evt.detail.value,
+      id: this.data?.g_uesr_details?.id || ''
+    }
     byPost(
       `${getApp().data.k1swUrl}${u_addOrUpdateChildUser.URL}`, params,
       (response) => {
+        console.log(response)
         if (response.data.code == 1000) {
-          this.setData({c_send_key_show_momal:false},()=>{
+          this.setData({ c_send_key_show_momal: false }, () => {
             this.initList()
           })
- 
+        } else {
+          showToast(response?.data.msg)
         }
       },
-      (error) => {}
+      (error) => { }
     );
   },
   onLoad(options) {
@@ -426,12 +429,12 @@ Page({
         }
       })
     }
-    if(options?.name){
+    if (options?.name) {
       this.initGetRole(options?.name)
     }
   },
   onShow() {
     this.initialiImageBaseConversion()
-    
+
   },
 })

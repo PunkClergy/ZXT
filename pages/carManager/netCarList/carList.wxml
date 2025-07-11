@@ -104,7 +104,16 @@
             <label>设备号<text>*</text></label>
             <block>
               <view class="card-info-item-input">
-                <input placeholder="请输入车型" value="{{params.sn}}" data-item="sn" bindinput="handleBindinput" />
+                <input placeholder="请输入设备号" value="{{params.sn}}" disabled="{{id}}" data-item="sn" bindinput="handleBindinput" />
+              </view>
+            </block>
+          </view>
+          <!-- code -->
+          <view class="card-info-item">
+            <label>code<text>*</text></label>
+            <block>
+              <view class="card-info-item-input">
+                <input placeholder="请输入code" value="{{params.code}}" disabled="{{id}}" data-item="code" bindinput="handleBindinput" />
               </view>
             </block>
           </view>
