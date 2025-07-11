@@ -56,7 +56,6 @@
     "pages/system/loginView/loginView",
     "pages/camera/camera",
     "pages/camera-paper/camera",
-    "pages/system/registView/registView",
     "pages/carManager/regDevice/regDevice",
     "pages/system/managerLoginView/loginView",
     "pages/system/managerInfo/userinfo",
@@ -152,8 +151,7 @@
     "pages/wycclaimDetail1/wycclaimDetail",
     "pages/wycclaimDetail1/claimFileEdit/claimFileEdit",
     "pages/policy/index",
-    "pages/lostClaims/index",
-    "pages/withKey/index"
+    "pages/lostClaims/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

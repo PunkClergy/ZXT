@@ -63,7 +63,7 @@
               </view>
               <view class="info-item">
                 <label>车牌号 ：</label>
-                <text>{{item.plateNumber||'-'}}</text>
+                <text>{{item.platenumber||'-'}}</text>
               </view>
               <view class="info-item" wx:if="{{item.insuranceFile}}">
                 <label>保单 ：</label>
@@ -122,7 +122,7 @@
                 <label>车牌号<text>*</text></label>
                 <block>
                   <view class="card-info-item-input">
-                    <text style="font-size: 26rpx;color: #333;" wx:if="{{datails_one_params.plateNumber}}" bindtap="handleCarList">{{datails_one_params.plateNumber}}</text>
+                    <text style="font-size: 26rpx;color: #333;" wx:if="{{datails_one_params.platenumber}}" bindtap="handleCarList">{{datails_one_params.platenumber}}</text>
                     <text style="font-size: 26rpx;color: rgb(95, 91, 91);" bindtap="handleCarList" wx:else>请选择车辆</text>
                   </view>
                 </block>
@@ -176,7 +176,7 @@
 
                 <block>
                   <view class="card-info-item-input">
-                    <text style="font-size: 26rpx;color: #333;" wx:if="{{datails_params.plateNumber}}" bindtap="handleCarList">{{datails_params.plateNumber}}</text>
+                    <text style="font-size: 26rpx;color: #333;" wx:if="{{datails_params.platenumber}}" bindtap="handleCarList">{{datails_params.platenumber}}</text>
                     <text style="font-size: 26rpx;color: rgb(95, 91, 91);" bindtap="handleCarList" wx:else>请选择车辆</text>
                   </view>
                 </block>
@@ -192,14 +192,14 @@
               </view>
 
               <!-- 服务费 -->
-              <view class="card-info-item">
+              <!-- <view class="card-info-item">
                 <label>服务费</label>
                 <block>
                   <view class="card-info-item-input">
                     <text style="font-size: 26rpx;">{{service_charge}}</text>
                   </view>
                 </block>
-              </view>
+              </view> -->
             </view>
           </block>
         </block>
@@ -260,7 +260,7 @@
                 <label>车牌号<text>*</text></label>
                 <block>
                   <view class="card-info-item-input">
-                    <text style="font-size: 26rpx;color: #333;" wx:if="{{item.plateNumber}}">{{item.plateNumber}}</text>
+                    <text style="font-size: 26rpx;color: #333;" wx:if="{{item.platenumber}}">{{item.platenumber}}</text>
                     <text style="font-size: 26rpx;color: rgb(95, 91, 91);" data-item="{{index}}" bindtap="handleCarList" wx:else>请选择车辆</text>
                   </view>
                 </block>
@@ -313,9 +313,9 @@
 
                 <block>
                   <view class="card-info-item-input">
-                    <text style="font-size: 26rpx;color: #333;" wx:if="{{item.plateNumber}}">{{item.plateNumber}}</text>
+                    <text style="font-size: 26rpx;color: #333;" wx:if="{{item.platenumber}}">{{item.platenumber}}</text>
                     <text style="font-size: 26rpx;color: rgb(95, 91, 91);" data-item="{{index}}" bindtap="handleCarList" wx:else>请选择车辆</text>
-                    <!-- <input placeholder="请输入车牌号" data-index="{{index}}" value="{{item.plateNumber}}" data-item="plateNumber" bindinput="handleBindinput" /> -->
+                    <!-- <input placeholder="请输入车牌号" data-index="{{index}}" value="{{item.platenumber}}" data-item="platenumber" bindinput="handleBindinput" /> -->
                   </view>
                 </block>
               </view>
@@ -330,14 +330,14 @@
               </view>
 
               <!-- 服务费 -->
-              <view class="card-info-item">
+              <!-- <view class="card-info-item">
                 <label>服务费</label>
                 <block>
                   <view class="card-info-item-input">
                     <text style="font-size: 26rpx;">{{service_charge}}</text>
                   </view>
                 </block>
-              </view>
+              </view> -->
 
             </view>
           </view>

@@ -48,7 +48,7 @@ Page({
     datails_params: {},//停运险单个提交
     datails_one_params: {},//停运险单个提交
     datalist: [
-      { applicantName: '', applicantIdcard: '', plateNumber: '' }
+      { applicantName: '', applicantIdcard: '', platenumber: '' }
     ],
     datalistOne: [
       { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '' }
@@ -158,7 +158,7 @@ Page({
         fieldMap: {
           applicantName: 'applicantName',
           applicantIdcard: 'applicantIdcard',
-          plateNumber: 'plateNumber',
+          platenumber: 'platenumber',
           vehId: 'vehId',
           id: 'id'
         },
@@ -383,7 +383,7 @@ Page({
     this.setData({
       datalist: [
         ...this.data.datalist,
-        { applicantName: '', applicantIdcard: '', plateNumber: '' }
+        { applicantName: '', applicantIdcard: '', platenumber: '' }
       ]
     }, this.handlePrice);
   },
@@ -494,7 +494,7 @@ Page({
         params: {},
         edit: 0,
         datalist: [
-          { applicantName: '', applicantIdcard: '', plateNumber: '' }
+          { applicantName: '', applicantIdcard: '', platenumber: '' }
         ],
         datalistOne: [
           { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '',insuranceamount:'' }
@@ -518,7 +518,7 @@ Page({
       if (allParams.edit == 1) {
         if (evt.type == 1) {
           const params = allParams?.params
-          params.plateNumber = datails?.platenumber
+          params.platenumber = datails?.platenumber
           params.vehId = datails?.id
           params.vin = datails?.vin
           this.setData({
@@ -529,7 +529,7 @@ Page({
           })
         } else {
           const params = allParams?.params
-          params.plateNumber = datails?.platenumber
+          params.platenumber = datails?.platenumber
           params.vehId = datails?.id,
             params.vin = datails?.vin
           this.setData({
@@ -542,7 +542,7 @@ Page({
       } else {
         const allParams = JSON.parse(evt.allParams)
         const datalist = JSON.parse(allParams?.datalist)
-        datalist[allParams.index].plateNumber = datails?.platenumber
+        datalist[allParams.index].platenumber = datails?.platenumber
         datalist[allParams.index].vehId = datails?.id
         datalist[allParams.index].vin = datails?.vin
         console.log(datalist, allParams.c)
