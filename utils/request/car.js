@@ -114,7 +114,11 @@ const u_updateLoseInsure = {
 const u_newLoseClaim = {
   URL: fin3plusUrl + "insuranceApi/newLoseClaim",
 }
+const u_vehBindCarManager={
+  URL: fin3plusUrl + "rentKeyApi/vehBindCarManager",
+}
 module.exports = {
+  u_vehBindCarManager,
   u_improveLoseClaimFile,
   u_newLoseClaim,
   u_loseClaimList,

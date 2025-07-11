@@ -23,6 +23,11 @@ const u_childUserList = {
   URL: fin3plusUrl + "accountapi/childUserList",
   page: 'page'
 }
+// 车务
+const u_carManagerList = {
+  URL: fin3plusUrl + "rentKeyApi/carManagerList",
+  page: 'page'
+}
 // 获取公司信息
 const u_companyInfo = {
   URL: fin3plusUrl + "companyapi/companyInfo",
@@ -213,6 +218,7 @@ const u_shopApiList= {
 }
 
 module.exports = {
+  u_carManagerList,
   u_shopApiList,
   u_GetRole,
   u_getAreas,

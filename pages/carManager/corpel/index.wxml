@@ -1,8 +1,8 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="车务人员管理" />
+  <custom-header title="{{type == 1?'车务配置电子钥匙':'车务人员清单'}}" />
 
   <!-- 搜索框 -->
-  <view class="search-container" style="height:{{c_searchBarHeight}}px;margin-top: {{c_totalNavHeight}}px;">
+  <!-- <view class="search-container" style="height:{{c_searchBarHeight}}px;margin-top: {{c_totalNavHeight}}px;">
     <view class="search-box">
       <icon type="search" size="16" class="search-icon" />
       <input placeholder="搜索车务人员" bindblur="handleBlur" class="search-input" />
@@ -10,31 +10,27 @@
     <view class="search-count">
       <text>共有{{g_total}}人员</text>
     </view>
-  </view>
+  </view> -->
 
   <!-- 主要内容区域 -->
-  <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+2}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+  <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
     <block wx:for="{{g_items}}" wx:key="index">
       <view class="content-item">
         <view class="content-item-head">
           <view class="head-left">
             <view class="left-category">
-
-              <text>{{item.name}}</text>
+              <text>{{item.realname}}</text>
             </view>
             <view class="left-model">
-
             </view>
-
-          </view>
-          <view class="head-right">
-
-            <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
-            <image wx:if="{{!item.sn}}" src="/assets/images/home/_delete.png" data-item="{{item}}" data-index="{{index}}" bindtap="handleDelete" />
           </view>
         </view>
         <view class="content-item-info">
-          <view class="info-item  {{item.mobile.length > 8 ? 'long-info-item' : ''}}">
+          <view class="info-item  {{item.username.length > 15 ? 'long-info-item' : ''}}">
+            <label>账号 ：</label>
+            <text>{{item.username||'-' }}</text>
+          </view>
+          <view class="info-item  {{item.mobile.length > 15 ? 'long-info-item' : ''}}">
             <label>联系电话 ：</label>
             <text>{{item.mobile||'-' }}</text>
           </view>
@@ -42,18 +38,18 @@
             <label>身份证号 ：</label>
             <text>{{item.idcard||'-'}}</text>
           </view>
-          <view class="info-item  {{item.address.length > 15 ? 'long-info-item' : ''}}">
-            <label>地址 ：</label>
-            <text>{{item.address||'-'}}</text>
+          <view class="info-item  long-info-item" wx:if="{{type}}">
+            <label>已绑定车辆 ：</label>
+            <block wx:for="{{item.vehList}}" wx:key="index" wx:for-item="g_item">
+                <text>{{g_item.platenumber}},</text>
+            </block>
           </view>
-
-
         </view>
-        <view class="content-item-footer" wx:if="{{g_source}}">
+        <view class="content-item-footer" wx:if="{{type}}">
           <view class="footer-left"></view>
           <view class="footer-right">
             <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump">
-              <text>选择此车</text>
+              <text>绑定车辆</text>
             </view>
           </view>
         </view>
