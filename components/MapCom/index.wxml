@@ -13,7 +13,7 @@
   </view>
   <view class="info-upper" wx:if="{{source!='desk'}}">
     <text bindtap="handleCurrentLocation" wx:if="{{source !='GPSTrajectory'}}">当前位置</text>
-    <text bindtap="handleTrajectory" wx:if="{{source !='carDetail'&&source !='GPSPosition'}}">历史轨迹</text>
+    <text bindtap="handleTrajectory" wx:if="{{source =='carDetail'&&source !='GPSPosition'}}">历史轨迹</text>
   </view>
   <view class="info-middle" wx:if="{{source!='desk'}}">
     <view class="info-middle-layer" bindtap="handleCarStatus">

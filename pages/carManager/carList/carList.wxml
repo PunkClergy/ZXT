@@ -55,7 +55,7 @@
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump" wx:if="{{!g_flagMulti}}">
                   <text>选择此车</text>
                 </view>
-                <view>
+                <view wx:else>
                   <checkbox-group data-item="{{item}}" bindchange="handleChangeBlack">
                     <checkbox style="transform: scale(0.7);" />
                   </checkbox-group>
