@@ -373,7 +373,7 @@ Page({
           yladdresss: '',
           platenumber: '',
           vin: '',
-          insuredamount
+          insuranceamount
         }
       ]
     });
@@ -497,7 +497,7 @@ Page({
           { applicantName: '', applicantIdcard: '', plateNumber: '' }
         ],
         datalistOne: [
-          { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '',insuredamount:'' }
+          { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '',insuranceamount:'' }
         ]
       })
     }
