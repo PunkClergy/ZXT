@@ -43,7 +43,7 @@ Page({
     g_triggered: false, //下拉刷新状态
     c_activeTab: 2, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
-    price: 0,
+    price: '',
     edit: 0,//是否编辑
     datails_params: {},//停运险单个提交
     datails_one_params: {},//停运险单个提交
@@ -51,7 +51,7 @@ Page({
       { applicantName: '', applicantIdcard: '', plateNumber: '' }
     ],
     datalistOne: [
-      { rentorderno: '', sn: '', insuredamount: '', ylname: '', otaname: '', platenumber: '', rentdays: '', rentstarttime: '', rentendtime: '', rentstartcity: '', rentendcity: '' }
+      { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '' }
     ]
   },
   // 停保统一处理方法
@@ -144,17 +144,11 @@ Page({
       1: {
         dataKey: 'datails_one_params',
         fieldMap: {
-          rentorderno: 'rentorderno',
-          sn: 'sn',
-          insuredamount: 'insuredamount',
           ylname: 'ylname',
-          otaname: 'otaname',
+          sn: 'sn',
+          yladdresss: 'yladdresss',
           platenumber: 'platenumber',
-          rentdays: 'rentdays',
-          rentstarttime: 'rentstarttime',
-          rentendtime: 'rentendtime',
-          rentstartcity: 'rentstartcity',
-          rentendcity: 'rentendcity',
+          vin: '',
           id: 'id'
         },
         callback: res => showToast(res?.data?.msg || '操作成功')
@@ -374,16 +368,12 @@ Page({
       datalistOne: [
         ...this.data.datalistOne,
         {
-          rentorderno: '',
           sn: '',
           ylname: '',
-          otaname: '',
+          yladdresss: '',
           platenumber: '',
-          rentdays: '',
-          rentstarttime: '',
-          rentendtime: '',
-          rentstartcity: '',
-          rentendcity: ''
+          vin: '',
+          insuredamount
         }
       ]
     });
@@ -502,7 +492,13 @@ Page({
       this.setData({
         c_activeTab: 1,
         params: {},
-        edit: 0
+        edit: 0,
+        datalist: [
+          { applicantName: '', applicantIdcard: '', plateNumber: '' }
+        ],
+        datalistOne: [
+          { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '',insuredamount:'' }
+        ]
       })
     }
     if (flag == '购买保险') {
@@ -524,6 +520,7 @@ Page({
           const params = allParams?.params
           params.plateNumber = datails?.platenumber
           params.vehId = datails?.id
+          params.vin = datails?.vin
           this.setData({
             c_activeTab: allParams.c,
             insurance_type: evt?.type,
@@ -533,7 +530,8 @@ Page({
         } else {
           const params = allParams?.params
           params.plateNumber = datails?.platenumber
-          params.vehId = datails?.id
+          params.vehId = datails?.id,
+            params.vin = datails?.vin
           this.setData({
             datails_params: params,
             edit: allParams?.edit,
@@ -546,6 +544,7 @@ Page({
         const datalist = JSON.parse(allParams?.datalist)
         datalist[allParams.index].plateNumber = datails?.platenumber
         datalist[allParams.index].vehId = datails?.id
+        datalist[allParams.index].vin = datails?.vin
         console.log(datalist, allParams.c)
         if (evt.type == 1) {
           this.setData({
