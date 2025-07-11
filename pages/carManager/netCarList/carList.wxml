@@ -39,7 +39,7 @@
                 <label>油箱容积 ：</label>
                 <text>{{item.xsgw?item.xsgw+'L':'-' }}</text>
               </view>
-        
+
               <view class="info-item  {{item.batterylift.length > 15 ? 'long-info-item' : ''}}">
                 <label>启动方式 ：</label>
                 <text>{{item.batterylift||'-'}}</text>
@@ -47,16 +47,6 @@
               <view class="info-item  {{item.sn.length > 15 ? 'long-info-item' : ''}}">
                 <label>设备号 ：</label>
                 <text>{{item.sn||'-'}}</text>
-              </view>
-              <view class="info-item  long-info-item">
-                <label>绑定司机 ：</label>
-                <block wx:for="{{item.driverList}}" wx:for-item="g_item" wx:key="index">
-                  <view style="display: flex;gap: 15rpx;">
-                    <text>{{g_item.drivername}}</text>
-                    <text>{{g_item.drivermobile}}</text>
-                    <text style="color:#1b64b1;" data-item="{{g_item}}" bindtap="handleUnBindDriver">解绑</text>
-                  </view>
-                </block>
               </view>
             </view>
             <view class="content-item-footer" wx:if="{{g_source}}">
@@ -73,7 +63,15 @@
               </view>
             </view>
             <view class="content-item-footer" wx:else>
-              <view class="footer-left"></view>
+              <view class="footer-left">
+                <block wx:for="{{item.driverList}}" wx:for-item="g_item" wx:key="index">
+                  <view style="display: flex;gap: 15rpx;line-height: 50rpx;">
+                    <text>{{g_item.drivername}}</text>
+                    <text>{{g_item.drivermobile}}</text>
+                    <text style="color:#1b64b1;" data-item="{{g_item}}" bindtap="handleUnBindDriver">解绑</text>
+                  </view>
+                </block>
+              </view>
               <view class="footer-right" style="display: flex;gap: 10rpx;">
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="handleShowSendNetKeyModal">
                   <text>绑定司机</text>

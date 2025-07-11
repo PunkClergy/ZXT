@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "派发工单",
-  "usingComponents": {
-    "custom-header": "/components/CustomHeader/index"
-  },
-  "navigationStyle": "custom",
-  "disableScroll": true
-}
-

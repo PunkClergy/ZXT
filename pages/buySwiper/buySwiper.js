@@ -41,7 +41,7 @@ Page({
     imgUrl: 'https://k3a.wiselink.net.cn/' + 'img/',
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
-    c_activeTab: 1, // 默认选中的Tab索引
+    c_activeTab: 2, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
     price: 0,
     edit: 0,//是否编辑

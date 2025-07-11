@@ -42,13 +42,13 @@ Page({
     y_page: 1,
     y_triggered: false,
     c_tabs: [{
-        name: '报销记录',
-        value: '1'
-      },
-      {
-        name: '新增报销',
-        value: '2'
-      }
+      name: '报销记录',
+      value: '1'
+    },
+    {
+      name: '新增报销',
+      value: '2'
+    }
     ], //tabs切换签
     c_activeTab: 1,
     params: {},
@@ -63,7 +63,12 @@ Page({
     controlcode: '',
     c_edit_key_show_momal: false,
     g_edit_info: {},
-    net_send_key_show_momal:false
+    net_send_key_show_momal: false
+  },
+  handleBindCar() {
+    wx.navigateTo({
+      url: '/pages/carManager/netCarList/carList',
+    })
   },
   // 获取当前年月日 时分
   handleCurrentDate() {
@@ -115,7 +120,7 @@ Page({
     }, {
       path: '/assets/images/home/2-2.png',
       key: 's_background_tabs_active_2'
-    }, ];
+    },];
     const promises = imageMap.map(item =>
       new Promise((resolve, reject) => {
         wx.getFileSystemManager().readFile({
@@ -175,13 +180,13 @@ Page({
     const ginfo = evt.currentTarget.dataset.gitem
     console.log(ginfo)
     this.setData({
-      cellData: {...info,personName:ginfo?.drivername,mobile:ginfo?.drivermobile},
+      cellData: { ...info, personName: ginfo?.drivername, mobile: ginfo?.drivermobile },
       c_send_key_show_momal: true,
       vehId: info.id
     });
   },
   // 绑定司机
-  handleShowSendNetKeyModal(evt){
+  handleShowSendNetKeyModal(evt) {
     const info = evt.currentTarget.dataset.item
     this.setData({
       cellData: info,
@@ -193,7 +198,7 @@ Page({
     this.setData({
       cellData: {},
       c_send_key_show_momal: false,
-      net_send_key_show_momal:false
+      net_send_key_show_momal: false
     })
   },
   handleHideEditKeyModal() {
@@ -312,7 +317,7 @@ Page({
   },
 
   // 绑定司机
-  handleNetFormSubmit(evt ){
+  handleNetFormSubmit(evt) {
     const {
       startDate,
       startTime,
@@ -322,13 +327,13 @@ Page({
     } = this.data;
     const formData = evt.detail.value;
     const validations = [{
-        field: formData.personName,
-        message: '请输入使用人'
-      },
-      {
-        field: formData.mobile,
-        message: '请输入手机号'
-      }
+      field: formData.personName,
+      message: '请输入使用人'
+    },
+    {
+      field: formData.mobile,
+      message: '请输入手机号'
+    }
     ];
 
     const validationError = validations.find(({
@@ -377,13 +382,13 @@ Page({
             }
           },
           (error) => {
-    
+
           }
         );
 
 
 
-     
+
 
       } catch (error) {
         showToast(error.message || '请求失败，请稍后重试');
@@ -403,7 +408,7 @@ Page({
       cellData
     } = this.data;
     const formData = evt.detail.value;
- 
+
     const buildDateTime = (date, time) =>
       `${date || ''} ${time ? `${time}:00` : '00:00:00'}`.trim();
 

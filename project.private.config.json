@@ -22,15 +22,15 @@
       "list": [
         {
           "name": "dentistId=100",
-          "pathName": "pages/wycclaim/wycclaim",
+          "pathName": "pages/desk/desk",
           "query": "",
           "launchMode": "default",
           "scene": 1011
         },
         {
           "name": "",
-          "pathName": "pages/desk/desk",
-          "query": "scene=E66EFB4A5ECF4D609591406C56EB1AE7",
+          "pathName": "pages/suborClients/index",
+          "query": "",
           "launchMode": "default",
           "scene": null
         },

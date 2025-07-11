@@ -1,7 +1,0 @@
-<!-- WXML -->
-<map id="myMap" scale='{{scale}}' latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
-  <view style="display: flex;width: 100%;background: #fff;position: fixed;bottom: 0px;height: 8vh;justify-content: center;align-items: center;border-radius: 10rpx;">
-    <text style="background: rgba(27, 100, 177, 1);width: 80%;padding: 25rpx 30rpx;border-radius: 50rpx; text-align: center;color: #fff;font-weight: 500;">扫码用车</text>
-
-  </view>
-</map>
