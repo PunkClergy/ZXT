@@ -1,5 +1,5 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="{{type == 1?'车务配置电子钥匙':'车务人员清单'}}" />
+  <custom-header title="{{type == 1?roleName+'配置电子钥匙':'车务人员清单'}}" />
 
   <!-- 搜索框 -->
   <!-- <view class="search-container" style="height:{{c_searchBarHeight}}px;margin-top: {{c_totalNavHeight}}px;">
@@ -58,7 +58,7 @@
   </scroll-view>
 
   <!-- 一键操作按钮 -->
-  <!-- <view class="levitation-button" wx:if="{{!g_source}}" bindtap="handleJumpInfo">
+  <view class="levitation-button" wx:if="{{!g_source}}" bindtap="handleJumpInfo">
     <text>新增人员</text>
-  </view> -->
+  </view>
 </view>

@@ -30,7 +30,8 @@ Page({
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新是否开启
     g_total: 0, //列表总数
-    type: 1
+    type: 1,
+    roleName: ''
   },
 
   onLoad: function (options) {
@@ -46,10 +47,11 @@ Page({
   },
   // 获取角色列表
   initGetRole(evt) {
-    byGet(`${getApp().data.k1swUrl}${u_GetRole.URL}`, { roleName: '车务角色与人员', isAutoCreate: 1 }).then(response => {
+    byGet(`${getApp().data.k1swUrl}${u_GetRole.URL}`, { roleName: evt?.name, isAutoCreate: 1 }).then(response => {
       if (response.data.code == 1000) {
         this.setData({
-          id: response.data.content.id
+          id: response.data.content.id,
+          roleName: evt?.name
         }, () => {
           this.getCarList()
         })
@@ -58,7 +60,6 @@ Page({
   },
   initCarryParams(evt) {
     if (evt?.info && evt?.black) {
-      console.log(JSON.parse(evt?.info)?.id, '222222222222222')
       let param = {
         userId: JSON.parse(evt?.info)?.id,
         vehIds: evt?.black
@@ -72,7 +73,7 @@ Page({
               g_page: 1,
               type: 1
             }, () => {
-              this.initGetRole()
+              this.initGetRole(evt)
             })
             showToast(response.data.msg)
           } else {
@@ -80,7 +81,7 @@ Page({
           }
 
         });
-    } else { this.initGetRole() }
+    } else { this.initGetRole(evt) }
   },
   initialiImageBaseConversion() {
     const _this = this;
@@ -165,7 +166,7 @@ Page({
   },
   handleJumpInfo() {
     wx.navigateTo({
-      url: '/pages/carManager/corpelAdd/index',
+      url: `/pages/system/roleSeparation/index?type=${this.data.id}&name=${this.data.roleName}`,
     })
   },
   handleView(evt) {

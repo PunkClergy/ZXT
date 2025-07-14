@@ -134,7 +134,7 @@ const u_roleapiList = {
 // 角色删除
 const u_roleapidel = {
   URL: fin3plusUrl + "roleapi/del",
-  id:'id',
+  id: 'id',
   page: 'page'
 }
 // 角色删除
@@ -210,13 +210,28 @@ const u_GetRole = {
   URL: fin3plusUrl + "roleapi/getRole",
 }
 // 新增账号
-const u_addOrUpdateChildUser ={
+const u_addOrUpdateChildUser = {
   URL: fin3plusUrl + "accountapi/addOrUpdateChildUser",
 }
-const u_shopApiList= {
+const u_shopApiList = {
   URL: fin3plusUrl + "shopapi/list",
 }
-
+// 电子围栏列表
+const u = {
+  URL: fin3plusUrl + "shopapi/list",
+}
+// 电子围栏新增
+const u1 = {
+  URL: fin3plusUrl + "shopapi/list",
+}
+// 电子围栏修改
+const u2 = {
+  URL: fin3plusUrl + "shopapi/list",
+}
+// 电子围栏地图选点提交
+const u3 = {
+  URL: fin3plusUrl + "shopapi/list",
+}
 module.exports = {
   u_carManagerList,
   u_shopApiList,
