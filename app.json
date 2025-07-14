@@ -104,7 +104,6 @@
     "pages/orderList/orderDetails/orderDetails",
     "pages/orderList/orderAdd/orderAdd",
     "pages/receivingAddress/index",
-    "pages/askPrice/index",
     "pages/channel/workSheet/index",
     "pages/channel/placeAddWork/index",
     "pages/channel/guestList/index",

@@ -29,7 +29,7 @@
         },
         {
           "name": "",
-          "pathName": "pages/suborClients/index",
+          "pathName": "pages/orderList/InquirySheet/index",
           "query": "",
           "launchMode": "default",
           "scene": null
