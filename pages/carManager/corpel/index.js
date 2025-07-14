@@ -42,6 +42,11 @@ Page({
     }
     this.initCarryParams(options)
   },
+  onShow() {
+    if (this.data.roleName) {
+      this.initGetRole({ name: this.data.roleName })
+    }
+  },
   onReady: function () {
     this.initialiImageBaseConversion()
   },
