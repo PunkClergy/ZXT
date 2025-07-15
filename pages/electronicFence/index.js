@@ -4,9 +4,10 @@ const {
   _handleDeviceInfo
 } = require('../../utils/public').default
 const {
-  u_roleapidel,
-  u_roleapiaddOrUpdate,
-  u_childUserList,
+  u_deleteEfence,
+  u_saveOrUpdateEfence,
+  u_efenceList,
+  u_efenceBindVeh
 
 } = require('../../utils/request/data_info')
 const {
@@ -37,19 +38,20 @@ Page({
     params: {}, //新增管控数据部分字段
     id: '', //修改标志
     user_text: '新增',
-    startDate: '2025-03-20', //开始日期
+    add_type: 1,//新增类型 1新增文本数据 2新增地图数据
+    batterylift: 1,//控制类型
     startTime: '19:00', //开始时间
-    endDate: '2025-03-20', //结束日期
     endTime: '19:00', //结束时间
     longitude: 116.4074, // 初始中心经度（北京）
     latitude: 39.9042,   // 初始中心纬度
+    temp: {},//基础内容
     polygons: [{
       points: [],
       strokeWidth: 3,
       strokeColor: '#FF0000FF',
       fillColor: '#FF000033'
     }],
-    
+
   },
   // 获取当前年月日 时分
   handleCurrentDate() {
@@ -134,9 +136,9 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
-  // 人员列表
+  // 围栏列表
   initList() {
-    byGet(`${getApp().data.k1swUrl}${u_childUserList.URL}`, { roleId: this.data.id }).then(response => {
+    byGet(`${getApp().data.k1swUrl}${u_efenceList.URL}`, { page: this.data.g_page }).then(response => {
       if (response.data.code == 1000) {
         this.setData({
           g_items: response.data.content || [],
@@ -146,18 +148,35 @@ Page({
     })
     return
   },
-
-  //提交内容
-  handleSubmit() {
+  // 输入内容回调
+  handleBindinput(evt) {
     const {
-      params,
-      id
-    } = this.data;
-    showLoading();
+      params
+    } = this.data
+    params[evt.currentTarget.dataset.item] = evt.detail.value
+    this.setData({
+      params: {
+        ...params
+      }
+    })
+  },
+  // 选择控制类型
+  handleBatterylift(evt) {
+    const batterylift = evt.currentTarget.dataset.item
+    this.setData({
+      batterylift
+    })
+  },
+  // 修改状态
+  handleSwitchChange(evt) {
+    const id = evt?.currentTarget?.dataset?.item?.id
+    const isenable = evt?.currentTarget?.dataset?.item?.isenable
+    const efencename = evt?.currentTarget?.dataset?.item?.efencename
     byPost(
-      `${getApp().data.k1swUrl}${u_roleapiaddOrUpdate.URL}`, {
-      ...params,
-      id
+      `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`, {
+      eid: id,
+      isenable: isenable == 1 ? 0 : 1,
+      efencename
     },
       (response) => {
         hideLoading();
@@ -165,23 +184,44 @@ Page({
           showToast(response?.msg);
           return;
         }
-        showToast('添加成功');
+        showToast(response?.data?.msg);
         this.setData({
-          c_activeTab: 1,
-          params: {},
-          btnState: '新增',
-          g_triggered: false,
-          g_page: 1,
-          g_items: []
+          g_items: [],
+          g_page: 1
         }, () => {
           this.initList()
-          // 设置权限
-          this.handleSetMenuTree(response?.data?.content?.id)
         })
       },
       (error) => {
-        hideLoading();
-        showToast('提交失败，请稍后重试');
+      }
+    );
+  },
+  //提交内容-第一步
+  handleSubmit() {
+    const { params, id, startTime, endTime, batterylift } = this.data;
+    wx.showLoading({ title: '提交中...', mask: true });
+    byPost(
+      `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`,
+      { ...params, eid: id, startTime, endTime, alarmtype: batterylift },
+      (response) => {
+        wx.hideLoading();
+
+        if (response?.data?.code !== 1000) {
+          wx.showToast({ title: response?.msg || '操作失败', icon: 'none' });
+          return;
+        }
+
+        wx.showToast({ title: response.data.msg || '操作成功' });
+        this.setData({
+          add_type: 2,
+          g_items: [],
+          g_page: 1,
+          temp: { ...params, eid: id, startTime, endTime, alarmtype: batterylift }
+        }, this.initList);
+      },
+      (error) => {
+        wx.hideLoading();
+        wx.showToast({ title: '提交失败，请稍后重试', icon: 'none' });
       }
     );
   },
@@ -213,27 +253,43 @@ Page({
       }
     }
   },
-
   // 删除列表数据
   handleDelete(evt) {
     const _this = this
     const id = evt?.currentTarget.dataset.id
     const params = {
-      [u_roleapidel.id]: id
+      eid: id
     }
-    byGet(`${getApp().data.k1swUrl}${u_roleapidel.URL}`, params).then(allRes => {
-      if (allRes?.data?.code == 1000) {
+    byPost(
+      `${getApp().data.k1swUrl}${u_deleteEfence.URL}`, params, (response) => {
+        if (response?.data?.code != 1000) {
+          showToast(response?.msg);
+          return;
+        }
+        showToast(response?.data?.msg);
         _this.setData({
-          g_triggered: false,
           g_page: 1,
           g_items: []
         }, () => {
           _this.initList()
         })
-
+      },
+      (error) => {
+        hideLoading();
+        showToast('提交失败，请稍后重试');
       }
-    })
+    );
   },
+  // 解绑车辆
+  handleUnbind(evt) {
+    const item = evt?.currentTarget?.dataset?.item
+    const gitem = evt?.currentTarget?.dataset?.gitem
+  },
+  // 全部解绑车辆
+  handleUnbindAll(evt) {
+    const item = evt?.currentTarget?.dataset?.item
+  },
+  // 获取位置
   getLocation() {
     wx.getLocation({
       type: 'gcj02',
@@ -248,6 +304,7 @@ Page({
       }
     });
   },
+  // 点击圈点围栏
   onMapTap(e) {
     const { latitude, longitude } = e.detail;
     const newPoint = { latitude, longitude };
@@ -262,17 +319,17 @@ Page({
 
     this.updatePolygon(updatedPoints);
   },
-
+  // 清除上一步围栏点
   handleEliminate() {
     const points = [...this.data.polygons[0].points];
     points.pop();
     this.updatePolygon(points);
   },
-
+  // 清除围栏标记点
   handleClear() {
     this.updatePolygon([]);
   },
-
+  // 设置围栏点
   updatePolygon(points) {
     this.setData({
       polygons: [{
@@ -283,18 +340,98 @@ Page({
       }]
     });
   },
+  // 提交围栏点
   handleSumit() {
-    const points = this.data?.polygons[0]?.points
-    console.log(points)
-    if (points?.length < 3) {
-      wx.showModal({
+    const points = this.data?.polygons[0]?.points || [];
+
+    // 验证围栏点数
+    if (points.length < 3) {
+      return wx.showModal({
         title: '提示',
         content: '请先从地图选点圈定围栏',
-      })
+      });
     }
+
+    wx.showLoading({ title: '提交中...', mask: true });
+
+    // 格式化坐标数据
+    const data = points.map(coord =>
+      `${parseFloat(coord.longitude)}|${parseFloat(coord.latitude)}`
+    ).join();
+
+    // 构造请求参数
+    const requestData = {
+      ...this.data.temp,
+      points: data
+    };
+
+    // 发送请求
+    byPost(
+      `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`,
+      requestData,
+      (res) => {
+        wx.hideLoading();
+
+        // 处理响应
+        if (res?.data?.code !== 1000) {
+          wx.showToast({ title: res?.msg || '操作失败', icon: 'none' });
+          return;
+        }
+
+        wx.showToast({ title: res.data.msg || '操作成功' });
+
+        // 更新状态并刷新列表
+        this.setData({
+          add_type: 1,
+          c_activeTab: 1,
+          g_items: [],
+          g_page: 1
+        }, this.initList);
+      },
+      (err) => {
+        wx.hideLoading();
+        wx.showToast({ title: '提交失败，请稍后重试', icon: 'none' });
+      }
+    );
+  },
+
+  handleSelectJump(evt) {
+    let temp = {
+      id: evt?.currentTarget?.dataset?.item?.id,
+    }
+    wx.navigateTo({
+      url: `/pages/carManager/carList/carList?source=/pages/electronicFence/index&flagMulti=1&info=${JSON.stringify(temp)}`
+    })
+  },
+  // 绑定车辆
+  initCarryParams(evt) {
+    console.log(evt)
+    if (evt?.info && evt?.black) {
+      let param = {
+        eid: JSON.parse(evt?.info)?.id,
+        vehIds: evt?.black
+      }
+      // 开始执行绑定，然后刷新当前页面
+      byPost(`${getApp().data.k1swUrl}${u_efenceBindVeh.URL}`, param,
+        (response) => {
+          if (response.data.code == 1000) {
+            this.setData({
+              g_items: [],
+              g_page: 1,
+            }, () => {
+              this.initList()
+            })
+            showToast(response.data.msg)
+          } else {
+            showToast(response.data.msg)
+          }
+
+        });
+    } else { this.initList() }
   },
   onLoad(options) {
-    this.initList()
+    this.initCarryParams(options)
+
     this.mapCtx = wx.createMapContext('map');
     this.getLocation();
   },
@@ -303,85 +440,3 @@ Page({
     this.handleCurrentDate()
   },
 })
-
-// Page({
-//   data: {
-//     longitude: 116.4074, // 初始中心经度（北京）
-//     latitude: 39.9042,   // 初始中心纬度
-//     polygons: [{
-//       points: [],
-//       strokeWidth: 3,
-//       strokeColor: '#FF0000FF',
-//       fillColor: '#FF000033'
-//     }],
-//     markers: [],         // 点击添加的标记
-//     locationHistory: [],
-//     lastTapPoint: null   // 最后点击的坐标点
-//   },
-
-//   onLoad() {
-//     this.mapCtx = wx.createMapContext('map');
-//     this.getLocation();
-//   },
-
-//   getLocation() {
-//     wx.getLocation({
-//       type: 'gcj02',
-//       success: (res) => {
-//         this.setData({
-//           longitude: res.longitude,
-//           latitude: res.latitude
-//         });
-//       },
-//       fail: () => {
-//         wx.showToast({ title: '获取位置失败', icon: 'none' });
-//       }
-//     });
-//   },
-
-//   onMapTap(e) {
-//     const { latitude, longitude } = e.detail;
-//     const newPoint = { latitude, longitude };
-//     const updatedPoints = [...this.data.polygons[0].points, newPoint];
-
-//     if (updatedPoints.length < 3) {
-//       wx.showToast({
-//         title: `请再点击 ${3 - updatedPoints.length} 个点`,
-//         icon: 'none'
-//       });
-//     }
-
-//     this.updatePolygon(updatedPoints);
-//   },
-
-//   handleEliminate() {
-//     const points = [...this.data.polygons[0].points];
-//     points.pop();
-//     this.updatePolygon(points);
-//   },
-
-//   handleClear() {
-//     this.updatePolygon([]);
-//   },
-
-//   updatePolygon(points) {
-//     this.setData({
-//       polygons: [{
-//         points,
-//         strokeWidth: 3,
-//         strokeColor: '#FF0000FF',
-//         fillColor: '#FF000033'
-//       }]
-//     });
-//   },
-//   handleSumit() {
-//     const points = this.data?.polygons[0]?.points
-//     console.log(points)
-//     if (points?.length < 3) {
-//       wx.showModal({
-//         title: '提示',
-//         content: '请先从地图选点圈定围栏',
-//       })
-//     }
-//   }
-// });

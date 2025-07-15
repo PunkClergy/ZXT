@@ -217,22 +217,26 @@ const u_shopApiList = {
   URL: fin3plusUrl + "shopapi/list",
 }
 // 电子围栏列表
-const u = {
-  URL: fin3plusUrl + "shopapi/list",
+const u_efenceList = {
+  URL: fin3plusUrl + "efenceApi/efenceList",
 }
 // 电子围栏新增
-const u1 = {
-  URL: fin3plusUrl + "shopapi/list",
+const u_saveOrUpdateEfence = {
+  URL: fin3plusUrl + "efenceApi/saveOrUpdateEfence",
 }
-// 电子围栏修改
-const u2 = {
-  URL: fin3plusUrl + "shopapi/list",
+// 电子围栏删除
+const u_deleteEfence = {
+  URL: fin3plusUrl + "efenceApi/deleteEfence",
 }
-// 电子围栏地图选点提交
-const u3 = {
-  URL: fin3plusUrl + "shopapi/list",
+// 电子围栏绑定车辆
+const u_efenceBindVeh = {
+  URL: fin3plusUrl + "efenceApi/efenceBindVeh",
 }
 module.exports = {
+  u_efenceBindVeh,
+  u_deleteEfence,
+  u_saveOrUpdateEfence,
+  u_efenceList,
   u_carManagerList,
   u_shopApiList,
   u_GetRole,
