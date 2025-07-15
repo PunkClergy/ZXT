@@ -126,33 +126,31 @@
       </block>
 
       <block wx:else>
-        <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="16" show-location polygons="{{polygons}}" markers="{{markers}}" bindtap="onMapTap" style="width: 100%; min-height: 80%;">
-          <view class="map-bottom-buttons">
-            <text class="map-button" bindtap="handleEliminate">清除上一步</text>
-            <text class="map-button" bindtap="handleClear">清空</text>
+        <view style="width: 100%;height: 100rpx;border: 1px solid #f0f0f0; display: flex;margin: auto; justify-content: space-between;font-size: 28rpx;">
+          <view style="margin-left: 20rpx;display: flex;gap: 30rpx;align-items: center;">
+            <view bindtap="handleMapType" style="color: {{map_type==1?'#fff':'#333'}}; background: {{map_type == 1?'cornflowerblue':''}};border:1px solid #f0f0f0; padding: 5rpx 20rpx;border-radius: 10rpx;">矩形</view>
+            <text bindtap="handleMapType" style="color: {{map_type==2?'#fff':'#333'}};background: {{map_type == 2?'cornflowerblue':''}};border:1px solid #f0f0f0;padding: 5rpx 20rpx;border-radius: 10rpx;">圆形</text>
           </view>
-        </map>
-        <view class="confirm-container">
-          <text class="confirm-button" bindtap="handleSumit">确定</text>
+          <view style="display: flex;margin-right: 20rpx;align-items: center;">
+            <text bindtap="handleSumit" style="background: cornflowerblue;padding: 5rpx 30rpx;border-radius: 10rpx;color: #fff;">保存</text>
+          </view>
         </view>
+        <block wx:if="{{map_type == 1}}">
+          <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="16" show-location polygons="{{polygons}}" bindtap="onMapTap" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;">
+            <view class="map-bottom-buttons">
+              <text class="map-button" bindtap="handleEliminate">清除上一步</text>
+              <text class="map-button" bindtap="handleClear">清空</text>
+            </view>
+          </map>
+        </block>
+        <block wx:else>
+          <map id="myMap" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;" show-location longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" circles="{{circles}}" bindtap="handleMapTap">
+            <cover-view class="controls">
+              <button bindtap="changeRadius">修改半径</button>
+            </cover-view>
+          </map>
+        </block>
       </block>
     </block>
   </view>
 </view>
-
-
-
-
-<!-- 
-<view class="container">
-  <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="16" show-location polygons="{{polygons}}" markers="{{markers}}" bindtap="onMapTap" style="width: 100%; height:90vh;">
-
-    <view class="map-bottom-buttons">
-      <text class="map-button" bindtap="handleEliminate">清除上一步</text>
-      <text class="map-button" bindtap="handleClear">清空</text>
-    </view>
-  </map>
-  <view class="confirm-container">
-    <text class="confirm-button" bindtap="handleSumit">确定</text>
-  </view>
-</view> -->

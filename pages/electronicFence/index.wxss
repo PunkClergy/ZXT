@@ -767,3 +767,25 @@
   font-size: 32rpx;
   color: #FFFFFF;
 }
+.controls {
+  position: absolute;
+  bottom: 20rpx;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  font-size: 28rpx;
+  padding: 10rpx 20rpx;
+}
+
+.info {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 30rpx;
+  line-height: 1.8;
+}

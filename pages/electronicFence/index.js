@@ -45,6 +45,10 @@ Page({
     longitude: 116.4074, // 初始中心经度（北京）
     latitude: 39.9042,   // 初始中心纬度
     temp: {},//基础内容
+    map_type: 1,
+    scale: 14,             // 地图缩放级别
+    radius: 1000,          // 默认半径（米）
+    circles: [],         // 圆形区域数组
     polygons: [{
       points: [],
       strokeWidth: 3,
@@ -52,6 +56,12 @@ Page({
       fillColor: '#FF000033'
     }],
 
+  },
+  handleMapType() {
+    const map_type = this.data.map_type
+    this.setData({
+      map_type: map_type == 1 ? 2 : 1
+    })
   },
   // 获取当前年月日 时分
   handleCurrentDate() {
@@ -342,10 +352,27 @@ Page({
   },
   // 提交围栏点
   handleSumit() {
-    const points = this.data?.polygons[0]?.points || [];
+    const { map_type } = this.data;
+    let pointsData, validation;
 
-    // 验证围栏点数
-    if (points.length < 3) {
+    if (map_type == 1) {
+      // 多边形处理逻辑
+      const points = this.data?.polygons[0]?.points || [];
+      validation = points.length >= 3;
+      pointsData = validation
+        ? points.map(c => `${parseFloat(c.longitude)}|${parseFloat(c.latitude)}`).join()
+        : null;
+    } else {
+      // 圆形处理逻辑
+      const circles = this.data.circles;
+      validation = circles.length >= 1;
+      pointsData = validation
+        ? `${circles[0].longitude},${circles[0].latitude}|${circles[0].radius}`
+        : null;
+    }
+
+    // 验证数据
+    if (!validation) {
       return wx.showModal({
         title: '提示',
         content: '请先从地图选点圈定围栏',
@@ -354,45 +381,41 @@ Page({
 
     wx.showLoading({ title: '提交中...', mask: true });
 
-    // 格式化坐标数据
-    const data = points.map(coord =>
-      `${parseFloat(coord.longitude)}|${parseFloat(coord.latitude)}`
-    ).join();
-
     // 构造请求参数
     const requestData = {
       ...this.data.temp,
-      points: data
+      points: pointsData
     };
 
-    // 发送请求
+    // 统一请求处理
     byPost(
       `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`,
       requestData,
       (res) => {
         wx.hideLoading();
-
-        // 处理响应
         if (res?.data?.code !== 1000) {
           wx.showToast({ title: res?.msg || '操作失败', icon: 'none' });
           return;
         }
 
         wx.showToast({ title: res.data.msg || '操作成功' });
-
-        // 更新状态并刷新列表
-        this.setData({
-          add_type: 1,
-          c_activeTab: 1,
-          g_items: [],
-          g_page: 1
-        }, this.initList);
+        this.updateListState();
       },
       (err) => {
         wx.hideLoading();
         wx.showToast({ title: '提交失败，请稍后重试', icon: 'none' });
       }
     );
+  },
+
+  // 新增的状态更新方法
+  updateListState() {
+    this.setData({
+      add_type: 1,
+      c_activeTab: 1,
+      g_items: [],
+      g_page: 1
+    }, this.initList);
   },
 
   handleSelectJump(evt) {
@@ -429,10 +452,40 @@ Page({
         });
     } else { this.initList() }
   },
+
+
+  // 点击地图事件
+  handleMapTap(e) {
+    const { latitude, longitude } = e.detail;
+    this.setData({
+      latitude,
+      longitude
+    }, () => {
+      this.initCircle(); // 更新圆形位置
+    });
+  },
+  // 初始化圆形区域
+  initCircle() {
+    const circle = {
+      latitude: this.data.latitude,
+      longitude: this.data.longitude,
+      radius: this.data.radius,
+      color: '#FF0000AA',     // 填充颜色（带透明度）
+      strokeWidth: 2,          // 描边宽度
+      strokeColor: '#FF0000FF' // 描边颜色
+    };
+    this.setData({ circles: [circle] });
+  },
+  // 修改半径
+  changeRadius() {
+    const newRadius = this.data.radius === 1000 ? 50000 : 1000;
+    this.setData({ radius: newRadius }, () => {
+      this.initCircle(); // 更新圆形半径
+    });
+  },
+
   onLoad(options) {
     this.initCarryParams(options)
-
-    this.mapCtx = wx.createMapContext('map');
     this.getLocation();
   },
   onShow() {
