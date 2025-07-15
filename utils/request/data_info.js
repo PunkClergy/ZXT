@@ -232,7 +232,11 @@ const u_deleteEfence = {
 const u_efenceBindVeh = {
   URL: fin3plusUrl + "efenceApi/efenceBindVeh",
 }
+const u_efenceUnbindVeh = {
+  URL: fin3plusUrl + "efenceApi/efenceUnbindVeh",
+}
 module.exports = {
+  u_efenceUnbindVeh,
   u_efenceBindVeh,
   u_deleteEfence,
   u_saveOrUpdateEfence,

@@ -7,7 +7,8 @@ const {
   u_deleteEfence,
   u_saveOrUpdateEfence,
   u_efenceList,
-  u_efenceBindVeh
+  u_efenceBindVeh,
+  u_efenceUnbindVeh
 
 } = require('../../utils/request/data_info')
 const {
@@ -58,6 +59,7 @@ Page({
     radius_array: [100, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000],
     radius_array_index: 0
   },
+  // 更改围栏半径
   handlePickerChangeRadius(evt) {
     this.setData({
       radius_array_index: evt.detail.value,
@@ -68,6 +70,7 @@ Page({
       }
     })
   },
+  // 地图类型
   handleMapType() {
     const map_type = this.data.map_type
     this.setData({
@@ -301,14 +304,67 @@ Page({
       }
     );
   },
-  // 解绑车辆
-  handleUnbind(evt) {
-    const item = evt?.currentTarget?.dataset?.item
-    const gitem = evt?.currentTarget?.dataset?.gitem
+  // 解绑车辆（支持单个和全部解绑）
+  handleUnbind(evt, isUnbindAll = false) {
+    const item = evt?.currentTarget?.dataset?.item;
+    const params = { eid: item?.id };
+
+    // 如果不是全部解绑，则添加车辆ID参数
+    if (!isUnbindAll) {
+      const gitem = evt?.currentTarget?.dataset?.gitem;
+      params.vehIds = gitem?.cusid;
+    }
+
+    // 统一处理请求
+    this._sendUnbindRequest(params);
   },
-  // 全部解绑车辆
+
+  // 全部解绑车辆 (复用核心逻辑)
   handleUnbindAll(evt) {
-    const item = evt?.currentTarget?.dataset?.item
+    this.handleUnbind(evt, true);
+  },
+
+  // 封装解绑请求公共逻辑
+  _sendUnbindRequest(params) {
+    const url = `${getApp().data.k1swUrl}${u_efenceUnbindVeh.URL}`;
+    const _this = this;
+
+    showLoading(); // 添加加载提示提升用户体验
+
+    byPost(
+      url,
+      params,
+      (response) => {
+        hideLoading();
+
+        // 统一处理响应格式
+        const resData = response?.data || {};
+        const msg = resData.msg || response?.msg;
+
+        if (resData.code !== 1000) {
+          showToast(msg || '操作失败');
+          return;
+        }
+
+        showToast(msg || '操作成功');
+        _this._refreshList();
+      },
+      (error) => {
+        hideLoading();
+        showToast('提交失败，请稍后重试');
+        console.error('解绑请求失败:', error); // 添加错误日志
+      }
+    );
+  },
+
+  // 刷新列表公共方法
+  _refreshList() {
+    this.setData({
+      g_page: 1,
+      g_items: []
+    }, () => {
+      this.initList();
+    });
   },
   // 获取位置
   getLocation() {

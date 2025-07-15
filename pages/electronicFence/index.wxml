@@ -19,7 +19,7 @@
                 </view>
               </view>
               <view class="head-right">
-                <image src="/assets/images/home/_see.png" data-item="{{item}}" bindtap="handleEdit" />
+                <!-- <image src="/assets/images/home/_see.png" data-item="{{item}}" bindtap="handleEdit" /> -->
                 <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
                 <image src="/assets/images/home/_delete.png" data-id="{{item.id}}" bindtap="handleDelete" />
               </view>
@@ -51,7 +51,7 @@
               <view class="footer-left"></view>
               <view class="footer-right" style="display: flex;gap: 10rpx;">
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSwitchChange">
-                  <text>{{item.isenable == 1?'禁用':'启用'}}</text>
+                  <text>{{item.isenable == 1?'停用':'启用'}}</text>
                 </view>
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump">
                   <text>绑定车辆</text>
