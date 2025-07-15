@@ -70,7 +70,6 @@
     "pages/carManager/oilUseRecord/oilUseRecord",
     "pages/carManager/buyRecord/buyRecord",
     "pages/carManager/buyOilDevice/buyOilDevice",
-    "pages/oiltest/oiltest",
     "pages/carService/oilPriceSet/oilPriceSet",
     "pages/system/carManager/add/add",
     "pages/carManager/buyCount/buyCount",

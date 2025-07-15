@@ -33,9 +33,9 @@
                 <label>状态 ：</label>
                 <text>{{item.isEnableName}}</text>
               </view>
-              <view class="info-item  {{item.mobile.length > 15 ? 'long-info-item' : ''}}">
+              <view class="info-item  long-info-item">
                 <label>生效时间 ：</label>
-                <text>{{item.startDate||'00:00'}} - {{item.endDate||'00:00'}}</text>
+                <text>{{item.startdate||'00:00'}} - {{item.enddate||'00:00'}}</text>
               </view>
               <view class="info-item long-info-item">
                 <label>绑定车辆 </label>
@@ -83,9 +83,9 @@
               <label>监控开始时间<text>*</text></label>
               <block>
                 <view class="card-info-item-input" style="display: flex;gap: 20rpx;">
-                  <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
+                  <picker mode="time" data-index="startDate" bindchange="bindTimeChange">
                     <view class="form-item-text">
-                      <text>{{startTime}}</text>
+                      <text>{{startDate}}</text>
                     </view>
                   </picker>
                 </view>
@@ -97,9 +97,9 @@
               <block>
                 <block>
                   <view class="card-info-item-input" style="display: flex;gap: 20rpx;">
-                    <picker mode="time" data-index="endTime" bindchange="bindTimeChange">
+                    <picker mode="time" data-index="endDate" bindchange="bindTimeChange">
                       <view class="form-item-text">
-                        <text>{{endTime}}</text>
+                        <text>{{endDate}}</text>
                       </view>
                     </picker>
                   </view>

@@ -41,8 +41,8 @@ Page({
     user_text: '新增',
     add_type: 1,//新增类型 1新增文本数据 2新增地图数据
     batterylift: 1,//控制类型
-    startTime: '19:00', //开始时间
-    endTime: '19:00', //结束时间
+    startDate: '19:00', //开始时间
+    endData: '19:00', //结束时间
     longitude: 116.4074, // 初始中心经度（北京）
     latitude: 39.9042,   // 初始中心纬度
     temp: {},//基础内容
@@ -95,18 +95,11 @@ Page({
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(now.getDate() + 1); // 改为获取明天
-
-    const currentDate = formatDate(now);
-    const tomorrowDate = formatDate(tomorrow);
     const currentTime = formatTime(now);
 
     this.setData({
-      oilendDate: currentDate,
-      oilendTime: currentTime,
-      startDate: currentDate, // 今天作为开始日期
-      endDate: tomorrowDate, // 明天作为结束日期
-      startTime: currentTime,
-      endTime: currentTime
+      startDate: currentTime,
+      endDate: currentTime
     });
   },
   // 确认设置时间
@@ -222,11 +215,11 @@ Page({
   },
   //提交内容-第一步
   handleSubmit() {
-    const { params, id, startTime, endTime, batterylift } = this.data;
+    const { params, id, startDate, endDate, batterylift } = this.data;
     wx.showLoading({ title: '提交中...', mask: true });
     byPost(
       `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`,
-      { ...params, eid: id, startTime, endTime, alarmtype: batterylift },
+      { ...params, eid: id, startDate, endDate, alarmtype: batterylift },
       (response) => {
         wx.hideLoading();
 
@@ -240,7 +233,7 @@ Page({
           add_type: 2,
           g_items: [],
           g_page: 1,
-          temp: { ...params, eid: id, startTime, endTime, alarmtype: batterylift }
+          temp: { ...params, eid: id||response?.data.content?.id, startDate, endDate, alarmtype: batterylift }
         }, this.initList);
       },
       (error) => {
@@ -255,7 +248,9 @@ Page({
     this.setData({
       c_activeTab: 2,
       id: info?.id,
-      params: info
+      params: info,
+      startDate:info?.startdate,
+      endDate:info?.enddate
     })
   },
   // 切换tabs标签
