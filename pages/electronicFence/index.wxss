@@ -1,5 +1,3 @@
-
-
 .map-bottom-buttons {
   position: absolute;
   bottom: 50rpx;
@@ -767,6 +765,7 @@
   font-size: 32rpx;
   color: #FFFFFF;
 }
+
 .controls {
   position: absolute;
   bottom: 20rpx;
@@ -788,4 +787,46 @@ button {
   align-items: center;
   font-size: 30rpx;
   line-height: 1.8;
+}
+
+/* 地图 */
+.map-container-bar {
+  width: 100%;
+  height: 100rpx;
+  border: 1px solid #f0f0f0;
+  display: flex;
+  margin: auto;
+  justify-content: space-between;
+  font-size: 28rpx;
+}
+
+.map-left-group {
+  margin-left: 20rpx;
+  display: flex;
+  gap: 30rpx;
+  align-items: center;
+}
+
+.map-button {
+  border: 1px solid #f0f0f0;
+  padding: 5rpx 20rpx;
+  border-radius: 10rpx;
+}
+
+.map-right-group {
+  display: flex;
+  margin-right: 20rpx;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.map-picker {
+  gap: 10rpx;
+}
+
+.map-submit {
+  background: cornflowerblue;
+  padding: 5rpx 30rpx;
+  border-radius: 10rpx;
+  color: #fff;
 }

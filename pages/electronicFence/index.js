@@ -47,7 +47,7 @@ Page({
     temp: {},//基础内容
     map_type: 1,
     scale: 14,             // 地图缩放级别
-    radius: 1000,          // 默认半径（米）
+    radius: 100,          // 默认半径（米）
     circles: [],         // 圆形区域数组
     polygons: [{
       points: [],
@@ -55,7 +55,18 @@ Page({
       strokeColor: '#FF0000FF',
       fillColor: '#FF000033'
     }],
-
+    radius_array: [100, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000],
+    radius_array_index: 0
+  },
+  handlePickerChangeRadius(evt) {
+    this.setData({
+      radius_array_index: evt.detail.value,
+      radius: this.data.radius_array[evt.detail.value]
+    }, () => {
+      if (this.data.circles.length > 0) {
+        this.initCircle(); // 更新圆形半径
+      }
+    })
   },
   handleMapType() {
     const map_type = this.data.map_type
@@ -475,13 +486,6 @@ Page({
       strokeColor: '#FF0000FF' // 描边颜色
     };
     this.setData({ circles: [circle] });
-  },
-  // 修改半径
-  changeRadius() {
-    const newRadius = this.data.radius === 1000 ? 50000 : 1000;
-    this.setData({ radius: newRadius }, () => {
-      this.initCircle(); // 更新圆形半径
-    });
   },
 
   onLoad(options) {
