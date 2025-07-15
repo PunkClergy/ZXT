@@ -92,7 +92,7 @@
               </block>
             </view>
             <!-- 监控结束时间 -->
-            <view class="card-info-item">
+            <view class="card-info-item"> 
               <label>监控结束时间<text>*</text></label>
               <block>
                 <block>
