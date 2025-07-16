@@ -217,54 +217,53 @@ Page({
   handleSubmit() {
     const { params, id, startdate, enddate, batterylift } = this.data;
     wx.showLoading({ title: '提交中...', mask: true });
+    const postData = {
+      ...params,
+      eid: id,
+      startdate,
+      enddate,
+      alarmtype: batterylift
+    };
     byPost(
       `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`,
-      { ...params, eid: id, startdate, enddate, alarmtype: batterylift },
+      postData,
       (response) => {
         wx.hideLoading();
         if (id && params?.efencepoints) {
-          if (params?.efencetype == 2) {
-            // 矩形
-            const pairs = params?.efencepoints.split(',');
-            const result = pairs.map(pair => {
-              const [longitude, latitude] = pair.split('|');
-              return {
-                latitude: parseFloat(latitude),
-                longitude: parseFloat(longitude)
-              };
+          const points = params.efencepoints;
+          const type = params.efencetype;
+
+          if (type == 2) { // 矩形
+            const polygon = {
+              points: points.split(',').map(pair => {
+                const [longitude, latitude] = pair.split('|');
+                return { latitude: +latitude, longitude: +longitude };
+              }),
+              strokeWidth: 3,
+              strokeColor: '#FF0000FF',
+              fillColor: '#FF000033'
+            };
+            this.setData({ polygons: [polygon], map_type: type });
+          } else { // 圆形
+            const [coords, radiusStr] = points.split('|');
+            const [longitude, latitude] = coords.split(',');
+            const radius = +radiusStr;
+
+            const circle = {
+              latitude: +latitude,
+              longitude: +longitude,
+              radius,
+              color: '#FF0000AA',
+              strokeWidth: 2,
+              strokeColor: '#FF0000FF'
+            };
+            this.setData({
+              circles: [circle],
+              radius,
+              map_type: type
             });
-            this.setData({
-              polygons: [{
-                points: result,
-                strokeWidth: 3,
-                strokeColor: '#FF0000FF',
-                fillColor: '#FF000033'
-              }],
-              map_type: params?.efencetype
-            })
-          } else {
-            // 圆形
-            // 分割经度、纬度和 ra 值
-            const [coordinatesPart, raValue] = params?.efencepoints.split('|');
-            const [longitude, latitude] = coordinatesPart.split(',');
-            const raObject = parseInt(raValue);
-            // 构建经纬度对象数组
-            const coordinatesArray = [{
-              latitude: parseFloat(latitude),
-              longitude: parseFloat(longitude),
-              radius: raObject,
-              color: '#FF0000AA',     // 填充颜色（带透明度）
-              strokeWidth: 2,          // 描边宽度
-              strokeColor: '#FF0000FF' // 描边颜色
-            }];
-            this.setData({
-              radius: raObject,
-              circles: coordinatesArray,
-              map_type: params?.efencetype
-            })
           }
         }
-
         if (response?.data?.code !== 1000) {
           wx.showToast({ title: response?.msg || '操作失败', icon: 'none' });
           return;
@@ -276,7 +275,13 @@ Page({
           add_type: 2,
           g_items: [],
           g_page: 1,
-          temp: { ...params, eid: id || response?.data.content?.id, startdate, enddate, alarmtype: batterylift }
+          temp: {
+            ...params,
+            eid: id || response?.data.content?.id,
+            startdate,
+            enddate,
+            alarmtype: batterylift
+          }
         }, this.initList);
       },
       (error) => {
@@ -306,7 +311,8 @@ Page({
         params: {},
         id: '',
         circles: [],
-        polygons: []
+        polygons: [],
+        add_type: 1
       })
     }
     if (flag == '新增围栏') {
