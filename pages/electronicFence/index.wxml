@@ -83,9 +83,9 @@
               <label>监控开始时间<text>*</text></label>
               <block>
                 <view class="card-info-item-input" style="display: flex;gap: 20rpx;">
-                  <picker mode="time" data-index="startDate" bindchange="bindTimeChange">
+                  <picker mode="time" data-index="startdate" bindchange="bindTimeChange">
                     <view class="form-item-text">
-                      <text>{{startDate}}</text>
+                      <text>{{startdate}}</text>
                     </view>
                   </picker>
                 </view>
@@ -97,9 +97,9 @@
               <block>
                 <block>
                   <view class="card-info-item-input" style="display: flex;gap: 20rpx;">
-                    <picker mode="time" data-index="endDate" bindchange="bindTimeChange">
+                    <picker mode="time" data-index="enddate" bindchange="bindTimeChange">
                       <view class="form-item-text">
-                        <text>{{endDate}}</text>
+                        <text>{{enddate}}</text>
                       </view>
                     </picker>
                   </view>

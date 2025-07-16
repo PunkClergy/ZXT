@@ -41,8 +41,8 @@ Page({
     user_text: '新增',
     add_type: 1,//新增类型 1新增文本数据 2新增地图数据
     batterylift: 1,//控制类型
-    startDate: '19:00', //开始时间
-    endData: '19:00', //结束时间
+    startdate: '19:00', //开始时间
+    enddata: '19:00', //结束时间
     longitude: 116.4074, // 初始中心经度（北京）
     latitude: 39.9042,   // 初始中心纬度
     temp: {},//基础内容
@@ -98,8 +98,8 @@ Page({
     const currentTime = formatTime(now);
 
     this.setData({
-      startDate: currentTime,
-      endDate: currentTime
+      startdate: currentTime,
+      enddate: currentTime
     });
   },
   // 确认设置时间
@@ -215,15 +215,15 @@ Page({
   },
   //提交内容-第一步
   handleSubmit() {
-    const { params, id, startDate, endDate, batterylift } = this.data;
+    const { params, id, startdate, enddate, batterylift } = this.data;
     wx.showLoading({ title: '提交中...', mask: true });
     byPost(
       `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`,
-      { ...params, eid: id, startDate, endDate, alarmtype: batterylift },
+      { ...params, eid: id, startdate, enddate, alarmtype: batterylift },
       (response) => {
         wx.hideLoading();
         if (id && params?.efencepoints) {
-          if (this.data.map_type == 2) {
+          if (params?.efencetype == 2) {
             // 矩形
             const pairs = params?.efencepoints.split(',');
             const result = pairs.map(pair => {
@@ -239,7 +239,8 @@ Page({
                 strokeWidth: 3,
                 strokeColor: '#FF0000FF',
                 fillColor: '#FF000033'
-              }]
+              }],
+              map_type: params?.efencetype
             })
           } else {
             // 圆形
@@ -259,6 +260,7 @@ Page({
             this.setData({
               radius: raObject,
               circles: coordinatesArray,
+              map_type: params?.efencetype
             })
           }
         }
@@ -274,7 +276,7 @@ Page({
           add_type: 2,
           g_items: [],
           g_page: 1,
-          temp: { ...params, eid: id || response?.data.content?.id, startDate, endDate, alarmtype: batterylift }
+          temp: { ...params, eid: id || response?.data.content?.id, startdate, enddate, alarmtype: batterylift }
         }, this.initList);
       },
       (error) => {
@@ -290,8 +292,8 @@ Page({
       c_activeTab: 2,
       id: info?.id,
       params: info,
-      startDate: info?.startdate,
-      endDate: info?.enddate
+      startdate: info?.startdate,
+      enddate: info?.enddate
     })
   },
   // 切换tabs标签
@@ -302,7 +304,9 @@ Page({
         c_activeTab: 1,
         btnState: '新增',
         params: {},
-        id: ''
+        id: '',
+        circles: [],
+        polygons: []
       })
     }
     if (flag == '新增围栏') {
@@ -487,8 +491,8 @@ Page({
     // 构造请求参数
     const requestData = {
       ...this.data.temp,
-      fenceType: this.data.map_type,
-      points: pointsData
+      efencetype: this.data.map_type,
+      efencepoints: pointsData
     };
 
     // 统一请求处理
