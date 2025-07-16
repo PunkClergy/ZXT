@@ -46,7 +46,7 @@ Page({
     longitude: 116.4074, // 初始中心经度（北京）
     latitude: 39.9042,   // 初始中心纬度
     temp: {},//基础内容
-    map_type: 1,
+    map_type: 2,
     scale: 14,             // 地图缩放级别
     radius: 100,          // 默认半径（米）
     circles: [],         // 圆形区域数组
@@ -74,7 +74,7 @@ Page({
   handleMapType() {
     const map_type = this.data.map_type
     this.setData({
-      map_type: map_type == 1 ? 2 : 1
+      map_type: map_type == 2 ? 1 : 2
     })
   },
   // 获取当前年月日 时分
@@ -222,6 +222,46 @@ Page({
       { ...params, eid: id, startDate, endDate, alarmtype: batterylift },
       (response) => {
         wx.hideLoading();
+        if (id && params?.efencepoints) {
+          if (this.data.map_type == 2) {
+            // 矩形
+            const pairs = params?.efencepoints.split(',');
+            const result = pairs.map(pair => {
+              const [longitude, latitude] = pair.split('|');
+              return {
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude)
+              };
+            });
+            this.setData({
+              polygons: [{
+                points: result,
+                strokeWidth: 3,
+                strokeColor: '#FF0000FF',
+                fillColor: '#FF000033'
+              }]
+            })
+          } else {
+            // 圆形
+            // 分割经度、纬度和 ra 值
+            const [coordinatesPart, raValue] = params?.efencepoints.split('|');
+            const [longitude, latitude] = coordinatesPart.split(',');
+            const raObject = parseInt(raValue);
+            // 构建经纬度对象数组
+            const coordinatesArray = [{
+              latitude: parseFloat(latitude),
+              longitude: parseFloat(longitude),
+              radius: raObject,
+              color: '#FF0000AA',     // 填充颜色（带透明度）
+              strokeWidth: 2,          // 描边宽度
+              strokeColor: '#FF0000FF' // 描边颜色
+            }];
+            this.setData({
+              radius: raObject,
+              circles: coordinatesArray,
+            })
+          }
+        }
 
         if (response?.data?.code !== 1000) {
           wx.showToast({ title: response?.msg || '操作失败', icon: 'none' });
@@ -229,11 +269,12 @@ Page({
         }
 
         wx.showToast({ title: response.data.msg || '操作成功' });
+
         this.setData({
           add_type: 2,
           g_items: [],
           g_page: 1,
-          temp: { ...params, eid: id||response?.data.content?.id, startDate, endDate, alarmtype: batterylift }
+          temp: { ...params, eid: id || response?.data.content?.id, startDate, endDate, alarmtype: batterylift }
         }, this.initList);
       },
       (error) => {
@@ -249,8 +290,8 @@ Page({
       c_activeTab: 2,
       id: info?.id,
       params: info,
-      startDate:info?.startdate,
-      endDate:info?.enddate
+      startDate: info?.startdate,
+      endDate: info?.enddate
     })
   },
   // 切换tabs标签
@@ -417,7 +458,7 @@ Page({
     const { map_type } = this.data;
     let pointsData, validation;
 
-    if (map_type == 1) {
+    if (map_type == 2) {
       // 多边形处理逻辑
       const points = this.data?.polygons[0]?.points || [];
       validation = points.length >= 3;
@@ -446,6 +487,7 @@ Page({
     // 构造请求参数
     const requestData = {
       ...this.data.temp,
+      fenceType: this.data.map_type,
       points: pointsData
     };
 

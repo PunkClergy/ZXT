@@ -92,7 +92,7 @@
               </block>
             </view>
             <!-- 监控结束时间 -->
-            <view class="card-info-item"> 
+            <view class="card-info-item">
               <label>监控结束时间<text>*</text></label>
               <block>
                 <block>
@@ -128,11 +128,11 @@
       <block wx:else>
         <view class="map-container-bar">
           <view class="map-left-group">
-            <view bindtap="handleMapType" class="map-button" style="color: {{map_type==1?'#fff':'#333'}}; background: {{map_type == 1?'cornflowerblue':''}};">矩形</view>
-            <text bindtap="handleMapType" class="map-button" style="color: {{map_type==2?'#fff':'#333'}};background: {{map_type == 2?'cornflowerblue':''}};">圆形</text>
+            <view bindtap="handleMapType" class="map-button" style="color: {{map_type==2?'#fff':'#333'}}; background: {{map_type == 2?'cornflowerblue':''}};">矩形</view>
+            <text bindtap="handleMapType" class="map-button" style="color: {{map_type==1?'#fff':'#333'}};background: {{map_type == 1?'cornflowerblue':''}};">圆形</text>
           </view>
           <view class="map-right-group">
-            <picker bindchange="handlePickerChangeRadius" value="{{radius_array_index}}" range="{{radius_array}}" wx:if="{{map_type==2}}">
+            <picker bindchange="handlePickerChangeRadius" value="{{radius_array_index}}" range="{{radius_array}}" wx:if="{{map_type==1}}">
               <view class="picker map-picker">
                 <text>围栏半径:{{radius_array[radius_array_index]}}米</text>
                 <image src="/assets/images/home/down.png" />
@@ -141,7 +141,7 @@
             <text class="map-submit" bindtap="handleSumit">保存</text>
           </view>
         </view>
-        <block wx:if="{{map_type == 1}}">
+        <block wx:if="{{map_type == 2}}">
           <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="16" show-location polygons="{{polygons}}" bindtap="onMapTap" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;">
             <view class="map-bottom-buttons">
               <text class="map-button" bindtap="handleEliminate">清除上一步</text>
