@@ -38,6 +38,10 @@ Page({
     if (!options?.type) {
       this.setData({
         type: 0,
+        title_name: options?.name
+      })
+    }else{
+      this.setData({
         title_name:options?.name
       })
     }
@@ -57,7 +61,7 @@ Page({
       if (response.data.code == 1000) {
         this.setData({
           id: response.data.content.id,
-          roleName: evt?.name
+          roleName: evt?.name||''
         }, () => {
           this.getCarList()
         })
@@ -65,6 +69,7 @@ Page({
     })
   },
   initCarryParams(evt) {
+    console.log(evt)
     if (evt?.info && evt?.black) {
       let param = {
         userId: JSON.parse(evt?.info)?.id,
@@ -77,7 +82,7 @@ Page({
             this.setData({
               g_items: [],
               g_page: 1,
-              type: 1
+              type: 1,
             }, () => {
               this.initGetRole(evt)
             })
@@ -149,7 +154,7 @@ Page({
       id: evt?.currentTarget?.dataset?.item?.id,
     }
     wx.navigateTo({
-      url: `/pages/carManager/carList/carList?source=/pages/carManager/corpel/index&flagMulti=1&info=${JSON.stringify(temp)}`
+      url: `/pages/carManager/carList/carList?source=/pages/carManager/corpel/index&flagMulti=1&info=${JSON.stringify(temp)}&type=${this.data.type}&name=${this.data.title_name}`
     })
   },
   handleBlur(e) {

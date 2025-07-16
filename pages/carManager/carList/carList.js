@@ -75,7 +75,7 @@ Page({
   },
   handleJumpBlackInfo() {
     wx.reLaunch({
-      url: `${this.data.g_source}?black=${this.data.g_black}&platenumbers=${this.data.g_platenumbers}&info=${JSON.stringify(this.data.info)}`,
+      url: `${this.data.g_source}?black=${this.data.g_black}&type=${this.data.type}&name=${this.data.name}&platenumbers=${this.data.g_platenumbers}&info=${JSON.stringify(this.data.info)}`,
     })
   },
   // 扫码按钮点击事件
@@ -113,6 +113,7 @@ Page({
       info,
       allParams,
       type,
+      name
     } = evt
 
     this.setData({
@@ -120,7 +121,8 @@ Page({
       g_flagMulti: flagMulti,
       info: info && JSON.parse(info),
       allParams:allParams,
-      type:type
+      type:type,
+      name:name
     })
   },
   handleSelectJump(evt) {
