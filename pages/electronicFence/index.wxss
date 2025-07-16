@@ -592,7 +592,6 @@
   font-weight: 500;
   font-size: 28rpx;
   color: #7b7c7c;
-  border-bottom: 1rpx solid #f0f0f0;
 }
 
 .form-item-text image {
