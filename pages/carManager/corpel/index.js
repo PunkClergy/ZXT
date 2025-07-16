@@ -37,7 +37,8 @@ Page({
   onLoad: function (options) {
     if (!options?.type) {
       this.setData({
-        type: 0
+        type: 0,
+        title_name:options?.name
       })
     }
     this.initCarryParams(options)
