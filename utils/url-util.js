@@ -260,7 +260,7 @@ var getCompanyInfo = {
  * 获得车辆位置
  */
 var getCarPoisiton = {
-  URL: fin3plusUrl + 'dzBussinessMobileApi/getCarPoisiton',
+  URL: fin3plusUrl + 'carapi/getCarPoisiton',
   sn: 'sn'
 }
 

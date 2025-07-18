@@ -1,5 +1,13 @@
+const {
+  _handleWindowInfo,
+  _handleDeviceInfo
+} = require('../../utils/public').default
 Page({
   data: {
+    c_screen_height: _handleWindowInfo.windowHeight || 0, //屏幕高度
+    c_screen_width: _handleWindowInfo.windowWidth || 0, //屏幕宽度
+    statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
+    navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
     // 车辆状态
     lockActive: false, // 车门锁定状态
     chargingStatus: '充电中', // 充电状态

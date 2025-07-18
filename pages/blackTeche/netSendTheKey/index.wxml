@@ -29,16 +29,13 @@
                 <text>{{item.vin||'-'}}</text>
               </view>
               <view class="info-item  {{item.xsgw.length > 15 ? 'long-info-item' : ''}}">
-                <label>油箱容积 ：</label>
-                <text>{{item.xsgw?item.xsgw+'L':'-' }}</text>
+                <label>设备号 ：</label>
+                <text>{{item.sn}}</text>
               </view>
-              <view class="info-item">
-                <label>车辆类型 ：</label>
-                <text>{{item.sn?'自助取还':'非自助取还'}}</text>
-              </view>
+
               <view class="info-item  {{item.batterylift.length > 15 ? 'long-info-item' : ''}}">
-                <label>启动方式 ：</label>
-                <text>{{item.batterylift||'-'}}</text>
+                <label>生效周期 ：</label>
+                <text>{{item.startDate||''}}-{{item.endDate||''}}</text>
               </view>
             </view>
             <view class="content-item-footer">
@@ -130,7 +127,7 @@
             </view>
           </view>
 
-          <view class="middle-form-item">
+          <!-- <view class="middle-form-item">
             <label>开始时间</label>
             <view class="modal-form-region">
               <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
@@ -161,7 +158,7 @@
               </picker>
             </view>
 
-          </view>
+          </view> -->
         </view>
         <view class="modal-container-footer">
           <button formType="submit">确认</button>

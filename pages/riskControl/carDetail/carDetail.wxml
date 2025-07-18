@@ -18,7 +18,7 @@
           <view class="vehicle-head-left">
             <view class="vehicle-left-category">
               <image src="/assets/images/home/01.png" />
-              <text>{{cellData.plateNumber||'-'}}</text>
+              <text>{{cellData.platenumber||cellData.plateNumber||'-'}}</text>
             </view>
             <view class="vehicle-left-brand">
               {{cellData.vehicleSerialName||'-'}}{{cellData.vehicleModeName||''}}

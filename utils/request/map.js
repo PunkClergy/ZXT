@@ -15,7 +15,7 @@ const u_operation = {
 }
 // 当前位置
 const u_getCarPoisiton = {
-  URL: fin3plusUrl + 'dzBussinessMobileApi/getCarPoisiton',
+  URL: fin3plusUrl + 'carapi/getCarPoisiton',
   sn: 'sn'
 }
 const u_getTrackPlayback = {

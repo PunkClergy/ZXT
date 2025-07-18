@@ -50,7 +50,14 @@ Page({
     endTime: '19:00', //历史轨迹查询时间
   },
 
+  bindTimeChange(evt) {
+    const category = evt.currentTarget.dataset.index
+    const value = evt.detail.value
+    this.setData({
+      [category]: value
+    })
 
+  },
   initCarryParams(evt) {
     const {
       source,

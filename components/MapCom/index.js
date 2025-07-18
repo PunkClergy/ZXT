@@ -734,6 +734,10 @@ Component({
         [u_getTrackPlayback.startDate]: `${startDate} ${startTime || '00:00:00'}`,
         [u_getTrackPlayback.endDate]: `${endDate} ${endTime || '23:59:59'}`
       };
+      if(!sn){
+        showToast('请选择车辆')
+        return
+      }
       byPost(url, params, response => {
         hideLoading();
         if (response.data?.code == 1000) {

@@ -1,4 +1,4 @@
-<view class="container" style="display: none;">
+<view class="container" style="height: {{c_screen_height -statusBarHeight-navBarHeight}}px;">
   <!-- 顶部导航 -->
   <view class="header">
     <view class="user-info">
@@ -9,7 +9,7 @@
 
   <!-- 车辆模型 -->
   <view class="car-model">
-    <view class="car-image"> 
+    <view class="car-image">
       <image src="https://p3.dcarimg.com/img/tos-cn-i-dcdx/9624b20fdddd459f8d0c574946831c72~1200x0.png" mode="aspectFit" />
     </view>
     <view class="car-name"></view>
@@ -24,19 +24,15 @@
   <!-- 控制按钮 -->
   <view class="controls">
     <view class="control-btn {{lockActive ? 'active' : ''}}" bindtap="toggleLock">
-      <icon type="{{lockActive ? 'unlock' : 'warn'}}" size="28" color="#64ffda" />
-      <text class="label">{{lockActive ? '车门解锁' : '车门锁定'}}</text>
-    </view>
-    <view class="control-btn" bindtap="controlAC">
-      <icon type="waiting" size="28" color="#64ffda" />
-      <text class="label">空调控制</text>
+      <icon type="success" size="28" color="#64ffda" />
+      <text class="label">开锁</text>
     </view>
     <view class="control-btn" bindtap="controlLights">
-      <icon type="info" size="28" color="#64ffda" />
-      <text class="label">灯光控制</text>
+      <icon type="cancel" size="28" color="red" />
+      <text class="label">关锁</text>
     </view>
     <view class="control-btn" bindtap="findCar">
-      <icon type="search" size="28" color="#64ffda" />
+      <icon type="warn" size="28" color="yellow" />
       <text class="label">寻车鸣笛</text>
     </view>
   </view>

@@ -22,9 +22,6 @@
                 <view class="left-model">
                   {{item.vehicleSerialName||'-'}}{{item.vehicleModeName||''}}
                 </view>
-                <view class="left-brand">
-                  短租
-                </view>
               </view>
               <view class="head-right" wx:if="{{!(g_flagMulti)}}">
                 <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
@@ -35,19 +32,14 @@
                 <label>车架号 ：</label>
                 <text>{{item.vin||'-'}}</text>
               </view>
-              <view class="info-item  {{item.xsgw.length > 15 ? 'long-info-item' : ''}}">
-                <label>油箱容积 ：</label>
-                <text>{{item.xsgw?item.xsgw+'L':'-' }}</text>
-              </view>
-              <view class="info-item  {{item.batterylift.length > 15 ? 'long-info-item' : ''}}">
-                <label>启动方式 ：</label>
-                <text>{{item.batterylift||'-'}}</text>
-              </view>
               <view class="info-item  {{item.sn.length > 15 ? 'long-info-item' : ''}}">
                 <label>设备号 ：</label>
                 <text>{{item.sn||'-'}}</text>
               </view>
-
+              <view class="info-item  {{item.xsgw.length > 15 ? 'long-info-item' : ''}}">
+                <label>生效周期 ：</label>
+                <text>{{item.startDate||''}}-{{item.endDate||''}}</text>
+              </view>
             </view>
             <view class="content-item-footer" wx:if="{{g_source}}">
               <view class="footer-left"></view>
@@ -86,14 +78,14 @@
             <label>设备号(sn)<text>*</text></label>
             <block>
               <view class="card-info-item-input" style="display: flex;flex-direction: row;align-items: center;">
-              <block wx:if="{{id!=''}}">
-                <text wx:if="{{id!=''}}" style="font-size: 26rpx;">{{params.sn||'空'}}</text>
-              </block>
-              <block wx:else>
-                <input placeholder="请输入车型" value="{{params.sn}}" data-item="sn" bindinput="handleBindinput" />
-                <image src="/assets/images/ss.png" mode="" bindtap="scanCode" style="width: 50rpx;height: 50rpx;"/>
-              </block>
-      
+                <block wx:if="{{id!=''}}">
+                  <text wx:if="{{id!=''}}" style="font-size: 26rpx;">{{params.sn||'空'}}</text>
+                </block>
+                <block wx:else>
+                  <input placeholder="请输入车型" value="{{params.sn}}" data-item="sn" bindinput="handleBindinput" />
+                  <image src="/assets/images/ss.png" mode="" bindtap="scanCode" style="width: 50rpx;height: 50rpx;" />
+                </block>
+
               </view>
             </block>
           </view>
@@ -101,7 +93,7 @@
             <label>code<text>*</text></label>
             <block>
               <view class="card-info-item-input" style="display: flex;flex-direction: row;align-items: center;">
-              <text wx:if="{{id!=''}}" style="font-size: 26rpx;">{{params.code||'空'}}</text>
+                <text wx:if="{{id!=''}}" style="font-size: 26rpx;">{{params.code||'空'}}</text>
                 <input wx:else placeholder="请输入code" value="{{params.code}}" data-item="code" bindinput="handleBindinput" />
               </view>
             </block>
@@ -186,7 +178,7 @@
       </scroll-view>
     </block>
   </view>
-  <view class="levitation-button" wx:if="{{c_activeTab==1&&g_flagMulti&&g_black.length>0}}"  bindtap="handleJumpBlackInfo">
+  <view class="levitation-button" wx:if="{{c_activeTab==1&&g_flagMulti&&g_black.length>0}}" bindtap="handleJumpBlackInfo">
     <text>确定</text>
   </view>
 </view>
