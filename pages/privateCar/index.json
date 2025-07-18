@@ -1,0 +1,8 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "新能源车远程控制",
+  "navigationBarBackgroundColor": "#0a192f",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#0a192f",
+  "enablePullDownRefresh": false
+}

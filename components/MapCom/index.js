@@ -56,7 +56,7 @@ Component({
             carDetail: 'handleCarDetail',
             sending: 'handleLocation',
             desk: 'handleLocation'
-          } [source];
+          }[source];
           this[handlerMethod]();
           return;
         }
@@ -100,7 +100,7 @@ Component({
     showModalState: false, //车辆状态弹窗显隐
     statusInfo: {}, //车辆状态数据
     s_trajectory_show: false, //历史轨迹弹窗状态
-    startDate: '2025-03-20', //历史轨迹查询时间
+    startDate: '2025-03-21', //历史轨迹查询时间
     startTime: '19:00', //历史轨迹查询时间
     endDate: '2025-03-20', //历史轨迹查询时间
     endTime: '19:00', //历史轨迹查询时间
@@ -237,9 +237,9 @@ Component({
         safeHideLoading();
       };
       const createCallout = (car) => {
-        return `${car?.plateNumber||_this.data.g_plateNumber||''}
-    当前位置：${car?.address||'未知'}
-    定位时间：${car?.showtime||'未知'}`;
+        return `${car?.plateNumber || _this.data.g_plateNumber || ''}
+    当前位置：${car?.address || '未知'}
+    定位时间：${car?.showtime || '未知'}`;
       };
       showLoading('加载中...');
       byGet(`${this.data.c_k1sw_link}${u_getAllCarPoisiton.URL}`, {}).then(allRes => {
@@ -261,15 +261,15 @@ Component({
             display: 'BYCLICK',
             padding: 8
           },
-          deviceType:car?.deviceType
+          deviceType: car?.deviceType
         }));
 
         const processMain = () => {
           if (evt) {
             byPost(
               `${_this.data.c_k1sw_link}${u_getCarPoisiton.URL}`, {
-                [u_getCarPoisiton.sn]: evt
-              },
+              [u_getCarPoisiton.sn]: evt
+            },
               (mainRes) => {
                 if (mainRes?.data.code !== 1000) {
                   return handleError('主车辆数据异常');
@@ -352,9 +352,9 @@ Component({
             this.setData({
               markers: updatedMarkers,
               showModalState: false,
-              idc:updatedMarkers?.[1]?.idc,
-              blueKey:updatedMarkers?.[1]?.blueKey,
-              deviceType:updatedMarkers?.[1]?.deviceType
+              idc: updatedMarkers?.[1]?.idc,
+              blueKey: updatedMarkers?.[1]?.blueKey,
+              deviceType: updatedMarkers?.[1]?.deviceType
             }, () => {
               this.triggerEvent('myMethod', {
                 info: updatedMarkers.find(item => item?.callout?.display == 'ALWAYS')
@@ -528,13 +528,13 @@ Component({
     },
     // 蓝牙控制车辆
     handleExecuteBluetooth(type) {
-      console.log(this.data.idc,'000------')
+      console.log(this.data.idc, '000------')
       const COMMAND_MAPPING = {
         5: 5, // 远程寻车
         1: this?.data?.deviceType ? 4 : 3, // 锁门
         3: this?.data?.deviceType == 'F1' ? 1 : 2, // 开门
-        6:10,//取消拦截
-        8:11//风控拦截
+        6: 10,//取消拦截
+        8: 11//风控拦截
       };
 
       const BLUETOOTH_HANDLERS = {
@@ -596,7 +596,7 @@ Component({
           );
           return;
         }
-        if (type == 8||type ==6) {
+        if (type == 8 || type == 6) {
           console.log(12323232323)
           bleManager.sendData(
             this.data.idc,
@@ -650,7 +650,7 @@ Component({
           latitude: content?.tlatitude,
           longitude: content?.tlongitude,
           callout: {
-            content: `${content?.plateNumber||_this.data.g_plateNumber||''}\n当前位置：${content?.address}\r\n定位时间：${content?.showtime}`, // 使用模板字符串提升可读性
+            content: `${content?.plateNumber || _this.data.g_plateNumber || ''}\n当前位置：${content?.address}\r\n定位时间：${content?.showtime}`, // 使用模板字符串提升可读性
             display: 'ALWAYS',
             padding: 8
           }
@@ -697,6 +697,8 @@ Component({
     handleTrajectory() {
       this.setData({
         s_trajectory_show: true
+      }, () => {
+        this.handleCurrentDate()
       })
     },
     // 历史轨迹关闭
@@ -878,7 +880,7 @@ Component({
 
         const polylineData = response.data.result.routes[0].polyline;
         if (!Array.isArray(polylineData) || polylineData.length < 2) {
-          appUtil.showModal('路线数据无效', false, () => {});
+          appUtil.showModal('路线数据无效', false, () => { });
           return;
         }
 

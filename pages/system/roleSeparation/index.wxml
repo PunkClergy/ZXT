@@ -138,7 +138,7 @@
       </scroll-view>
     </block>
     <!-- 一键操作按钮 -->
-    <view class="levitation-button" bindtap="handleJumpInfo">
+    <view class="levitation-button" bindtap="handleJumpInfo" wx:if="{{c_activeTab==1}}">
       <text>新增人员</text>
     </view>
   </view>

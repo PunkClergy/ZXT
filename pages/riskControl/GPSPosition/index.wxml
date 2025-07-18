@@ -41,8 +41,8 @@
           </view>
 
           <view class="info-item  {{cellData.xsgw.length > 15 ? 'long-info-item' : ''}}">
-            <label>油箱容积 ：</label>
-            <text>{{item.xsgw||0}}L</text>
+            <label>设备号 ：</label>
+            <text>{{cellData.sn||'-'}}</text>
           </view>
 
         </view>

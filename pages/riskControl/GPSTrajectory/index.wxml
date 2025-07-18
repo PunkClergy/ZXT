@@ -23,9 +23,9 @@
             <view class="vehicle-left-brand">
               {{cellData.vehicleSerialName||'-'}}{{cellData.vehicleModeName||''}}
             </view>
-            <view class="vehicle-left-model">
+            <!-- <view class="vehicle-left-model">
               {{cellData.sn ?'自助取还':cellData.sn===null?'非自助取还':'-'}}
-            </view>
+            </view> -->
           </view>
           <view class="vehicle-head-right">
             <view class="vehicle-right-state" bindtap="handleJumpCarList">
@@ -41,8 +41,8 @@
           </view>
 
           <view class="info-item  {{cellData.xsgw.length > 15 ? 'long-info-item' : ''}}">
-            <label>油箱容积 ：</label>
-            <text>{{item.xsgw||0}}L</text>
+            <label>设备号 ：</label>
+            <text>{{cellData.sn||'-'}}</text>
           </view>
 
         </view>

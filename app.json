@@ -149,7 +149,8 @@
     "pages/wycclaimDetail1/claimFileEdit/claimFileEdit",
     "pages/policy/index",
     "pages/lostClaims/index",
-    "pages/electronicFence/index"
+    "pages/electronicFence/index",
+    "pages/privateCar/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
