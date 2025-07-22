@@ -54,6 +54,23 @@ Page({
       { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '' }
     ]
   },
+  handlePay2359(){
+    console.log(getApp()?.data?.userInfo)
+    const id = getApp()?.data?.userInfo?.id
+    wx.navigateToMiniProgram({
+      appId: 'wxcdd55b1d2e790195', // 必填
+      path: `/pages/buySwiper/buySwiper?userId=${id}`, // 可为空，但建议填写
+      envVersion: 'release', // 可选值：develop（开发版），trial（体验版），release（正式版）
+      success: function (res) {
+        // 成功跳转的回调
+        console.log("跳转成功");
+      },
+      fail: function (err) {
+        // 失败回调
+        console.error("跳转失败", err);
+      }
+    });
+  },
   // 停保统一处理方法
   handleStop(evt) {
     const insurance_type = this.data.insurance_type;

@@ -2,7 +2,20 @@
   height: 100vh;
   padding: 10rpx 4rpx;
 }
-
+.btn-container{
+  width: 96%;
+  display: flex;
+  justify-content: center;
+}
+.pay-container{
+  background: cornflowerblue;
+  color: #fff;
+  width: 90%;
+  text-align: center;
+  padding: 20rpx 0;
+  margin-top: 20rpx;
+  border-radius: 20rpx;
+}
 .record-container {
   width: 96%;
   margin: auto;

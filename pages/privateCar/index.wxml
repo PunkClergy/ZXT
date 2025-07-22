@@ -23,7 +23,7 @@
 
   <!-- 控制按钮 -->
   <view class="controls">
-    <view class="control-btn {{lockActive ? 'active' : ''}}" bindtap="toggleLock">
+    <view class="control-btn" bindtap="toggleLock">
       <icon type="success" size="28" color="#64ffda" />
       <text class="label">开锁</text>
     </view>

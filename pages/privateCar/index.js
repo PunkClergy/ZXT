@@ -41,29 +41,18 @@ Page({
   
   // 切换车门锁定状态
   toggleLock() {
-    const newLockState = !this.data.lockActive;
-    this.setData({
-      lockActive: newLockState
-    });
-    
     wx.showToast({
-      title: newLockState ? '车门已解锁' : '车门已锁定',
-      icon: 'success',
+      title:  '车门已解锁',
+      icon: 'none',
       duration: 1500
     });
   },
-  
-  // 空调控制
-  controlAC() {
-    wx.navigateTo({
-      url: '/pages/ac/ac',
-    });
-  },
+
   
   // 灯光控制
   controlLights() {
     wx.showToast({
-      title: '灯光控制功能已激活',
+      title: '车门已锁定',
       icon: 'none',
       duration: 1500
     });
