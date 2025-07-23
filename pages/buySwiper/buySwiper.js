@@ -55,11 +55,11 @@ Page({
     ]
   },
   handlePay2359(){
-    console.log(getApp()?.data?.userInfo)
     const id = getApp()?.data?.userInfo?.id
+    const type = this.data.insurance_type
     wx.navigateToMiniProgram({
       appId: 'wxcdd55b1d2e790195', // 必填
-      path: `/pages/buySwiper/buySwiper?userId=${id}`, // 可为空，但建议填写
+      path: `/pages/buySwiper/buySwiper?userId=${id}&type=${type}`, // 可为空，但建议填写
       envVersion: 'release', // 可选值：develop（开发版），trial（体验版），release（正式版）
       success: function (res) {
         // 成功跳转的回调
