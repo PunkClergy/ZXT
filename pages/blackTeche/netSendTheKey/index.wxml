@@ -33,7 +33,7 @@
                 <text>{{item.sn}}</text>
               </view>
 
-              <view class="info-item  {{item.batterylift.length > 15 ? 'long-info-item' : ''}}">
+              <view class="info-item long-info-item">
                 <label>生效周期 ：</label>
                 <text>{{item.startDate||''}}-{{item.endDate||''}}</text>
               </view>
