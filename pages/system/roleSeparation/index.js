@@ -75,7 +75,15 @@ Page({
       }
     });
   },
-
+  // 下拉刷新
+  handleRefresh() {
+    this.setData({
+      g_page: 1,
+      g_items: [],
+    }, () => {
+      this.initList();
+    });
+  },
   // 递归切换选中状态
   toggleCheck(nodes, targetId) {
     nodes.forEach(node => {
@@ -159,6 +167,7 @@ Page({
   },
   // 人员列表
   initList() {
+    console.log(this.data.id)
     byGet(`${getApp().data.k1swUrl}${u_childUserList.URL}`, { roleId: this.data.id }).then(response => {
       if (response.data.code == 1000) {
         this.setData({
@@ -430,7 +439,9 @@ Page({
       })
     }
     if (options?.name) {
-      this.initGetRole(options?.name)
+      this.initGetRole(options?.name || '车务人员')
+    } else {
+      this.initGetRole(options?.name || '车务人员')
     }
   },
   onShow() {

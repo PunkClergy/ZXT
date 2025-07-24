@@ -23,7 +23,7 @@
         {
           "name": "dentistId=100",
           "pathName": "pages/desk/desk",
-          "query": "",
+          "query": "scene=FEB654415AA140AC89488DD45F751A06",
           "launchMode": "default",
           "scene": 1011
         },

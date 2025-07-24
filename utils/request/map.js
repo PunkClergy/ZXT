@@ -18,6 +18,10 @@ const u_getCarPoisiton = {
   URL: fin3plusUrl + 'carapi/getPosition',
   sn: 'sn'
 }
+const u_getCarPoisitonDesk = {
+  URL: fin3plusUrl + 'dzBussinessMobileApi/getCarPoisiton',
+  sn: 'sn'
+}
 const u_getTrackPlayback = {
   URL: fin3plusUrl + 'dzBussinessMobileApi/getTrackPlayback',
   sn: 'sn',
@@ -43,6 +47,7 @@ const u_getAllCarPoisiton = {
   URL: fin3plusUrl + "carapi/getAllCarPoisiton",
 }
 module.exports = {
+  u_getCarPoisitonDesk,
   u_getCarStatus,
   u_operation,
   u_getCarPoisiton,

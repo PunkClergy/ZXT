@@ -14,7 +14,8 @@ const {
   u_getCarPoisiton,
   u_getTrackPlayback,
   u_RequestCarList,
-  u_getAllCarPoisiton
+  u_getAllCarPoisiton,
+  u_getCarPoisitonDesk
 } = require('../../utils/request/map')
 const {
   byPost,
@@ -636,9 +637,9 @@ Component({
       const _this = this;
       showLoading("加载中...");
       const param = {
-        [u_getCarPoisiton.sn]: evt
+        [u_getCarPoisitonDesk.sn]: evt
       };
-      byPost(this.data.c_fin3_link + u_getCarPoisiton.URL, param, (response) => {
+      byPost(this.data.c_fin3_link + u_getCarPoisitonDesk.URL, param, (response) => {
         hideLoading();
         const content = response?.data?.content;
         const markerList = [{

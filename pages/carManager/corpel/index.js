@@ -57,7 +57,7 @@ Page({
   },
   // 获取角色列表
   initGetRole(evt) {
-    byGet(`${getApp().data.k1swUrl}${u_GetRole.URL}`, { roleName: evt?.name, isAutoCreate: 1 }).then(response => {
+    byGet(`${getApp().data.k1swUrl}${u_GetRole.URL}`, { roleName: evt?.name||"", isAutoCreate: 1 }).then(response => {
       if (response.data.code == 1000) {
         this.setData({
           id: response.data.content.id,
@@ -124,6 +124,7 @@ Page({
       });
   },
   getCarList(evt) {
+    console.log(evt)
     byGet(`${getApp().data.k1swUrl}${u_carManagerList.URL}`, { roleId: this.data.id }).then(response => {
       if (response.data.code == 1000) {
         this.setData({
