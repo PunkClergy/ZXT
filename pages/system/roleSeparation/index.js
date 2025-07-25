@@ -229,40 +229,23 @@ Page({
   handleSubmit() {
 
     const {
-      params,
       id
     } = this.data;
-    showLoading();
+
+    const checkedIds = this.getCheckedIds(this.data.tree).toString();
+    const params = {
+      [u_setMenuTree.roleId]: id,
+      [u_setMenuTree.menuIds]: checkedIds
+    }
+    console.log(params, id)
     byPost(
-      `${getApp().data.k1swUrl}${u_roleapiaddOrUpdate.URL}`, {
-      ...params,
-      id
-    },
+      `${getApp().data.k1swUrl}${u_setMenuTree.URL}`, params,
       (response) => {
-        console.log(response)
-        hideLoading();
-        if (response?.data?.code != 1000) {
-          showToast(response?.msg);
-          return;
+        if (response.data.code == 1000) {
+          
         }
-        showToast('添加成功');
-        this.setData({
-          c_activeTab: 1,
-          params: {},
-          btnState: '新增',
-          g_triggered: false,
-          g_page: 1,
-          g_items: []
-        }, () => {
-          this.initList()
-          // 设置权限
-          this.handleSetMenuTree(response?.data?.content?.id)
-        })
       },
-      (error) => {
-        hideLoading();
-        showToast('提交失败，请稍后重试');
-      }
+      (error) => { }
     );
   },
   // 修改管控

@@ -131,7 +131,7 @@
             </view>
           </block>
           <view class="card-footer">
-            <view bindtap="handleSubmit">确认{{btnState}}</view>
+            <view bindtap="handleSubmit">确认</view>
           </view>
         </view>
 

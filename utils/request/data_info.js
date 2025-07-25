@@ -145,7 +145,7 @@ const u_roleapiaddOrUpdate = {
 
 // 设置权限
 const u_setMenuTree = {
-  URL: fin3plusUrl + "userapi/setMenuTree",
+  URL: fin3plusUrl + "roleapi/setMenuTree",
   roleId: 'roleId',
   menuIds: 'menuIds'
 }
