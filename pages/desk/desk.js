@@ -424,7 +424,6 @@ Page({
   onLoad: function (options) {
     wx.hideTabBar();
     this.initialGetBanner()
-    this.handleTermialList()
     if (options?.scene || options?.query) {
       console.log(options?.scene || options?.query)
       this.setData({
@@ -467,6 +466,7 @@ Page({
   },
 
   onShow: function (e) {
+    this.handleTermialList()
     const _this = this
     wx.getStorage({
       key: 'userKey', // 替换为你的缓存键值

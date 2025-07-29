@@ -46,7 +46,12 @@ const u_RequestCarList = {
 const u_getAllCarPoisiton = {
   URL: fin3plusUrl + "carapi/getAllCarPoisiton",
 }
+// 控制车辆是否失效
+const u_verifyControlcode = {
+  URL: fin3plusUrl + "renterApi/verifyControlcode",
+}
 module.exports = {
+  u_verifyControlcode,
   u_getCarPoisitonDesk,
   u_getCarStatus,
   u_operation,

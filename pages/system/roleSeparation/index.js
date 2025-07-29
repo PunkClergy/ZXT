@@ -301,6 +301,16 @@ Page({
       }
     })
   },
+   // 下拉刷新
+   handleRefresh() {
+    this.setData({
+      g_triggered: false,
+      g_page: 1,
+      g_items: [],
+    }, () => {
+      this.initList();
+    });
+  },
   // 处理权限数据
   convertMenuData(originalData) {
     const convertNode = (node) => {

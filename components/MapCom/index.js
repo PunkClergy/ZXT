@@ -10,6 +10,7 @@ const {
 const bleManager = require('../../utils/ble-manager.js');
 const {
   u_getCarStatus,
+  u_verifyControlcode,
   u_operation,
   u_getCarPoisiton,
   u_getTrackPlayback,
@@ -440,7 +441,6 @@ Component({
 
     //底部 "按钮" 操作 
     handleFooterBtn(evt) {
-      console.log(evt)
       if (!this.data.sn) {
         showToast('无可用车辆')
         return
@@ -465,66 +465,135 @@ Component({
           console.warn('隐藏加载状态失败:', e);
         }
       };
-      try {
-        if (!showLoadingWithFallback()) return;
-        const {
-          markers = []
-        } = this.data;
-        const targetMarker = markers.find(marker =>
-          marker?.callout?.display === 'ALWAYS'
-        );
-        const sn = targetMarker?.sn?.trim() ?? '';
-        if (!sn) {
-          showToast('未找到有效设备标识');
-          return safeHideLoading();
-        }
-        const controlType = Number(evt?.currentTarget?.id) || 0;
-        // if (![1, 2, 3, 4, 5].includes(controlType)) {
-        //   showToast('无效的控制类型');
-        //   return safeHideLoading();
-        // }
-        const requestParam = {
-          [u_operation.sn]: sn,
-          [u_operation.operationType]: controlType,
-          _timestamp: Date.now()
-        };
-        // 蓝牙操作
-        if (this.data.currentSelectControlType == '-5') {
-          this.handleExecuteBluetooth(controlType)
-          return
-        }
-        // 网络模式
-        else if (this.data.currentSelectControlType == '-4') {
-          byPost(
-            `${this.data.c_k1sw_link}${u_operation.URL}`,
-            requestParam,
-            (response) => {
-              safeHideLoading();
+      if (this.data.source == 'desk') {
+        console.log(this.data.source, 'desk')
+        byPost(
+          `${this.data.c_k1sw_link}${u_verifyControlcode.URL}`,
+          { code: this?.data?.sn || '' },
+          (response) => {
+            if (response?.data?.code == 1000) {
               try {
-                if (!response) {
-                  throw new Error('空响应数据');
+                if (!showLoadingWithFallback()) return;
+                const {
+                  markers = []
+                } = this.data;
+                const targetMarker = markers.find(marker =>
+                  marker?.callout?.display === 'ALWAYS'
+                );
+                const sn = targetMarker?.sn?.trim() ?? '';
+                if (!sn) {
+                  showToast('未找到有效设备标识');
+                  return safeHideLoading();
                 }
-                if (response.statusCode !== 200) {
-                  throw new Error(`网络异常[${response.statusCode}]`);
+                const controlType = Number(evt?.currentTarget?.id) || 0;
+                const requestParam = {
+                  [u_operation.sn]: sn,
+                  [u_operation.operationType]: controlType,
+                  _timestamp: Date.now()
+                };
+                // 蓝牙操作
+                if (this.data.currentSelectControlType == '-5') {
+                  this.handleExecuteBluetooth(controlType)
+                  return
                 }
-                if (response.data?.code !== 1000) {
-                  const errorMsg = response.data?.msg || '未知业务错误';
-                  throw new Error(`[${response.data.code}]${errorMsg}`);
+                // 网络模式
+                else if (this.data.currentSelectControlType == '-4') {
+                  byPost(
+                    `${this.data.c_k1sw_link}${u_operation.URL}`,
+                    requestParam,
+                    (response) => {
+                      safeHideLoading();
+                      try {
+                        if (!response) {
+                          throw new Error('空响应数据');
+                        }
+                        if (response.statusCode !== 200) {
+                          throw new Error(`网络异常[${response.statusCode}]`);
+                        }
+                        if (response.data?.code !== 1000) {
+                          const errorMsg = response.data?.msg || '未知业务错误';
+                          throw new Error(`[${response.data.code}]${errorMsg}`);
+                        }
+                        const successMessage = controlType === 5 ?
+                          '寻车成功，请注意附近鸣笛车辆!' :
+                          '控制成功!';
+                        showToast(successMessage);
+                      } catch (error) {
+                        handleError(error);
+                      }
+                    }
+                  );
                 }
-                const successMessage = controlType === 5 ?
-                  '寻车成功，请注意附近鸣笛车辆!' :
-                  '控制成功!';
-                showToast(successMessage);
+
               } catch (error) {
                 handleError(error);
+                safeHideLoading();
               }
+            } else {
+              showToast(response?.data?.msg)
             }
-          );
-        }
+          }
+        );
 
-      } catch (error) {
-        handleError(error);
-        safeHideLoading();
+
+      } else {
+        try {
+          if (!showLoadingWithFallback()) return;
+          const {
+            markers = []
+          } = this.data;
+          const targetMarker = markers.find(marker =>
+            marker?.callout?.display === 'ALWAYS'
+          );
+          const sn = targetMarker?.sn?.trim() ?? '';
+          if (!sn) {
+            showToast('未找到有效设备标识');
+            return safeHideLoading();
+          }
+          const controlType = Number(evt?.currentTarget?.id) || 0;
+          const requestParam = {
+            [u_operation.sn]: sn,
+            [u_operation.operationType]: controlType,
+            _timestamp: Date.now()
+          };
+          // 蓝牙操作
+          if (this.data.currentSelectControlType == '-5') {
+            this.handleExecuteBluetooth(controlType)
+            return
+          }
+          // 网络模式
+          else if (this.data.currentSelectControlType == '-4') {
+            byPost(
+              `${this.data.c_k1sw_link}${u_operation.URL}`,
+              requestParam,
+              (response) => {
+                safeHideLoading();
+                try {
+                  if (!response) {
+                    throw new Error('空响应数据');
+                  }
+                  if (response.statusCode !== 200) {
+                    throw new Error(`网络异常[${response.statusCode}]`);
+                  }
+                  if (response.data?.code !== 1000) {
+                    const errorMsg = response.data?.msg || '未知业务错误';
+                    throw new Error(`[${response.data.code}]${errorMsg}`);
+                  }
+                  const successMessage = controlType === 5 ?
+                    '寻车成功，请注意附近鸣笛车辆!' :
+                    '控制成功!';
+                  showToast(successMessage);
+                } catch (error) {
+                  handleError(error);
+                }
+              }
+            );
+          }
+
+        } catch (error) {
+          handleError(error);
+          safeHideLoading();
+        }
       }
     },
     // 蓝牙控制车辆
@@ -735,7 +804,7 @@ Component({
         [u_getTrackPlayback.startDate]: `${startDate} ${startTime || '00:00:00'}`,
         [u_getTrackPlayback.endDate]: `${endDate} ${endTime || '23:59:59'}`
       };
-      if(!sn){
+      if (!sn) {
         showToast('请选择车辆')
         return
       }
