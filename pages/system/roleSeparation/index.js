@@ -242,7 +242,7 @@ Page({
       `${getApp().data.k1swUrl}${u_setMenuTree.URL}`, params,
       (response) => {
         if (response.data.code == 1000) {
-            showToast(response?.data.msg)
+          showToast(response?.data.msg)
         }
       },
       (error) => { }
@@ -267,7 +267,7 @@ Page({
         c_activeTab: 1,
         btnState: '新增',
         params: {},
-        id: ''
+        id: this?.data?.id || ''
       })
     }
     if (flag == '权限管理') {
@@ -301,8 +301,8 @@ Page({
       }
     })
   },
-   // 下拉刷新
-   handleRefresh() {
+  // 下拉刷新
+  handleRefresh() {
     this.setData({
       g_triggered: false,
       g_page: 1,
@@ -413,7 +413,7 @@ Page({
         console.log(response)
         if (response.data.code == 1000) {
           this.setData({ c_send_key_show_momal: false }, () => {
-          
+
             this.initList()
           })
         } else {

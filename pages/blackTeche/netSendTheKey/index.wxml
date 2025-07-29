@@ -44,7 +44,7 @@
                   <view style="display: flex;gap: 15rpx;line-height: 45rpx;">
                     <text>{{g_item.drivername}}</text>
                     <text>{{g_item.drivermobile}}</text>
-                    <text style="color:#1b64b1;">解绑</text>
+                    <!-- <text style="color:#1b64b1;">解绑</text> -->
                     <text style="color:#1b64b1;" data-item="{{item}}" data-gitem="{{g_item}}" bindtap="handleShowSendKeyModal">发送钥匙</text>
                   </view>
                 </block>
