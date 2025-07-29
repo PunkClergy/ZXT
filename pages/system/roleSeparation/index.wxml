@@ -39,6 +39,11 @@
             </view>
           </view>
         </block>
+        <block wx:if="{{g_items.length<1}}">
+          <view style="display: flex;justify-content: center; align-items: center;font-size: 26rpx;color: #ccc;height: 80vh;">
+            无数据
+          </view>
+        </block>
       </scroll-view>
     </block>
     <block wx:if="{{c_activeTab == 2}}">

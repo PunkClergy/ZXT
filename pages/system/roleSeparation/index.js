@@ -242,7 +242,7 @@ Page({
       `${getApp().data.k1swUrl}${u_setMenuTree.URL}`, params,
       (response) => {
         if (response.data.code == 1000) {
-          
+            showToast(response?.data.msg)
         }
       },
       (error) => { }
@@ -403,6 +403,7 @@ Page({
         console.log(response)
         if (response.data.code == 1000) {
           this.setData({ c_send_key_show_momal: false }, () => {
+          
             this.initList()
           })
         } else {

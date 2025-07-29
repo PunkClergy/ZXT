@@ -34,14 +34,10 @@
             <label>联系电话 ：</label>
             <text>{{item.mobile||'-' }}</text>
           </view>
-          <view class="info-item">
-            <label>身份证号 ：</label>
-            <text>{{item.idcard||'-'}}</text>
-          </view>
           <view class="info-item  long-info-item" wx:if="{{type}}">
             <label>已绑定车辆 ：</label>
             <block wx:for="{{item.vehList}}" wx:key="index" wx:for-item="g_item">
-                <text>{{g_item.platenumber}},</text>
+              <text>{{g_item.platenumber}}{{' '}}</text>
             </block>
           </view>
         </view>
