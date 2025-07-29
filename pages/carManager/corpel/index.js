@@ -16,7 +16,7 @@ const {
   _handleDeviceInfo
 } = require('../../../utils/public').default
 const {
-  u_GetRole, u_carManagerList
+  u_GetRole, u_carManagerList, u_vehUnBindCarManager
 } = require('../../../utils/request/data_info')
 Page({
   data: {
@@ -40,9 +40,9 @@ Page({
         type: 0,
         title_name: options?.name
       })
-    }else{
+    } else {
       this.setData({
-        title_name:options?.name
+        title_name: options?.name
       })
     }
     this.initCarryParams(options)
@@ -55,13 +55,47 @@ Page({
   onReady: function () {
     this.initialiImageBaseConversion()
   },
+  // 解绑车辆
+  handleUnbind(e) {
+    wx.showModal({
+      title: '重要提示',
+      content: '确定要解绑吗？',
+      confirmText: '解绑',
+      confirmColor: '#d9534f',
+      success: ({ confirm, cancel }) => {
+        if (confirm) {
+          const all = e?.currentTarget?.dataset?.all
+          const flag = e?.currentTarget?.dataset?.item
+          const userId = e?.currentTarget?.dataset?.id
+
+          const vehIds = all ? flag?.map(ele => {
+            return ele?.id
+          }).join(',') : flag?.id
+
+          let param = {
+            userId: userId,
+            vehIds: vehIds
+          }
+          byPost(`${getApp().data.k1swUrl}${u_vehUnBindCarManager.URL}`, param,
+            (response) => {
+              if (response.data.code == 1000) {
+                showToast(response?.data?.msg)
+                this.initGetRole({ name: this.data.roleName })
+              } else {
+                showToast(response?.data?.msg)
+              }
+            });
+        }
+      }
+    })
+  },
   // 获取角色列表
   initGetRole(evt) {
-    byGet(`${getApp().data.k1swUrl}${u_GetRole.URL}`, { roleName: evt?.name||"", isAutoCreate: 1 }).then(response => {
+    byGet(`${getApp().data.k1swUrl}${u_GetRole.URL}`, { roleName: evt?.name || "", isAutoCreate: 1 }).then(response => {
       if (response.data.code == 1000) {
         this.setData({
           id: response.data.content.id,
-          roleName: evt?.name||''
+          roleName: evt?.name || ''
         }, () => {
           this.getCarList()
         })

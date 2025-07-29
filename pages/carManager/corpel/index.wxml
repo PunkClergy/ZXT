@@ -35,9 +35,9 @@
             <text>{{item.mobile||'-' }}</text>
           </view>
           <view class="info-item  long-info-item" wx:if="{{type}}">
-            <label>已绑定车辆 ：</label>
+            <label>已绑定车辆 ：<text data-all="all" data-item="{{item.vehList}}" data-id="{{item.id}}" bindtap="handleUnbind">解绑所有车辆</text></label>
             <block wx:for="{{item.vehList}}" wx:key="index" wx:for-item="g_item">
-              <text>{{g_item.platenumber}}{{' '}}</text>
+              <view><text>{{g_item.platenumber}}</text>{{' '}}<text data-item="{{g_item}}" data-id="{{item.id}}" bindtap="handleUnbind">解绑</text></view>
             </block>
           </view>
         </view>

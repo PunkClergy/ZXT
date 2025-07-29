@@ -235,7 +235,11 @@ const u_efenceBindVeh = {
 const u_efenceUnbindVeh = {
   URL: fin3plusUrl + "efenceApi/efenceUnbindVeh",
 }
+const u_vehUnBindCarManager = {
+  URL: fin3plusUrl + "rentKeyApi/vehUnBindCarManager",
+}
 module.exports = {
+  u_vehUnBindCarManager,
   u_efenceUnbindVeh,
   u_efenceBindVeh,
   u_deleteEfence,
