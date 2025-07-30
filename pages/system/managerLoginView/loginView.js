@@ -96,7 +96,7 @@ Page({
             app.data.k1swUrl = urlConfig.k1swUrl;
             app.data.fin3Url = urlConfig.fin3Url;
             app.data.userInfo = userInfo;
-
+            getApp().data.reflag = 1 
             wx.navigateBack({
               delta: 1
             });
@@ -346,6 +346,8 @@ Page({
           appUtil.setStorage(getApp().data.userKey, res.data.content, function (success) {
             if (success) {
               getApp().data.userInfo = res.data.content;
+              
+              getApp().data.reflag = 1 
               wx.navigateBack({
                 delta: 1 // 返回上一级页面。
               })

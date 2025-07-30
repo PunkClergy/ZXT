@@ -61,32 +61,32 @@ Page({
   initialiImageBaseConversion() {
     const _this = this;
     const imageMap = [{
-        path: '/assets/images/home/t_bg.png',
-        key: 's_t_bg'
-      },
-      {
-        path: '/assets/images/home/client_bg.png',
-        key: 's_client_bg'
-      },
-      {
-        path: '/assets/images/home/channel_bg.png',
-        key: 's_channel_bg'
-      },
-      {
-        path: '/assets/images/home/service_bg.png',
-        key: 's_service_bg'
-      }, {
-        path: '/assets/images/index/bg.png',
-        key: 's_background_picture_of_the_front_page'
-      },
-      {
-        path: '/assets/images/index/tree_bg.png',
-        key: 's_background_image_of_the_tree'
-      },
-      {
-        path: '/assets/images/index/banner-bg.png',
-        key: 's_background_image_of_the_banner'
-      }
+      path: '/assets/images/home/t_bg.png',
+      key: 's_t_bg'
+    },
+    {
+      path: '/assets/images/home/client_bg.png',
+      key: 's_client_bg'
+    },
+    {
+      path: '/assets/images/home/channel_bg.png',
+      key: 's_channel_bg'
+    },
+    {
+      path: '/assets/images/home/service_bg.png',
+      key: 's_service_bg'
+    }, {
+      path: '/assets/images/index/bg.png',
+      key: 's_background_picture_of_the_front_page'
+    },
+    {
+      path: '/assets/images/index/tree_bg.png',
+      key: 's_background_image_of_the_tree'
+    },
+    {
+      path: '/assets/images/index/banner-bg.png',
+      key: 's_background_image_of_the_banner'
+    }
     ];
     const promises = imageMap.map(item =>
       new Promise((resolve, reject) => {
@@ -125,7 +125,7 @@ Page({
       s_banner_height: imageHeight
     });
   },
-  handleJumpInfo(evt){
+  handleJumpInfo(evt) {
     const path = evt?.currentTarget?.dataset?.item?.path
     wx.switchTab({
       url: path,
@@ -401,6 +401,7 @@ Page({
         termial_active: rspns[0].id,
         tabs_bg: rspns[0].id == '-1' ? _this.data.s_client_bg : (rspns[0].id == 222 ? _this.data.s_channel_bg : _this.data.s_service_bg)
       }, () => {
+        getApp().data.reflag = 0
         _this.initialQuickEntry({
           id: rspns[0].id
         })
@@ -424,6 +425,7 @@ Page({
   onLoad: function (options) {
     wx.hideTabBar();
     this.initialGetBanner()
+    this.handleTermialList()
     if (options?.scene || options?.query) {
       console.log(options?.scene || options?.query)
       this.setData({
@@ -466,14 +468,17 @@ Page({
   },
 
   onShow: function (e) {
-    this.handleTermialList()
+    if (getApp()?.data?.reflag == 1) {
+      this.handleTermialList()
+    }
+
     const _this = this
     wx.getStorage({
       key: 'userKey', // 替换为你的缓存键值
       success(res) {
         console.log("获取成功", res.data); // 成功时的数据
         _this.setData({
-          account: res?.data?.realname||res?.data?.username
+          account: res?.data?.realname || res?.data?.username
         })
       },
       fail(err) {
