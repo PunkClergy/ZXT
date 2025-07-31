@@ -1,0 +1,123 @@
+/* pages/settings/settings.wxss */
+.settings-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+  position: relative;
+}
+
+.settings-group {
+  margin-bottom: 10px;
+  background-color: #ffffff;
+}
+
+.group-title {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #999999;
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.item-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.item-text {
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.item-right {
+  display: flex;
+  align-items: center;
+}
+
+.item-value {
+  font-size: 14px;
+  color: #999999;
+  margin-right: 5px;
+}
+
+.item-arrow {
+  width: 16px;
+  height: 16px;
+}
+
+
+/* 最后一个设置项去掉下划线 */
+.settings-item:last-child {
+  border-bottom: none;
+}
+
+switch {
+  transform: scale(0.7);
+  /* 缩小到 80% */
+}
+
+/* 车辆转移 */
+/* 统一前缀 transfer- */
+.transfer-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx;
+  gap: 20rpx;
+}
+
+.transfer-input {
+  border: 1rpx solid #c5c3c3;
+  height: 80rpx;
+  padding: 0 20rpx;
+  font-size: 26rpx;
+  border-radius: 10rpx;
+  /* 添加内边距提升输入体验 */
+}
+
+.transfer-btn-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.transfer-confirm-btn {
+  width: 100%;
+  background-color: #1B64B1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80rpx;
+  color: white;
+  border-radius: 8rpx;
+  /* 添加圆角 */
+}
+
+.transfer-tips {
+  display: flex;
+  flex-direction: column;
+}
+
+.transfer-tip-item {
+  font-size: 26rpx;
+  color: #666;
+  /* 添加浅灰色提升可读性 */
+  line-height: 1.6;
+  /* 增加行高 */
+}

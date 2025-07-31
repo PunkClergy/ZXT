@@ -150,7 +150,9 @@
     "pages/policy/index",
     "pages/lostClaims/index",
     "pages/electronicFence/index",
-    "pages/privateCar/index"
+    "pages/privateCar/index",
+    "pages/listOfPrivateCars/index",
+    "pages/listOfPrivateCars/setting/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

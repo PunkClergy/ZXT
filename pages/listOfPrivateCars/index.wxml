@@ -1,0 +1,55 @@
+
+<view class="settings-container">
+
+  <!-- 设置项列表 -->
+  <scroll-view class="settings-list" scroll-y>
+    <view class="settings-group">
+      <view class="settings-item" data-sign="1" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">感应设置</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view>
+    </view>
+    <view class="settings-group">
+      <view class="settings-item" data-sign="2" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">工程模式</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view>
+      <view class="settings-item" data-sign="3" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">车型指令模式</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view>
+    </view>
+    <view class="settings-group">
+      <view class="settings-item" data-sign="4" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">个性配置</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view>
+      <view class="settings-item" data-sign="5" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">车辆转移</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view>
+      <view class="settings-item" data-sign="6" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">编辑车辆</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view>
+      <view class="settings-item" data-sign="7" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">删除车辆</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view>
+    </view>
+  </scroll-view>
+</view>

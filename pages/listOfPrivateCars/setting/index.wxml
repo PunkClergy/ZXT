@@ -1,0 +1,84 @@
+<view class="settings-container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <!-- <custom-header title="{{sign==1?'感应设置':sign==5?'车辆转移':sign==6?'编辑车辆':sign==3?'车型指令配置':sign==4?'个性配置':'设置'}}" /> -->
+  <custom-header title="{{headerTitle}}" />
+  <!-- 设置项列表 -->
+  <scroll-view class="settings-list" scroll-y style="margin-top: {{navBarHeight + statusBarHeight}}px;">
+    <!-- 感应设置 -->
+    <block wx:if="{{sign == 1}}">
+      <view style="font-size: 20rpx;display: flex;justify-content: center;flex-direction: column;align-items: center;padding: 20rpx;gap: 20rpx;">
+        <text>*请检查蓝牙是否连接，是否已经站在车辆旁。连接蓝牙后才可进行配对。</text>
+        <view style="background-color: #fff;padding: 15rpx 100rpx; font-size: 26rpx;border-radius: 10rpx;">蓝牙配对</view>
+        <text>发起系统蓝牙与车载设备进行配对，将会弹出配对请求对话框，请点击【配对】。如果在手机系统蓝牙取消了配对，感应将会失效，需重新点击【蓝牙配对】进行配对</text>
+      </view>
+      <view class="settings-group">
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">感应设置</text>
+          </view>
+          <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;">
+            <text>开锁0，关锁0</text>
+            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+          </view>
+        </view>
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">蓝牙断开自动锁车</text>
+          </view>
+          <switch checked="{{notificationEnabled}}" bindchange="toggleNotification" color="#07C160" />
+        </view>
+      </view>
+    </block>
+    <!-- 车辆转移 -->
+    <block wx:if="{{sign==5}}">
+      <view class="transfer-container">
+        <input class="transfer-input" placeholder="请输入接收人手机号" />
+        <input class="transfer-input" placeholder="请输入您的登录密码" />
+        <view class="transfer-btn-wrapper">
+          <text class="transfer-confirm-btn">确认</text>
+        </view>
+        <view class="transfer-tips">
+          <text class="transfer-tip-item">1.接收人手机号需要先注册才能转移</text>
+          <text class="transfer-tip-item">2.要求输入的登录密码为您自己的登录密码</text>
+        </view>
+      </view>
+    </block>
+    <!-- 编辑车辆 -->
+    <block wx:if="{{sign ==6 }}">
+      <view class="settings-group">
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">车牌号码</text>
+          </view>
+          <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;">
+            <input placeholder="京A67Y65" style="text-align: right;" />
+            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+          </view>
+        </view>
+      </view>
+    </block>
+    <!-- 车型指令配置 -->
+    <block wx:if="{{sign==3}}">
+      <view class="settings-group">
+        <view wx:for="{{carBrands}}" wx:key="name" class="settings-item" bindtap="handleCarBrand" data-brand="{{item.name}}">
+          <view class="item-left">
+            <text class="item-text">{{item.name}}</text>
+          </view>
+          <view class="item-right">
+            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+          </view>
+        </view>
+      </view>
+    </block>
+    <!-- 个性配置 -->
+    <block wx:if="{{sign == 4}}">
+      <view class="settings-group" wx:for="{{controlItems}}" wx:key="name">
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">{{item.name}}</text>
+          </view>
+          <switch checked="{{item.enabled}}" bindchange="handleToggleControl" data-index="{{index}}" color="#07C160" />
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
