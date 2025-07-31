@@ -1,5 +1,4 @@
 <view class="settings-container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <!-- <custom-header title="{{sign==1?'感应设置':sign==5?'车辆转移':sign==6?'编辑车辆':sign==3?'车型指令配置':sign==4?'个性配置':'设置'}}" /> -->
   <custom-header title="{{headerTitle}}" />
   <!-- 设置项列表 -->
   <scroll-view class="settings-list" scroll-y style="margin-top: {{navBarHeight + statusBarHeight}}px;">

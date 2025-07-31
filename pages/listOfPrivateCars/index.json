@@ -1,7 +1,6 @@
 {
-  "navigationBarTitleText": "设置",
-  "navigationBarBackgroundColor": "#ffffff",
-  "navigationBarTextStyle": "black",
-  "backgroundColor": "#f5f5f5",
-  "usingComponents": {}
+  "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom"
 }
