@@ -51,7 +51,18 @@ Page({
       2: {
         title: '工程模式',
         placeholderText: '请输入操作密码',
-        callback: (content) => console.log('工程模式密码:', content),
+        callback: (content) => {
+          if (content == '666888') {
+            wx.navigateTo({
+              url: '/pages/listOfPrivateCars/engineering/index',
+            })
+          } else {
+            wx.showToast({
+              title: '密码错误',
+              icon: 'none'
+            })
+          }
+        },
         fallback: () => console.log('用户取消输入操作密码')
       },
       7: {

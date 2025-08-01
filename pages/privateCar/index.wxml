@@ -18,6 +18,37 @@
     </view>
   </view>
 
+  <!-- 模式切换区域 -->
+  <view class="mode-switch">
+    <view class="mode-btn {{isAutoMode ? '' : 'active'}}" bindtap="switchMode" data-mode="manual">
+      <text>手动模式</text>
+    </view>
+    <view class="mode-btn {{isAutoMode ? 'active' : ''}}" bindtap="switchMode" data-mode="auto">
+      <text>感应模式</text>
+    </view>
+  </view>
+
+  <!-- 感应距离设置区域（仅在感应模式时显示） -->
+  <view class="distance-setting" wx:if="{{isAutoMode}}">
+    <view class="section-title">
+      <icon type="settings" size="16" color="#07C160" />
+      <text>感应距离设置</text>
+    </view>
+    <slider 
+      value="{{distance}}" 
+      min="1" 
+      max="10" 
+      step="1" 
+      show-value 
+      activeColor="#07C160" 
+      bindchange="changeDistance"
+    />
+    <view class="distance-hint">
+      <text>当前设置：{{distance}}米</text>
+      <text>当您靠近车辆{{distance}}米内时，车辆将自动解锁</text>
+    </view>
+  </view>
+
   <!-- 控制按钮区域 -->
   <view class="controls-section">
     <view class="section-title">

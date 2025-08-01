@@ -152,7 +152,8 @@
     "pages/electronicFence/index",
     "pages/privateCar/index",
     "pages/listOfPrivateCars/index",
-    "pages/listOfPrivateCars/setting/index"
+    "pages/listOfPrivateCars/setting/index",
+    "pages/listOfPrivateCars/engineering/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

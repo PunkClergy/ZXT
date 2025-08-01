@@ -95,10 +95,36 @@ Page({
     });
     console.log(`${this.data.controlItems[index].name}状态:`, this.data.controlItems[index].enabled);
   },
+  // 选择汽车品牌
   handleCarBrand(e) {
     const brand = e.currentTarget.dataset.brand;
     console.log("选择的品牌:", brand);
     // 这里可以添加导航逻辑
   },
+  // 搜索蓝牙
+  openBluetoothAdapter() {
+    console.log(99900)
+    wx.openBluetoothAdapter({
+      success: (res) => {
+        console.log('openBluetoothAdapter success', res)
+        // 蓝牙适配器开启成功后开始搜索设备
+        // this.startBluetoothDevicesDiscovery()
+      },
+      fail: (res) => {
+        // 处理10001错误（蓝牙适配器不可用）
+        if (res.errCode === 10001) {
+          // 监听蓝牙适配器状态变化事件
+          wx.onBluetoothAdapterStateChange(function (res) {
+            console.log('onBluetoothAdapterStateChange', res)
+            // 当适配器变为可用时开始搜索
+            if (res.available) {
+              this.startBluetoothDevicesDiscovery()
+            }
+          })
+        }
+      }
+    })
+  },
+  
 
 })

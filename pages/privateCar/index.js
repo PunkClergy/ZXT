@@ -1,11 +1,32 @@
 Page({
   data: {
     currentPage: 0,
-    scrollLeft: 0
+    scrollLeft: 0,
+    isAutoMode: false,  // 默认手动模式
+    distance: 3         // 默认感应距离3米
   },
   
   onLoad: function() {
     // 初始化时可以添加其他逻辑
+  },
+  
+  // 切换模式
+  switchMode: function(e) {
+    const mode = e.currentTarget.dataset.mode;
+    this.setData({
+      isAutoMode: mode === 'auto'
+    });
+    wx.showToast({
+      title: mode === 'auto' ? '已切换至感应模式' : '已切换至手动模式',
+      icon: 'none'
+    });
+  },
+  
+  // 改变感应距离
+  changeDistance: function(e) {
+    this.setData({
+      distance: e.detail.value
+    });
   },
   
   handleScroll: function(e) {
