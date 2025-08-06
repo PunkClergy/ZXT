@@ -18,6 +18,8 @@ Page({
     data:'',
     msg:'',
     consolemsg:'',
+    deviceIDC:"51CarKey932505100319",
+    isOwner:false,
 
     //scrollTop:0,
     scrollTo:"hiddenview",
@@ -54,6 +56,7 @@ Page({
     })
   },
 
+
   auth_encrypt:function(passwordSource,random){
     var passwordEncrypt=[0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00];
     for(var i = 0;i < 6;i++){
@@ -83,36 +86,36 @@ Page({
         that.PackAndSend(type,8,[0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00]);
         break;
       case 0x22://配对
-        that.PackAndSend(type,8,[0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00]);
+        that.PackAndSend(type,8,data);
         break;
       default:
         break;
     }
   },
-  arrayToArrayBuffer: function (array, elementSize = 1) {
-    const typedArray = new Uint8Array(array.length * elementSize);
-    for (let i = 0; i < array.length; i++) {
-      typedArray[i * elementSize] = array[i];
-      // 如果需要处理多字节元素，请在这里添加额外的逻辑
-    }
-    return typedArray.buffer;
-  },
+
   PackAndSend: function(type,len,data){
     var header=[0x24];
     var end=[0x24];
     var packet=header.concat(type).concat(len).concat(data).concat(end);
     that.consoleOut("send:"+byteUtil.buf2hex(packet)+"\r\n");
-    bleKeyManager.dispatcherSend2(that.arrayToArrayBuffer(packet));
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
     return;
   },
-
-  btn2: function(){
+  arrayToArrayBuffer: function (array, elementSize = 1) {
+    const typedArray = new Uint8Array(array.length * elementSize);
+    for (let i = 0; i < array.length; i++) {
+      typedArray[i * elementSize] = array[i]; 
+      // 如果需要处理多字节元素，请在这里添加额外的逻辑
+    }
+    return typedArray.buffer;
+  },
+  btnStartConnect: function(){
     if(that.data.connectionID=="")
     {
-    bleKeyManager.connectBLE("51CarKey932505100319",function(state){
+    bleKeyManager.connectBLE(that.data.deviceIDC,function(state){
       if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_PRE_EXECUTE == state) {
         //显示加载框
-        appUtil.showLoading('加载中...');
+        //appUtil.showLoading('加载中...');
       } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR == state) {
         //异常取消加载框
         appUtil.hideLoading();
@@ -124,7 +127,7 @@ Page({
         appUtil.showModal('没有发现设备', false, function (confirm) { });
       } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED == state) {
         //连接失败
-        appUtil.showModal('蓝牙连接失败', false, function (confirm) { });
+        //appUtil.showModal('蓝牙连接失败', false, function (confirm) { });
       } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_UNSUPPORTED == state) {
         //不支持ble
         appUtil.showModal('您的手机不支持低功耗蓝牙', false, function (confirm) { });
@@ -146,17 +149,11 @@ Page({
       else{//正常数据
         //that.btnParseRecv();
       }
-      // var height = wx.getSystemInfoSync().windowHeight;
+
       that.setData({
         msg: that.data.msg + "receive: type:" + type + ",data:" + hexTextData + "\r\n",
-        // scrollTop: height*400
+ 
       })
-      // if(that.data.upgradeParse==true)
-      //   that.btnParseRecv2();
-      // else {
-      //   if(that.data.opMode==0)
-      //     that.btnParseRecv();
-      // }
 
       that.setData({
         scrollTo: "hiddenview"
@@ -167,7 +164,7 @@ Page({
       appUtil.showModal('已连接蓝牙', false, function (confirm) { });
   },
 
-  btn5: function(){
+  btnEndConnect: function(){
     bleKeyManager.releaseBle();
   },
 
@@ -193,7 +190,7 @@ Page({
         VIN:"",
         OPENsta:0,
 
-        //addKeyErrorFlag:true,
+   
 
       });
     }
@@ -221,7 +218,8 @@ Page({
   },
 
   btnUnlock: function(){
-    that.btnCmdSend(0x03,"");
+      that.btnCmdSend(0x03,"");
+    
   },
   btnLock: function(){
     that.btnCmdSend(0x04,"");
@@ -231,6 +229,40 @@ Page({
   },
   btnFind: function(){
     that.btnCmdSend(0x06,"");
+  },
+  btnPair: function(){
+    const deviceInfo = wx.getDeviceInfo()
+    console.log(deviceInfo);
+    if(deviceInfo.system.toLowerCase().indexOf('android')!=-1){
+      that.btnCmdSend(0x22,[0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00]);
+      setTimeout(() => {
+        bleKeyManager.makePair();
+      }, 200);      
+    }
+    else{
+      that.btnCmdSend(0x22,[0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00]);
+      setTimeout(() => {
+        that.btnCmdSend(0x22,[0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00]);
+        setTimeout(() => {
+          that.btnEndConnect();
+          var pairInteval=setInterval(() => {
+            if(bleKeyManager.getBLEConnectionState()==false){
+              clearInterval(pairInteval);
+              setTimeout(() => {
+                that.btnStartConnect();
+              }, 500);
+            }
+          }, 500);
+          setTimeout(() => {
+            clearInterval(pairInteval);
+          }, 3000);
+        }, 200);
+      }, 200);      
+    }
+  },
+
+  btnConnected: function(){
+    bleKeyManager.connectedDevice();
   },
 
   /**
@@ -261,6 +293,10 @@ Page({
   onLoad: function (options) {
     console.log("debug page load")
     that = this;
+      that.btnStartConnect();     
+
+
+
     that.data.pageInterval=setInterval(() => {
       if(bleKeyManager.getBLEConnectionState()==true){
         that.setData({ 
@@ -277,8 +313,7 @@ Page({
 
          });
       }
-    }, 1000);
-    //that.btnInfo();
+    }, 200);
     that.setData({
       msg: "",
       consolemsg:"",
@@ -289,19 +324,9 @@ Page({
     })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
+ 
 
-  },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    
-  },
 
   /**
    * 生命周期函数--监听页面隐藏
@@ -324,35 +349,19 @@ Page({
    */
   onUnload: function () {
     console.log("debug page unload")
-    if(that.data.connectionState=="已连接"){
-      setTimeout(function (){
-        bleKeyManager.releaseBle();
-      },1500)
-    }
+  
+    setTimeout(function (){
+      bleKeyManager.releaseBle();
+    },500)
     clearInterval(that.data.pageInterval);
     wx.setKeepScreenOn({
       keepScreenOn: false
     })
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
+ 
 
-  },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
 
-  },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

@@ -82,11 +82,13 @@ page {
   animation: pulse 1.5s infinite;
 }
 
+
 /* 控制按钮区域 */
 .controls-section {
   padding: 16px 12px;
   background-color: #FFFFFF;
   border-top: 1px solid #F0F0F0;
+  margin-top: 16px;
 }
 
 .section-title {
@@ -117,7 +119,6 @@ page {
   box-sizing: border-box;
 }
 
-/* 确保每屏显示4个完整按钮 */
 .control-btn {
   background-color: #FFFFFF;
   border-radius: 12px;
@@ -128,7 +129,7 @@ page {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: calc(25% - 9px); /* 4个按钮平分宽度，减去间距 */
+  width: calc(25% - 9px);
   min-width: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   flex-shrink: 0;
@@ -162,10 +163,6 @@ page {
 
 .control-btn:nth-child(4) .btn-icon {
   background-color: rgba(16, 174, 255, 0.08);
-}
-
-.control-btn:nth-child(5) .btn-icon {
-  background-color: rgba(100, 103, 240, 0.08);
 }
 
 .control-btn .label {
@@ -211,51 +208,4 @@ page {
   100% {
     opacity: 0.8;
   }
-}
-/* 模式切换样式 */
-.mode-switch {
-  display: flex;
-  margin: 16px 20px 0;
-  background-color: #F5F7FA;
-  border-radius: 12px;
-  padding: 4px;
-}
-
-.mode-btn {
-  flex: 1;
-  text-align: center;
-  padding: 10px 0;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #666;
-  transition: all 0.3s;
-}
-
-.mode-btn.active {
-  background-color: #FFFFFF;
-  color: #07C160;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-/* 感应距离设置区域样式 */
-.distance-setting {
-  background-color: #FFFFFF;
-  margin: 16px 20px 0;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-}
-
-.distance-hint {
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  font-size: 13px;
-  color: #666;
-}
-
-.distance-hint text:first-child {
-  font-weight: 500;
-  color: #07C160;
-  margin-bottom: 4px;
 }

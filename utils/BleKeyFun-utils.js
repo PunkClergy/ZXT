@@ -217,17 +217,17 @@ function startBluetoothDevicesDiscovery() {
       gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_DEVICES_DISCOVERY_FAILD);
     }
   });
-  discoverTimeout = setTimeout(function () {
-    if (discovering) {
-      gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
-      gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND);
-      stopScanBle();
-      if (isBLEAdapterOpen) {
-        logger.e('关闭适配器');
-        closeBluetoothAdapter();
-      }
-    }
-  }, devicesDiscoveryTimeOut);
+  // discoverTimeout = setTimeout(function () {
+  //   if (discovering) {
+  //     gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
+  //     gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND);
+  //     stopScanBle();
+  //     if (isBLEAdapterOpen) {
+  //       logger.e('关闭适配器');
+  //       closeBluetoothAdapter();
+  //     }
+  //   }
+  // }, devicesDiscoveryTimeOut);
 }
 
 /**
@@ -302,6 +302,7 @@ function writeBLECharacteristicValue(buffer, writeBLECharacteristicValue) {
 function startConnect() {
   wx.createBLEConnection({
     deviceId: deviceId,
+    // timeout: 2000,
     success: function (res) {
       /**
       * 连接成功，后开始获取设备的服务列表
@@ -315,6 +316,7 @@ function startConnect() {
     fail: function (res) {
       //连接失败
       console.log(res);
+      gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED);
     }
   })
 }
@@ -371,7 +373,9 @@ function getBLEDeviceReadCharacteristics() {
       if (gReadRandomCharacteristic != '') {
         readBLECharacteristicValue();
       }
-
+      // if (gWriteService != '' && gReadService != '' && gWriteCharacteristic != '' && gReadCharacteristic != '' && gReadRandomCharacteristic != '') {
+      //   saveDeviceInfo();
+      // }
     }, fail: function (res) {
       console.log(res);
     }
@@ -497,41 +501,76 @@ function onBLECharacteristicValueChange() {
  * 监听寻找到新设备的事件
  */
 function onBluetoothDeviceFound() {
-  //安卓手机6.0系统及以上 必须开启微信定位权限才能使用 蓝牙搜索功能
-  wx.onBluetoothDeviceFound(function (devices) {
-    logger.e('device found:' + devices.devices[0].name);
-    if (gIdc == devices.devices[0].name || gIdc == devices.devices[0].localName ||
-      utils.hexCharCodeToStr(utils.buf2hex(devices.devices[0].advertisData)).indexOf(gIdc) != -1) {
-      console.log(devices);
-      deviceId = devices.devices[0].deviceId;
-      //监听连接状态
-      onBLEConnectionStateChange(function (connectState) {
-        //设置连接状态
-        connected = connectState;
-        if (connectState) {
-          gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_SUCESS);
-        } else {
-          gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
-          //gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED);
-          //releaseBle();
+  // getDeviceInfo(gIdc,function(ready){
+  //   if(deviceId!='' && deviceId!=undefined){
+  //     //监听连接状态
+  //     onBLEConnectionStateChange(function (connectState) {
+  //       //设置连接状态
+  //       connected = connectState;
+  //       if (connectState) {
+  //         gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_SUCESS);
+  //       } else {
+  //         gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
+  //         //gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED);
+  //         //releaseBle();
+  //       }
+  //     });
+  //     /**
+  //      * 监听蓝牙适配器状态
+  //      */
+  //     onBluetoothAdapterStateChange();
+  //     /**
+  //      * 获取设备发过来的数据
+  //      */
+  //     onBLECharacteristicValueChange();
+  //     //停止扫描
+  //     stopScanBle();
+  //     clearTimeout(discoverTimeout);
+  //     //if (!isQuickStart('onBluetoothDeviceFound')) {
+  //       startConnect(gPwd, gSendType, gBluetoothState, gOnReceiveValue);
+  //     //}
+  //   }
+  //   else{
+      //安卓手机6.0系统及以上 必须开启微信定位权限才能使用 蓝牙搜索功能
+      wx.onBluetoothDeviceFound(function (devices) {
+        logger.e('device found:' + devices.devices[0].name);
+        if (gIdc == devices.devices[0].name 
+          || gIdc == devices.devices[0].localName 
+          //|| utils.hexCharCodeToStr(utils.buf2hex(devices.devices[0].advertisData)).indexOf(gIdc) != -1
+          ) {
+          console.log(devices);
+          deviceId = devices.devices[0].deviceId;
+          //监听连接状态
+          onBLEConnectionStateChange(function (connectState) {
+            //设置连接状态
+            connected = connectState;
+            if (connectState) {
+              gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_SUCESS);
+            } else {
+              gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR);
+              //gBluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED);
+              //releaseBle();
+            }
+          });
+          /**
+           * 监听蓝牙适配器状态
+           */
+          onBluetoothAdapterStateChange();
+          /**
+           * 获取设备发过来的数据
+           */
+          onBLECharacteristicValueChange();
+          //停止扫描
+          //stopScanBle();
+          clearTimeout(discoverTimeout);
+          //if (!isQuickStart('onBluetoothDeviceFound')) {
+            startConnect(gPwd, gSendType, gBluetoothState, gOnReceiveValue);
+          //}
         }
-      });
-      /**
-       * 监听蓝牙适配器状态
-       */
-      onBluetoothAdapterStateChange();
-      /**
-       * 获取设备发过来的数据
-       */
-      onBLECharacteristicValueChange();
-      //停止扫描
-      stopScanBle();
-      clearTimeout(discoverTimeout);
-      if (!isQuickStart('onBluetoothDeviceFound')) {
-        startConnect(gPwd, gSendType, gBluetoothState, gOnReceiveValue);
-      }
-    }
-  })
+      })
+  //   }
+  // });
+
 }
 
 /**
@@ -623,7 +662,6 @@ function connectMyBLE(idc, bluetoothState, onReceiveValue, isIntercept) {
     //用户的主动行为
     bluetoothState(DEFAULT_BLUETOOTH_STATE.BLUETOOTH_PRE_EXECUTE);
   }
-  initSendData(idc, "", "", bluetoothState, onReceiveValue);
 
   if (connected) {
     // 已连接，发送数据
@@ -633,12 +671,14 @@ function connectMyBLE(idc, bluetoothState, onReceiveValue, isIntercept) {
       if (isSupported) {
         isBLEAdapterAvailable(function (ava) {
           if (ava) {
+            initSendData(idc, "", "", bluetoothState, onReceiveValue);
             if (needScan()) {
               //适配器可用，并已经打开适配器
               startBluetoothDevicesDiscovery();
             } else {
+              
               //开始连接
-              startConnect();
+              //startConnect();
             }
           } else {
             //适配器不可用
@@ -809,6 +849,122 @@ function releaseData() {
   deviceId = '';
 }
 
+function makePair(){
+  wx.makeBluetoothPair({
+    // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
+    deviceId: deviceId,
+    // 这里的 characteristicId 需要在上面的 getBLEDeviceCharacteristics 接口中获取
+    timeout: 20000,
+    success: function (res) {
+      console.log(res);
+    },
+    fail: function (res) {
+      console.log(res);
+    }
+  })
+}
+
+function connectedDevice(name,status){
+  wx.openBluetoothAdapter({
+    success: function (res) {
+      console.log(res);
+      isBLEAdapterOpen = true;
+      console.log(gReadService);
+      if(gReadService!='' && gReadService!=undefined){
+        wx.getConnectedBluetoothDevices({
+          services: [gReadService],
+          success:function(res) {
+            console.log(res);
+            if(res.devices.length>0){
+              if(res.devices[0].name==name){
+                //console.log(res.devices[0].name);
+                status(true);
+                // gIdc = name;
+                // onBluetoothDeviceFound();
+              }
+              else{
+                status(false);
+              }
+            }
+            else{
+              status(false);
+            }
+          },
+          fail:function(res){
+            console.log(res);
+            status(false);
+          }
+        })
+      }
+      else{
+        status(false);
+      }
+    },
+    fail: function (res) {
+      console.log(res);
+      isBLEAdapterOpen = false;
+    }
+  })
+}
+
+function saveDeviceInfo() {
+  console.log("saveDeviceInfo");
+  var param = {};
+  param['deviceId'] =deviceId;
+  param['readServiceUUID'] =gReadService;
+  param['writeServiceUUID'] =gWriteService;
+  param['readCharacUUID'] =gReadCharacteristic;
+  param['writeCharacUUID'] =gWriteCharacteristic;
+  param['randomServiceUUID'] =gReadService;
+  param['randomCharacUUID'] =gReadRandomCharacteristic;
+  //console.log(param);
+  var jparam=JSON.stringify(param);
+  //console.log(jparam)
+  wx.setStorage({
+    key: gIdc,
+    data: jparam,
+    success: function () {
+    }
+  })
+}  
+
+function getDeviceInfo(deviceIDC,ready) {
+  console.log("getDeviceInfo");
+  wx.getStorage({
+    key: deviceIDC,
+    success: function (res) {
+      //console.log(res);
+      var param=JSON.parse(res.data);
+      //console.log(param)
+      deviceId=param.deviceId;
+      console.log(deviceId);
+      gReadService=param.readServiceUUID;
+      console.log(gReadService);
+      gWriteService=param.writeServiceUUID;
+      console.log(gWriteService);
+      gReadCharacteristic=param.readCharacUUID;
+      console.log(gReadCharacteristic);
+      gWriteCharacteristic=param.writeCharacUUID;
+      console.log(gWriteCharacteristic);
+      gReadRandomCharacteristic=param.randomCharacUUID;
+      console.log(gReadRandomCharacteristic);
+      ready(true);
+    },
+    fail: function(res){
+      console.log(res);
+      ready(false);
+    }
+  })
+}  
+
+function clrDeviceInfo(deviceIDC){
+  wx.removeStorage({
+    key: deviceIDC,
+    success: function () {
+    }
+  })  
+}
+
 module.exports = {
   connectBLE: connectBLE,
   releaseBle: releaseBle,
@@ -817,4 +973,7 @@ module.exports = {
   DEFAULT_BLUETOOTH_STATE: DEFAULT_BLUETOOTH_STATE,
   getBLEConnectionState: getBLEConnectionState,
   getBLEConnectionID: getBLEConnectionID,
+  makePair:makePair,
+  connectedDevice:connectedDevice,
+  getDeviceInfo:getDeviceInfo,
 }
