@@ -534,8 +534,10 @@ function onBluetoothDeviceFound() {
       //安卓手机6.0系统及以上 必须开启微信定位权限才能使用 蓝牙搜索功能
       wx.onBluetoothDeviceFound(function (devices) {
         logger.e('device found:' + devices.devices[0].name);
-        if (gIdc == devices.devices[0].name 
-          || gIdc == devices.devices[0].localName 
+        if (
+          // gIdc == devices.devices[0].name 
+          // || 
+          gIdc == devices.devices[0].localName 
           //|| utils.hexCharCodeToStr(utils.buf2hex(devices.devices[0].advertisData)).indexOf(gIdc) != -1
           ) {
           console.log(devices);
