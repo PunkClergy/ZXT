@@ -47,5 +47,6 @@ Page({
 
   navigateToUserInfo() {
     console.log(111)
-  }
+  },
+
 })

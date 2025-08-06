@@ -153,6 +153,7 @@
     "pages/privateCar/index",
     "pages/listOfPrivateCars/index",
     "pages/listOfPrivateCars/setting/index",
+    "pages/BleKeyTest/BleKeyTest",
     "pages/listOfPrivateCars/engineering/index"
   ],
   "window": {
