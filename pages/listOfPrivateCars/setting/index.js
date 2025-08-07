@@ -21,7 +21,7 @@ const CAR_BRANDS = [
   { name: "通用车型" } // 通用车型
 ];
 
-// 控制项常量数组
+// 控制项常量数组（新增熄火选项）
 const CONTROL_ITEMS = [
   { name: "寻车", enabled: false },      // 寻车功能
   { name: "尾箱", enabled: false },      // 尾箱控制
@@ -103,7 +103,7 @@ Page({
     const that = this;
     const deviceInfo = wx.getDeviceInfo();  // 获取设备信息
     console.log(deviceInfo);  // 打印设备信息
-    
+
     // 判断Android系统
     if (deviceInfo.system.toLowerCase().includes('android')) {
       // 发送配对命令
@@ -185,11 +185,13 @@ Page({
     });
   },
 
-  // 打包并发送数据
-  PackAndSend(type, len, data) {
+  // 打包并发送数据（支持动态数据体长度）
+  PackAndSend(type, dataLength, data) {
     const header = [0x24];  // 数据头
     const end = [0x24];     // 数据尾
-    const packet = [...header, type, len, ...data, ...end];  // 组合数据包
+    // 根据要求的数据长度填充数据，不足补0
+    const paddedData = [...data].concat(new Array(dataLength - data.length).fill(0x00)).slice(0, dataLength);
+    const packet = [...header, type, ...paddedData, ...end];  // 组合数据包
     this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");  // 输出日志
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
   },
@@ -204,13 +206,13 @@ Page({
     return passwordEncrypt;
   },
 
-  // 发送命令
+  // 发送命令（区分不同指令的数据体长度）
   btnCmdSend(type, data) {
     switch (type) {
       case 0x10:  // 认证命令
         const orgKey = [0x33, 0x69, 0x45, 0x22, 0x83, 0x78];  // 原始密钥
         const retKey = this.auth_encrypt(orgKey, data);  // 加密密钥
-        this.PackAndSend(type, 8, retKey);  // 发送认证数据
+        this.PackAndSend(type, 8, retKey);  // 发送8字节认证数据
         break;
       case 0x03: // 开锁命令
       case 0x04: // 锁车命令
@@ -218,10 +220,13 @@ Page({
       case 0x06: // 寻车命令
         this.PackAndSend(type, 8, new Array(8).fill(0x00));  // 发送8字节空数据
         break;
-      case 0x3b:
-        this.PackAndSend(type, 8, data);  // 发送8字节空数据
+      case 0x3b: // 熄火命令(特殊12字节)
+        // 熄火指令数据包: 24 3b 01 00 00 00 00 00 00 00 00 00 00 00 24
+        const flameoutData = [0x01]; // 第一个字节为0x01，后面补11个0x00
+        this.PackAndSend(type, 12, flameoutData); // 发送12字节数据
+        break;
       case 0x22: // 配对命令
-        this.PackAndSend(type, 8, data);  // 发送配对数据
+        this.PackAndSend(type, 8, data); // 发送8字节数据
         break;
       default:
         break;
@@ -240,17 +245,17 @@ Page({
         } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR === state) {
           appUtil.hideLoading();  // 隐藏加载框
         } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ADAPTER_UNAVAILABLE === state) {
-          appUtil.showModal('请打开蓝牙', false, () => {});  // 提示打开蓝牙
+          appUtil.showModal('请打开蓝牙', false, () => { });  // 提示打开蓝牙
         } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND === state) {
-          appUtil.showModal('没有发现设备', false, () => {});  // 提示未发现设备
+          appUtil.showModal('没有发现设备', false, () => { });  // 提示未发现设备
         } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED === state) {
           // 连接失败
         } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_UNSUPPORTED === state) {
-          appUtil.showModal('您的手机不支持低功耗蓝牙', false, () => {});  // 提示不支持BLE
+          appUtil.showModal('您的手机不支持低功耗蓝牙', false, () => { });  // 提示不支持BLE
         } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_SEND_FAILED === state) {
-          appUtil.showModal('数据发送失败', false, () => {});  // 提示发送失败
+          appUtil.showModal('数据发送失败', false, () => { });  // 提示发送失败
         } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NO_RESPONSE === state) {
-          appUtil.showModal('设备超时无响应', false, () => {});  // 提示超时
+          appUtil.showModal('设备超时无响应', false, () => { });  // 提示超时
         } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_SUCESS === state) {
           appUtil.hideLoading();  // 连接成功，隐藏加载框
         }
@@ -266,7 +271,7 @@ Page({
         });
       });
     } else {
-      appUtil.showModal('已连接蓝牙', false, () => {});  // 提示已连接
+      appUtil.showModal('已连接蓝牙', false, () => { });  // 提示已连接
     }
   },
 
@@ -301,13 +306,11 @@ Page({
   },
 
   // 切换控制项状态
-  handleToggleControl(e) {
-    const index = e.currentTarget.dataset.index;  // 获取索引
-    const key = `controlItems[${index}].enabled`;  // 构造key
-    this.setData({
-      [key]: !this.data.controlItems[index].enabled  // 切换状态
-    });
-    console.log(`${this.data.controlItems[index].name}状态:`, this.data.controlItems[index].enabled);
+  handleToBreakOff(e) {
+
+
+    this.btnCmdSend(0x3b, [0x01]); // 发送熄火指令(自动补全到12字节)
+
   },
 
   // 处理汽车品牌选择
@@ -318,6 +321,5 @@ Page({
 
   // 结束蓝牙连接
   btnEndConnect() {
-    // 待实现
   }
 });
