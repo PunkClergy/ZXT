@@ -66,6 +66,7 @@ Page({
     pageInterval: 0,   // 页面定时器ID
     connectionID: "",  // 蓝牙连接ID
     deviceIDC: "51CarKey932505100319",  // 默认设备ID
+    notificationEnabled: false
   },
 
   // 页面加载生命周期
@@ -220,9 +221,8 @@ Page({
       case 0x06: // 寻车命令
         this.PackAndSend(type, 8, new Array(8).fill(0x00));  // 发送8字节空数据
         break;
-      case 0x3b: // 熄火命令(特殊12字节)
-        // 熄火指令数据包: 24 3b 01 00 00 00 00 00 00 00 00 00 00 00 24
-        const flameoutData = [0x01]; // 第一个字节为0x01，后面补11个0x00
+      case 0x3b: // 设置 断开蓝牙自动锁车
+        const flameoutData = data; // 第一个字节为0x01，后面补11个0x00
         this.PackAndSend(type, 12, flameoutData); // 发送12字节数据
         break;
       case 0x22: // 配对命令
@@ -305,12 +305,13 @@ Page({
       });
   },
 
-  // 切换控制项状态
+  // 设置 蓝牙断开自动断开锁车
   handleToBreakOff(e) {
-
-
-    this.btnCmdSend(0x3b, [0x01]); // 发送熄火指令(自动补全到12字节)
-
+    const isEnabled = Boolean(e?.detail?.value);
+    // 发送指定 设置蓝牙断开自动锁车 (0x01: 开, 0x00: 关)
+    this.btnCmdSend(0x3b, [isEnabled ? 0x01 : 0x00]);
+    // 更新通知状态
+    this.setData({ notificationEnabled: isEnabled });
   },
 
   // 处理汽车品牌选择
