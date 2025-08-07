@@ -14,7 +14,7 @@
       </scroll-view>
       <view style="font-size: 20rpx;display: flex;justify-content: center;flex-direction: column;align-items: center;padding: 20rpx;gap: 20rpx;">
         <text>*请检查蓝牙是否连接，是否已经站在车辆旁。连接蓝牙后才可进行配对。</text>
-        <view bindtap="openBluetoothAdapter" style="background-color: #fff;padding: 15rpx 100rpx; font-size: 26rpx;border-radius: 10rpx;">蓝牙配对</view>
+        <view bindtap="btnPair" style="background-color: #fff;padding: 15rpx 100rpx; font-size: 26rpx;border-radius: 10rpx;">蓝牙配对</view>
         <text>发起系统蓝牙与车载设备进行配对，将会弹出配对请求对话框，请点击【配对】。如果在手机系统蓝牙取消了配对，感应将会失效，需重新点击【蓝牙配对】进行配对</text>
       </view>
       <view class="settings-group">
@@ -31,7 +31,7 @@
           <view class="item-left">
             <text class="item-text">蓝牙断开自动锁车</text>
           </view>
-          <switch checked="{{notificationEnabled}}" bindchange="toggleNotification" color="#07C160" />
+          <switch checked="{{notificationEnabled}}" bindchange="handleToBreakOff" color="#07C160" />
         </view>
       </view>
     </block>
