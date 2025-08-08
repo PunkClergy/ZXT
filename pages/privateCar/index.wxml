@@ -1,70 +1,63 @@
-<view class="container">
-  <!-- 顶部导航 -->
-  <view class="header">
-    <view class="user-info">
-      <icon type="success" size="16" color="#07C160" />
-      <text>京A78H7E</text>
+<!-- index.wxml -->
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <custom-header title="私家车开关锁" />
+  <!-- 车辆信息卡片 -->
+  <view class="vehicle-card" style="margin-top:{{c_statusBarHeight + c_navBarHeight +2}}px;">
+    <!-- 车牌与提示信息 -->
+    <view class="license-plate-section">
+      <text class="license-plate">{{licensePlate}}</text>
+      <view class="connection-tip">
+        <text class="connection-tip-bold-text">开启</text>
+        <text class="connection-tip-small-text">钥匙电源</text>
+      </view>
+    </view>
+    <view class="battery-info">
+      <image src="https://k3a.wiselink.net.cn/img/app/blue/battery_75.png" class="battery-icon"></image>
+      <text class="battery-percent">100%</text>
+    </view>
+    <!-- 车辆图片 -->
+    <view style="background-image: url('https://k3a.wiselink.net.cn/img/app/blue/privateCar_bg.png')" class="vehicle-image">
+      <image src="https://k3a.wiselink.net.cn/img/app/blue/privateCar.png" alt="车辆图片" class="vehicle-img"></image>
+    </view>
+
+    <!-- 模式选择器 -->
+    <view class="mode-selector">
+      <view class="mode-item">
+        <image src="https://k3a.wiselink.net.cn/img/app/blue/bluetooth.png" class="mode-icon"></image>
+        <text class="mode-text">蓝牙连接</text>
+      </view>
+      <view class="mode-item">
+        <image src="https://k3a.wiselink.net.cn/img/app/blue/signal.png" class="mode-icon"></image>
+        <text class="mode-text">感应模式</text>
+      </view>
     </view>
   </view>
 
-  <!-- 车辆模型 -->
-  <view class="car-model">
-    <view class="car-image">
-      <image src="https://p3.dcarimg.com/img/tos-cn-i-dcdx/9624b20fdddd459f8d0c574946831c72~1200x0.png" mode="aspectFit" />
-    </view>
-    <view class="car-status">
-      <view class="status-indicator"></view>
-      <text>{{connectionState}}{{connectionState == '已连接'?'· 车辆就绪':''}}</text>
-    </view>
-  </view>
-
-  <!-- 控制按钮区域 -->
-  <view class="controls-section">
-    <view class="section-title">
-      <icon type="success" size="16" color="#07C160" />
-      <text>车辆控制</text>
-    </view>
-
-    <!-- 横向滚动控制按钮 -->
-    <scroll-view class="controls-scroll" scroll-x="true" scroll-left="{{scrollLeft}}" bindscroll="handleScroll" scroll-with-animation>
-      <view class="controls-container">
-        <view class="control-btn" bindtap='handleUnlock'>
-          <view class="btn-icon">
-            <icon type="success" size="24" color="#07C160" />
+  <!-- 控制功能区 - 可滑动分页（每页4个） -->
+  <view class="control-section">
+    <scroll-view class="control-scroll" scroll-x="true" bindscroll="scrollHandler">
+      <view class="control-page" wx:for="{{pages}}" wx:key="index">
+        <view class="control-item" wx:for="{{item}}" wx:key="id" bindtap="{{item.evt}}" data-id="{{item.id}}">
+          <view class="control-icon">
+            <image src="{{item.icon}}" class="control-icon-image"></image>
           </view>
-          <text class="label">开锁</text>
-        </view>
-        <view class="control-btn" bindtap="handleLock">
-          <view class="btn-icon">
-            <icon type="cancel" size="24" color="#FA5151" />
-          </view>
-          <text class="label">关锁</text>
-        </view>
-        <view class="control-btn" bindtap="handleFindCar">
-          <view class="btn-icon">
-            <icon type="warn" size="24" color="#FFC300" />
-          </view>
-          <text class="label">寻车鸣笛</text>
-        </view>
-        <view class="control-btn" bindtap="handleOpenTrunk">
-          <view class="btn-icon">
-            <icon type="waiting" size="24" color="#10AEFF" />
-          </view>
-          <text class="label">开启后备箱</text>
+          <text class="control-name">{{item.name}}</text>
         </view>
       </view>
     </scroll-view>
-    <view class="section">
+
+    <!-- 改进的分页指示器 -->
+    <view class="indicator-container">
+      <view class="indicator-track">
+        <view class="indicator-thumb" style="width: {{pages.length === 1 ? '100%' : '20%'}}; left: {{indicatorPosition}}"></view>
+      </view>
+    </view>
+  </view>
+  <!-- <view class="section">
       <text class="title">车辆状态解析结果</text>
       <view wx:for="{{parsedData}}" wx:key="index" class="data-item">
         <text>{{item.key}}: </text>
         <text>{{item.value}}</text>
       </view>
-    </view>
-    <!-- 滑动指示器 -->
-    <view class="indicator-container">
-      <view class="indicator-dot {{currentPage === 0 ? 'active' : ''}}"></view>
-      <view class="indicator-dot {{currentPage === 1 ? 'active' : ''}}"></view>
-    </view>
-  </view>
+    </view> -->
 </view>

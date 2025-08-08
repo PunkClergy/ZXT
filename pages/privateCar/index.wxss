@@ -1,211 +1,199 @@
-/* 页面设置 */
-page {
-  background-color: #F5F7FA;
-  padding: 0 16px;
-  box-sizing: border-box;
-}
-
-/* 主容器 */
+/* Base styles for the container */
 .container {
-  background-color: #FFFFFF;
-  color: #333333;
   display: flex;
   flex-direction: column;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-  margin: 16px 0;
-  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding: 0 20rpx;
 }
 
-/* 顶部导航 */
-.header {
+/* Styles for vehicle card section */
+.vehicle-card {
+  margin: 30rpx 0;
+}
+
+/* License plate section styles */
+.license-plate-section {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px 12px;
-  border-bottom: 1px solid #F0F0F0;
+  margin-bottom: 15rpx;
 }
 
-.user-info {
+.license-plate {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Connection tip styles */
+.connection-tip {
   display: flex;
   align-items: center;
-  background-color: #F6FFED;
-  padding: 6px 12px;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #07C160;
-  border: 1px solid #B7EB8F;
+  flex-direction: column;
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  color: #666;
 }
 
-.user-info icon {
-  margin-right: 6px;
+.connection-tip-bold-text {
+  font-size: 40rpx;
+  font-weight: bold;
 }
 
-/* 车辆模型 */
-.car-model {
-  text-align: center;
-  padding: 0 20px;
-  margin-top: 16px;
+.connection-tip-small-text {
+  font-size: 20rpx;
 }
 
-.car-image {
+/* Battery info styles */
+.battery-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+  gap: 10rpx;
+  margin-bottom: 15rpx;
+}
+
+.battery-icon {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.battery-percent {
+  font-size: 28rpx;
+}
+
+/* Vehicle image styles */
+.vehicle-image {
   width: 100%;
-  height: 180px;
+  height: 620rpx;
+  border-radius: 12rpx;
+  margin-bottom: 30rpx;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 12px;
+  background-size: cover;
+  background-position: center;
 }
 
-.car-image image {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 12px;
+.vehicle-img {
+  width: 290px;
+  height: 154px;
 }
 
-.car-status {
-  font-size: 15px;
-  color: #666666;
+/* Mode selector styles */
+.mode-selector {
   display: flex;
+  justify-content: space-around;
+  margin-bottom: 30rpx;
+  background-color: #ececec;
+  border-radius: 50rpx;
+  padding: 20rpx;
+}
+
+.mode-item {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  margin: 16px 0;
+  gap: 20rpx;
 }
 
-.status-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #07C160;
-  margin-right: 8px;
-  animation: pulse 1.5s infinite;
+.mode-icon {
+  width: 40rpx;
+  height: 40rpx;
+  background: #54c3f1;
+  padding: 15rpx;
+  border-radius: 50rpx;
 }
 
-
-/* 控制按钮区域 */
-.controls-section {
-  padding: 16px 12px;
-  background-color: #FFFFFF;
-  border-top: 1px solid #F0F0F0;
-  margin-top: 16px;
+.mode-text {
+  font-size: 36rpx;
 }
 
-.section-title {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  color: #333333;
-  padding-left: 4px;
+/* Control section styles */
+.control-section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
 }
 
-.section-title icon {
-  margin-right: 8px;
-}
-
-/* 横向滚动控制按钮 */
-.controls-scroll {
-  width: 100%;
+.control-scroll {
   white-space: nowrap;
-  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+}
+.control-scroll ::-webkit-scrollbar {
+  display: none;
 }
 
-.controls-container {
+
+.control-page {
   display: inline-flex;
-  gap: 12px;
-  padding: 0 8px 8px;
-  box-sizing: border-box;
+  width: 100%;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
-.control-btn {
-  background-color: #FFFFFF;
-  border-radius: 12px;
-  padding: 6px 0;
-  text-align: center;
-  border: 1px solid #F0F0F0;
+.control-item {
+  width: 22%;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: calc(25% - 9px);
-  min-width: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  flex-shrink: 0;
-  transition: all 0.2s;
-  box-sizing: border-box;
+  margin-bottom: 20rpx;
+  margin-right: 4%;
 }
 
-.control-btn:active {
-  background-color: #F7F7F7;
-  transform: scale(0.98);
+.control-item:nth-child(4n) {
+  margin-right: 0;
 }
 
-.btn-icon {
-  width: 48px;
-  height: 48px;
+.control-icon {
+  width: 100rpx;
+  height: 100rpx;
   border-radius: 50%;
+  background: #f5f5f5;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 8px;
-  background-color: rgba(7, 193, 96, 0.08);
+  margin-bottom: 15rpx;
 }
 
-.control-btn:nth-child(2) .btn-icon {
-  background-color: rgba(250, 81, 81, 0.08);
+.control-icon-image {
+  width: 40rpx;
+  height: 40rpx;
 }
 
-.control-btn:nth-child(3) .btn-icon {
-  background-color: rgba(255, 195, 0, 0.08);
-}
-
-.control-btn:nth-child(4) .btn-icon {
-  background-color: rgba(16, 174, 255, 0.08);
-}
-
-.control-btn .label {
-  font-size: 13px;
-  color: #333333;
+.control-name {
+  font-size: 32rpx;
+  color: #333;
+  text-align: center;
   white-space: nowrap;
-  font-weight: 400;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
 }
 
-/* 滑动指示器 */
+/* Indicator styles */
 .indicator-container {
+  width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 12px;
-  gap: 6px;
+  margin-top: 30rpx;
 }
 
-.indicator-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: #E0E0E0;
-  transition: all 0.3s;
+.indicator-track {
+  width: 200rpx;
+  height: 10rpx;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5rpx;
+  position: relative;
 }
 
-.indicator-dot.active {
-  background-color: #07C160;
-  width: 16px;
-  border-radius: 4px;
-}
-
-/* 动画 */
-@keyframes pulse {
-  0% {
-    opacity: 0.8;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.8;
-  }
+.indicator-thumb {
+  position: absolute;
+  height: 10rpx;
+  background-color: #59ab30;
+  border-radius: 2rpx;
+  transition: left 0.3s ease;
 }
