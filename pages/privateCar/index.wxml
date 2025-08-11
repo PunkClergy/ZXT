@@ -12,8 +12,9 @@
       </view>
     </view>
     <view class="battery-info">
-      <image src="https://k3a.wiselink.net.cn/img/app/blue/battery_75.png" class="battery-icon"></image>
-      <text class="battery-percent">100%</text>
+      <image src="https://k3a.wiselink.net.cn/img/app/blue/battery_{{parsedData.electric||100}}.png" class="battery-icon">
+      </image>
+      <text class="battery-percent">{{parsedData.voltage||100}}%</text>
     </view>
     <!-- 车辆图片 -->
     <view style="background-image: url('https://k3a.wiselink.net.cn/img/app/blue/privateCar_bg.png')" class="vehicle-image">
@@ -23,7 +24,7 @@
     <!-- 模式选择器 -->
     <view class="mode-selector">
       <view class="mode-item">
-        <image src="https://k3a.wiselink.net.cn/img/app/blue/bluetooth.png" class="mode-icon"></image>
+        <image src="https://k3a.wiselink.net.cn/img/app/blue/bluetooth.png" class="mode-icon" style="background: {{connectionState=='未连接'?'#8c8787':''}};"></image>
         <text class="mode-text">蓝牙连接</text>
       </view>
       <view class="mode-item">
@@ -39,7 +40,7 @@
       <view class="control-page" wx:for="{{pages}}" wx:key="index">
         <view class="control-item" wx:for="{{item}}" wx:key="id" bindtap="{{item.evt}}" data-id="{{item.id}}">
           <view class="control-icon">
-            <image src="{{item.icon}}" class="control-icon-image"></image>
+            <image src="{{item.id === 1 || item.id === 2 ? (item.id === 1 ? parsedData.lock : !parsedData.lock) ? item.ative : item.icon : item.icon}}" class="control-icon-image"></image>
           </view>
           <text class="control-name">{{item.name}}</text>
         </view>
@@ -53,11 +54,4 @@
       </view>
     </view>
   </view>
-  <!-- <view class="section">
-      <text class="title">车辆状态解析结果</text>
-      <view wx:for="{{parsedData}}" wx:key="index" class="data-item">
-        <text>{{item.key}}: </text>
-        <text>{{item.value}}</text>
-      </view>
-    </view> -->
 </view>

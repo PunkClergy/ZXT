@@ -3,35 +3,14 @@ const {
   _handleWindowInfo,  // 窗口信息处理工具
   _handleDeviceInfo   // 设备信息处理工具
 } = require('../../../utils/public').default;
-const vwManager = require('../../../utils/VWFun-utils');        // VW功能工具
-const utils = require('../../../utils/byte-util');              // 字节工具(未使用)
 const appUtil = require('../../../utils/app-util.js');          // 应用工具
 const bleKeyManager = require('../../../utils/BleKeyFun-utils.js');  // 蓝牙钥匙功能工具
 const byteUtil = require('../../../utils/byte-util.js');        // 字节工具
 
-// 汽车品牌常量数组
-const CAR_BRANDS = [
-  { name: "奥迪" },    // 奥迪品牌
-  { name: "宝马" },    // 宝马品牌
-  { name: "保时捷" },  // 保时捷品牌
-  { name: "奔驰" },    // 奔驰品牌
-  { name: "本田" },    // 本田品牌
-  { name: "大众" },    // 大众品牌
-  { name: "丰田" },    // 丰田品牌
-  { name: "通用车型" } // 通用车型
-];
-
 // 控制项常量数组（新增熄火选项）
 const CONTROL_ITEMS = [
-  { name: "寻车", enabled: false },      // 寻车功能
-  { name: "尾箱", enabled: false },      // 尾箱控制
-  { name: "启动", enabled: false },      // 启动控制
-  { name: "左中门", enabled: false },    // 左中门控制
-  { name: "右中门", enabled: false },    // 右中门控制
-  { name: "升窗", enabled: false },      // 升窗控制
-  { name: "降窗", enabled: false },      // 降窗控制
-  { name: "油路控制", enabled: false },  // 油路控制
-  { name: "布防控制", enabled: false }   // 布防控制
+  { id: 3, name: '尾箱', enabled: false, icon: 'https://k3a.wiselink.net.cn/img/app/blue/box_off.png', evt: 'handleOpenTrunk' },
+  { id: 4, name: '寻车', enabled: false, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleFindCar' },
 ];
 
 // 标题映射对象
@@ -61,7 +40,6 @@ Page({
     sign: '',          // 页面标识
     devices: [],       // 蓝牙设备列表
     chs: [],           // 蓝牙特征值列表
-    carBrands: CAR_BRANDS,      // 汽车品牌列表
     controlItems: CONTROL_ITEMS, // 控制项列表
     pageInterval: 0,   // 页面定时器ID
     connectionID: "",  // 蓝牙连接ID
@@ -85,6 +63,7 @@ Page({
   // 页面显示生命周期
   onShow() {
     this.initialiImageBaseConversion();  // 初始化图片转换
+    this.initToConfigureCache()
   },
 
   // 页面卸载生命周期
@@ -98,7 +77,19 @@ Page({
       keepScreenOn: false  // 关闭屏幕常亮
     });
   },
-
+  // 初始化获取缓存内容
+  initToConfigureCache() {
+    wx.getStorage({
+      key: 'controlItems',
+      success: (res) => {
+        if (res?.data) {
+          this.setData({
+            controlItems: res?.data || CONTROL_ITEMS
+          })
+        }
+      }
+    })
+  },
   // 配对按钮点击处理
   btnPair() {
     const that = this;
@@ -322,5 +313,24 @@ Page({
 
   // 结束蓝牙连接
   btnEndConnect() {
+  },
+
+  //新增或减少配置
+  handleToggleControl(evt) {
+    const { index } = evt.currentTarget?.dataset || {};
+    const { value } = evt.detail || {};
+    const { controlItems } = this.data;
+
+    // 参数校验
+    if (index == null || value == null || !controlItems?.[index]) {
+      return;
+    }
+    // 更新数据（使用不可变更新）
+    const updatedItems = controlItems.map((item, i) =>
+      i === index ? { ...item, enabled: Boolean(value) } : item
+    );
+    // 更新视图和缓存
+    this.setData({ controlItems: updatedItems });
+    wx.setStorage({ key: 'controlItems', data: updatedItems });
   }
 });

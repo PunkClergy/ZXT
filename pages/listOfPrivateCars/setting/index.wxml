@@ -64,19 +64,6 @@
         </view>
       </view>
     </block>
-    <!-- 车型指令配置 -->
-    <block wx:if="{{sign==3}}">
-      <view class="settings-group">
-        <view wx:for="{{carBrands}}" wx:key="name" class="settings-item" bindtap="handleCarBrand" data-brand="{{item.name}}">
-          <view class="item-left">
-            <text class="item-text">{{item.name}}</text>
-          </view>
-          <view class="item-right">
-            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
-          </view>
-        </view>
-      </view>
-    </block>
     <!-- 个性配置 -->
     <block wx:if="{{sign == 4}}">
       <view class="settings-group" wx:for="{{controlItems}}" wx:key="name">
