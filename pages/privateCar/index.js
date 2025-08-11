@@ -175,7 +175,7 @@ Page({
   // 转换电池剩余电量
   initVoltage(dy) {
     const thresholds = [
-      { min: 4.0, score: 10 },
+      { min: 4.0, score: 100 },
       { min: 3.9, score: 90 },
       { min: 3.8, score: 80 },
       { min: 3.7, score: 70 },
@@ -288,11 +288,10 @@ Page({
    * 初始化蓝牙连接
    */
   btnStartConnect: function () {
-    console.log('1111111111111111111a')
-    // wx.showLoading({
-    //   title: '蓝牙搜索种...',  
-    //   mask: true       
-    // })
+    wx.showLoading({
+      title: '蓝牙搜索中...',  
+      mask: true       
+    })
     if (that.data.connectionID == "") {
       bleKeyManager.connectBLE(that.data.deviceIDC, function (state) {
         // 蓝牙状态处理映射
@@ -315,7 +314,7 @@ Page({
 
         if (stateHandlers[state]) stateHandlers[state]();
       }, function (type, arrayData, hexData, hexTextData) {
-        // wx.hideLoading()
+        wx.hideLoading()
         // 认证响应处理
         if (type == 0) {
           that.btnCmdSend(0x10, arrayData)
