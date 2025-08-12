@@ -8,6 +8,8 @@ Page({
     c_screen_width: _handleWindowInfo.windowWidth || 0, //屏幕宽度
     statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
     navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
+    deviceIDC: "",  // 默认设备ID
+    orgKey: [0x33, 0x69, 0x45, 0x22, 0x83, 0x78],  // 原始密钥
   },
   // 全屏背景图
   initialiImageBaseConversion() {
@@ -39,7 +41,11 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
-  onLoad: function () {
+  onLoad: function (options) {
+    this.setData({
+      deviceIDC: options?.sn,
+      orgKey: options?.bluetoothKey
+    })
   },
   onShow() {
     this.initialiImageBaseConversion()
@@ -72,7 +78,7 @@ Page({
         fallback: () => console.log('用户取消输入登录密码')
       },
       default: {
-        url: `/pages/listOfPrivateCars/setting/index?sign=${sign}`
+        url: `/pages/listOfPrivateCars/setting/index?sign=${sign}&deviceIDC=${this.data.deviceIDC}&orgKey=${this.data.orgKey}`
       }
     };
     const action = actionMap[sign] || actionMap.default;

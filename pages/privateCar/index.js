@@ -4,6 +4,9 @@ const {
 } = require('../../utils/public').default
 const bleKeyManager = require('../../utils/BleKeyFun-utils.js');  // 蓝牙密钥管理
 const appUtil = require('../../utils/app-util.js');               // 应用工具
+const {
+  u_getCarBluetoothKeyByCode
+} = require('../../utils/request/order')
 
 var that  // 全局页面引用
 const detaltAllControlItems = [                           // 所有控制项配置
@@ -26,7 +29,6 @@ Page({
     // 界面显示相关
     s_background_picture_of_the_front_page: '',  // 首页背景图
     isBluetoothConnected: true,                  // 蓝牙连接状态
-    licensePlate: '京A·12345',                   // 车牌号
     batteryLevel: 78,                            // 电池电量(百分比)
     mode: 'manual',                              // 当前模式(manual/auto)
 
@@ -63,29 +65,47 @@ Page({
    * @param {Object} options 页面参数
    */
   onLoad: function (options) {
-    that = this;
-    that.btnStartConnect();  // 自动连接蓝牙
+    const that = this;
 
+    // 统一处理函数
+    const handleData = (data) => {
+      if (!data) return;
 
-    // 设置定时状态检查
-    that.data.pageInterval = setInterval(() => {
-      const isConnected = bleKeyManager.getBLEConnectionState();
       that.setData({
-        connectionState: isConnected ? "已连接" : "未连接",
-        connectionID: isConnected ? bleKeyManager.getBLEConnectionID() : "",
-        connectionDisplay: isConnected ? that.data.connectionID : "未连接",
+        deviceIDC: `51CarKey${data?.sn}`,
+        orgKey: data?.bluetoothKey,
+        bluetoothData: data
+      }, () => {
+        that.handleBule();
       });
-    }, 200);
+    };
 
-    // 初始化数据
-    that.setData({
-      msg: "",
-      consolemsg: "",
-      parseLen: 0,
-    });
-
-    // 保持屏幕常亮
-    wx.setKeepScreenOn({ keepScreenOn: true });
+    if (options?.scene) {
+      // 场景参数处理
+      byGet(getApp().data.k1swUrl + u_getCarBluetoothKeyByCode.URL, {
+        code: options.scene
+      }).then(response => {
+        if (!response?.data?.content) {
+          console.error('无效的响应数据');
+          return;
+        }
+        handleData(response.data.content);
+      }).catch(err => {
+        console.error('请求失败:', err);
+      });
+    } else {
+      // 本地存储处理
+      wx.getStorage({
+        key: 'bluetoothData',
+        success(res) {
+          console.log('获取缓存成功:', res.data);
+          handleData(res.data);
+        },
+        fail(err) {
+          console.error('获取缓存失败:', err);
+        }
+      });
+    }
   },
 
   /**
@@ -123,7 +143,29 @@ Page({
     }
     return passwordEncrypt;
   },
+  handleBule() {
+    const that = this
+    that.btnStartConnect();  // 自动连接蓝牙
+    // 设置定时状态检查
+    that.data.pageInterval = setInterval(() => {
+      const isConnected = bleKeyManager.getBLEConnectionState();
+      that.setData({
+        connectionState: isConnected ? "已连接" : "未连接",
+        connectionID: isConnected ? bleKeyManager.getBLEConnectionID() : "",
+        connectionDisplay: isConnected ? that.data.connectionID : "未连接",
+      });
+    }, 200);
 
+    // 初始化数据
+    that.setData({
+      msg: "",
+      consolemsg: "",
+      parseLen: 0,
+    });
+
+    // 保持屏幕常亮
+    wx.setKeepScreenOn({ keepScreenOn: true });
+  },
   /**
    * 发送控制命令
    * @param {number} type 命令类型
@@ -288,10 +330,10 @@ Page({
    * 初始化蓝牙连接
    */
   btnStartConnect: function () {
-    wx.showLoading({
-      title: '蓝牙搜索中...',  
-      mask: true       
-    })
+    // wx.showLoading({
+    //   title: '蓝牙搜索中...',  
+    //   mask: true       
+    // })
     if (that.data.connectionID == "") {
       bleKeyManager.connectBLE(that.data.deviceIDC, function (state) {
         // 蓝牙状态处理映射

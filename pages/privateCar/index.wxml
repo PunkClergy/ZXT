@@ -5,7 +5,7 @@
   <view class="vehicle-card" style="margin-top:{{c_statusBarHeight + c_navBarHeight +2}}px;">
     <!-- 车牌与提示信息 -->
     <view class="license-plate-section">
-      <text class="license-plate">{{licensePlate}}</text>
+      <text class="license-plate">{{bluetoothData.platenumber}}</text>
       <view class="connection-tip">
         <text class="connection-tip-bold-text">开启</text>
         <text class="connection-tip-small-text">钥匙电源</text>

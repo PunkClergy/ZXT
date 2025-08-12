@@ -43,7 +43,8 @@ Page({
     controlItems: CONTROL_ITEMS, // 控制项列表
     pageInterval: 0,   // 页面定时器ID
     connectionID: "",  // 蓝牙连接ID
-    deviceIDC: "51CarKey932505100319",  // 默认设备ID
+    deviceIDC: "",  // 默认设备ID
+    orgKey: [], // 原始密钥
     notificationEnabled: false
   },
 
@@ -51,7 +52,13 @@ Page({
   onLoad(options) {
     const sign = options?.sign || '';  // 从参数获取sign值
     if (options?.sign === '1') {      // 如果sign为1则处理请求
-      this.handleRequest(options);
+      this.setData({
+        deviceIDC: "51CarKey932505100319",  // 默认设备ID
+        orgKey: [0x33, 0x69, 0x45, 0x22, 0x83, 0x78], // 原始密钥
+      }, () => {
+        this.handleRequest(options);
+      })
+
     }
     // 设置页面数据
     this.setData({
@@ -202,7 +209,8 @@ Page({
   btnCmdSend(type, data) {
     switch (type) {
       case 0x10:  // 认证命令
-        const orgKey = [0x33, 0x69, 0x45, 0x22, 0x83, 0x78];  // 原始密钥
+
+        const orgKey = this.data.orgKey
         const retKey = this.auth_encrypt(orgKey, data);  // 加密密钥
         this.PackAndSend(type, 8, retKey);  // 发送8字节认证数据
         break;

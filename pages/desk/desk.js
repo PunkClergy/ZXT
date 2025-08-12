@@ -427,6 +427,12 @@ Page({
     this.initialGetBanner()
     this.handleTermialList()
     if (options?.scene || options?.query) {
+      if ((options?.scene || options?.query).startsWith('blue_')) {
+        wx.navigateTo({
+          url: `/pages/privateCar/index?scene=${options?.scene || options?.query}`,
+        })
+        return
+      }
       console.log(options?.scene || options?.query)
       this.setData({
         sn_state: true,

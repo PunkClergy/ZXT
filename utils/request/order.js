@@ -66,8 +66,12 @@ const u_vehicleApplyApiApproveKey = {
 const u_updateRentKey = {
   URL: fin3plusUrl + 'rentKeyApi/updateRentKey',
 }
+const u_getCarBluetoothKeyByCode = {
+  URL: fin3plusUrl + 'renterApi/getCarBluetoothKeyByCode',
+}
 // 修改的电子钥匙
 module.exports = {
+  u_getCarBluetoothKeyByCode,
   u_updateRentKey,
   u_vehicleApplyApiApproveKey,
   u_retrunCar,

@@ -154,7 +154,8 @@
     "pages/listOfPrivateCars/index",
     "pages/listOfPrivateCars/setting/index",
     "pages/BleKeyTest/BleKeyTest",
-    "pages/listOfPrivateCars/engineering/index"
+    "pages/listOfPrivateCars/engineering/index",
+    "pages/listOfPrivateCars/list/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
