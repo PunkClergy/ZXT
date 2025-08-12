@@ -6,6 +6,7 @@ App({
     k1swUrlKey:'k1swUrlKey',
     fin3UrlKey:'fin3UrlKey',
     reflag:0,
+    funAreaId:'',
     k1swUrl:'',
     fin3Url:'',
     userKey: 'userKey',

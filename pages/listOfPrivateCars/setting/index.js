@@ -53,8 +53,8 @@ Page({
     const sign = options?.sign || '';  // 从参数获取sign值
     if (options?.sign === '1') {      // 如果sign为1则处理请求
       this.setData({
-        deviceIDC: "51CarKey932505100319",  // 默认设备ID
-        orgKey: [0x33, 0x69, 0x45, 0x22, 0x83, 0x78], // 原始密钥
+        deviceIDC: options?.deviceIDC,  // 默认设备ID
+        orgKey:options?.orgKey , // 原始密钥
       }, () => {
         this.handleRequest(options);
       })

@@ -41,6 +41,8 @@ function byGet(url, param) {
       header['username'] = userInfo.username;
       header['token'] = userInfo.token;
       header['timestamp'] = Date.now();
+      header['funAreaId'] = appInstance?.data?.funAreaId
+
     }
     param.version = appInstance.data.version;
     wx.request({
@@ -76,6 +78,7 @@ function byPost(url, param, resultCallback, customHeaders = {}) {
       username: userInfo.username,
       token: userInfo.token,
       timestamp: Date.now(),
+      funAreaId: getApp()?.data?.funAreaId
     });
   }
   const headers = {
@@ -132,7 +135,7 @@ function byPostJson(url, param, result) {
 
 module.exports = {
   isEmpty: isEmpty,
-  isLogin:isLogin,
+  isLogin: isLogin,
   byGet: byGet,
   byPost: byPost,
   byPostJson: byPostJson,

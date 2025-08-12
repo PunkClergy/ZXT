@@ -144,7 +144,6 @@
     "pages/wycclaim/wycclaim",
     "pages/wycclaimDetail/wycclaimDetail",
     "pages/wycclaimDetail/claimFileEdit/claimFileEdit",
-    "pages/wycclaim1/wycclaim",
     "pages/wycclaimDetail1/wycclaimDetail",
     "pages/wycclaimDetail1/claimFileEdit/claimFileEdit",
     "pages/policy/index",

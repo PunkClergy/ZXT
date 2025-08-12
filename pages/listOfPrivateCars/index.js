@@ -43,12 +43,22 @@ Page({
   },
   onLoad: function (options) {
     this.setData({
-      deviceIDC: options?.sn,
-      orgKey: options?.bluetoothKey
+      deviceIDC: `51CarKey${options?.sn}`,
+      orgKey: this.handleTransformation(options?.bluetoothKey)
     })
   },
   onShow() {
     this.initialiImageBaseConversion()
+  },
+  handleTransformation(number) {
+    const numStr = number.toString();
+    // 分割成每两个字符一组
+    const bytes = [];
+    for (let i = 0; i < numStr.length; i += 2) {
+      const byteStr = numStr.substring(i, i + 2);
+      bytes.push(parseInt(byteStr, 16)); // 按16进制解析
+    }
+    return bytes
   },
   // 导航到各个设置页面 
   navigateToUserInfo(evt) {

@@ -198,6 +198,7 @@ Page({
   // 获取右侧树内容
   handleGetMenuList: function (e) {
     const menuId = e?.id || e?.currentTarget?.dataset?.item?.id;
+    getApp().data.funAreaId = menuId
     if (!menuId) {
       wx.showToast({
         title: '暂未开通，敬请期待',

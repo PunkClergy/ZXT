@@ -66,14 +66,14 @@ Page({
    */
   onLoad: function (options) {
     const that = this;
-
     // 统一处理函数
     const handleData = (data) => {
+      console.log(data)
       if (!data) return;
 
       that.setData({
         deviceIDC: `51CarKey${data?.sn}`,
-        orgKey: data?.bluetoothKey,
+        orgKey: that.handleTransformation(data?.bluetoothKey),
         bluetoothData: data
       }, () => {
         that.handleBule();
@@ -124,7 +124,7 @@ Page({
    * 生命周期函数 - 页面卸载
    */
   onUnload: function () {
-    console.log("页面卸载");
+    const that = this
     setTimeout(() => bleKeyManager.releaseBle(), 500);
     clearInterval(that.data.pageInterval);
     wx.setKeepScreenOn({ keepScreenOn: false });
@@ -213,7 +213,17 @@ Page({
     array.forEach((value, index) => typedArray[index * elementSize] = value);
     return typedArray.buffer;
   },
-
+  handleTransformation(number) {
+    if (!numStr) return
+    const numStr = number.toString();
+    // 分割成每两个字符一组
+    const bytes = [];
+    for (let i = 0; i < numStr.length; i += 2) {
+      const byteStr = numStr.substring(i, i + 2);
+      bytes.push(parseInt(byteStr, 16)); // 按16进制解析
+    }
+    return bytes
+  },
   // 转换电池剩余电量
   initVoltage(dy) {
     const thresholds = [
@@ -330,6 +340,7 @@ Page({
    * 初始化蓝牙连接
    */
   btnStartConnect: function () {
+    const that = this
     // wx.showLoading({
     //   title: '蓝牙搜索中...',  
     //   mask: true       
