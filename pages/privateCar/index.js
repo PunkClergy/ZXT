@@ -7,8 +7,6 @@ const appUtil = require('../../utils/app-util.js');               // 应用工�
 const {
   u_getCarBluetoothKeyByCode
 } = require('../../utils/request/order')
-
-var that  // 全局页面引用
 const detaltAllControlItems = [                           // 所有控制项配置
   { id: 1, name: '开锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
   { id: 2, name: '关锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/lock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
@@ -112,7 +110,7 @@ Page({
    * 生命周期函数 - 页面隐藏
    */
   onHide: function () {
-    console.log("页面隐藏");
+    const that = this
     if (that.data.connectionState == "已连接") {
       setTimeout(() => bleKeyManager.releaseBle(), 1500);
     }
@@ -149,6 +147,7 @@ Page({
     // 设置定时状态检查
     that.data.pageInterval = setInterval(() => {
       const isConnected = bleKeyManager.getBLEConnectionState();
+      console.log(isConnected)
       that.setData({
         connectionState: isConnected ? "已连接" : "未连接",
         connectionID: isConnected ? bleKeyManager.getBLEConnectionID() : "",
@@ -172,6 +171,7 @@ Page({
    * @param {Array} data 命令数据
    */
   btnCmdSend: function (type, data) {
+    const that = this
     const defaultData = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
     switch (type) {
       case 0x10: // 认证命令
@@ -214,7 +214,8 @@ Page({
     return typedArray.buffer;
   },
   handleTransformation(number) {
-    if (!numStr) return
+    
+    if (!number) return
     const numStr = number.toString();
     // 分割成每两个字符一组
     const bytes = [];
@@ -406,10 +407,10 @@ Page({
   },
 
   // 快捷控制命令方法
-  handleUnlock: function () { that.btnCmdSend(0x03, ""); },   // 开锁命令
-  handleLock: function () { that.btnCmdSend(0x04, ""); },     // 锁车命令
-  handleOpenTrunk: function () { that.btnCmdSend(0x05, ""); },// 尾箱命令
-  handleFindCar: function () { that.btnCmdSend(0x06, ""); },  // 寻车命令
+  handleUnlock: function () { this.btnCmdSend(0x03, ""); },   // 开锁命令
+  handleLock: function () { this.btnCmdSend(0x04, ""); },     // 锁车命令
+  handleOpenTrunk: function () { this.btnCmdSend(0x05, ""); },// 尾箱命令
+  handleFindCar: function () { this.btnCmdSend(0x06, ""); },  // 寻车命令
   handleToConfigure: function () {
     console.log(123)
     wx.navigateTo({
