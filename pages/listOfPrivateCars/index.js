@@ -44,7 +44,7 @@ Page({
   onLoad: function (options) {
     this.setData({
       deviceIDC: `51CarKey${options?.sn}`,
-      orgKey: this.handleTransformation(options?.bluetoothKey)
+      orgKey: options?.bluetoothKey
     })
   },
   onShow() {

@@ -47,14 +47,17 @@ Page({
     orgKey: [], // 原始密钥
     notificationEnabled: false
   },
-
+  keyToHexArray(key) {
+    return key.match(/.{1,2}/g).map(byte => "0x" + byte);
+  },
   // 页面加载生命周期
   onLoad(options) {
     const sign = options?.sign || '';  // 从参数获取sign值
     if (options?.sign === '1') {      // 如果sign为1则处理请求
       this.setData({
         deviceIDC: options?.deviceIDC,  // 默认设备ID
-        orgKey:options?.orgKey , // 原始密钥
+        // orgKey: options?.orgKey, // 原始密钥
+        orgKey: this.keyToHexArray(options?.orgKey)
       }, () => {
         this.handleRequest(options);
       })
@@ -190,7 +193,7 @@ Page({
     const end = [0x24];     // 数据尾
     // 根据要求的数据长度填充数据，不足补0
     const paddedData = [...data].concat(new Array(dataLength - data.length).fill(0x00)).slice(0, dataLength);
-    const packet = [...header, type, ...paddedData, ...end];  // 组合数据包
+    const packet = dataLength == 8 ? [...header, type, dataLength, ...data, ...end] : [...header, type, ...paddedData, ...end];  // 组合数据包
     this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");  // 输出日志
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
   },
