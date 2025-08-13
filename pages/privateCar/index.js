@@ -72,6 +72,7 @@ Page({
       that.setData({
         deviceIDC: `51CarKey${data?.sn}`,
         orgKey: that.handleTransformation(data?.bluetoothKey),
+        orgKeyOld: data?.bluetoothKey,
         bluetoothData: data
       }, () => {
         that.handleBule();
@@ -187,6 +188,10 @@ Page({
       case 0x22: // 配对
         that.PackAndSend(type, 8, data);
         break;
+      case 0x3a: // 设置 手动或感应模式
+        const flameoutData = data; // 第一个字节为0x01，后面补11个0x00
+        this.PackAndSend(type, 12, flameoutData); // 发送12字节数据
+        break;
     }
   },
 
@@ -214,7 +219,7 @@ Page({
     return typedArray.buffer;
   },
   handleTransformation(number) {
-    
+
     if (!number) return
     const numStr = number.toString();
     // 分割成每两个字符一组
@@ -323,6 +328,8 @@ Page({
     resultObject.lock = bytes[2] === 1 ? true : false;//锁状态
     resultObject.voltage = this.initVoltage((bytes[12] / 10).toFixed(1));//电池剩余电压计算
     resultObject.electric = this.getBatteryLevel(this.initVoltage((bytes[12] / 10).toFixed(1)));//电池剩余电量计算图片
+    resultObject.supply = bytes[3];
+    resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式'
     return resultObject;
   },
 
@@ -332,8 +339,9 @@ Page({
    */
   parseData: function (hexData) {
     const parsedResult = this.parseHexDataObject(hexData);
+    const parsedDataob = this.parseHexData(hexData)
     if (parsedResult) {
-      this.setData({ parsedData: parsedResult });
+      this.setData({ parsedData: parsedResult, parsedDataob: parsedDataob });
     }
   },
 
@@ -411,12 +419,16 @@ Page({
   handleLock: function () { this.btnCmdSend(0x04, ""); },     // 锁车命令
   handleOpenTrunk: function () { this.btnCmdSend(0x05, ""); },// 尾箱命令
   handleFindCar: function () { this.btnCmdSend(0x06, ""); },  // 寻车命令
+  handleSetUpInduction: function () {
+    wx.redirectTo({
+      url: `/pages/listOfPrivateCars/setting/index?sign=1&deviceIDC=${this.data.deviceIDC}&orgKey=${this.data.orgKeyOld}`,
+    })
+  },  // 切换感应或手动模式
   handleToConfigure: function () {
-    console.log(123)
     wx.navigateTo({
       url: '/pages/listOfPrivateCars/setting/index?sign=4',
     })
-  },
+  },//跳转配置
 
   /**
    * 获取已连接设备信息

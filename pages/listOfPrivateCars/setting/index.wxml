@@ -4,14 +4,6 @@
   <scroll-view class="settings-list" scroll-y style="margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 感应设置 -->
     <block wx:if="{{sign == 1}}">
-      <scroll-view class="device_list" scroll-y scroll-with-animation>
-        <view wx:for="{{devices}}" wx:key="index" data-device-id="{{item.deviceId}}" data-name="{{item.name || item.localName}}" bindtap="createBLEConnection" class="device_item" hover-class="device_item_hover">
-          <view style="font-size: 16px; color: #333;">{{item.name}}</view>
-          <view style="font-size: 10px">信号强度: {{item.RSSI}}dBm ({{utils.max(0, item.RSSI + 100)}}%)</view>
-          <view style="font-size: 10px">UUID: {{item.deviceId}}</view>
-          <view style="font-size: 10px">Service数量: {{utils.len(item.advertisServiceUUIDs)}}</view>
-        </view>
-      </scroll-view>
       <view style="font-size: 20rpx;display: flex;justify-content: center;flex-direction: column;align-items: center;padding: 20rpx;gap: 20rpx;">
         <text>*请检查蓝牙是否连接，是否已经站在车辆旁。连接蓝牙后才可进行配对。</text>
         <view bindtap="btnPair" style="background-color: #fff;padding: 15rpx 100rpx; font-size: 26rpx;border-radius: 10rpx;">蓝牙配对</view>
@@ -32,6 +24,15 @@
             <text class="item-text">蓝牙断开自动锁车</text>
           </view>
           <switch checked="{{notificationEnabled}}" bindchange="handleToBreakOff" color="#07C160" />
+        </view>
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">操控模式</text>
+          </view>
+          <radio-group bindchange="handleRadioChange">
+            <radio value="0" checked="{{Radiochecked==0}}" /> 手动模式
+            <radio value="1" checked="{{Radiochecked ==1}}" /> 感应模式
+          </radio-group>
         </view>
       </view>
     </block>

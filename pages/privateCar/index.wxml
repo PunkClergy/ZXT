@@ -7,7 +7,7 @@
     <view class="license-plate-section">
       <text class="license-plate">{{bluetoothData.platenumber}}</text>
       <view class="connection-tip">
-        <text class="connection-tip-bold-text">开启</text>
+        <text class="connection-tip-bold-text">{{parsedData.supply > 0?'开启':'关闭'}}</text>
         <text class="connection-tip-small-text">钥匙电源</text>
       </view>
     </view>
@@ -27,9 +27,9 @@
         <image src="https://k3a.wiselink.net.cn/img/app/blue/bluetooth.png" class="mode-icon" style="background: {{connectionState=='未连接'?'#8c8787':''}};"></image>
         <text class="mode-text">蓝牙连接</text>
       </view>
-      <view class="mode-item">
+      <view class="mode-item" bindtap="handleSetUpInduction">
         <image src="https://k3a.wiselink.net.cn/img/app/blue/signal.png" class="mode-icon"></image>
-        <text class="mode-text">感应模式</text>
+        <text class="mode-text">{{parsedData.induction||'手动模式'}}</text>
       </view>
     </view>
   </view>
@@ -54,4 +54,12 @@
       </view>
     </view>
   </view>
+
+    <view class="section">
+      <text class="title">车辆状态解析结果</text>
+      <view wx:for="{{parsedDataob}}" wx:key="index" class="data-item">
+        <text>{{item.key}}: </text>
+        <text>{{item.value}}</text>
+      </view>
+    </view>
 </view>

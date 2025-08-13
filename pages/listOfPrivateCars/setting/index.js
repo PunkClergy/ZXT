@@ -38,14 +38,14 @@ Page({
     statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
     navBarHeight: _handleDeviceInfo.platform === 'ios' ? 49 : 44, // 导航栏高度(iOS和Android不同)
     sign: '',          // 页面标识
-    devices: [],       // 蓝牙设备列表
     chs: [],           // 蓝牙特征值列表
     controlItems: CONTROL_ITEMS, // 控制项列表
     pageInterval: 0,   // 页面定时器ID
     connectionID: "",  // 蓝牙连接ID
     deviceIDC: "",  // 默认设备ID
     orgKey: [], // 原始密钥
-    notificationEnabled: false
+    notificationEnabled: false,
+    Radiochecked: 0
   },
   keyToHexArray(key) {
     return key.match(/.{1,2}/g).map(byte => "0x" + byte);
@@ -224,6 +224,7 @@ Page({
         this.PackAndSend(type, 8, new Array(8).fill(0x00));  // 发送8字节空数据
         break;
       case 0x3b: // 设置 断开蓝牙自动锁车
+      case 0x3a: // 设置 感应模式
         const flameoutData = data; // 第一个字节为0x01，后面补11个0x00
         this.PackAndSend(type, 12, flameoutData); // 发送12字节数据
         break;
@@ -314,6 +315,13 @@ Page({
     this.btnCmdSend(0x3b, [isEnabled ? 0x01 : 0x00]);
     // 更新通知状态
     this.setData({ notificationEnabled: isEnabled });
+  },
+  // 设置 感应模式
+  handleRadioChange(e) {
+    const isEnabled = e?.detail?.value
+    this.btnCmdSend(0x3a, [isEnabled == '1' ? 0x01 : 0x00]);
+    // 更新通知状态
+    this.setData({ Radiochecked: isEnabled });
   },
 
   // 处理汽车品牌选择
