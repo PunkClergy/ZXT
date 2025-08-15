@@ -350,10 +350,10 @@ Page({
    */
   btnStartConnect: function () {
     const that = this
-    // wx.showLoading({
-    //   title: '蓝牙搜索中...',  
-    //   mask: true       
-    // })
+    wx.showLoading({
+      title: '蓝牙搜索中...',  
+      mask: true       
+    })
     if (that.data.connectionID == "") {
       bleKeyManager.connectBLE(that.data.deviceIDC, function (state) {
         // 蓝牙状态处理映射

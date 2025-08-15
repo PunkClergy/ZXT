@@ -400,10 +400,10 @@ Page({
   // 提交发送钥匙
   handleFormSubmit(evt) {
     const {
-      startDate,
-      startTime,
-      endDate,
-      endTime,
+      // startDate,
+      // startTime,
+      // endDate,
+      // endTime,
       vehId,
       cellData
     } = this.data;
@@ -414,8 +414,8 @@ Page({
 
     const requestParams = {
       vehId: vehId,
-      startDate: buildDateTime(startDate, startTime),
-      endDate: buildDateTime(endDate, endTime),
+      // startDate: buildDateTime(startDate, startTime),
+      // endDate: buildDateTime(endDate, endTime),
       personName: cellData.personName,
       mobile: cellData?.mobile
     };

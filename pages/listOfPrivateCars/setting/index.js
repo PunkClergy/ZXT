@@ -239,6 +239,10 @@ Page({
   // 开始蓝牙连接
   btnStartConnect() {
     const that = this;
+    wx.showLoading({
+      title: '蓝牙搜索中...',  
+      mask: true       
+    })
     console.log(that.data.connectionID);  // 打印连接ID
     if (!that.data.connectionID) {  // 如果未连接
       bleKeyManager.connectBLE(that.data.deviceIDC, (state) => {
@@ -263,6 +267,7 @@ Page({
           appUtil.hideLoading();  // 连接成功，隐藏加载框
         }
       }, (type, arrayData, hexData, hexTextData) => {
+        wx.hideLoading()
         // 数据接收回调
         if (type === 0) {  // 认证类型
           this.btnCmdSend(0x10, arrayData);  // 发送认证响应
