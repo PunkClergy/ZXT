@@ -213,37 +213,28 @@ Page({
   },
 
   // 打包并发送数据（支持动态数据体长度）
-  PackAndSend(type, dataLength, data, sign = 61) {
-    // 数据头和尾固定为0x24
-    const HEADER = 0x24;
-    const END = 0x24;
-    // 创建数据包数组
-    let packet = [HEADER];
-    // 特殊处理6字节和8字节数据包的情况
-    if (sign) {
-      let value = parseInt(`0x${sign}`, 16)
-      packet.push(type, value, ...data, ...new Array(5).fill(0x00));
-    }
-    else if (dataLength === 8) {
-      packet.push(type, dataLength, ...data.slice(0, dataLength));
-    }
-    else {
-      // 普通情况：填充数据到指定长度
-      const paddedData = [
-        ...data,
-        ...new Array(Math.max(0, dataLength - data.length)).fill(0x00)
-      ].slice(0, dataLength);
-      packet.push(type, ...paddedData);
-    }
-    // 添加数据尾
-    packet.push(END);
-    console.log(packet, '[[[[[[[[[[[[[[')
-    // 输出日志
-    this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");
-    // 发送数据
-    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
+  PackAndSend(type, dataLength, data, sign) {
+    console.log(type, dataLength, data, sign)
+    const header = [0x24];  // 数据头
+    const end = [0x24];     // 数据尾
+    // 根据要求的数据长度填充数据，不足补0
+    const paddedData = [...data].concat(new Array(dataLength - data.length).fill(0x00)).slice(0, dataLength);
+    const packet = dataLength == 8 ? [...header, type, dataLength, ...data, ...end] : [...header, type, ...paddedData, ...end];  // 组合数据包
+    this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");  // 输出日志
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
   },
-
+  PackAndSendspecial(type, dataLength, data, sign) {
+    console.log(type, dataLength, data, sign)
+    const header = [0x24];  // 数据头
+    const end = [0x24];     // 数据尾
+    const value = parseInt(`0x${sign}`, 16)
+    // 根据要求的数据长度填充数据，不足补0
+    const paddedData = [...data].concat(new Array(dataLength - 1).fill(0x00)).slice(0, dataLength);
+    const packet = [...header, type, value, ...paddedData, ...end];  // 组合数据包
+    console.log(packet, '[[[[]]]]--')
+    this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");  // 输出日志
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
+  },
   // 认证加密
   auth_encrypt(passwordSource, random) {
     const passwordEncrypt = new Array(8).fill(0x00);  // 初始化8字节数组
@@ -278,7 +269,7 @@ Page({
         this.PackAndSend(type, 8, data); // 发送8字节数据
         break;
       case 0x11: //开锁信号值
-        this.PackAndSend(type, 6, data, sign); // 发送6字节数据
+        this.PackAndSendspecial(type, 6, data, sign); // 发送6字节数据
       default:
         break;
     }
