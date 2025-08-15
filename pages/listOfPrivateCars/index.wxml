@@ -17,12 +17,6 @@
         </view>
         <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
       </view>
-      <view class="settings-item" data-sign="5" bindtap="navigateToUserInfo">
-        <view class="item-left">
-          <text class="item-text">车辆转移</text>
-        </view>
-        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
-      </view>
     </view>
   </scroll-view>
 </view>

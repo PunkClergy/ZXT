@@ -3,7 +3,7 @@
   <!-- 设置项列表 -->
   <scroll-view class="settings-list" scroll-y style="margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 感应设置 -->
-    <block wx:if="{{sign == 1}}">
+    <block wx:if="{{sign == 1&&!distance}}">
       <view style="font-size: 20rpx;display: flex;justify-content: center;flex-direction: column;align-items: center;padding: 20rpx;gap: 20rpx;">
         <text>*请检查蓝牙是否连接，是否已经站在车辆旁。连接蓝牙后才可进行配对。</text>
         <view bindtap="btnPair" style="background-color: #fff;padding: 15rpx 100rpx; font-size: 26rpx;border-radius: 10rpx;">蓝牙配对</view>
@@ -14,8 +14,8 @@
           <view class="item-left">
             <text class="item-text">感应设置</text>
           </view>
-          <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;">
-            <text>开锁0，关锁0</text>
+          <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;" bindtap="handleDistance">
+            <text>开锁{{parsedData.unlock||0}}，关锁{{parsedData.lock||0}}</text>
             <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
           </view>
         </view>
@@ -23,45 +23,16 @@
           <view class="item-left">
             <text class="item-text">蓝牙断开自动锁车</text>
           </view>
-          <switch checked="{{notificationEnabled}}" bindchange="handleToBreakOff" color="#07C160" />
+          <switch checked="{{parsedData.toBreakOff}}" bindchange="handleToBreakOff" color="#07C160" />
         </view>
         <view class="settings-item">
           <view class="item-left">
             <text class="item-text">操控模式</text>
           </view>
           <radio-group bindchange="handleRadioChange">
-            <radio value="0" checked="{{Radiochecked==0}}" /> 手动模式
-            <radio value="1" checked="{{Radiochecked ==1}}" /> 感应模式
+            <radio value="0" checked="{{parsedData.induction =='手动模式'}}" /> 手动模式
+            <radio value="1" checked="{{parsedData.induction =='感应模式'}}" /> 感应模式
           </radio-group>
-        </view>
-      </view>
-    </block>
-    <!-- 车辆转移 -->
-    <block wx:if="{{sign==5}}">
-      <view class="transfer-container">
-        <input class="transfer-input" placeholder="请输入接收人手机号" />
-        <input class="transfer-input" placeholder="请输入您的登录密码" />
-        <view class="transfer-btn-wrapper">
-          <text class="transfer-confirm-btn">确认</text>
-        </view>
-        <view class="transfer-tips">
-          <text class="transfer-tip-item">1.接收人手机号需要先注册才能转移</text>
-          <text class="transfer-tip-item">2.要求输入的登录密码为您自己的登录密码</text>
-        </view>
-      </view>
-    </block>
-
-    <!-- 编辑车辆 -->
-    <block wx:if="{{sign ==6 }}">
-      <view class="settings-group">
-        <view class="settings-item">
-          <view class="item-left">
-            <text class="item-text">车牌号码</text>
-          </view>
-          <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;">
-            <input placeholder="京A67Y65" style="text-align: right;" />
-            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
-          </view>
         </view>
       </view>
     </block>
@@ -76,5 +47,39 @@
         </view>
       </view>
     </block>
+    <block wx:if="{{distance}}">
+      <view class="container">
+        <!-- 大圈（B圆） -->
+        <view class="circle big-circle" style="width: {{bigRadius * 2}}px; height: {{bigRadius * 2}}px;"></view>
+
+        <!-- 小圈（A圆） -->
+        <view class="circle small-circle" style="width: {{smallRadius * 2}}px; height: {{smallRadius * 2}}px;"></view>
+
+        <!-- 车图标 -->
+        <view class="car-icon">
+          <image src="https://k3a.wiselink.net.cn/img/app/blue/car.png" style="width: 80px;height: 80px;" />
+        </view>
+      </view>
+
+      <!-- 动态调整滑块 -->
+      <view class="controls">
+        <view class="slider-container">
+          <text class="slider-label">开锁信号值：{{smallRadius}} (范围:40-{{bigRadius - 5}})</text>
+          <slider value="{{smallRadius}}" min="40" max="{{bigRadius - 5}}" activeColor="#e74c3c" block-size="12" bindchange="updateSmallRadius" />
+        </view>
+        <view class="slider-container">
+          <text class="slider-label">关锁信号值：{{bigRadius}} (范围:45-90)</text>
+          <slider value="{{bigRadius}}" min="45" max="90" activeColor="#3498db" block-size="12" bindchange="updateBigRadius" />
+        </view>
+      </view>
+    </block>
   </scroll-view>
+  <view class="section">
+    <text class="title">车辆状态解析结果</text>
+    <view wx:key="index" class="data-item">
+      <text>{{parsedData.lock}}: </text>
+      <text>{{parsedData.unlock}}: </text>
+      {{parsedData.toBreakOff}}
+    </view>
+  </view>
 </view>

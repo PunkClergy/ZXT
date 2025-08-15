@@ -16,10 +16,7 @@ const CONTROL_ITEMS = [
 // 标题映射对象
 const TITLE_MAP = {
   1: '感应设置',        // 类型1对应标题
-  3: '车型指令配置',    // 类型3对应标题
   4: '个性配置',       // 类型4对应标题
-  5: '车辆转移',       // 类型5对应标题
-  6: '编辑车辆',       // 类型6对应标题
   default: '设置'      // 默认标题
 };
 
@@ -45,10 +42,37 @@ Page({
     deviceIDC: "",  // 默认设备ID
     orgKey: [], // 原始密钥
     notificationEnabled: false,
-    Radiochecked: 0
+    Radiochecked: 0,
+    distance: false,
+    bigRadius: 60,      // 大圈默认半径（45-90）
+    smallRadius: 40     // 小圈默认半径（40-85）
   },
   keyToHexArray(key) {
     return key.match(/.{1,2}/g).map(byte => "0x" + byte);
+  },
+  handleDistance() {
+    this.setData({
+      distance: true
+    })
+  },
+  // 更新大圈半径
+
+  updateBigRadius(e) {
+    const newBigRadius = e.detail.value;
+    this.setData({
+      bigRadius: newBigRadius,
+      smallRadius: Math.min(this.data.smallRadius, newBigRadius - 5)
+    }, () => {
+      this.btnCmdSend(0x11, [`0x${newBigRadius}`, 0x01]);   // 开锁值
+    });
+  },
+
+  updateSmallRadius(e) {
+    this.setData({
+      smallRadius: Math.min(e.detail.value, this.data.bigRadius - 5)
+    }, () => {
+      this.btnCmdSend(0x11, [`0x${Math.min(e.detail.value, this.data.bigRadius - 5)}`, 0x00]);   // 关锁锁值
+    });
   },
   // 页面加载生命周期
   onLoad(options) {
@@ -124,7 +148,7 @@ Page({
             if (!bleKeyManager.getBLEConnectionState()) {  // 检查连接状态
               clearInterval(pairInteval);  // 清除定时器
               setTimeout(() => {
-                that.btnStartConnect();  // 重新开始连接
+                that.btnStartConnect();  // 重新开始连
               }, 500);
             }
           }, 500);
@@ -231,6 +255,8 @@ Page({
       case 0x22: // 配对命令
         this.PackAndSend(type, 8, data); // 发送8字节数据
         break;
+      case 0x11: //开锁信号值
+        this.PackAndSend(type, 6, data); // 发送6字节数据
       default:
         break;
     }
@@ -240,8 +266,8 @@ Page({
   btnStartConnect() {
     const that = this;
     wx.showLoading({
-      title: '蓝牙搜索中...',  
-      mask: true       
+      title: '蓝牙搜索中...',
+      mask: true
     })
     if (!that.data.connectionID) {  // 如果未连接
       bleKeyManager.connectBLE(that.data.deviceIDC, (state) => {
@@ -270,6 +296,8 @@ Page({
         // 数据接收回调
         if (type === 0) {  // 认证类型
           this.btnCmdSend(0x10, arrayData);  // 发送认证响应
+        } else {
+          that.parseData(that.trimHexData(hexTextData))
         }
         // 更新接收数据
         this.setData({
@@ -281,7 +309,53 @@ Page({
       appUtil.showModal('已连接蓝牙', false, () => { });  // 提示已连接
     }
   },
+  /**
+    * 修剪16进制数据
+    * @param {string} hexString 原始16进制字符串
+    * @returns {string} 修剪后的有效数据部分
+    */
+  trimHexData: function (hexString) {
+    if (typeof hexString !== 'string' || !/^[0-9a-fA-F]+$/.test(hexString)) {
+      throw new Error('无效的16进制字符串');
+    }
+    return hexString.slice(4, -2);  // 去除头尾固定字符
+  },
+  /**
+  * 数据解析按钮处理
+  * @param {string} hexData 16进制数据字符串
+  */
+  parseData: function (hexData) {
+    const parsedResult = this.parseHexDataObject(hexData);
+    if (parsedResult) {
+      this.setData({ parsedData: parsedResult });
+    }
+  },
+  /**
+ * 解析16进制车辆状态数据
+ * @param {string} hexString 30字符的16进制字符串
+ * @returns {Array|null} 解析结果数组，格式为[{key: string, value: any}]
+ */
+  parseHexDataObject: function (hexString) {
+    // 验证数据长度
+    if (hexString.length !== 30) {
+      // wx.showToast({ title: '数据长度不正确', icon: 'none' });
+      return null;
+    }
 
+    // 转换为字节数组
+    const bytes = [];
+    for (let i = 0; i < 30; i += 2) {
+      bytes.push(parseInt(hexString.substr(i, 2), 16));
+    }
+    const resultObject = {}
+    resultObject.lock = bytes[2] === 1 ? true : false;//锁状态
+    resultObject.supply = bytes[3];
+    resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式'
+    resultObject.lock = bytes[8]
+    resultObject.unlock = bytes[11]
+    resultObject.toBreakOff = bytes[6] === 1
+    return resultObject;
+  },
   // 获取标题
   getHeaderTitle(evt) {
     return TITLE_MAP[evt] || TITLE_MAP.default;  // 根据evt返回对应标题
@@ -317,8 +391,6 @@ Page({
     const isEnabled = Boolean(e?.detail?.value);
     // 发送指定 设置蓝牙断开自动锁车 (0x01: 开, 0x00: 关)
     this.btnCmdSend(0x3b, [isEnabled ? 0x01 : 0x00]);
-    // 更新通知状态
-    this.setData({ notificationEnabled: isEnabled });
   },
   // 设置 感应模式
   handleRadioChange(e) {
