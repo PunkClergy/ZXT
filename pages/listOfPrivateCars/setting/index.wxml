@@ -84,7 +84,7 @@
       </view>
     </block>
   </scroll-view>
-  <view class="section">
+  <!-- <view class="section">
     <text class="title">车辆状态解析结果</text>
     <view wx:key="index" class="data-item">
       <text>{{parsedData.lock}}: </text>
@@ -93,5 +93,5 @@
       {{parsedData.signal}}
       <view wx:for="{{signalCache}}">{{item}}</view>
     </view>
-  </view>
+  </view> -->
 </view>
