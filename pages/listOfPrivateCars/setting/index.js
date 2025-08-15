@@ -278,10 +278,10 @@ Page({
   // 开始蓝牙连接
   btnStartConnect() {
     const that = this;
-    // wx.showLoading({
-    //   title: '蓝牙搜索中...',
-    //   mask: true
-    // })
+    wx.showLoading({
+      title: '蓝牙搜索中...',
+      mask: true
+    })
     if (!that.data.connectionID) {  // 如果未连接
       bleKeyManager.connectBLE(that.data.deviceIDC, (state) => {
         // 蓝牙状态回调
