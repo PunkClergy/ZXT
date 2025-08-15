@@ -45,7 +45,12 @@ Page({
     this.setData({
       deviceIDC: `51CarKey${options?.sn}`,
       orgKey: options?.bluetoothKey
+    }, () => {
+      if (options?.flag == 1) {
+        this.navigateToUserInfo(1)
+      }
     })
+
   },
   onShow() {
     this.initialiImageBaseConversion()
@@ -62,7 +67,7 @@ Page({
   },
   // 导航到各个设置页面 
   navigateToUserInfo(evt) {
-    const sign = evt.currentTarget.dataset.sign;
+    const sign = evt?.currentTarget?.dataset?.sign||evt;
     const actionMap = {
       2: {
         title: '工程模式',
@@ -93,7 +98,20 @@ Page({
     };
     const action = actionMap[sign] || actionMap.default;
     if (action.url) {
-      wx.navigateTo(action);
+      wx.showModal({
+        title: '提示',
+        content: '进入修改设置页后，设置功能项必须先执行蓝牙配对操作',
+        complete: (res) => {
+          if (res.cancel) {
+
+          }
+
+          if (res.confirm) {
+            wx.navigateTo(action);
+          }
+        }
+      })
+
     } else {
       wx.showModal({
         title: action.title,

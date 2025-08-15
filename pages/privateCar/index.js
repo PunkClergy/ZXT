@@ -420,8 +420,11 @@ Page({
   handleOpenTrunk: function () { this.btnCmdSend(0x05, ""); },// 尾箱命令
   handleFindCar: function () { this.btnCmdSend(0x06, ""); },  // 寻车命令
   handleSetUpInduction: function () {
+    // wx.redirectTo({
+    //   url: `/pages/listOfPrivateCars/setting/index?sign=1&deviceIDC=${this.data.deviceIDC}&orgKey=${this.data.orgKeyOld}`,
+    // })
     wx.redirectTo({
-      url: `/pages/listOfPrivateCars/setting/index?sign=1&deviceIDC=${this.data.deviceIDC}&orgKey=${this.data.orgKeyOld}`,
+      url: `/pages/listOfPrivateCars/index?sn=${this.data.bluetoothData?.sn}&bluetoothKey=${this.data.bluetoothData?.bluetoothKey}&flag=1`,
     })
   },  // 切换感应或手动模式
   handleToConfigure: function () {

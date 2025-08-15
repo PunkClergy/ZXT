@@ -243,7 +243,6 @@ Page({
       title: '蓝牙搜索中...',  
       mask: true       
     })
-    console.log(that.data.connectionID);  // 打印连接ID
     if (!that.data.connectionID) {  // 如果未连接
       bleKeyManager.connectBLE(that.data.deviceIDC, (state) => {
         // 蓝牙状态回调
