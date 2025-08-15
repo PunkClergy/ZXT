@@ -45,7 +45,8 @@ Page({
     Radiochecked: 0,
     distance: false,
     bigRadius: 60,      // 大圈默认半径（45-90）
-    smallRadius: 40     // 小圈默认半径（40-85）
+    smallRadius: 40,     // 小圈默认半径（40-85）
+    signalCache: [],//信号值集合
   },
   keyToHexArray(key) {
     return key.match(/.{1,2}/g).map(byte => "0x" + byte);
@@ -63,7 +64,7 @@ Page({
       bigRadius: newBigRadius,
       smallRadius: Math.min(this.data.smallRadius, newBigRadius - 5)
     }, () => {
-      this.btnCmdSend(0x11, [`0x${newBigRadius}`, 0x01]);   // 开锁值
+      this.btnCmdSend(0x11, [0x00], newBigRadius);   // 关锁值
     });
   },
 
@@ -71,7 +72,7 @@ Page({
     this.setData({
       smallRadius: Math.min(e.detail.value, this.data.bigRadius - 5)
     }, () => {
-      this.btnCmdSend(0x11, [`0x${Math.min(e.detail.value, this.data.bigRadius - 5)}`, 0x00]);   // 关锁锁值
+      this.btnCmdSend(0x11, [0x01], Math.min(e.detail.value, this.data.bigRadius - 5));   // 开锁值
     });
   },
   // 页面加载生命周期
@@ -212,14 +213,35 @@ Page({
   },
 
   // 打包并发送数据（支持动态数据体长度）
-  PackAndSend(type, dataLength, data) {
-    const header = [0x24];  // 数据头
-    const end = [0x24];     // 数据尾
-    // 根据要求的数据长度填充数据，不足补0
-    const paddedData = [...data].concat(new Array(dataLength - data.length).fill(0x00)).slice(0, dataLength);
-    const packet = dataLength == 8 ? [...header, type, dataLength, ...data, ...end] : [...header, type, ...paddedData, ...end];  // 组合数据包
-    this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");  // 输出日志
-    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
+  PackAndSend(type, dataLength, data, sign = 61) {
+    // 数据头和尾固定为0x24
+    const HEADER = 0x24;
+    const END = 0x24;
+    // 创建数据包数组
+    let packet = [HEADER];
+    // 特殊处理6字节和8字节数据包的情况
+    if (sign) {
+      let value = parseInt(`0x${sign}`, 16)
+      packet.push(type, value, ...data, ...new Array(5).fill(0x00));
+    }
+    else if (dataLength === 8) {
+      packet.push(type, dataLength, ...data.slice(0, dataLength));
+    }
+    else {
+      // 普通情况：填充数据到指定长度
+      const paddedData = [
+        ...data,
+        ...new Array(Math.max(0, dataLength - data.length)).fill(0x00)
+      ].slice(0, dataLength);
+      packet.push(type, ...paddedData);
+    }
+    // 添加数据尾
+    packet.push(END);
+    console.log(packet, '[[[[[[[[[[[[[[')
+    // 输出日志
+    this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");
+    // 发送数据
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
 
   // 认证加密
@@ -233,10 +255,10 @@ Page({
   },
 
   // 发送命令（区分不同指令的数据体长度）
-  btnCmdSend(type, data) {
+  btnCmdSend(type, data, sign) {
+    console.log(type)
     switch (type) {
       case 0x10:  // 认证命令
-
         const orgKey = this.data.orgKey
         const retKey = this.auth_encrypt(orgKey, data);  // 加密密钥
         this.PackAndSend(type, 8, retKey);  // 发送8字节认证数据
@@ -256,7 +278,7 @@ Page({
         this.PackAndSend(type, 8, data); // 发送8字节数据
         break;
       case 0x11: //开锁信号值
-        this.PackAndSend(type, 6, data); // 发送6字节数据
+        this.PackAndSend(type, 6, data, sign); // 发送6字节数据
       default:
         break;
     }
@@ -265,10 +287,10 @@ Page({
   // 开始蓝牙连接
   btnStartConnect() {
     const that = this;
-    wx.showLoading({
-      title: '蓝牙搜索中...',
-      mask: true
-    })
+    // wx.showLoading({
+    //   title: '蓝牙搜索中...',
+    //   mask: true
+    // })
     if (!that.data.connectionID) {  // 如果未连接
       bleKeyManager.connectBLE(that.data.deviceIDC, (state) => {
         // 蓝牙状态回调
@@ -320,6 +342,36 @@ Page({
     }
     return hexString.slice(4, -2);  // 去除头尾固定字符
   },
+  handleCalibration() {
+    const that = this
+    wx.showModal({
+      title: '第一步',
+      content: '请参考安装说明书将设备放置在要安装的位置',
+      confirmText: '已安装',
+      success: () => {
+        wx.showModal({
+          title: '第二步',
+          content: '请关好所有车窗及车门',
+          confirmText: '已关闭',
+          success: () => {
+            wx.showModal({
+              title: '第三步',
+              content: '请移步至离车头直线距离3米处',
+              confirmText: '立即校准',
+              success: () => {
+                const signalCache = that.data.signalCache
+                const sorted = [...signalCache].sort((a, b) => a - b);
+                const trimmed = sorted.slice(1, -1);
+                const avgA = Math.round(trimmed.reduce((a, b) => a + b) / trimmed.length);
+                this.btnCmdSend(0x11, [0x01], avgA);//开锁
+                this.btnCmdSend(0x11, [0x00], avgA + 10);//关锁
+              }
+            })
+          }
+        })
+      }
+    })
+  },
   /**
   * 数据解析按钮处理
   * @param {string} hexData 16进制数据字符串
@@ -347,13 +399,31 @@ Page({
     for (let i = 0; i < 30; i += 2) {
       bytes.push(parseInt(hexString.substr(i, 2), 16));
     }
+
     const resultObject = {}
     resultObject.lock = bytes[2] === 1 ? true : false;//锁状态
-    resultObject.supply = bytes[3];
-    resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式'
-    resultObject.lock = bytes[8]
-    resultObject.unlock = bytes[11]
-    resultObject.toBreakOff = bytes[6] === 1
+    resultObject.supply = bytes[3];//3v断电剩余时间
+    resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式'//感应状态
+    resultObject.lock = bytes[8]//关锁信号值
+    resultObject.unlock = bytes[11]//开锁信号值
+    resultObject.toBreakOff = bytes[6] === 1//蓝牙断开自动锁车
+    resultObject.signal = bytes[10]//当前信号值
+
+    // Update the signal cache
+    let signalCache = this.data.signalCache;
+    signalCache.push(bytes[10]); // Add new value
+
+    // Keep only the last 10 values
+    if (signalCache.length > 10) {
+      signalCache = signalCache.slice(-10);
+    }
+
+    this.setData({
+      bigRadius: bytes[8],      // 大圈默认半径（45-90）
+      smallRadius: bytes[11],    // 小圈默认半径（40-85）
+      signalCache: signalCache   // Update the cache in data
+    })
+
     return resultObject;
   },
   // 获取标题

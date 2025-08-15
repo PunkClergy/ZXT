@@ -48,6 +48,16 @@
       </view>
     </block>
     <block wx:if="{{distance}}">
+      <view class="controls" style="padding: 0;" bindtap="handleCalibration">
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">自动校准</text>
+          </view>
+          <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;" bindtap="handleDistance">
+            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+          </view>
+        </view>
+      </view>
       <view class="container">
         <!-- 大圈（B圆） -->
         <view class="circle big-circle" style="width: {{bigRadius * 2}}px; height: {{bigRadius * 2}}px;"></view>
@@ -80,6 +90,8 @@
       <text>{{parsedData.lock}}: </text>
       <text>{{parsedData.unlock}}: </text>
       {{parsedData.toBreakOff}}
+      {{parsedData.signal}}
+      <view wx:for="{{signalCache}}">{{item}}</view>
     </view>
   </view>
 </view>
