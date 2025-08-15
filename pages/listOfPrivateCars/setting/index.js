@@ -64,7 +64,7 @@ Page({
       bigRadius: newBigRadius,
       smallRadius: Math.min(this.data.smallRadius, newBigRadius - 5)
     }, () => {
-      this.btnCmdSend(0x11, [0x00], newBigRadius);   // 关锁值
+      this.btnCmdSend(0x11, 0, newBigRadius);   // 关锁值
     });
   },
 
@@ -72,7 +72,7 @@ Page({
     this.setData({
       smallRadius: Math.min(e.detail.value, this.data.bigRadius - 5)
     }, () => {
-      this.btnCmdSend(0x11, [0x01], Math.min(e.detail.value, this.data.bigRadius - 5));   // 开锁值
+      this.btnCmdSend(0x11, 1, Math.min(e.detail.value, this.data.bigRadius - 5));   // 开锁值
     });
   },
   // 页面加载生命周期
@@ -224,16 +224,16 @@ Page({
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
   },
   PackAndSendspecial(type, dataLength, data, sign) {
-    console.log(type, dataLength, data, sign)
-    const header = [0x24];  // 数据头
-    const end = [0x24];     // 数据尾
-    const value = parseInt(`0x${sign}`, 16)
-    // 根据要求的数据长度填充数据，不足补0
-    const paddedData = [...data].concat(new Array(dataLength - 1).fill(0x00)).slice(0, dataLength);
-    const packet = [...header, type, value, ...paddedData, ...end];  // 组合数据包
-    console.log(packet, '[[[[]]]]--')
-    this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");  // 输出日志
-    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
+    const packet = [
+      0x24,                     // Header
+      0x11, 0x08,               // Type and length
+      parseInt(sign, 16) || 0,   // Sign value (fallback to 0)
+      data ? 0x01 : 0x00,        // Data flag
+      ...Array(6).fill(0x00),    // Padding
+      0x24                      // Footer
+    ];
+    this.consoleOut(`send: ${byteUtil.buf2hex(packet)}\r\n`);
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
   // 认证加密
   auth_encrypt(passwordSource, random) {
@@ -354,8 +354,8 @@ Page({
                 const sorted = [...signalCache].sort((a, b) => a - b);
                 const trimmed = sorted.slice(1, -1);
                 const avgA = Math.round(trimmed.reduce((a, b) => a + b) / trimmed.length);
-                this.btnCmdSend(0x11, [0x01], avgA);//开锁
-                this.btnCmdSend(0x11, [0x00], avgA + 10);//关锁
+                this.btnCmdSend(0x11, 1, avgA);//开锁
+                this.btnCmdSend(0x11, 0, avgA + 10);//关锁
               }
             })
           }
@@ -395,8 +395,8 @@ Page({
     resultObject.lock = bytes[2] === 1 ? true : false;//锁状态
     resultObject.supply = bytes[3];//3v断电剩余时间
     resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式'//感应状态
-    resultObject.lock = bytes[8]//关锁信号值
-    resultObject.unlock = bytes[11]//开锁信号值
+    resultObject.lock = bytes[8]?.toString(16)//关锁信号值
+    resultObject.unlock = bytes[11]?.toString(16)//开锁信号值
     resultObject.toBreakOff = bytes[6] === 1//蓝牙断开自动锁车
     resultObject.signal = bytes[10]//当前信号值
 
@@ -410,8 +410,8 @@ Page({
     }
 
     this.setData({
-      bigRadius: bytes[8],      // 大圈默认半径（45-90）
-      smallRadius: bytes[11],    // 小圈默认半径（40-85）
+      bigRadius: bytes[8]?.toString(16),      // 大圈默认半径（45-90）
+      smallRadius: bytes[11]?.toString(16),    // 小圈默认半径（40-85）
       signalCache: signalCache   // Update the cache in data
     })
 
