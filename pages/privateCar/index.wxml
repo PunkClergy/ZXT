@@ -1,6 +1,6 @@
 <!-- index.wxml -->
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="手机汽车钥匙" state="{{netWork?1:0}}" />
+  <custom-header title="手机汽车钥匙"/>
   <!-- 车辆信息卡片 -->
   <view class="vehicle-card" style="margin-top:{{c_statusBarHeight + c_navBarHeight +2}}px;">
     <!-- 车牌与提示信息 -->

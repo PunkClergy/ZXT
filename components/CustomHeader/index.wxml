@@ -2,10 +2,10 @@
   <view style="height: {{statusBarHeight}}px"></view>
   <view class="nav-content" style="height: {{navBarHeight}}px">
     <view class="left-buttons">
-      <view class="nav-btn" bindtap="handleBack" wx:if="{{state!=1}}">
+      <view class="nav-btn" bindtap="handleBack">
         <image src="/assets/images/home/left.png" class="icon" mode="aspectFit"></image>
       </view>
-      <view class="nav-btn" bindtap="handleGoHome" wx:if="{{state!=1}}">
+      <view class="nav-btn" bindtap="handleGoHome">
         <image src="/assets/images/index/home.png" class="icon" mode="aspectFit"></image>
       </view>
     </view>
