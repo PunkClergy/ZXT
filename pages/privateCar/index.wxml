@@ -1,6 +1,6 @@
 <!-- index.wxml -->
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="私家车开关锁" />
+  <custom-header title="手机汽车钥匙" state="{{netWork?1:0}}" />
   <!-- 车辆信息卡片 -->
   <view class="vehicle-card" style="margin-top:{{c_statusBarHeight + c_navBarHeight +2}}px;">
     <!-- 车牌与提示信息 -->
@@ -27,7 +27,7 @@
         <image src="https://k3a.wiselink.net.cn/img/app/blue/bluetooth.png" class="mode-icon" style="background: {{connectionState=='未连接'?'#8c8787':''}};"></image>
         <text class="mode-text">蓝牙连接</text>
       </view>
-      <view class="mode-item" bindtap="handleSetUpInduction">
+      <view class="mode-item" bindtap="handleSetUpInduction" wx:if="{{!netWork}}">
         <image src="https://k3a.wiselink.net.cn/img/app/blue/signal.png" class="mode-icon"></image>
         <text class="mode-text">{{parsedData.induction||'手动模式'}}</text>
       </view>
@@ -55,7 +55,7 @@
     </view>
   </view>
 
-    <!-- <view class="section">
+  <!-- <view class="section">
       <text class="title">车辆状态解析结果</text>
       <view wx:for="{{parsedDataob}}" wx:key="index" class="data-item">
         <text>{{item.key}}: </text>

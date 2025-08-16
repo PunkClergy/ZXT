@@ -2,6 +2,11 @@ const {
   _handleWindowInfo,
   _handleDeviceInfo
 } = require('../../utils/public').default
+const {
+  byGet,
+  byPost,
+  isLogin
+} = require('../../utils/request/http')
 const bleKeyManager = require('../../utils/BleKeyFun-utils.js');  // 蓝牙密钥管理
 const appUtil = require('../../utils/app-util.js');               // 应用工具
 const {
@@ -55,7 +60,8 @@ Page({
     parsedData: [],                              // 解析后的数据
 
     // 定时器相关
-    pageInterval: 0                              // 状态检查定时器
+    pageInterval: 0,                              // 状态检查定时器
+    netWork:false
   },
 
   /**
@@ -78,16 +84,18 @@ Page({
         that.handleBule();
       });
     };
-
+    console.log(options)
     if (options?.scene) {
       // 场景参数处理
-      byGet(getApp().data.k1swUrl + u_getCarBluetoothKeyByCode.URL, {
+      console.log(getApp().data.k1swUrl + u_getCarBluetoothKeyByCode.URL)
+      byGet('https://k1sw.wiselink.net.cn/' + u_getCarBluetoothKeyByCode.URL, {
         code: options.scene
       }).then(response => {
         if (!response?.data?.content) {
           console.error('无效的响应数据');
           return;
         }
+        this.setData({ netWork: true })
         handleData(response.data.content);
       }).catch(err => {
         console.error('请求失败:', err);
@@ -351,8 +359,8 @@ Page({
   btnStartConnect: function () {
     const that = this
     wx.showLoading({
-      title: '蓝牙搜索中...',  
-      mask: true       
+      title: '蓝牙搜索中...',
+      mask: true
     })
     if (that.data.connectionID == "") {
       bleKeyManager.connectBLE(that.data.deviceIDC, function (state) {

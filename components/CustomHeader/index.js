@@ -3,6 +3,10 @@ Component({
     title: {
       type: String,
       value: {}
+    },
+    state:{
+      type:String,
+      value:0
     }
   },
 
