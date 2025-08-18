@@ -56,11 +56,11 @@
     </view>
   </view>
 
-  <view class="section">
+  <!-- <view class="section">
       <text class="title">车辆状态解析结果</text>
       <view wx:for="{{parsedDataob}}" wx:key="index" class="data-item">
         <text>{{item.key}}: </text>
         <text>{{item.value}}</text>
       </view>
-    </view>
+    </view> -->
 </view>

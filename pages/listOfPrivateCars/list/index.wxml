@@ -18,6 +18,10 @@
                   <image src="/assets/images/home/car_icon.png" />
                   <text>{{item.platenumber}}</text>
                 </view>
+                <view class="left-split_line"></view>
+                <view class="left-model">
+                  {{item.vehicleSerialName||'-'}}{{item.vehicleModeName||''}}
+                </view>
               </view>
               <view class="head-right" wx:if="{{!(g_flagMulti)}}">
                 <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
@@ -57,7 +61,24 @@
                 <input placeholder="请输入车牌号" value="{{params.platenumber}}" data-item="platenumber" bindinput="handleBindinput" />
               </view>
             </block>
-
+          </view>
+          <!-- 车系 -->
+          <view class="card-info-item">
+            <label>车系<text>*</text></label>
+            <block>
+              <view class="card-info-item-input">
+                <input placeholder="请输入车系" value="{{params.vehicleSerialName}}" data-item="vehicleSerialName" bindinput="handleBindinput" />
+              </view>
+            </block>
+          </view>
+          <!-- 车型 -->
+          <view class="card-info-item">
+            <label>车型<text>*</text></label>
+            <block>
+              <view class="card-info-item-input">
+                <input placeholder="请输入车型" value="{{params.vehicleModeName}}" data-item="vehicleModeName" bindinput="handleBindinput" />
+              </view>
+            </block>
           </view>
           <!-- 设备号 -->
           <view class="card-info-item">
