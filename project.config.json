@@ -57,30 +57,15 @@
     "tabSize": 2
   },
   "condition": {
-    "search": {
-      "list": []
-    },
-    "conversation": {
-      "list": []
-    },
-    "plugin": {
-      "list": []
-    },
-    "game": {
-      "currentL": -1,
-      "list": []
-    },
     "miniprogram": {
       "list": [
         {
-          "id": -1,
           "name": "dentistId=100",
           "pathName": "pages/system/loginView/loginView",
           "query": "dentistId=100",
           "scene": "1011"
         },
         {
-          "id": -1,
           "name": "sn=100",
           "pathName": "pages/control/control",
           "query": "sn=100"

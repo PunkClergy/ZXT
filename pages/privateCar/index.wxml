@@ -1,6 +1,6 @@
 <!-- index.wxml -->
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="手机汽车钥匙"/>
+  <custom-header title="手机汽车钥匙" />
   <!-- 车辆信息卡片 -->
   <view class="vehicle-card" style="margin-top:{{c_statusBarHeight + c_navBarHeight +2}}px;">
     <!-- 车牌与提示信息 -->
@@ -16,6 +16,7 @@
       </image>
       <text class="battery-percent">{{parsedData.voltage||100}}%</text>
     </view>
+    <text style="font-size: 26rpx;" wx:if="{{netWork}}">授权时间:{{bluetoothData.startDate}} — {{bluetoothData.endDate}}</text>
     <!-- 车辆图片 -->
     <view style="background-image: url('https://k3a.wiselink.net.cn/img/app/blue/privateCar_bg.png')" class="vehicle-image">
       <image src="https://k3a.wiselink.net.cn/img/app/blue/privateCar.png" alt="车辆图片" class="vehicle-img"></image>
@@ -55,11 +56,11 @@
     </view>
   </view>
 
-  <!-- <view class="section">
+  <view class="section">
       <text class="title">车辆状态解析结果</text>
       <view wx:for="{{parsedDataob}}" wx:key="index" class="data-item">
         <text>{{item.key}}: </text>
         <text>{{item.value}}</text>
       </view>
-    </view> -->
+    </view>
 </view>

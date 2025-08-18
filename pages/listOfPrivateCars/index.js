@@ -43,7 +43,7 @@ Page({
   },
   onLoad: function (options) {
     this.setData({
-      deviceIDC: `51CarKey${options?.sn}`,
+      deviceIDC: `sn${options?.sn}`,
       orgKey: options?.bluetoothKey
     }, () => {
       if (options?.flag == 1) {

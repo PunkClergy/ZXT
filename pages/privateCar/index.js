@@ -7,6 +7,9 @@ const {
   byPost,
   isLogin
 } = require('../../utils/request/http')
+const {
+  u_carList
+} = require('../../utils/request/car')
 const bleKeyManager = require('../../utils/BleKeyFun-utils.js');  // 蓝牙密钥管理
 const appUtil = require('../../utils/app-util.js');               // 应用工具
 const {
@@ -46,7 +49,7 @@ Page({
     data: '',                                    // 输入数据
     msg: '',                                     // 消息日志
     consolemsg: '',                              // 控制台消息
-    deviceIDC: "51CarKey932505100228",          // 默认设备ID
+    deviceIDC: "sn932505100228",          // 默认设备ID
     orgKey: [0x33, 0x47, 0x01, 0x82, 0x34, 0x33], // 原始密钥
     isOwner: false,                              // 所有者标识
     connectionState: "未连接",                   // 连接状态
@@ -61,7 +64,7 @@ Page({
 
     // 定时器相关
     pageInterval: 0,                              // 状态检查定时器
-    netWork:false
+    netWork: false
   },
 
   /**
@@ -76,7 +79,7 @@ Page({
       if (!data) return;
 
       that.setData({
-        deviceIDC: `51CarKey${data?.sn}`,
+        deviceIDC: `sn${data?.sn}`,
         orgKey: that.handleTransformation(data?.bluetoothKey),
         orgKeyOld: data?.bluetoothKey,
         bluetoothData: data
@@ -95,6 +98,7 @@ Page({
           console.error('无效的响应数据');
           return;
         }
+        console.log(response.data.content, '22222')
         this.setData({ netWork: true })
         handleData(response.data.content);
       }).catch(err => {
@@ -109,12 +113,18 @@ Page({
           handleData(res.data);
         },
         fail(err) {
-          console.error('获取缓存失败:', err);
+          const param = {
+            [u_carList.page]: 1,
+          };
+          byGet('https://k1sw.wiselink.net.cn/' + u_carList.URL, param).then(response => {
+            if (response.statusCode == 200) {
+              handleData(response?.data?.content?.[0])
+            }
+          })
         }
       });
     }
   },
-
   /**
    * 生命周期函数 - 页面隐藏
    */
