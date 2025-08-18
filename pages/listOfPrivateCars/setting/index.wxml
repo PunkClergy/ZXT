@@ -60,14 +60,14 @@
       </view>
       <view class="container">
         <!-- 大圈（B圆） -->
-        <view class="circle big-circle" style="width: {{bigRadius * 2}}px; height: {{bigRadius * 2}}px;"></view>
+        <view class="circle big-circle" style="width: {{bigRadius * 3}}px; height: {{bigRadius * 3}}px;"></view>
 
         <!-- 小圈（A圆） -->
-        <view class="circle small-circle" style="width: {{smallRadius * 2}}px; height: {{smallRadius * 2}}px;"></view>
+        <view class="circle small-circle" style="width: {{smallRadius * 3}}px; height: {{smallRadius * 3}}px;"></view>
 
         <!-- 车图标 -->
         <view class="car-icon">
-          <image src="https://k3a.wiselink.net.cn/img/app/blue/car.png" style="width: 80px;height: 80px;" />
+          <image src="https://k3a.wiselink.net.cn/img/app/blue/car.png" style="width: 120px;height: 120px;" />
         </view>
       </view>
 

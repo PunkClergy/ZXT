@@ -145,21 +145,48 @@ switch {
 /* 大圆样式 */
 .big-circle {
   border: 3px solid #4B7CB0;
+  animation: blink 7s infinite;
+
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 /* 小圆样式 */
 .small-circle {
-  border: 3px solid #8DB6E8;
+  border: 2px solid #c6bada;
+  animation: blink 5s infinite;
+  /* background: linear-gradient(to right,
+      #b2a9c2 0%,
+      #d8d0e6 20%,
+      #f0eef5 40%,
+      #f9f9fa 50%,
+      #f0eef5 60%,
+      #d8d0e6 80%,
+      #b2a9c2 100%); */
+  z-index: 1;
 }
 
 /* 车图标样式 */
 .car-icon {
   position: absolute;
-  top: 50%;
+  top: 54%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 50px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
 
 /* 控制区样式 */
