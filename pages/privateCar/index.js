@@ -49,7 +49,7 @@ Page({
     data: '',                                    // 输入数据
     msg: '',                                     // 消息日志
     consolemsg: '',                              // 控制台消息
-    deviceIDC: "sn932505100228",          // 默认设备ID
+    deviceIDC: "932505100228",          // 默认设备ID
     orgKey: [0x33, 0x47, 0x01, 0x82, 0x34, 0x33], // 原始密钥
     isOwner: false,                              // 所有者标识
     connectionState: "未连接",                   // 连接状态
@@ -79,7 +79,7 @@ Page({
       if (!data) return;
 
       that.setData({
-        deviceIDC: `sn${data?.sn}`,
+        deviceIDC: `${data?.sn}`,
         orgKey: that.handleTransformation(data?.bluetoothKey),
         orgKeyOld: data?.bluetoothKey,
         bluetoothData: data
