@@ -3,18 +3,18 @@ const appUtil = require('utils/app-util.js');
 //app.js
 App({
   data: {
-    k1swUrlKey:'k1swUrlKey',
-    fin3UrlKey:'fin3UrlKey',
-    reflag:0,
-    funAreaId:'',
-    k1swUrl:'',
-    fin3Url:'',
+    k1swUrlKey: 'k1swUrlKey',
+    fin3UrlKey: 'fin3UrlKey',
+    reflag: 0,
+    funAreaId: '',
+    k1swUrl: '',
+    fin3Url: '',
     userKey: 'userKey',
     userInfo: '',
     isDebug: true,
     version: '1.03',//版本号
-    tabBarHeight:''
-  
+    tabBarHeight: ''
+
   },
   //指令的头两个字节
   header: [0x7E, 0x10],
@@ -64,31 +64,47 @@ App({
   },
 
   onLaunch: function () {
-    // 小程序初始化完成时执行，全局只执行一次
-    console.log('小程序启动');
-    console.log(this.data.userKey);
-
+    // 检查更新
+    if (wx.canIUse('getUpdateManager')) {
+      const updateManager = wx.getUpdateManager()
+      updateManager.onCheckForUpdate(function (res) {
+        // 请求完新版本信息的回调
+        if (res.hasUpdate) {
+          updateManager.onUpdateReady(function () {
+            wx.showModal({
+              title: '更新提示',
+              content: '新版本已经准备好，是否重启应用？',
+              success: function (res) {
+                if (res.confirm) {
+                  // 强制更新
+                  updateManager.applyUpdate()
+                }
+              }
+            })
+          })
+          updateManager.onUpdateFailed(function () {
+            // 新版本下载失败
+            wx.showModal({
+              title: '更新提示',
+              content: '新版本下载失败，请删除当前小程序，重新搜索打开',
+            })
+          })
+        }
+      })
+    }
     const userInfo = wx.getStorageSync(this.data.userKey);
     if (userInfo) {
       this.data.userInfo = userInfo;
     }
-
     const k1swUrl = wx.getStorageSync(this.data.k1swUrlKey);
     if (k1swUrl) {
       this.data.k1swUrl = k1swUrl;
     }
-
     const fin3Url = wx.getStorageSync(this.data.fin3UrlKey);
     if (fin3Url) {
       this.data.fin3Url = fin3Url;
     }
     wx.hideTabBar();//去除tabbar
-    // appUtil.getStorage(this.data.userKey, function(data) {
-    //   if (data) {
-    //     this.data.userInfo = data;
-    //     } 
-    //  });
-
   },
   onShow: function () {
     // 小程序启动，或从后台进入前台显示时执行

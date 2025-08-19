@@ -370,7 +370,11 @@ Page({
   parseData: function (hexData) {
     const parsedResult = this.parseHexDataObject(hexData);
     if (parsedResult) {
-      this.setData({ parsedData: parsedResult });
+      const currentData = this.data.parsedData || {};
+      const isEqual = JSON.stringify(parsedResult) === JSON.stringify(currentData);
+      if (!isEqual) {
+        this.setData({ parsedData: parsedResult });
+      }
     }
   },
   /**
