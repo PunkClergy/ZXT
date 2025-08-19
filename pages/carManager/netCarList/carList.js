@@ -383,6 +383,7 @@ console.log(response)
             g_items:[],
             g_page:1
           },()=>{
+            getApp().data.reflag = 1 
             this.initList()
           })
         } else {

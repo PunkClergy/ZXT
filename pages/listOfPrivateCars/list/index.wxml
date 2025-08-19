@@ -25,6 +25,7 @@
               </view>
               <view class="head-right" wx:if="{{!(g_flagMulti)}}">
                 <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
+                <image src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />
               </view>
             </view>
             <view class="content-item-info">

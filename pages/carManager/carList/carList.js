@@ -311,6 +311,7 @@ Page({
             g_items: [], //列表数据
           })
           showToast(response.data.msg)
+          getApp().data.reflag = 1 
           this.initList()
         } else {
           showToast(response.data.msg)

@@ -117,7 +117,11 @@ const u_newLoseClaim = {
 const u_vehBindCarManager={
   URL: fin3plusUrl + "rentKeyApi/vehBindCarManager",
 }
+const u_carapiDeleteCar = {
+  URL: fin3plusUrl + "carapi/deleteCar",
+}
 module.exports = {
+  u_carapiDeleteCar,
   u_vehBindCarManager,
   u_improveLoseClaimFile,
   u_newLoseClaim,

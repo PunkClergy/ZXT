@@ -5,7 +5,8 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   u_carList,
-  u_addOrUpdateCar
+  u_addOrUpdateCar,
+  u_carapiDeleteCar,
 } = require('../../../utils/request/car')
 const {
   byPost,
@@ -73,7 +74,7 @@ Page({
       g_platenumbers: [...plateSet]
     });
   },
-  
+
   handleJumpBlackInfo() {
     wx.reLaunch({
       url: `${this.data.g_source}?black=${this.data.g_black}&type=${this.data.type}&name=${this.data.name}&platenumbers=${this.data.g_platenumbers}&info=${JSON.stringify(this.data.info)}`,
@@ -286,7 +287,6 @@ Page({
     showLoading();
     byPost(apiUrls.getCarStatus, param,
       (response) => {
-
         hideLoading();
         if (response.data.code == 1000) {
           this.setData({
@@ -302,6 +302,7 @@ Page({
             g_items: [], //列表数据
           })
           showToast(response.data.msg)
+          getApp().data.reflag = 1 
           this.initList()
         } else {
           showToast(response.data.msg)
@@ -331,6 +332,34 @@ Page({
       brakingType: info?.brakingType,
       carOwnerName: info?.carOwnerName,
     })
+  },
+  // 删除车辆
+  handleDelete(evt) {
+    const info = evt.currentTarget.dataset.item
+    console.log(info)
+    const apiUrls = {
+      getCarStatus: getApp().data.k1swUrl + u_carapiDeleteCar.URL
+    };
+    const param = {
+      sn: info?.sn,
+      code: info?.code
+    }
+    byPost(apiUrls.getCarStatus, param,
+      (response) => {
+        hideLoading();
+        if (response.data.code == 1000) {
+          this.setData({
+            c_activeTab: 1, // 默认选中的Tab索引
+            g_page: 1, //列表页码
+            g_items: [], //列表数据
+          })
+          showToast(response.data.msg)
+          getApp().data.reflag = 1 
+          this.initList()
+        } else {
+          showToast(response.data.msg)
+        }
+      });
   },
   // 切换tabs标签
   handleSwitchTab(e) {
