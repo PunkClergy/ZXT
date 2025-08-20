@@ -14,14 +14,14 @@ const CONTROL_ITEMS = [
 ];
 // 指令集合
 const _INSTRUCTIONS = [
-  { id: 1, name: '开锁指令配置', useKey: '', useType: '', },
-  { id: 2, name: '关锁指令配置', useKey: '', useType: '', },
-  { id: 3, name: '寻车指令配置', useKey: '', useType: '', },
-  { id: 4, name: '尾箱指令配置', useKey: '', useType: '', },
-  { id: 5, name: '左中门指令配置', useKey: '', useType: '', },
-  { id: 6, name: '右中门指令配置', useKey: '', useType: '', },
-  { id: 7, name: '升窗指令配置', useKey: '', useType: '', },
-  { id: 8, name: '降窗指令配置', useKey: '', useType: '', },
+  { id: 1, name: '开锁指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
+  { id: 2, name: '关锁指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
+  { id: 3, name: '寻车指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
+  { id: 4, name: '尾箱指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
+  { id: 5, name: '左中门指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
+  { id: 6, name: '右中门指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
+  { id: 7, name: '升窗指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
+  { id: 8, name: '降窗指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
 ];
 // 按键选择集合
 const _KEY_CONTROL = [
@@ -560,12 +560,17 @@ Page({
     if (selectedIndex === undefined || !currentItem) return;
     const selectedKey = this.data.key_control[selectedIndex]?.name;
     if (!selectedKey) return;
+    const selectedId = this.data.key_control[selectedIndex]?.id;
+    if (!selectedId) return;
     const itemId = currentItem.id;
     const { keyInstructions } = this.data;
     const updateIndex = keyInstructions.findIndex(item => item?.id === itemId);
     if (updateIndex === -1) return;
     this.setData({
-      [`keyInstructions[${updateIndex}].useKey`]: selectedKey
+      [`keyInstructions[${updateIndex}].useKey`]: selectedKey,
+      [`keyInstructions[${updateIndex}].useKeyId`]: selectedId
+    }, () => {
+      console.log(keyInstructions[updateIndex])
     });
   },
   // 输出方式
@@ -581,7 +586,10 @@ Page({
     const updateIndex = keyInstructions.findIndex(item => item?.id === itemId);
     if (updateIndex === -1) return;
     this.setData({
-      [`keyInstructions[${updateIndex}].useType`]: selectedOutput.name
+      [`keyInstructions[${updateIndex}].useType`]: selectedOutput.name,
+      [`keyInstructions[${updateIndex}].useTypeId`]: selectedOutput.id
+    }, () => {
+      console.log(keyInstructions[updateIndex])
     });
   },
 });
