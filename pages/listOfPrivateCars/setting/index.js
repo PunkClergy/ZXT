@@ -570,7 +570,10 @@ Page({
       [`keyInstructions[${updateIndex}].useKey`]: selectedKey,
       [`keyInstructions[${updateIndex}].useKeyId`]: selectedId
     }, () => {
-      console.log(keyInstructions[updateIndex])
+      const flag = keyInstructions[updateIndex]
+      if (flag?.useTypeId && flag?.useKeyId) {
+        console.log(123)
+      }
     });
   },
   // 输出方式
@@ -589,7 +592,10 @@ Page({
       [`keyInstructions[${updateIndex}].useType`]: selectedOutput.name,
       [`keyInstructions[${updateIndex}].useTypeId`]: selectedOutput.id
     }, () => {
-      console.log(keyInstructions[updateIndex])
+      const flag = keyInstructions[updateIndex]
+      if (flag?.useTypeId && flag?.useKeyId) {
+        console.log(123)
+      }
     });
   },
 });
