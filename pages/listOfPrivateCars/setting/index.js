@@ -14,51 +14,44 @@ const CONTROL_ITEMS = [
 ];
 // 指令集合
 const _INSTRUCTIONS = [
-  { id: 1, name: '开锁指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
-  { id: 2, name: '关锁指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
-  { id: 3, name: '寻车指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
-  { id: 4, name: '尾箱指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
-  { id: 5, name: '左中门指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
-  { id: 6, name: '右中门指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
-  { id: 7, name: '升窗指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
-  { id: 8, name: '降窗指令配置', useKey: '', useType: '', useTypeId: '', useKeyId: '', },
+  { id: 1, name: '开锁指令配置', useType: '', useTypeId: '', },
+  { id: 2, name: '关锁指令配置', useType: '', useTypeId: '', },
+  { id: 3, name: '寻车指令配置', useType: '', useTypeId: '', },
+  { id: 4, name: '尾箱指令配置', useType: '', useTypeId: '', },
+  { id: 5, name: '左中门指令配置', useType: '', useTypeId: '', },
+  { id: 6, name: '右中门指令配置', useType: '', useTypeId: '', },
+  { id: 7, name: '升窗指令配置', useType: '', useTypeId: '', },
+  { id: 8, name: '降窗指令配置', useType: '', useTypeId: '', },
 ];
-// 按键选择集合
-const _KEY_CONTROL = [
-  { id: 1, name: '开锁' },
-  { id: 2, name: '关锁', },
-  { id: 3, name: '寻车丨左中门' },
-  { id: 4, name: '尾箱' },
-  { id: 5, name: '启动丨右中门' },
-]
 // 输出方式
 const _OUTPUT = [
   // 开锁
-  [{ id: 1, name: '短按' },//输出次数1 输出时间500ms 输出间隔0
+  [{ id: 1, name: '短按开锁键' },//输出次数1 输出时间500ms 输出间隔0
   ],
   // 关锁
-  [{ id: 1, name: '短按' },//输出次数1 输出时间500ms 输出间隔0
+  [{ id: 1, name: '短按关锁键' },//输出次数1 输出时间500ms 输出间隔0
   ],
   // 寻车
-  [{ id: 1, name: '短按' },//寻车键：输出次数1 输出时间500ms 输出间隔0; 关锁键:输出次数3 输出时间500 输出间隔1000ms
+  [{ id: 1, name: '短按寻车键' },//寻车键：输出次数1 输出时间500ms 输出间隔0; 关锁键:输出次数3 输出时间500 输出间隔1000ms
+  { id: 2, name: '短按关锁键' },
   ],
   // 尾箱
-  [{ id: 1, name: '短按两次' },//输出次数2 输出时间500ms 输出间隔1000ms
-  { id: 2, name: '长按三秒' },//输出次数1 输出时间3000ms 输出间隔0
+  [{ id: 1, name: '短按两次尾箱键' },//输出次数2 输出时间500ms 输出间隔1000ms
+  { id: 2, name: '长按三秒尾箱键' },//输出次数1 输出时间3000ms 输出间隔0
   ],
   // 左中门
-  [{ id: 1, name: '短按' },//输出次数为1 输出时间为500ms 输出间隔0
-  { id: 2, name: '长按3秒' },//输出次数为1 输出时间为3000ms 输出间隔0
+  [{ id: 1, name: '短按左中门键' },//输出次数为1 输出时间为500ms 输出间隔0
+  { id: 2, name: '长按3秒左中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
   ],
   // 右中门
-  [{ id: 1, name: '短按' },//输出次数为1 输出时间为500ms 输出间隔0
-  { id: 2, name: '长按3秒' },//输出次数为1 输出时间为3000ms 输出间隔0
+  [{ id: 1, name: '短按右中门键' },//输出次数为1 输出时间为500ms 输出间隔0
+  { id: 2, name: '长按3秒右中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
   ],
   // 升窗
-  [{ id: 1, name: '长按7秒' },//输出次数为1 输出时间为7000ms 输出间隔0
+  [{ id: 1, name: '长按7秒关锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
   ],
   // 降窗
-  [{ id: 2, name: '长按7秒' },//输出次数为1 输出时间为7000ms 输出间隔0
+  [{ id: 2, name: '长按7秒开锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
   ]]
 // 标题映射对象
 const TITLE_MAP = {
@@ -94,7 +87,6 @@ Page({
     smallRadius: 40,     // 小圈默认半径（40-85）
     signalCache: [],//信号值集合
     keyInstructions: _INSTRUCTIONS,//指令集合
-    key_control: _KEY_CONTROL,//按键集合
     instruction_type: 0,//是否展开开始设置
     key_out_put: _OUTPUT,//输出方式集合
   },
@@ -345,10 +337,10 @@ Page({
   // 开始蓝牙连接
   btnStartConnect() {
     const that = this;
-    wx.showLoading({
-      title: '蓝牙搜索中...',
-      mask: true
-    })
+    // wx.showLoading({
+    //   title: '蓝牙搜索中...',
+    //   mask: true
+    // })
     if (!that.data.connectionID) {  // 如果未连接
       bleKeyManager.connectBLE(that.data.deviceIDC, (state) => {
         // 蓝牙状态回调
@@ -571,38 +563,6 @@ Page({
     this.setData({
       instruction_type: newInstructionType
     });
-  },
-
-  // 按键控制
-  handleOnProductChange(evt) {
-    const { detail, currentTarget } = evt || {}
-    const selectedIndex = detail?.value
-    const currentItem = currentTarget?.dataset?.item
-
-    if (selectedIndex === undefined || !currentItem) return
-
-    const { key_control: keyControl, keyInstructions } = this.data
-    const selectedItem = keyControl?.[selectedIndex]
-
-    if (!selectedItem?.id) return
-
-    const { name: selectedKey, id: selectedId } = selectedItem
-    const itemId = currentItem.id
-
-    const updateIndex = keyInstructions.findIndex(item => item?.id === itemId)
-    if (updateIndex === -1) return
-
-    const updatePath = `keyInstructions[${updateIndex}]`
-
-    this.setData({
-      [`${updatePath}.useKey`]: selectedKey,
-      [`${updatePath}.useKeyId`]: selectedId
-    }, () => {
-      const updatedItem = keyInstructions[updateIndex]
-      if (updatedItem?.useTypeId && updatedItem?.useKeyId) {
-        console.log('条件满足') // 添加有意义的日志消息
-      }
-    })
   },
 
   // 输出方式

@@ -246,3 +246,6 @@ radio-group{
 .radio-animate:active {
   transform: scale(0.8);
 }
+.text-color{
+  color: #868383;
+}
