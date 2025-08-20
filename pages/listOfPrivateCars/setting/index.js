@@ -34,39 +34,31 @@ const _KEY_CONTROL = [
 // 输出方式
 const _OUTPUT = [
   // 开锁
-  [
-    { id: 1, name: '短按' }
+  [{ id: 1, name: '短按' },//输出次数1 输出时间500ms 输出间隔0
   ],
   // 关锁
-  [
-    { id: 1, name: '短按' },
+  [{ id: 1, name: '短按' },//输出次数1 输出时间500ms 输出间隔0
   ],
   // 寻车
-  [
-    { id: 1, name: '短按' },
+  [{ id: 1, name: '短按' },//寻车键：输出次数1 输出时间500ms 输出间隔0; 关锁键:输出次数3 输出时间500 输出间隔1000ms
   ],
   // 尾箱
-  [
-    { id: 1, name: '短按两次' },
-    { id: 2, name: '长按三秒' },
+  [{ id: 1, name: '短按两次' },//输出次数2 输出时间500ms 输出间隔1000ms
+  { id: 2, name: '长按三秒' },//输出次数1 输出时间3000ms 输出间隔0
   ],
   // 左中门
-  [
-    { id: 1, name: '短按' },
-    { id: 2, name: '长按3秒' },
+  [{ id: 1, name: '短按' },//输出次数为1 输出时间为500ms 输出间隔0
+  { id: 2, name: '长按3秒' },//输出次数为1 输出时间为3000ms 输出间隔0
   ],
   // 右中门
-  [
-    { id: 1, name: '短按' },
-    { id: 2, name: '长按3秒' },
+  [{ id: 1, name: '短按' },//输出次数为1 输出时间为500ms 输出间隔0
+  { id: 2, name: '长按3秒' },//输出次数为1 输出时间为3000ms 输出间隔0
   ],
   // 升窗
-  [
-    { id: 1, name: '长按7秒' },
+  [{ id: 1, name: '长按7秒' },//输出次数为1 输出时间为7000ms 输出间隔0
   ],
   // 降窗
-  [
-    { id: 2, name: '长按7秒' },
+  [{ id: 2, name: '长按7秒' },//输出次数为1 输出时间为7000ms 输出间隔0
   ]]
 // 标题映射对象
 const TITLE_MAP = {
@@ -110,7 +102,7 @@ Page({
   // 页面加载生命周期
   onLoad(options) {
     const sign = options?.sign || '';  // 从参数获取sign值
-    if (options?.sign === '1') {      // 如果sign为1则处理请求
+    if (options?.sign === '1' || options?.sign == '3') {      // 如果sign为1则处理请求
       this.setData({
         deviceIDC: options?.deviceIDC,  // 默认设备ID
         orgKey: this.keyToHexArray(options?.orgKey)
@@ -123,6 +115,7 @@ Page({
       sign,  // 设置sign值
       headerTitle: this.getHeaderTitle(sign)  // 设置标题
     });
+
   },
 
   // 页面显示生命周期
@@ -336,10 +329,10 @@ Page({
   // 开始蓝牙连接
   btnStartConnect() {
     const that = this;
-    wx.showLoading({
-      title: '蓝牙搜索中...',
-      mask: true
-    })
+    // wx.showLoading({
+    //   title: '蓝牙搜索中...',
+    //   mask: true
+    // })
     if (!that.data.connectionID) {  // 如果未连接
       bleKeyManager.connectBLE(that.data.deviceIDC, (state) => {
         // 蓝牙状态回调
@@ -564,20 +557,13 @@ Page({
   handleOnProductChange(evt) {
     const selectedIndex = evt?.detail?.value;
     const currentItem = evt?.currentTarget?.dataset?.item;
-
     if (selectedIndex === undefined || !currentItem) return;
-
     const selectedKey = this.data.key_control[selectedIndex]?.name;
     if (!selectedKey) return;
-
     const itemId = currentItem.id;
     const { keyInstructions } = this.data;
-
-    // 直接找到需要更新的索引
     const updateIndex = keyInstructions.findIndex(item => item?.id === itemId);
     if (updateIndex === -1) return;
-
-    // 使用路径更新，避免更新整个数组
     this.setData({
       [`keyInstructions[${updateIndex}].useKey`]: selectedKey
     });
@@ -587,21 +573,13 @@ Page({
     const index = evt?.currentTarget?.dataset?.index;
     const info = evt?.currentTarget?.dataset?.item;
     const value = evt?.detail?.value;
-
-    // 基本验证
     if (index === undefined || !info || value === undefined) return;
-
     const selectedOutput = this.data.key_out_put?.[index]?.[Number(value)];
     if (!selectedOutput?.name) return;
-
     const itemId = info.id;
     const { keyInstructions } = this.data;
-
-    // 直接找到需要更新的索引
     const updateIndex = keyInstructions.findIndex(item => item?.id === itemId);
     if (updateIndex === -1) return;
-
-    // 使用路径更新，避免更新整个数组
     this.setData({
       [`keyInstructions[${updateIndex}].useType`]: selectedOutput.name
     });
