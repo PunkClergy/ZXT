@@ -86,12 +86,12 @@
     </block>
     <!-- 按键设置 -->
     <block wx:if="{{sign == 3}}" wx:for="{{keyInstructions}}" wx:key="index">
-      <view class="settings-group">
+      <view class="settings-group" data-item="{{item}}" bindtap="handleKeyCommands">
         <view class="settings-item">
           <view class="item-left">
             <text class="item-text">{{item.name}}</text>
           </view>
-          <view data-item="{{item}}" bindtap="handleKeyCommands">
+          <view>
             <image class="item-arrow" src="/assets/images/home/down.png" wx:if="{{instruction_type == item.id}}" />
             <image class="item-arrow" src="/assets/images/home/right_1.png" wx:else />
           </view>
@@ -99,17 +99,17 @@
       </view>
       <view class="key-control" wx:if="{{instruction_type == item.id}}">
         <view class="settings-group">
-          <view class="settings-item">
-            <view class="item-left">
-              <text class="item-text text-color">控制方式</text>
-            </view>
-            <picker data-item="{{item}}" data-index="{{index}}" bindchange="handleOutputMethod" range="{{key_out_put[index]}}" range-key="name">
+          <picker data-item="{{item}}" data-index="{{index}}" bindchange="handleOutputMethod" range="{{key_out_put[index]}}" range-key="name">
+            <view class="settings-item">
+              <view class="item-left">
+                <text class="item-text text-color">控制方式</text>
+              </view>
               <view class="key-control-picker">
                 <text class="text-color">{{item.useType}}</text>
                 <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
               </view>
-            </picker>
-          </view>
+            </view>
+          </picker>
         </view>
       </view>
     </block>
