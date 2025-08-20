@@ -14,14 +14,14 @@ const CONTROL_ITEMS = [
 ];
 // 指令集合
 const _INSTRUCTIONS = [
-  { id: 1, name: '开锁指令配置', useType: '', useTypeId: '', },
-  { id: 2, name: '关锁指令配置', useType: '', useTypeId: '', },
-  { id: 3, name: '寻车指令配置', useType: '', useTypeId: '', },
-  { id: 4, name: '尾箱指令配置', useType: '', useTypeId: '', },
-  { id: 5, name: '左中门指令配置', useType: '', useTypeId: '', },
-  { id: 6, name: '右中门指令配置', useType: '', useTypeId: '', },
-  { id: 7, name: '升窗指令配置', useType: '', useTypeId: '', },
-  { id: 8, name: '降窗指令配置', useType: '', useTypeId: '', },
+  { id: 1, name: '开锁功能指令配置', useType: '', useTypeId: '', },
+  { id: 2, name: '关锁功能指令配置', useType: '', useTypeId: '', },
+  { id: 3, name: '寻车功能指令配置', useType: '', useTypeId: '', },
+  { id: 4, name: '尾箱功能指令配置', useType: '', useTypeId: '', },
+  { id: 5, name: '左中门功能指令配置', useType: '', useTypeId: '', },
+  { id: 6, name: '右中门功能指令配置', useType: '', useTypeId: '', },
+  { id: 7, name: '升窗功能指令配置', useType: '', useTypeId: '', },
+  { id: 8, name: '降窗功能指令配置', useType: '', useTypeId: '', },
 ];
 // 输出方式
 const _OUTPUT = [
