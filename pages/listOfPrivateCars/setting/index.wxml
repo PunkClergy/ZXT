@@ -3,7 +3,7 @@
   <!-- 设置项列表 -->
   <scroll-view class="settings-list" scroll-y style="margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 感应设置 -->
-    <block wx:if="{{sign == 1&&!distance}}">
+    <block wx:if="{{sign == 1&&!distance.id}}">
       <view style="font-size: 20rpx;display: flex;justify-content: center;flex-direction: column;align-items: center;padding: 20rpx;gap: 20rpx;">
         <text>*请检查蓝牙是否连接，是否已经站在车辆旁。连接蓝牙后才可进行配对。</text>
         <view bindtap="btnPair" style="background-color: #fff;padding: 15rpx 100rpx; font-size: 26rpx;border-radius: 10rpx;">蓝牙配对</view>
@@ -47,6 +47,7 @@
         </view>
       </view>
     </block>
+    <!-- 自动校准 -->
     <block wx:if="{{distance}}">
       <view class="controls" style="padding: 0;" bindtap="handleCalibration">
         <view class="settings-item">
@@ -83,15 +84,47 @@
         </view>
       </view>
     </block>
+    <!-- 按键设置 -->
+    <block wx:if="{{sign == 3}}" wx:for="{{keyInstructions}}" wx:key="index">
+      <view class="settings-group">
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">{{item.name}}</text>
+          </view>
+          <view data-item="{{item}}" bindtap="handleKeyCommands">
+            <image class="item-arrow" src="/assets/images/home/down.png" wx:if="{{instruction_type == item.id}}" />
+            <image class="item-arrow" src="/assets/images/home/right_1.png" wx:else />
+          </view>
+        </view>
+      </view>
+      <view class="key-control" wx:if="{{instruction_type == item.id}}">
+        <view class="settings-group">
+          <view class="settings-item">
+            <view class="item-left">
+              <text class="item-text">按键控制</text>
+            </view>
+            <picker data-item="{{item}}" bindchange="handleOnProductChange" range="{{key_control}}" range-key="name">
+              <view class="key-control-picker">
+                <text>{{item.useKey}}</text>
+                <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+              </view>
+            </picker>
+          </view>
+        </view>
+        <view class="settings-group">
+          <view class="settings-item">
+            <view class="item-left">
+              <text class="item-text">输出方式</text>
+            </view>
+            <picker data-item="{{item}}" data-index="{{index}}" bindchange="handleOutputMethod" range="{{key_out_put[index]}}" range-key="name">
+              <view class="key-control-picker">
+                <text>{{item.useType}}</text>
+                <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+              </view>
+            </picker>
+          </view>
+        </view>
+      </view>
+    </block>
   </scroll-view>
-  <!-- <view class="section">
-    <text class="title">车辆状态解析结果</text>
-    <view wx:key="index" class="data-item">
-      <text>{{parsedData.lock}}: </text>
-      <text>{{parsedData.unlock}}: </text>
-      {{parsedData.toBreakOff}}
-      {{parsedData.signal}}
-      <view wx:for="{{signalCache}}">{{item}}</view>
-    </view>
-  </view> -->
 </view>

@@ -13,6 +13,8 @@
 .settings-group {
   margin-bottom: 10px;
   background-color: #ffffff;
+  width: 98%;
+  margin: 10rpx auto;
 }
 
 .group-title {
@@ -212,4 +214,22 @@ switch {
 /* 滑块自定义样式 */
 slider {
   margin-top: 5px;
+}
+
+.key-control {
+  display: flex;
+  width: 95%;
+  align-items: center;
+  margin: auto;
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  padding: 10rpx;
+  border-radius: 8rpx;
+  flex-direction: column;
+}
+
+.key-control-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 26rpx;
 }

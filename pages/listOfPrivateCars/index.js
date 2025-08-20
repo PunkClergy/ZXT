@@ -67,7 +67,7 @@ Page({
   },
   // 导航到各个设置页面 
   navigateToUserInfo(evt) {
-    const sign = evt?.currentTarget?.dataset?.sign||evt;
+    const sign = evt?.currentTarget?.dataset?.sign || evt;
     const actionMap = {
       2: {
         title: '工程模式',
@@ -85,12 +85,6 @@ Page({
           }
         },
         fallback: () => console.log('用户取消输入操作密码')
-      },
-      7: {
-        title: '删除车辆',
-        placeholderText: '请输入登录密码',
-        callback: (content) => console.log('删除车辆密码:', content),
-        fallback: () => console.log('用户取消输入登录密码')
       },
       default: {
         url: `/pages/listOfPrivateCars/setting/index?sign=${sign}&deviceIDC=${this.data.deviceIDC}&orgKey=${this.data.orgKey}`

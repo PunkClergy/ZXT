@@ -2,6 +2,7 @@
   <custom-header title="车辆设置" />
   <!-- 设置项列表 -->
   <scroll-view class="settings-list" scroll-y style="margin-top: {{navBarHeight + statusBarHeight}}px;">
+    <!-- 感应设置 -->
     <view class="settings-group">
       <view class="settings-item" data-sign="1" bindtap="navigateToUserInfo">
         <view class="item-left">
@@ -10,10 +11,29 @@
         <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
       </view>
     </view>
+    <!-- 个性设置 -->
     <view class="settings-group">
       <view class="settings-item" data-sign="4" bindtap="navigateToUserInfo">
         <view class="item-left">
           <text class="item-text">个性配置</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view>
+    </view>
+    <!-- 按键设置 -->
+    <view class="settings-group">
+      <view class="settings-item" data-sign="3" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">按键设置</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view> 
+    </view>
+    <!-- 工程模式 -->
+    <view class="settings-group">
+      <view class="settings-item" data-sign="2" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">工程模式</text>
         </view>
         <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
       </view>

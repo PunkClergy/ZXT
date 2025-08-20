@@ -7,19 +7,74 @@ const appUtil = require('../../../utils/app-util.js');          // 应用工具
 const bleKeyManager = require('../../../utils/BleKeyFun-utils.js');  // 蓝牙钥匙功能工具
 const byteUtil = require('../../../utils/byte-util.js');        // 字节工具
 
-// 控制项常量数组（新增熄火选项）
+// 控制项常量数组
 const CONTROL_ITEMS = [
   { id: 3, name: '尾箱', enabled: false, icon: 'https://k3a.wiselink.net.cn/img/app/blue/box_off.png', evt: 'handleOpenTrunk' },
   { id: 4, name: '寻车', enabled: false, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleFindCar' },
 ];
-
+// 指令集合
+const _INSTRUCTIONS = [
+  { id: 1, name: '开锁指令配置', useKey: '', useType: '', },
+  { id: 2, name: '关锁指令配置', useKey: '', useType: '', },
+  { id: 3, name: '寻车指令配置', useKey: '', useType: '', },
+  { id: 4, name: '尾箱指令配置', useKey: '', useType: '', },
+  { id: 5, name: '左中门指令配置', useKey: '', useType: '', },
+  { id: 6, name: '右中门指令配置', useKey: '', useType: '', },
+  { id: 7, name: '升窗指令配置', useKey: '', useType: '', },
+  { id: 8, name: '降窗指令配置', useKey: '', useType: '', },
+];
+// 按键选择集合
+const _KEY_CONTROL = [
+  { id: 1, name: '开锁' },
+  { id: 2, name: '关锁', },
+  { id: 3, name: '寻车丨左中门' },
+  { id: 4, name: '尾箱' },
+  { id: 5, name: '启动丨右中门' },
+]
+// 输出方式
+const _OUTPUT = [
+  // 开锁
+  [
+    { id: 1, name: '短按' }
+  ],
+  // 关锁
+  [
+    { id: 1, name: '短按' },
+  ],
+  // 寻车
+  [
+    { id: 1, name: '短按' },
+  ],
+  // 尾箱
+  [
+    { id: 1, name: '短按两次' },
+    { id: 2, name: '长按三秒' },
+  ],
+  // 左中门
+  [
+    { id: 1, name: '短按' },
+    { id: 2, name: '长按3秒' },
+  ],
+  // 右中门
+  [
+    { id: 1, name: '短按' },
+    { id: 2, name: '长按3秒' },
+  ],
+  // 升窗
+  [
+    { id: 1, name: '长按7秒' },
+  ],
+  // 降窗
+  [
+    { id: 2, name: '长按7秒' },
+  ]]
 // 标题映射对象
 const TITLE_MAP = {
   1: '感应设置',        // 类型1对应标题
   4: '个性配置',       // 类型4对应标题
+  3: '按键设置',
   default: '设置'      // 默认标题
 };
-
 // 图片映射数组
 const IMAGE_MAP = [{
   path: '/assets/images/home/car-bg.png',  // 图片路径
@@ -41,52 +96,27 @@ Page({
     connectionID: "",  // 蓝牙连接ID
     deviceIDC: "",  // 默认设备ID
     orgKey: [], // 原始密钥
-    notificationEnabled: false,
-    Radiochecked: 0,
-    distance: false,
+    Radiochecked: 0,//手动和感应模式切换
+    distance: false,//显示自动校准模块
     bigRadius: 60,      // 大圈默认半径（45-90）
     smallRadius: 40,     // 小圈默认半径（40-85）
     signalCache: [],//信号值集合
-  },
-  keyToHexArray(key) {
-    return key.match(/.{1,2}/g).map(byte => "0x" + byte);
-  },
-  handleDistance() {
-    this.setData({
-      distance: true
-    })
-  },
-  // 更新大圈半径
-
-  updateBigRadius(e) {
-    const newBigRadius = e.detail.value;
-    this.setData({
-      bigRadius: newBigRadius,
-      smallRadius: Math.min(this.data.smallRadius, newBigRadius - 5)
-    }, () => {
-      this.btnCmdSend(0x11, 0, newBigRadius?.toString(16));   // 关锁值
-    });
+    keyInstructions: _INSTRUCTIONS,//指令集合
+    key_control: _KEY_CONTROL,//按键集合
+    instruction_type: 0,//是否展开开始设置
+    key_out_put: _OUTPUT,//输出方式集合
   },
 
-  updateSmallRadius(e) {
-    this.setData({
-      smallRadius: Math.min(e.detail.value, this.data.bigRadius - 5)
-    }, () => {
-      this.btnCmdSend(0x11, 1, (Math.min(e.detail.value, this.data.bigRadius - 5))?.toString(16));   // 开锁值
-    });
-  },
   // 页面加载生命周期
   onLoad(options) {
     const sign = options?.sign || '';  // 从参数获取sign值
     if (options?.sign === '1') {      // 如果sign为1则处理请求
       this.setData({
         deviceIDC: options?.deviceIDC,  // 默认设备ID
-        // orgKey: options?.orgKey, // 原始密钥
         orgKey: this.keyToHexArray(options?.orgKey)
       }, () => {
         this.handleRequest(options);
       })
-
     }
     // 设置页面数据
     this.setData({
@@ -110,6 +140,34 @@ Page({
     clearInterval(this.data.pageInterval);  // 清除定时器
     wx.setKeepScreenOn({
       keepScreenOn: false  // 关闭屏幕常亮
+    });
+  },
+  // 数据处理
+  keyToHexArray(key) {
+    return key.match(/.{1,2}/g).map(byte => "0x" + byte);
+  },
+  // 是否开启距离校准
+  handleDistance() {
+    this.setData({
+      distance: true
+    })
+  },
+  // 更新大圈半径
+  updateBigRadius(e) {
+    const newBigRadius = e.detail.value;
+    this.setData({
+      bigRadius: newBigRadius,
+      smallRadius: Math.min(this.data.smallRadius, newBigRadius - 5)
+    }, () => {
+      this.btnCmdSend(0x11, 0, newBigRadius?.toString(16));   // 关锁值
+    });
+  },
+  // 更新小圈半径
+  updateSmallRadius(e) {
+    this.setData({
+      smallRadius: Math.min(e.detail.value, this.data.bigRadius - 5)
+    }, () => {
+      this.btnCmdSend(0x11, 1, (Math.min(e.detail.value, this.data.bigRadius - 5))?.toString(16));   // 开锁值
     });
   },
   // 初始化获取缓存内容
@@ -492,5 +550,60 @@ Page({
     // 更新视图和缓存
     this.setData({ controlItems: updatedItems });
     wx.setStorage({ key: 'controlItems', data: updatedItems });
-  }
+  },
+  // 设置按键指令
+  handleKeyCommands(evt) {
+    const { id } = evt?.currentTarget?.dataset?.item || {};
+    const { instruction_type: currentType } = this.data;
+    const newInstructionType = id === currentType ? 0 : id;
+    this.setData({
+      instruction_type: newInstructionType
+    });
+  },
+  // 按键控制
+  handleOnProductChange(evt) {
+    const selectedIndex = evt?.detail?.value;
+    const currentItem = evt?.currentTarget?.dataset?.item;
+
+    if (selectedIndex === undefined || !currentItem) return;
+
+    const selectedKey = this.data.key_control[selectedIndex]?.name;
+    if (!selectedKey) return;
+
+    const itemId = currentItem.id;
+    const { keyInstructions } = this.data;
+
+    // 直接找到需要更新的索引
+    const updateIndex = keyInstructions.findIndex(item => item?.id === itemId);
+    if (updateIndex === -1) return;
+
+    // 使用路径更新，避免更新整个数组
+    this.setData({
+      [`keyInstructions[${updateIndex}].useKey`]: selectedKey
+    });
+  },
+  // 输出方式
+  handleOutputMethod(evt) {
+    const index = evt?.currentTarget?.dataset?.index;
+    const info = evt?.currentTarget?.dataset?.item;
+    const value = evt?.detail?.value;
+
+    // 基本验证
+    if (index === undefined || !info || value === undefined) return;
+
+    const selectedOutput = this.data.key_out_put?.[index]?.[Number(value)];
+    if (!selectedOutput?.name) return;
+
+    const itemId = info.id;
+    const { keyInstructions } = this.data;
+
+    // 直接找到需要更新的索引
+    const updateIndex = keyInstructions.findIndex(item => item?.id === itemId);
+    if (updateIndex === -1) return;
+
+    // 使用路径更新，避免更新整个数组
+    this.setData({
+      [`keyInstructions[${updateIndex}].useType`]: selectedOutput.name
+    });
+  },
 });
