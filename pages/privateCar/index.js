@@ -4,8 +4,6 @@ const {
 } = require('../../utils/public').default
 const {
   byGet,
-  byPost,
-  isLogin
 } = require('../../utils/request/http')
 const {
   u_carList
@@ -75,9 +73,7 @@ Page({
     const that = this;
     // 统一处理函数
     const handleData = (data) => {
-      console.log(data)
       if (!data) return;
-
       that.setData({
         deviceIDC: `${data?.sn}`,
         orgKey: that.handleTransformation(data?.bluetoothKey),
@@ -87,29 +83,25 @@ Page({
         that.handleBule();
       });
     };
-    console.log(options)
     if (options?.scene) {
-      // 场景参数处理
-      console.log(getApp().data.k1swUrl + u_getCarBluetoothKeyByCode.URL)
       byGet('https://k1sw.wiselink.net.cn/' + u_getCarBluetoothKeyByCode.URL, {
         code: options.scene
       }).then(response => {
         if (!response?.data?.content) {
-          console.error('无效的响应数据');
           return;
         }
-        console.log(response.data.content, '22222')
-        this.setData({ netWork: true })
+        this.setData({
+          netWork: true,
+          code: options?.scene
+        })
         handleData(response.data.content);
       }).catch(err => {
-        console.error('请求失败:', err);
       });
     } else {
       // 本地存储处理
       wx.getStorage({
         key: 'bluetoothData',
         success(res) {
-          console.log('获取缓存成功:', res.data);
           handleData(res.data);
         },
         fail(err) {
@@ -124,6 +116,14 @@ Page({
         }
       });
     }
+  },
+  /**
+  * 生命周期函数 - 页面显示
+  */
+  onShow: function () {
+    this.updateVehicleStatus();       // 启动状态更新
+    this.initialiImageBaseConversion() // 图片转换
+    this.initToConfigureCache()//获取缓存内容
   },
   /**
    * 生命周期函数 - 页面隐藏
@@ -166,7 +166,6 @@ Page({
     // 设置定时状态检查
     that.data.pageInterval = setInterval(() => {
       const isConnected = bleKeyManager.getBLEConnectionState();
-      console.log(isConnected)
       that.setData({
         connectionState: isConnected ? "已连接" : "未连接",
         connectionID: isConnected ? bleKeyManager.getBLEConnectionID() : "",
@@ -446,7 +445,7 @@ Page({
     })
   },  // 切换感应或手动模式
   handleToConfigure: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/listOfPrivateCars/setting/index?sign=4',
     })
   },//跳转配置
@@ -542,32 +541,18 @@ Page({
     });
   },
 
-
-  /**
-   * 生命周期函数 - 页面显示
-   */
-  onShow: function () {
-    this.updateVehicleStatus();       // 启动状态更新
-    this.initialiImageBaseConversion() // 图片转换
-    this.initToConfigureCache()
-  },
   // 初始化获取缓存内容
   initToConfigureCache() {
     wx.getStorage({
       key: 'controlItems',
       success: (res) => {
         if (res?.data) {
-          console.log('缓存数据:', res.data);
-
           // 创建新数组，将res.data插入到第三位
           const updatedItems = [
             ...detaltAllControlItems.slice(0, 2),  // 取前两项
             ...res?.data,                       // 插入缓存数据
             ...detaltAllControlItems.slice(2)     // 插入剩余项
           ];
-
-          console.log('合并后的数组:', updatedItems);
-
           // 如果需要更新到data中
           this.setData({ allControlItems: updatedItems }, () => {
             this.splitControlItems(); // 初始化控制项分页
@@ -575,7 +560,6 @@ Page({
         }
       },
       fail: (err) => {
-        console.log('获取缓存失败:', err);
         // 如果没有缓存数据，使用初始数据
         this.setData({ allControlItems: detaltAllControlItems }, () => {
           this.splitControlItems(); // 初始化控制项分页
