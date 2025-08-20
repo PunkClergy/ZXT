@@ -135,16 +135,27 @@ Page({
       keepScreenOn: false  // 关闭屏幕常亮
     });
   },
+
   // 数据处理
   keyToHexArray(key) {
     return key.match(/.{1,2}/g).map(byte => "0x" + byte);
   },
+
   // 是否开启距离校准
   handleDistance() {
-    this.setData({
-      distance: true
-    })
+    console.log(this.data?.parsedData)
+    if (this.data?.parsedData?.unlock > 0) {
+      this.setData({
+        distance: true
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '请先执行蓝牙配对',
+      })
+    }
   },
+
   // 更新大圈半径
   updateBigRadius(e) {
     const newBigRadius = e.detail.value;
@@ -155,6 +166,7 @@ Page({
       this.btnCmdSend(0x11, 0, newBigRadius?.toString(16));   // 关锁值
     });
   },
+
   // 更新小圈半径
   updateSmallRadius(e) {
     this.setData({
@@ -163,6 +175,7 @@ Page({
       this.btnCmdSend(0x11, 1, (Math.min(e.detail.value, this.data.bigRadius - 5))?.toString(16));   // 开锁值
     });
   },
+
   // 初始化获取缓存内容
   initToConfigureCache() {
     wx.getStorage({
@@ -176,6 +189,7 @@ Page({
       }
     })
   },
+
   // 配对按钮点击处理
   btnPair() {
     const that = this;
@@ -274,6 +288,7 @@ Page({
     this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");  // 输出日志
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
   },
+  // 自动校准数据处理
   PackAndSendspecial(type, dataLength, data, sign) {
     const packet = [
       0x24,                     // Header
@@ -286,6 +301,7 @@ Page({
     this.consoleOut(`send: ${byteUtil.buf2hex(packet)}\r\n`);
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
+
   // 认证加密
   auth_encrypt(passwordSource, random) {
     const passwordEncrypt = new Array(8).fill(0x00);  // 初始化8字节数组
@@ -329,10 +345,10 @@ Page({
   // 开始蓝牙连接
   btnStartConnect() {
     const that = this;
-    // wx.showLoading({
-    //   title: '蓝牙搜索中...',
-    //   mask: true
-    // })
+    wx.showLoading({
+      title: '蓝牙搜索中...',
+      mask: true
+    })
     if (!that.data.connectionID) {  // 如果未连接
       bleKeyManager.connectBLE(that.data.deviceIDC, (state) => {
         // 蓝牙状态回调
@@ -384,36 +400,45 @@ Page({
     }
     return hexString.slice(4, -2);  // 去除头尾固定字符
   },
+
   handleCalibration() {
     const that = this
     wx.showModal({
       title: '第一步',
       content: '请参考安装说明书将设备放置在要安装的位置',
       confirmText: '已安装',
-      success: () => {
-        wx.showModal({
-          title: '第二步',
-          content: '请关好所有车窗及车门',
-          confirmText: '已关闭',
-          success: () => {
-            wx.showModal({
-              title: '第三步',
-              content: '请移步至离车头直线距离3米处',
-              confirmText: '立即校准',
-              success: () => {
-                const signalCache = that.data.signalCache
-                const sorted = [...signalCache].sort((a, b) => a - b);
-                const trimmed = sorted.slice(1, -1);
-                const avgA = Math.round(trimmed.reduce((a, b) => a + b) / trimmed.length);
-                this.btnCmdSend(0x11, 1, avgA?.toString(16));//开锁
-                this.btnCmdSend(0x11, 0, (avgA + 10)?.toString(16));//关锁
+      success: (cbRes_1) => {
+        if (cbRes_1?.confirm) {
+          wx.showModal({
+            title: '第二步',
+            content: '请关好所有车窗及车门',
+            confirmText: '已关闭',
+            success: (cbRes_2) => {
+              if (cbRes_2?.confirm) {
+                wx.showModal({
+                  title: '第三步',
+                  content: '请移步至离车头直线距离3米处',
+                  confirmText: '立即校准',
+                  success: (cbRes_3) => {
+                    if (cbRes_3?.confirm) {
+                      const signalCache = that.data.signalCache
+                      const sorted = [...signalCache].sort((a, b) => a - b);
+                      const trimmed = sorted.slice(1, -1);
+                      const avgA = Math.round(trimmed.reduce((a, b) => a + b) / trimmed.length);
+                      this.btnCmdSend(0x11, 1, avgA?.toString(16));//开锁
+                      this.btnCmdSend(0x11, 0, (avgA + 10)?.toString(16));//关锁
+                    }
+                  }
+                })
               }
-            })
-          }
-        })
+            }
+          })
+        }
+
       }
     })
   },
+
   /**
   * 数据解析按钮处理
   * @param {string} hexData 16进制数据字符串
@@ -428,6 +453,7 @@ Page({
       }
     }
   },
+
   /**
  * 解析16进制车辆状态数据
  * @param {string} hexString 30字符的16进制字符串
@@ -472,6 +498,7 @@ Page({
 
     return resultObject;
   },
+
   // 获取标题
   getHeaderTitle(evt) {
     return TITLE_MAP[evt] || TITLE_MAP.default;  // 根据evt返回对应标题
@@ -508,22 +535,13 @@ Page({
     // 发送指定 设置蓝牙断开自动锁车 (0x01: 开, 0x00: 关)
     this.btnCmdSend(0x3b, [isEnabled ? 0x01 : 0x00]);
   },
+
   // 设置 感应模式
   handleRadioChange(e) {
     const isEnabled = e?.detail?.value
     this.btnCmdSend(0x3a, [isEnabled == '1' ? 0x01 : 0x00]);
     // 更新通知状态
     this.setData({ Radiochecked: isEnabled });
-  },
-
-  // 处理汽车品牌选择
-  handleCarBrand(e) {
-    const brand = e.currentTarget.dataset.brand;  // 获取品牌
-    console.log("选择的品牌:", brand);  // 打印品牌
-  },
-
-  // 结束蓝牙连接
-  btnEndConnect() {
   },
 
   //新增或减少配置
@@ -544,6 +562,7 @@ Page({
     this.setData({ controlItems: updatedItems });
     wx.setStorage({ key: 'controlItems', data: updatedItems });
   },
+
   // 设置按键指令
   handleKeyCommands(evt) {
     const { id } = evt?.currentTarget?.dataset?.item || {};
@@ -553,49 +572,65 @@ Page({
       instruction_type: newInstructionType
     });
   },
+
   // 按键控制
   handleOnProductChange(evt) {
-    const selectedIndex = evt?.detail?.value;
-    const currentItem = evt?.currentTarget?.dataset?.item;
-    if (selectedIndex === undefined || !currentItem) return;
-    const selectedKey = this.data.key_control[selectedIndex]?.name;
-    if (!selectedKey) return;
-    const selectedId = this.data.key_control[selectedIndex]?.id;
-    if (!selectedId) return;
-    const itemId = currentItem.id;
-    const { keyInstructions } = this.data;
-    const updateIndex = keyInstructions.findIndex(item => item?.id === itemId);
-    if (updateIndex === -1) return;
+    const { detail, currentTarget } = evt || {}
+    const selectedIndex = detail?.value
+    const currentItem = currentTarget?.dataset?.item
+
+    if (selectedIndex === undefined || !currentItem) return
+
+    const { key_control: keyControl, keyInstructions } = this.data
+    const selectedItem = keyControl?.[selectedIndex]
+
+    if (!selectedItem?.id) return
+
+    const { name: selectedKey, id: selectedId } = selectedItem
+    const itemId = currentItem.id
+
+    const updateIndex = keyInstructions.findIndex(item => item?.id === itemId)
+    if (updateIndex === -1) return
+
+    const updatePath = `keyInstructions[${updateIndex}]`
+
     this.setData({
-      [`keyInstructions[${updateIndex}].useKey`]: selectedKey,
-      [`keyInstructions[${updateIndex}].useKeyId`]: selectedId
+      [`${updatePath}.useKey`]: selectedKey,
+      [`${updatePath}.useKeyId`]: selectedId
     }, () => {
-      const flag = keyInstructions[updateIndex]
-      if (flag?.useTypeId && flag?.useKeyId) {
-        console.log(123)
+      const updatedItem = keyInstructions[updateIndex]
+      if (updatedItem?.useTypeId && updatedItem?.useKeyId) {
+        console.log('条件满足') // 添加有意义的日志消息
       }
-    });
+    })
   },
+
   // 输出方式
   handleOutputMethod(evt) {
-    const index = evt?.currentTarget?.dataset?.index;
-    const info = evt?.currentTarget?.dataset?.item;
+    const { index, item: info } = evt?.currentTarget?.dataset || {};
     const value = evt?.detail?.value;
+
+    // 参数校验
     if (index === undefined || !info || value === undefined) return;
+
+    // 获取选中项
     const selectedOutput = this.data.key_out_put?.[index]?.[Number(value)];
     if (!selectedOutput?.name) return;
-    const itemId = info.id;
+
+    // 查找需要更新的项
     const { keyInstructions } = this.data;
-    const updateIndex = keyInstructions.findIndex(item => item?.id === itemId);
+    const updateIndex = keyInstructions.findIndex(item => item?.id === info.id);
     if (updateIndex === -1) return;
+
+    // 更新数据
     this.setData({
       [`keyInstructions[${updateIndex}].useType`]: selectedOutput.name,
       [`keyInstructions[${updateIndex}].useTypeId`]: selectedOutput.id
     }, () => {
-      const flag = keyInstructions[updateIndex]
-      if (flag?.useTypeId && flag?.useKeyId) {
-        console.log(123)
+      const updatedItem = keyInstructions[updateIndex];
+      if (updatedItem?.useTypeId && updatedItem?.useKeyId) {
+        console.log('条件满足，执行后续操作');
       }
     });
-  },
+  }
 });

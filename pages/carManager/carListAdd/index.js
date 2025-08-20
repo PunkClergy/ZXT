@@ -1,182 +1,17 @@
-const {
-  _handleWindowInfo,
-  _handleDeviceInfo
-} = require('../../../utils/public').default
-const {
-  showLoading,
-  hideLoading,
-  showToast
-} = require('../../../utils/Inspect/tips')
-const {
-  byPost,
-  byGet
-} = require('../../../utils/request/http')
-const {
-  u_addOrUpdateCar
-} = require('../../../utils/request/car')
+// pages/carManager/carListAdd/index.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    c_screen_height: _handleWindowInfo.screenHeight || 0, //全高度
-    c_statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
-    c_navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
-    s_platform_height: _handleDeviceInfo.platform == "ios" || _handleDeviceInfo.platform == "devtools" ? 95 : 60, //判断系统获取底部高度
-    s_background_picture_of_the_front_page: '', //背景
-    params: {},
-    brakingType: '1', //自助取还 1 ：自助取还 2 非自助取还
-    batterylift: '一键启动', //启动方式
-    carOwnerName: '智信通', //所属平台
-    carOwnerNameValue: '',
-    page_nature: '', //页面性质
-  },
-  initialiImageBaseConversion() {
-    const _this = this;
-    const imageMap = [{
-      path: '/assets/images/home/car-bg.png',
-      key: 's_background_picture_of_the_front_page'
-    }];
-    const promises = imageMap.map(item =>
-      new Promise((resolve, reject) => {
-        wx.getFileSystemManager().readFile({
-          filePath: item.path,
-          encoding: 'base64',
-          success: (res) => {
-            resolve({
-              [item.key]: `data:image/png;base64,${res.data}`
-            });
-          }
-        });
-      })
-    );
 
-    Promise.all(promises)
-      .then(results => {
-        const dataToUpdate = results.reduce((acc, curr) => ({
-          ...acc,
-          ...curr
-        }), {});
-        _this.setData(dataToUpdate);
-      });
-  },
-  // 内容输入回调
-  handleBindinput(evt) {
-    const {
-      params
-    } = this.data
-    params[evt.currentTarget.dataset.item] = evt.detail.value
-    this.setData({
-      params: {
-        ...params
-      }
-    })
-  },
-  // 点击内容回调
-  handleBrakingType(evt) {
-    const brakingType = evt.currentTarget.dataset.item
-    this.setData({
-      brakingType
-    })
-  },
-  // 点击内容回调
-  handleBatterylift(evt) {
-    const batterylift = evt.currentTarget.dataset.item
-    this.setData({
-      batterylift
-    })
-  },
-  // 点击内容回调
-  handleCarOwnerName(evt) {
-    const carOwnerName = evt.currentTarget.dataset.item
-    this.setData({
-      carOwnerName
-    })
-  },
-  handleCarOwnerNameBindinput(evt) {
-    this.setData({
-      carOwnerNameValue: evt.detail.value
-    })
-  },
-  // 提交参数
-  handleSubmit() {
-    const apiUrls = {
-      getCarStatus: getApp().data.k1swUrl + u_addOrUpdateCar.URL
-    };
-    const param = {
-      ...this.data.params,
-      brakingType: this.data.brakingType,
-      batterylift: this.data.batterylift,
-      carOwnerName: this.data.carOwnerName == '智信通' ? this.data.carOwnerName : this.data.carOwnerNameValue
-    };
-    const validations = [{
-        field: 'vehicleSerialName',
-        message: '请填写车系'
-      },
-      {
-        field: 'vehicleModeName',
-        message: '请填写车型'
-      },
-      {
-        field: 'ccdate',
-        message: '请填写年款'
-      },
-      {
-        field: 'platenumber',
-        message: '请填写车牌号'
-      },
-      {
-        field: 'vin',
-        message: '请填写车架号'
-      },
-      {
-        field: 'xsgw',
-        message: '请填写油箱容积'
-      }
-    ];
-
-    for (const {
-        field,
-        message
-      } of validations) {
-      if (!param[field]?.trim()) {
-        showToast(message);
-        return;
-      }
-    }
-    showLoading();
-    byPost(apiUrls.getCarStatus, param,
-      (response) => {
-        hideLoading();
-        wx.navigateTo({
-          url: '/pages/carManager/carList/carList',
-        });
-      });
   },
 
+  /**
+   * 生命周期函数--监听页面加载
+   */
   onLoad(options) {
-    if (options.item) {
-      const info = JSON.parse(options.item)
-      const params = {
-        id:info?.id,
-        vehicleSerialName: info?.vehicleSerialName,
-        vehicleModeName: info?.vehicleModeName,
-        ccdate: info?.ccdate,
-        platenumber: info?.platenumber,
-        vin: info?.vin,
-        xsgw: info?.xsgw,
-        introduction: info?.introduction
-      }
-      this.setData({
-        page_nature: options?.flag,
-        params,
-        brakingType: info?.brakingType, //自助取还 1 ：自助取还 2 非自助取还
-        batterylift: info?.batterylift, //启动方式
-        carOwnerName: info?.carOwnerName || '', //所属平台
-        carOwnerNameValue: info?.carOwnerName == '智信通' ? '' : info?.carOwnerName
-      })
-    }
 
   },
 
@@ -184,7 +19,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
-    this.initialiImageBaseConversion()
+
   },
 
   /**

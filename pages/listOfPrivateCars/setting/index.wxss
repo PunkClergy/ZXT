@@ -233,3 +233,16 @@ slider {
   align-items: center;
   font-size: 26rpx;
 }
+radio-group{
+  display: flex;
+  flex-direction: row;
+  gap: 12rpx;
+}
+.radio-animate {
+  transition: transform 0.2s ease;
+  transform: scale(0.9); /* 调整这个值改变大小 */
+}
+
+.radio-animate:active {
+  transform: scale(0.8);
+}

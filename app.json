@@ -91,7 +91,6 @@
     "pages/carManager/buyOilDevice/oilLevel/detailes",
     "pages/carManager/buyOilDevice/oilQuantity/index",
     "pages/carManager/buyOilDevice/oilQuantity/detailes",
-    "pages/carManager/carListAdd/index",
     "pages/carManager/buyOilDevice/mcckSelf/newOrder/index",
     "pages/carManager/buyOilDevice/oilLevel/newOrder/index",
     "pages/carManager/buyOilDevice/mcckSelf/newOrderInfo/index",
