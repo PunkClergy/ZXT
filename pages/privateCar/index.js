@@ -16,7 +16,7 @@ const {
 const detaltAllControlItems = [                           // 所有控制项配置
   { id: 1, name: '开锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
   { id: 2, name: '关锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/lock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
-  { id: 5, name: '配置', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/set.png', evt: 'handleToConfigure' },
+  { id: 5, name: '按键配置', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/set.png', evt: 'handleToConfigure' },
 ]
 // 页面定义
 Page({
@@ -110,6 +110,7 @@ Page({
           };
           byGet('https://k1sw.wiselink.net.cn/' + u_carList.URL, param).then(response => {
             if (response.statusCode == 200) {
+              console.log(response)
               handleData(response?.data?.content?.[0])
             }
           })
