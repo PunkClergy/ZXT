@@ -548,6 +548,7 @@ Page({
     );
     // 更新视图和缓存
     this.setData({ controlItems: updatedItems });
+    console.log(updatedItems)
     wx.setStorage({ key: 'controlItems', data: updatedItems });
   },
 

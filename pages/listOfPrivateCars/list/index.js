@@ -31,7 +31,7 @@ Page({
     g_page: 1, //列表页码
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
-    c_activeTab: 1, // 默认选中的Tab索引
+    c_activeTab: 2, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
     btnState: '新增',
     id: '', //修改标志
@@ -302,7 +302,7 @@ Page({
             g_items: [], //列表数据
           })
           showToast(response.data.msg)
-          getApp().data.reflag = 1 
+          getApp().data.reflag = 1
           this.initList()
         } else {
           showToast(response.data.msg)
@@ -354,7 +354,7 @@ Page({
             g_items: [], //列表数据
           })
           showToast(response.data.msg)
-          getApp().data.reflag = 1 
+          getApp().data.reflag = 1
           this.initList()
         } else {
           showToast(response.data.msg)

@@ -13,11 +13,7 @@ const appUtil = require('../../utils/app-util.js');               // 应用工�
 const {
   u_getCarBluetoothKeyByCode
 } = require('../../utils/request/order')
-const detaltAllControlItems = [                           // 所有控制项配置
-  { id: 1, name: '开锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
-  { id: 2, name: '关锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/lock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
-  { id: 5, name: '按键配置', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/set.png', evt: 'handleToConfigure' },
-]
+
 // 页面定义
 Page({
   /**
@@ -25,7 +21,7 @@ Page({
    */
   data: {
     // 界面布局相关
-    c_screen_height: _handleWindowInfo.screenHeight || 0,         // 屏幕高度
+    c_screen_height: _handleWindowInfo.windowHeight || 0,         // 屏幕高度
     c_statusBarHeight: _handleWindowInfo.statusBarHeight || 0,    // 状态栏高度
     c_navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度(平台差异)
     s_platform_height: _handleDeviceInfo.platform == "ios" || _handleDeviceInfo.platform == "devtools" ? 95 : 60, // 平台特定高度
@@ -62,7 +58,14 @@ Page({
 
     // 定时器相关
     pageInterval: 0,                              // 状态检查定时器
-    netWork: false
+    netWork: false,
+    controlItems: [
+      { id: 1, name: '开锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
+      { id: 2, name: '关锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/lock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
+      { id: 5, name: '更多钥匙功能', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/set.png', evt: 'handleToConfigure' },
+    ],
+    blue_tooth_state: false,
+    voltage_state: false
   },
 
   /**
@@ -71,6 +74,7 @@ Page({
    */
   onLoad: function (options) {
     const that = this;
+    that.initToConfigureCache()//获取缓存内容
     // 统一处理函数
     const handleData = (data) => {
       if (!data) return;
@@ -124,7 +128,6 @@ Page({
   onShow: function () {
     this.updateVehicleStatus();       // 启动状态更新
     this.initialiImageBaseConversion() // 图片转换
-    this.initToConfigureCache()//获取缓存内容
   },
   /**
    * 生命周期函数 - 页面隐藏
@@ -160,6 +163,53 @@ Page({
       passwordEncrypt[i] = passwordSource[i] ^ random[i] ^ 0xFF;
     }
     return passwordEncrypt;
+  },
+  handleBindVechi() {
+    wx.redirectTo({
+      url: '/pages/listOfPrivateCars/list/index'
+    });
+  },
+  // 跳转到详细设置
+  handleSelectJump() {
+    if (this.data?.bluetoothData?.platenumber) {
+      wx.redirectTo({
+        url: `/pages/listOfPrivateCars/index?sn=${this.data.deviceIDC}&bluetoothKey=${this.data.orgKeyOld}`,
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '请先绑定车辆',
+        confirmText: '立即绑定',
+        success: (res) => {
+          if (res.confirm) {
+            wx.redirectTo({
+              url: '/pages/listOfPrivateCars/list/index'
+            });
+          }
+        }
+      });
+    }
+  },
+  // 点击蓝牙出现tips
+  handleBlueToothState() {
+    const _this = this;
+    _this.setData({ blue_tooth_state: true }, () => {
+      setTimeout(() => {
+        _this.setData({
+          blue_tooth_state: false
+        });
+      }, 3000); // 3000 是 setTimeout 的延迟时间
+    });
+  },
+  handleVoltage() {
+    const _this = this;
+    _this.setData({ voltage_state: true }, () => {
+      setTimeout(() => {
+        _this.setData({
+          voltage_state: false
+        });
+      }, 3000); // 3000 是 setTimeout 的延迟时间
+    });
   },
   handleBule() {
     const that = this
@@ -429,17 +479,55 @@ Page({
   },
 
   // 快捷控制命令方法
-  handleUnlock: function () { this.btnCmdSend(0x03, ""); },   // 开锁命令
-  handleLock: function () { this.btnCmdSend(0x04, ""); },     // 锁车命令
-  handleOpenTrunk: function () { this.btnCmdSend(0x05, ""); },// 尾箱命令
-  handleFindCar: function () { this.btnCmdSend(0x06, ""); },  // 寻车命令
+  handleUnlock: function () { this._sendVehicleCommand(0x03); },   // 开锁命令
+  handleLock: function () { this._sendVehicleCommand(0x04); },     // 锁车命令
+  handleOpenTrunk: function () { this._sendVehicleCommand(0x05); },// 尾箱命令
+  handleFindCar: function () { this._sendVehicleCommand(0x06); },  // 寻车命令
+
+  // 指令公共方法
+  _sendVehicleCommand: function (commandCode) {
+    if (this.data?.bluetoothData?.platenumber) {
+      wx.showToast({
+        title: '指令已下发',
+        icon: 'none'
+      });
+      this.btnCmdSend(commandCode, "");
+      return;
+    }
+
+    wx.showModal({
+      title: '提示',
+      content: '请先绑定车辆',
+      confirmText: '立即绑定',
+      success: (res) => {
+        if (res.confirm) {
+          wx.redirectTo({
+            url: '/pages/listOfPrivateCars/list/index'
+          });
+        }
+      }
+    });
+  },
   handleSetUpInduction: function () {
-    // wx.redirectTo({
-    //   url: `/pages/listOfPrivateCars/setting/index?sign=1&deviceIDC=${this.data.deviceIDC}&orgKey=${this.data.orgKeyOld}`,
-    // })
-    wx.redirectTo({
-      url: `/pages/listOfPrivateCars/index?sn=${this.data.bluetoothData?.sn}&bluetoothKey=${this.data.bluetoothData?.bluetoothKey}&flag=1`,
-    })
+    if (this.data?.bluetoothData?.platenumber) {
+      wx.redirectTo({
+        url: `/pages/listOfPrivateCars/index?sn=${this.data.bluetoothData?.sn}&bluetoothKey=${this.data.bluetoothData?.bluetoothKey}&flag=1`,
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '请先绑定车辆',
+        confirmText: '立即绑定',
+        success: (res) => {
+          if (res.confirm) {
+            wx.redirectTo({
+              url: '/pages/listOfPrivateCars/list/index'
+            });
+          }
+        }
+      });
+    }
+
   },  // 切换感应或手动模式
   handleToConfigure: function () {
     wx.redirectTo({
@@ -488,79 +576,27 @@ Page({
       });
   },
 
-  /**
-   * 控制项分页处理
-   */
-  splitControlItems: function () {
-    const pages = [];
-    const itemsPerPage = 4;
-    const tempItems = [];
-    this.data.allControlItems.forEach(item => {
-      if (item.enabled === true) {
-        tempItems.push(item);
-      }
-    });
-    for (let i = 0; i < tempItems.length; i += itemsPerPage) {
-      pages.push(tempItems.slice(i, i + itemsPerPage));
-    }
 
-    this.setData({
-      pages,
-      indicatorWidth: pages.length === 1 ? '100%' : '20%'
-    });
-  },
 
-  /**
-   * 滚动事件处理
-   * @param {Object} e 滚动事件对象
-   */
-  scrollHandler: function (e) {
-    const scrollLeft = e.detail.scrollLeft;
-    const scrollWidth = e.detail.scrollWidth;
-    const pageWidth = scrollWidth / this.data.pages.length;
-    const currentPage = Math.round(scrollLeft / pageWidth);
-
-    // 计算指示器位置
-    const maxScroll = scrollWidth - pageWidth;
-    let positionPercent = 0;
-
-    if (this.data.pages.length === 1) {
-      positionPercent = 0;
-    } else {
-      positionPercent = maxScroll > 0 ? (scrollLeft / maxScroll * 100) : 0;
-    }
-
-    // 更新界面状态
-    this.setData({
-      currentPage,
-      indicatorPosition: `${positionPercent}%`,
-      indicatorWidth: this.data.pages.length === 1 ? '100%' : '20%'
-    });
-  },
 
   // 初始化获取缓存内容
   initToConfigureCache() {
+    const controlItems = this.data.controlItems
     wx.getStorage({
       key: 'controlItems',
       success: (res) => {
         if (res?.data) {
           // 创建新数组，将res.data插入到第三位
           const updatedItems = [
-            ...detaltAllControlItems.slice(0, 2),  // 取前两项
+            ...controlItems.slice(0, 2),  // 取前两项
             ...res?.data,                       // 插入缓存数据
-            ...detaltAllControlItems.slice(2)     // 插入剩余项
+            ...controlItems.slice(2)     // 插入剩余项
           ];
           // 如果需要更新到data中
-          this.setData({ allControlItems: updatedItems }, () => {
-            this.splitControlItems(); // 初始化控制项分页
-          });
+          this.setData({ controlItems: updatedItems });
         }
       },
       fail: (err) => {
-        // 如果没有缓存数据，使用初始数据
-        this.setData({ allControlItems: detaltAllControlItems }, () => {
-          this.splitControlItems(); // 初始化控制项分页
-        });
       }
     });
   },

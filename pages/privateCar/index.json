@@ -2,10 +2,10 @@
   "usingComponents": {
     "custom-header": "/components/CustomHeader/index"
   },
-  "navigationBarTitleText": "车辆控制",
+  "navigationBarTitleText": "手机汽车钥匙",
   "navigationBarBackgroundColor": "#0a192f",
   "navigationBarTextStyle": "white",
   "backgroundColor": "#0a192f",
-  "enablePullDownRefresh": false,
-  "navigationStyle": "custom"
+  "enablePullDownRefresh": false
+
 }
