@@ -261,6 +261,9 @@ Page({
       case 0x22: // 配对
         that.PackAndSend(type, 8, data);
         break;
+      case 0x07: // 
+        that.PackAndSend07(type, 8, data);
+        break;
       case 0x3a: // 设置 手动或感应模式
         const flameoutData = data; // 第一个字节为0x01，后面补11个0x00
         this.PackAndSend(type, 12, flameoutData); // 发送12字节数据
@@ -277,9 +280,16 @@ Page({
   PackAndSend: function (type, len, data) {
     // 数据包格式: 起始符(0x24) + 类型 + 长度 + 数据 + 结束符(0x24)
     var packet = [0x24, type, len, ...data, 0x24];
+    console.log(packet)
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
-
+  // 升窗降窗指令封装
+  PackAndSend07: function (type, len, data) {
+    const defaultData = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+    var packet = [0x24, type, len, data, ...defaultData, 0x24];
+    console.log(packet)
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
+  },
   /**
    * 数组转ArrayBuffer
    * @param {Array} array 原始数组
@@ -484,19 +494,23 @@ Page({
   },
 
   // 快捷控制命令方法
-  handleUnlock: function () { this._sendVehicleCommand(0x03); },   // 开锁命令
-  handleLock: function () { this._sendVehicleCommand(0x04); },     // 锁车命令
-  handleOpenTrunk: function () { this._sendVehicleCommand(0x05); },// 尾箱命令
-  handleFindCar: function () { this._sendVehicleCommand(0x06); },  // 寻车命令
+  handleUnlock: function () { this._sendVehicleCommand(0x03, ''); },   // 开锁命令
+  handleLock: function () { this._sendVehicleCommand(0x04, ''); },     // 锁车命令
+  handleOpenTrunk: function () { this._sendVehicleCommand(0x05, ''); },// 尾箱命令
+  handleFindCar: function () { this._sendVehicleCommand(0x06, ''); },  // 寻车命令
+  handlRaiseTheWindow: function () { this._sendVehicleCommand(0x07, 0x03); },  // 升窗命令
+  handleLowerTheWindow: function () { this._sendVehicleCommand(0x07, 0x04); }, // 降窗命令
 
   // 指令公共方法
-  _sendVehicleCommand: function (commandCode) {
-    if (this.data?.bluetoothData?.platenumber && this.data.connectionState == '已连接') {
+  _sendVehicleCommand: function (commandCode, code) {
+    if (this.data?.bluetoothData?.platenumber
+      //  && this.data.connectionState == '已连接'
+    ) {
       wx.showToast({
         title: '指令已下发',
         icon: 'none'
       });
-      this.btnCmdSend(commandCode, "");
+      this.btnCmdSend(commandCode, code);
       return;
     }
 

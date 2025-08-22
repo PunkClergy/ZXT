@@ -11,6 +11,8 @@ const byteUtil = require('../../../utils/byte-util.js');        // 字节工具
 const CONTROL_ITEMS = [
   { id: 3, name: '尾箱', enabled: false, icon: 'https://k3a.wiselink.net.cn/img/app/blue/box_off.png', evt: 'handleOpenTrunk' },
   { id: 4, name: '寻车', enabled: false, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleFindCar' },
+  { id: 5, name: '升窗', enabled: false, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handlRaiseTheWindow' },
+  { id: 6, name: '降窗', enabled: false, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleLowerTheWindow' },
 ];
 // 指令集合
 const _INSTRUCTIONS = [
@@ -173,13 +175,20 @@ Page({
     wx.getStorage({
       key: 'controlItems',
       success: (res) => {
-        if (res?.data) {
-          this.setData({
-            controlItems: res?.data || CONTROL_ITEMS
-          })
-        }
+        const storedData = res?.data || [];
+        // 提取 CONTROL_ITEMS 中不存在于 storedData 的项
+        const newItems = CONTROL_ITEMS.filter(controlItem =>
+          !storedData.some(storedItem => storedItem.id === controlItem.id)
+        );
+        // 合并数据
+        const mergedItems = [...storedData, ...newItems];
+        this.setData({ controlItems: mergedItems });
+      },
+      fail: () => {
+        // 如果本地存储不存在，直接使用默认数据
+        this.setData({ controlItems: CONTROL_ITEMS });
       }
-    })
+    });
   },
 
   // 配对按钮点击处理
@@ -295,10 +304,10 @@ Page({
   },
   PackAndSendspecial04d(data) {
     const packet = [
-      0x24,                   
-      0x4d, 0x01,              
-      data,        
-      0x24                      
+      0x24,
+      0x4d, 0x01,
+      data,
+      0x24
     ];
     this.consoleOut(`send: ${byteUtil.buf2hex(packet)}\r\n`);
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
@@ -557,7 +566,7 @@ Page({
     const { index } = evt.currentTarget?.dataset || {};
     const { value } = evt.detail || {};
     const { controlItems } = this.data;
-
+    console.log(controlItems)
     // 参数校验
     if (index == null || value == null || !controlItems?.[index]) {
       return;

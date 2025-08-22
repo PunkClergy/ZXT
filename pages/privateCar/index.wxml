@@ -51,7 +51,7 @@
   <!-- 控制功能区 - 每行3个大按钮 -->
   <view class="control-section">
     <view class="control-grid">
-      <view class="control-item" wx:for="{{controlItems}}" wx:key="id" bindtap="{{item.evt}}" data-id="{{item.id}}" wx:if="{{item.enabled}}">
+      <view class="control-item" wx:for="{{controlItems}}" wx:key="index" bindtap="{{item.evt}}" data-id="{{item.id}}" wx:if="{{item.enabled}}">
         <view class="control-icon">
           <image src="{{item.id === 1 || item.id === 2 ? (item.id === 1 ? parsedData.lock : !parsedData.lock) ? item.ative : item.icon : item.icon}}" class="control-icon-image"></image>
         </view>
