@@ -491,7 +491,7 @@ Page({
 
   // 指令公共方法
   _sendVehicleCommand: function (commandCode) {
-    if (this.data?.bluetoothData?.platenumber) {
+    if (this.data?.bluetoothData?.platenumber && this.data.connectionState == '已连接') {
       wx.showToast({
         title: '指令已下发',
         icon: 'none'

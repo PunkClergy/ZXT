@@ -7,7 +7,7 @@ Page({
     imageWidth: '加载中...',
     imageHeight: '加载中...',
     isBottomReached: false,
-    c_screen_height: _handleWindowInfo.screenHeight || 0, // 全高度
+    c_screen_height: _handleWindowInfo.windowHeight || 0, // 全高度
     flag: 0
   },
 
@@ -18,11 +18,9 @@ Page({
 
   // “开始使用”按钮点击事件
   startUsing() {
-    if (this.data.isBottomReached) {
-      wx.redirectTo({
-        url: '/pages/privateCar/index',
-      })
-    }
+    wx.redirectTo({
+      url: '/pages/privateCar/index',
+    })
   },
   hadleImage() {
     wx.showLoading({
