@@ -53,7 +53,7 @@ const _OUTPUT = [
   [{ id: 1, name: '长按7秒关锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
   ],
   // 降窗
-  [{ id: 2, name: '长按7秒开锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
+  [{ id: 1, name: '长按7秒开锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
   ]]
 // 标题映射对象
 const TITLE_MAP = {
@@ -289,6 +289,18 @@ Page({
     this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");  // 输出日志
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
   },
+  PackAndSendSet(type, data) {
+    const packet = [
+      0x24,
+      type,
+      ...data,
+      ...Array(12 - data.length).fill(0x00),
+      0x24
+    ];
+    console.log(packet, Array(12 - data.length).fill(0x00))
+    this.consoleOut("send:" + byteUtil.buf2hex(packet) + "\r\n");  // 输出日志
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
+  },
   // 自动校准数据处理
   PackAndSendspecial(type, dataLength, data, sign) {
     const packet = [
@@ -349,7 +361,7 @@ Page({
       case 0x11: //开锁信号值
         this.PackAndSendspecial(type, 6, data, sign); // 发送6字节数据
         break;
-      case 0x4D: //开锁信号值
+      case 0x4D: //设置锁车升窗
         this.PackAndSendspecial04d(data); // 发送6字节数据
         break;
       default:
@@ -614,9 +626,52 @@ Page({
       [`keyInstructions[${updateIndex}].useTypeId`]: selectedOutput.id
     }, () => {
       const updatedItem = keyInstructions[updateIndex];
-      if (updatedItem?.useTypeId && updatedItem?.useKeyId) {
-        console.log('条件满足，执行后续操作');
+      if (updatedItem?.useTypeId) {
+        this.handleInstructions(updatedItem)
       }
     });
-  }
+  },
+  // 快捷设置按键
+  handleInstructions(evt) {
+    const { id, useTypeId } = evt;
+    const sendCommand = (cmd, data) => {
+      this.PackAndSendSet(cmd, data);
+    };
+    const instructionMap = {
+      1: { // 开锁键
+        1: () => sendCommand(0x33, [0x33, 0x06, 0x01, 0x00, 0x00]) // 短按开锁键 
+      },
+      2: { // 关锁键
+        1: () => sendCommand(0x34, [0x34, 0x06, 0x01, 0x00, 0x00]) // 短按开锁键
+      },
+      3: { // 寻车键
+        1: () => sendCommand(0x36, [0x36, 0x06, 0x01, 0x00, 0x00]), // 短按寻车键
+        2: () => sendCommand(0x34, [0x34, 0x06, 0x03, 0x06, 0x00])  // 三按关锁键
+      },
+      4: { // 尾箱键
+        1: () => sendCommand(0x35, [0x35, 0x06, 0x02, 0x06, 0x00]), // 短按两次尾箱键
+        2: () => sendCommand(0x35, [0x35, 0x1E, 0x01, 0x00, 0x00])  // 长按3秒尾箱键
+      },
+      5: { // 左中门
+        1: () => sendCommand(0x50, [0x50, 0x06, 0x01, 0x00, 0x00]), // 短按左中门键
+        2: () => sendCommand(0x50, [0x50, 0x1E, 0x01, 0x00, 0x00])  // 长按3秒左中门键
+      },
+      6: { // 右中门
+        1: () => sendCommand(0x51, [0x51, 0x06, 0x01, 0x00, 0x00]), // 短按右中门键
+        2: () => sendCommand(0x51, [0x51, 0x1E, 0x01, 0x00, 0x00])  // 长按3秒右中门键
+      },
+      7: { // 升窗
+        1: () => sendCommand(0x52, [0x34, 0x46, 0x01, 0x00, 0x00])  // 长按7秒关锁键
+      },
+      8: { // 降窗
+        1: () => sendCommand(0x53, [0x33, 0x46, 0x01, 0x00, 0x00])  // 长按7秒开锁键
+      }
+    };
+    const idActions = instructionMap[id];
+    if (!idActions) return; // 无效 id
+    const action = idActions[useTypeId];
+    if (action) {
+      action();
+    }
+  },
 });
