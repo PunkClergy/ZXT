@@ -27,6 +27,12 @@
         </view>
         <view class="settings-item">
           <view class="item-left">
+            <text class="item-text">锁车自动升窗</text>
+          </view>
+          <switch checked="{{parsedData.autoCloseWin}}" bindchange="handleAutoCloseTheWindow" color="#07C160" />
+        </view>
+        <view class="settings-item">
+          <view class="item-left">
             <text class="item-text">操控模式</text>
           </view>
           <radio-group bindchange="handleRadioChange">
@@ -38,7 +44,6 @@
     </block>
     <!-- 个性配置 -->
     <block wx:if="{{sign == 4}}">
-      <!-- <view style="display: flex;width: 90%;margin:auto;font-size: 32rpx;">请参照车辆原有功能设置功能按键</view> -->
       <view class="settings-tip">请参照车辆原有功能设置功能按键</view>
       <view class="settings-group" wx:for="{{controlItems}}" wx:key="name">
         <view class="settings-item">

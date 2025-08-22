@@ -293,6 +293,16 @@ Page({
     this.consoleOut(`send: ${byteUtil.buf2hex(packet)}\r\n`);
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
+  PackAndSendspecial04d(data) {
+    const packet = [
+      0x24,                   
+      0x4d, 0x01,              
+      data,        
+      0x24                      
+    ];
+    this.consoleOut(`send: ${byteUtil.buf2hex(packet)}\r\n`);
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
+  },
 
   // 认证加密
   auth_encrypt(passwordSource, random) {
@@ -329,6 +339,10 @@ Page({
         break;
       case 0x11: //开锁信号值
         this.PackAndSendspecial(type, 6, data, sign); // 发送6字节数据
+        break;
+      case 0x4D: //开锁信号值
+        this.PackAndSendspecial04d(data); // 发送6字节数据
+        break;
       default:
         break;
     }
@@ -468,6 +482,7 @@ Page({
     resultObject.unlock = bytes[11]//开锁信号值
     resultObject.toBreakOff = bytes[6] === 1//蓝牙断开自动锁车
     resultObject.signal = bytes[10]//当前信号值
+    resultObject.autoCloseWin = (bytes[7] & 0x10) !== 0//锁车自动关窗
 
     // Update the signal cache
     let signalCache = this.data.signalCache;
@@ -522,6 +537,11 @@ Page({
     const isEnabled = Boolean(e?.detail?.value);
     // 发送指定 设置蓝牙断开自动锁车 (0x01: 开, 0x00: 关)
     this.btnCmdSend(0x3b, [isEnabled ? 0x01 : 0x00]);
+  },
+  handleAutoCloseTheWindow(e) {
+    const isEnabled = Boolean(e?.detail?.value);
+    // 发送指定 设置蓝牙断开自动锁车 (0x01: 开, 0x00: 关)
+    this.btnCmdSend(0x4D, [isEnabled ? 0x01 : 0x00]);
   },
 
   // 设置 感应模式
