@@ -92,19 +92,20 @@ Page({
     };
     const action = actionMap[sign] || actionMap.default;
     if (action.url) {
-      wx.showModal({
-        title: '提示',
-        content: '进入修改设置页后，设置功能项必须先执行蓝牙配对操作',
-        complete: (res) => {
-          if (res.cancel) {
-
+      if (sign == 1) {
+        wx.showModal({
+          title: '提示',
+          content: '进入修改设置页后，设置功能项必须先执行蓝牙配对操作',
+          complete: (res) => {
+            if (res.confirm) {
+              wx.navigateTo(action);
+            }
           }
+        })
+      } else {
+        wx.navigateTo(action);
+      }
 
-          if (res.confirm) {
-            wx.navigateTo(action);
-          }
-        }
-      })
 
     } else {
       wx.showModal({
