@@ -31,7 +31,7 @@ Page({
     g_page: 1, //列表页码
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
-    c_activeTab: 2, // 默认选中的Tab索引
+    c_activeTab: 1, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
     btnState: '新增',
     id: '', //修改标志
@@ -201,6 +201,11 @@ Page({
           g_items: this.data.g_items.concat(response.data.content),
           g_total: Number(response.data.count || 0).toLocaleString()
         }, () => {
+          if (this.data.g_items?.length > 0) {
+            this.setData({ c_activeTab: 1 })
+          } else {
+            this.setData({ c_activeTab: 2 })
+          }
           hideLoading();
         });
       } else {
@@ -283,7 +288,6 @@ Page({
         return;
       }
     }
-    console.log(param)
     showLoading();
     byPost(apiUrls.getCarStatus, param,
       (response) => {
@@ -292,8 +296,6 @@ Page({
           this.setData({
             c_activeTab: 1, // 默认选中的Tab索引
             params: {}, //新增管控数据部分字段
-            btnState: '新增',
-            id: '', //修改标志
             batterylift: '一键启动', //启动方式
             carOwnerNameValue: '',
             carOwnerName: '智信通', //所属平台
@@ -301,6 +303,11 @@ Page({
             g_page: 1, //列表页码
             g_items: [], //列表数据
           })
+          if (!this.data.id) {
+            wx.redirectTo({
+              url: '/pages/listOfPrivateCars/pdf/index',
+            })
+          }
           showToast(response.data.msg)
           getApp().data.reflag = 1
           this.initList()
@@ -335,31 +342,39 @@ Page({
   },
   // 删除车辆
   handleDelete(evt) {
-    const info = evt.currentTarget.dataset.item
-    console.log(info)
-    const apiUrls = {
-      getCarStatus: getApp().data.k1swUrl + u_carapiDeleteCar.URL
-    };
-    const param = {
-      sn: info?.sn,
-      code: info?.code
-    }
-    byPost(apiUrls.getCarStatus, param,
-      (response) => {
-        hideLoading();
-        if (response.data.code == 1000) {
-          this.setData({
-            c_activeTab: 1, // 默认选中的Tab索引
-            g_page: 1, //列表页码
-            g_items: [], //列表数据
-          })
-          showToast(response.data.msg)
-          getApp().data.reflag = 1
-          this.initList()
-        } else {
-          showToast(response.data.msg)
+    wx.showModal({
+      title: '提示',
+      content: '确认删除？',
+      complete: (res) => {
+        if (res.confirm) {
+          const info = evt.currentTarget.dataset.item
+          const apiUrls = {
+            getCarStatus: getApp().data.k1swUrl + u_carapiDeleteCar.URL
+          };
+          const param = {
+            sn: info?.sn,
+            code: info?.code
+          }
+          byPost(apiUrls.getCarStatus, param,
+            (response) => {
+              hideLoading();
+              if (response.data.code == 1000) {
+                this.setData({
+                  c_activeTab: 1, // 默认选中的Tab索引
+                  g_page: 1, //列表页码
+                  g_items: [], //列表数据
+                })
+                showToast(response.data.msg)
+                getApp().data.reflag = 1
+                this.initList()
+              } else {
+                showToast(response.data.msg)
+              }
+            });
         }
-      });
+      }
+    })
+
   },
   // 切换tabs标签
   handleSwitchTab(e) {

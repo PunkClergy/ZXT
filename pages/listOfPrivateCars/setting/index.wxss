@@ -233,19 +233,37 @@ slider {
   align-items: center;
   font-size: 26rpx;
 }
-radio-group{
+
+radio-group {
   display: flex;
   flex-direction: row;
   gap: 12rpx;
 }
+
 .radio-animate {
   transition: transform 0.2s ease;
-  transform: scale(0.9); /* 调整这个值改变大小 */
+  transform: scale(0.9);
+  /* 调整这个值改变大小 */
 }
 
 .radio-animate:active {
   transform: scale(0.8);
 }
-.text-color{
+
+.text-color {
   color: #868383;
+}
+
+/* 提示文字样式 */
+.settings-tip {
+  display: flex;
+  justify-content: center;
+  /* 水平居中 */
+  width: 90%;
+  margin: 20rpx auto;
+  /* 上下间距，左右自动居中 */
+  font-size: 32rpx;
+  color: #333;
+  text-align: center;
+  line-height: 1.5;
 }

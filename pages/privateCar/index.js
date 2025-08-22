@@ -211,6 +211,11 @@ Page({
       }, 3000); // 3000 是 setTimeout 的延迟时间
     });
   },
+  handleJumpSc() {
+    wx.redirectTo({
+      url: '/pages/listOfPrivateCars/pdf/index?flag=1',
+    })
+  },
   handleBule() {
     const that = this
     that.btnStartConnect();  // 自动连接蓝牙
@@ -508,10 +513,27 @@ Page({
       }
     });
   },
-  handleSetUpInduction: function () {
+  handleSetUpInduction: function (evt) {
+    const induction = this.data.parsedData.induction;
+    const mode = evt?.currentTarget?.dataset?.mode;
+    const isManualInduction = !induction || induction === '手动模式';
+    if (
+      (isManualInduction && mode === 'manual') ||
+      (!isManualInduction && mode === 'auto')
+    ) {
+      return;
+    }
     if (this.data?.bluetoothData?.platenumber) {
-      wx.redirectTo({
-        url: `/pages/listOfPrivateCars/index?sn=${this.data.bluetoothData?.sn}&bluetoothKey=${this.data.bluetoothData?.bluetoothKey}&flag=1`,
+      wx.showModal({
+        title: '提示',
+        content: this.data.parsedData.induction != '感应模式' ? '切换模式为手机蓝牙感应开关锁' : '切换模式为手动操作小程序开关锁',
+        complete: (res) => {
+          if (res.confirm) {
+            wx.redirectTo({
+              url: `/pages/listOfPrivateCars/index?sn=${this.data.bluetoothData?.sn}&bluetoothKey=${this.data.bluetoothData?.bluetoothKey}&flag=1`,
+            })
+          }
+        }
       })
     } else {
       wx.showModal({

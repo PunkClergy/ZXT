@@ -152,7 +152,8 @@
     "pages/listOfPrivateCars/index",
     "pages/listOfPrivateCars/setting/index",
     "pages/listOfPrivateCars/engineering/index",
-    "pages/listOfPrivateCars/list/index"
+    "pages/listOfPrivateCars/list/index",
+    "pages/listOfPrivateCars/pdf/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

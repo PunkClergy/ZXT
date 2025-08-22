@@ -1,0 +1,49 @@
+/* container 样式 */
+.container {
+  position: relative;
+  height: 100%;
+}
+
+/* 滚动区域样式 */
+.scroll-container {
+  overflow: hidden;
+}
+
+/* 图片容器样式 */
+.image-container {
+  width: 100%;
+  position: relative;
+}
+
+/* 图片样式（保留 width 和 height 的动态绑定） */
+.image {
+  display: block;
+  margin: 0 auto;
+}
+
+/* 底部按钮和提示的容器 */
+.bottom-section {
+  position: fixed;
+  bottom: 0rpx;
+  width: 100%;
+  text-align: center;
+  /* background-color: rgba(75, 72, 72, 0.8); */
+  padding: 20rpx 0;
+  box-sizing: border-box;
+}
+
+/* 开始使用按钮样式 */
+.start-button {
+  width: 90%;
+  font-size: 16px;
+  color: #fff;
+  background: linear-gradient(88deg, #1576DC, #1B64B1);
+  border-radius: 40px;
+}
+
+/* 滚动提示文字样式 */
+.scroll-hint {
+  color: #fff;
+  font-size: 14px;
+  padding: 10px;
+}
