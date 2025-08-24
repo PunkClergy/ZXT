@@ -697,3 +697,65 @@
   width: 100%;
   position: relative;
 }
+
+
+
+
+
+
+
+.settings-group {
+  margin-bottom: 10px;
+  background-color: #ffffff;
+}
+
+.group-title {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #999999;
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+}
+
+.item-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.item-text {
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.item-right {
+  display: flex;
+  align-items: center;
+}
+
+.item-value {
+  font-size: 14px;
+  color: #999999;
+  margin-right: 5px;
+}
+
+.item-arrow {
+  width: 16px;
+  height: 16px;
+}
+
+/* 最后一个设置项去掉下划线 */
+/* .settings-item:last-child {
+  border-bottom: none;
+} */

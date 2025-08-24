@@ -6,6 +6,7 @@
     <view class="record-tabs" bindtap="handleSwitchTab">
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">设备清单</view>
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">{{btnState}}设定</view>
+      <!-- <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_active_1:s_background_tabs_1}}');">感应设定</view> -->
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
@@ -52,7 +53,6 @@
     </block>
     <block wx:if="{{c_activeTab == 2}}">
       <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;">
-
         <view class="card-info">
           <!-- 车牌号 -->
           <view class="card-info-item">
@@ -113,6 +113,54 @@
         <!-- <view class="image-container">
           <image src="https://k3a.wiselink.net.cn/img/video/blueinstall.png" class="image" style="width:750rpx; height: {{imageHeight}}rpx;" />
         </view> -->
+      </scroll-view>
+    </block>
+    <block wx:if="{{c_activeTab == 3}}">
+      <scroll-view class="settings-list" scroll-y>
+        <!-- 感应设置 -->
+        <view class="settings-group">
+          <view class="settings-item" data-sign="1" bindtap="navigateToUserInfo">
+            <view class="item-left">
+              <text class="item-text">感应开关锁设置</text>
+            </view>
+            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+          </view>
+        </view>
+        <!-- 个性设置 -->
+        <view class="settings-group">
+          <view class="settings-item" data-sign="4" bindtap="navigateToUserInfo">
+            <view class="item-left">
+              <text class="item-text">钥匙功能配置</text>
+            </view>
+            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+          </view>
+        </view>
+        <!-- 按键设置 -->
+        <view class="settings-group">
+          <view class="settings-item" data-sign="3" bindtap="navigateToUserInfo">
+            <view class="item-left">
+              <text class="item-text">按键功能设置</text>
+            </view>
+            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+          </view>
+        </view>
+        <!-- 工程模式 -->
+        <view class="settings-group" style="display: none;">
+          <view class="settings-item" data-sign="2" bindtap="navigateToUserInfo">
+            <view class="item-left">
+              <text class="item-text">工程模式</text>
+            </view>
+            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+          </view>
+        </view>
+        <!-- <view class="settings-group">
+      <view class="settings-item" data-sign="5" bindtap="navigateToUserInfo">
+        <view class="item-left">
+          <text class="item-text">其他个性设置</text>
+        </view>
+        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+      </view>
+    </view> -->
       </scroll-view>
     </block>
   </view>

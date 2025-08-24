@@ -42,33 +42,6 @@ Page({
     imageWidth: '加载中...',
     imageHeight: '加载中...',
   },
-
-  hadleImage() {
-    wx.showLoading({
-      title: '加载中...',
-    })
-    const imgUrl = 'https://k3a.wiselink.net.cn/img/video/blueinstall.png';
-    // 使用 wx.getImageInfo 获取图片信息
-    wx.getImageInfo({
-      src: imgUrl,
-      success: (res) => {
-        const proportion = res?.width / 750;
-        this.setData({
-          imageWidth: res.width,
-          imageHeight: res.height / proportion
-        }, () => {
-          wx.hideLoading()
-        });
-      },
-      fail: (err) => {
-        console.error('获取图片信息失败', err);
-        this.setData({
-          imageWidth: '加载失败',
-          imageHeight: '加载失败'
-        });
-      }
-    });
-  },
   handleChangeBlack(evt) {
     // 使用解构赋值一次性获取所有需要的数据
     const {
@@ -424,6 +397,13 @@ Page({
         })
       }
     }
+    if (flag == '感应设定') {
+      if (this.data.c_activeTab != 3) {
+        this.setData({
+          c_activeTab: 3,
+        })
+      }
+    }
   },
   handleGet() {
     const _this = this
@@ -436,10 +416,64 @@ Page({
       },
     })
   },
+  // 导航到各个设置页面
+  navigateToUserInfo(evt) {
+    const sign = evt?.currentTarget?.dataset?.sign || evt;
+    const getActionMap = (item) => ({
+      default: {
+        url: `/pages/listOfPrivateCars/setting/index?sign=${sign}&deviceIDC=${item?.sn}&orgKey=${item?.bluetoothKey}`
+      }
+    });
+    const executeNavigation = (ele) => {
+      const actionMap = getActionMap(ele);
+      const action = actionMap[sign] || actionMap.default;
+
+      if (action.url) {
+        if (sign == 1) {
+          wx.showModal({
+            title: '提示',
+            content: '如未与设备配对,请先执行蓝牙配对操作',
+            success: (res) => {
+              if (res.confirm) {
+                wx.navigateTo(action);
+              }
+            }
+          });
+        } else {
+          wx.navigateTo(action);
+        }
+      } else {
+        wx.showModal({
+          title: action.title,
+          editable: true,
+          placeholderText: action.placeholderText,
+          success: (res) => {
+            res.confirm ? action.callback?.(res.content) : action.fallback?.();
+          }
+        });
+      }
+    };
+    wx.getStorage({
+      key: 'bluetoothData',
+      success: (res) => {
+        executeNavigation(res?.data);
+      },
+      fail: () => {
+        const param = { [u_carList.page]: 1 };
+        byGet('https://k1sw.wiselink.net.cn/' + u_carList.URL, param)
+          .then(response => {
+            if (response.statusCode === 200) {
+              executeNavigation(response?.data?.content[0]);
+            }
+          })
+          .catch(() => {
+          });
+      }
+    });
+  },
   onLoad(options) {
     this.initCarryParams(options)
     this.initList()
-    this.hadleImage()
   },
   onShow() {
     this.initialiImageBaseConversion()
