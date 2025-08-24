@@ -6,7 +6,7 @@
     <view class="record-tabs" bindtap="handleSwitchTab">
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">设备清单</view>
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">{{btnState}}设定</view>
-      <!-- <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_active_1:s_background_tabs_1}}');">感应设定</view> -->
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_active_1:s_background_tabs_1}}');">感应设定</view>
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
@@ -153,14 +153,14 @@
             <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
           </view>
         </view>
-        <!-- <view class="settings-group">
-      <view class="settings-item" data-sign="5" bindtap="navigateToUserInfo">
-        <view class="item-left">
-          <text class="item-text">其他个性设置</text>
+        <view class="settings-group">
+          <view class="settings-item" data-sign="5" bindtap="navigateToUserInfo">
+            <view class="item-left">
+              <text class="item-text">其他个性设置</text>
+            </view>
+            <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+          </view>
         </view>
-        <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
-      </view>
-    </view> -->
       </scroll-view>
     </block>
   </view>

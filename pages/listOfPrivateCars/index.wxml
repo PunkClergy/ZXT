@@ -38,13 +38,13 @@
         <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
       </view>
     </view>
-    <!-- <view class="settings-group">
+    <view class="settings-group">
       <view class="settings-item" data-sign="5" bindtap="navigateToUserInfo">
         <view class="item-left">
           <text class="item-text">其他个性设置</text>
         </view>
         <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
       </view>
-    </view> -->
+    </view>
   </scroll-view>
 </view>

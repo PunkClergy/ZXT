@@ -19,18 +19,18 @@
             <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
           </view>
         </view>
-        <view class="settings-item">
+        <!-- <view class="settings-item">
           <view class="item-left">
             <text class="item-text">蓝牙断开自动锁车</text>
           </view>
           <switch checked="{{parsedData.toBreakOff}}" bindchange="handleToBreakOff" color="#07C160" />
-        </view>
-        <view class="settings-item">
+        </view> -->
+        <!-- <view class="settings-item">
           <view class="item-left">
             <text class="item-text">锁车自动升窗</text>
           </view>
           <switch checked="{{parsedData.autoCloseWin}}" bindchange="handleAutoCloseTheWindow" color="#07C160" />
-        </view>
+        </view> -->
         <view class="settings-item">
           <view class="item-left">
             <text class="item-text">操控模式</text>
