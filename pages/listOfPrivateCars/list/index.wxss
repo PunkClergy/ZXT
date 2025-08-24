@@ -277,6 +277,7 @@
   font-size: 26rpx;
   color: #333333;
 }
+
 .viewText {
   text-align: right;
   font-family: PingFang SC;
@@ -285,8 +286,7 @@
   color: #333333;
 }
 
-.card-info-item-tabs {
-}
+.card-info-item-tabs {}
 
 .card-info-item-tabs-btn {
   display: flex;
@@ -391,9 +391,11 @@
   width: 36rpx;
   height: 36rpx;
 }
+
 .child-node {
   margin-top: 5rpx;
 }
+
 .checkbox.indeterminate {
   background: #fff;
   border-color: #07c160;
@@ -621,7 +623,8 @@
   font-size: 26rpx;
   color: #333333;
 }
-.viewText{
+
+.viewText {
   text-align: right;
   font-family: PingFang SC;
   font-weight: 500;
@@ -687,4 +690,10 @@
   background: linear-gradient(88deg, #1576DC, #1B64B1);
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
+}
+
+/* 图片容器样式 */
+.image-container {
+  width: 100%;
+  position: relative;
 }

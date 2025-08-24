@@ -33,14 +33,42 @@ Page({
     g_triggered: false, //下拉刷新状态
     c_activeTab: 1, // 默认选中的Tab索引
     params: {}, //新增管控数据部分字段
-    btnState: '新增',
+    btnState: '开通',
     id: '', //修改标志
     batterylift: '一键启动', //启动方式
     carOwnerNameValue: '',
     carOwnerName: '智信通', //所属平台
-    brakingType: 1
+    brakingType: 1,
+    imageWidth: '加载中...',
+    imageHeight: '加载中...',
   },
 
+  hadleImage() {
+    wx.showLoading({
+      title: '加载中...',
+    })
+    const imgUrl = 'https://k3a.wiselink.net.cn/img/video/blueinstall.png';
+    // 使用 wx.getImageInfo 获取图片信息
+    wx.getImageInfo({
+      src: imgUrl,
+      success: (res) => {
+        const proportion = res?.width / 750;
+        this.setData({
+          imageWidth: res.width,
+          imageHeight: res.height / proportion
+        }, () => {
+          wx.hideLoading()
+        });
+      },
+      fail: (err) => {
+        console.error('获取图片信息失败', err);
+        this.setData({
+          imageWidth: '加载失败',
+          imageHeight: '加载失败'
+        });
+      }
+    });
+  },
   handleChangeBlack(evt) {
     // 使用解构赋值一次性获取所有需要的数据
     const {
@@ -380,16 +408,16 @@ Page({
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
     console.log(flag)
-    if (flag == '车辆列表') {
+    if (flag == '设备清单') {
       this.setData({
         c_activeTab: 1,
-        btnState: '新增',
+        btnState: '开通',
         params: {},
         id: '',
         g_roleList_index: null
       })
     }
-    if (flag == '新增车辆' || flag == '修改修改') {
+    if (flag == '开通设定' || flag == '修改设定') {
       if (this.data.c_activeTab != 2) {
         this.setData({
           c_activeTab: 2,
@@ -411,6 +439,7 @@ Page({
   onLoad(options) {
     this.initCarryParams(options)
     this.initList()
+    this.hadleImage()
   },
   onShow() {
     this.initialiImageBaseConversion()

@@ -6,12 +6,12 @@
       <view style="display: flex;gap: 10rpx;align-items: center;">
         <text class="license-plate" wx:if="{{bluetoothData.platenumber}}">{{bluetoothData.platenumber}}</text>
         <text class="license-plate" bindtap="handleBindVechi" wx:else>请绑定车辆</text>
-        <view style="font-size: 24rpx;border:1px solid #ddd;padding: 0 4rpx;border-radius: 8rpx;display: flex;align-items: center;justify-content: center;gap: 5rpx;" bindtap="handleJumpSc">
+        <view wx:if="{{!netWork}}" style="font-size: 24rpx;border:1px solid #ddd;padding: 0 4rpx;border-radius: 8rpx;display: flex;align-items: center;justify-content: center;gap: 5rpx;" bindtap="handleJumpSc">
           <icon type="info" size="14" color="#999"></icon>
           安装使用手册
         </view>
       </view>
-      <view class="connection-tip" bindtap="handleSelectJump" style="font-size: 26rpx;">
+      <view class="connection-tip" bindtap="handleSelectJump" style="font-size: 26rpx;" wx:if="{{!netWork}}">
         详细设置
       </view>
 
@@ -38,7 +38,7 @@
     </view>
 
     <!-- 模式选择器 -->
-    <view class="mode-selector">
+    <view class="mode-selector" wx:if="{{!netWork}}">
       <view class="mode-btn {{!parsedData.induction ? 'active' : ''}}" bindtap="handleSetUpInduction" data-mode="manual">
         {{parsedData.induction||'手动模式'}}
       </view>
@@ -46,6 +46,7 @@
         感应模式
       </view>
     </view>
+    <view wx:else style="font-size: 24rpx;">授权使用时间:{{bluetoothData.startDate}}--{{bluetoothData.endDate}}</view>
   </view>
 
   <!-- 控制功能区 - 每行3个大按钮 -->

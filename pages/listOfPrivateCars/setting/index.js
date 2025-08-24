@@ -20,8 +20,8 @@ const _INSTRUCTIONS = [
   { id: 2, name: '关锁功能指令配置', useType: '', useTypeId: '', },
   { id: 3, name: '寻车功能指令配置', useType: '', useTypeId: '', },
   { id: 4, name: '尾箱功能指令配置', useType: '', useTypeId: '', },
-  { id: 5, name: '左中门功能指令配置', useType: '', useTypeId: '', },
-  { id: 6, name: '右中门功能指令配置', useType: '', useTypeId: '', },
+  // { id: 5, name: '左中门功能指令配置', useType: '', useTypeId: '', },
+  // { id: 6, name: '右中门功能指令配置', useType: '', useTypeId: '', },
   { id: 7, name: '升窗功能指令配置', useType: '', useTypeId: '', },
   { id: 8, name: '降窗功能指令配置', useType: '', useTypeId: '', },
 ];

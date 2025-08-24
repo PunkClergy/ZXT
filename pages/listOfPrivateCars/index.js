@@ -95,7 +95,7 @@ Page({
       if (sign == 1) {
         wx.showModal({
           title: '提示',
-          content: '进入修改设置页后，设置功能项必须先执行蓝牙配对操作',
+          content: '如未与设备配对,请先执行蓝牙配对操作',
           complete: (res) => {
             if (res.confirm) {
               wx.navigateTo(action);

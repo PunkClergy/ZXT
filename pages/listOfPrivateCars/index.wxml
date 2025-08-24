@@ -6,7 +6,7 @@
     <view class="settings-group">
       <view class="settings-item" data-sign="1" bindtap="navigateToUserInfo">
         <view class="item-left">
-          <text class="item-text">感应设置</text>
+          <text class="item-text">感应开关锁设置</text>
         </view>
         <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
       </view>
@@ -15,7 +15,7 @@
     <view class="settings-group">
       <view class="settings-item" data-sign="4" bindtap="navigateToUserInfo">
         <view class="item-left">
-          <text class="item-text">按键功能配置</text>
+          <text class="item-text">钥匙功能配置</text>
         </view>
         <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
       </view>

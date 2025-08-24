@@ -503,9 +503,7 @@ Page({
 
   // 指令公共方法
   _sendVehicleCommand: function (commandCode, code) {
-    if (this.data?.bluetoothData?.platenumber
-      //  && this.data.connectionState == '已连接'
-    ) {
+    if (this.data?.bluetoothData?.platenumber && this.data.connectionState == '已连接') {
       wx.showToast({
         title: '指令已下发',
         icon: 'none'
@@ -513,11 +511,18 @@ Page({
       this.btnCmdSend(commandCode, code);
       return;
     }
+    if (this.data.connectionState == '未连接') {
+      wx.showToast({
+        title: '请等待蓝牙连接后重试',
+        icon: 'none'
+      });
+      return;
+    }
 
     wx.showModal({
       title: '提示',
-      content: '请先绑定车辆',
-      confirmText: '立即绑定',
+      content: '请先开通设定',
+      confirmText: '立即开通',
       success: (res) => {
         if (res.confirm) {
           wx.redirectTo({
