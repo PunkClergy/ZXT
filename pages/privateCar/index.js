@@ -508,13 +508,40 @@ Page({
 
   // 指令公共方法
   _sendVehicleCommand: function (commandCode, code) {
-    if (this.data?.bluetoothData?.platenumber && this.data.connectionState == '已连接') {
-      wx.showToast({
-        title: '指令已下发',
-        icon: 'none'
+    if (!this.data?.bluetoothData?.platenumber) {
+      wx.showModal({
+        title: '提示',
+        content: '请先开通设定再到开通设定-感应设置处完善设置',
+        confirmText: '立即开通',
+        success: (res) => {
+          if (res.confirm) {
+            wx.redirectTo({
+              url: '/pages/listOfPrivateCars/list/index'
+            });
+          }
+        }
       });
-      this.btnCmdSend(commandCode, code);
-      return;
+      return
+    }
+    if (this.data?.bluetoothData?.platenumber && this.data.connectionState == '已连接') {
+      wx.showModal({
+        title: '提示',
+        content: commandCode == 0x03 || commandCode == 0x04 ? '确认下发指令' : '如原车钥匙不支持此功能请自行点击【更多钥匙功能】关闭',
+        confirmText: commandCode == 0x03 || commandCode == 0x04 ? '确认' : '确认支持',
+        complete: (res) => {
+          if (res.confirm) {
+            wx.showLoading({
+              title: '加载中...',
+              mask: true,
+            })
+            this.btnCmdSend(commandCode, code);
+            setTimeout(() => {
+              wx.hideLoading()
+            }, 5000)
+          }
+        }
+      })
+      return
     }
     if (this.data.connectionState == '未连接') {
       wx.showToast({
@@ -523,19 +550,6 @@ Page({
       });
       return;
     }
-
-    wx.showModal({
-      title: '提示',
-      content: '请先开通设定',
-      confirmText: '立即开通',
-      success: (res) => {
-        if (res.confirm) {
-          wx.redirectTo({
-            url: '/pages/listOfPrivateCars/list/index'
-          });
-        }
-      }
-    });
   },
   handleSetUpInduction: function (evt) {
     const _this = this
