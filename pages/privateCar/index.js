@@ -67,7 +67,8 @@ Page({
       { id: 5, name: '更多钥匙功能', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/set.png', evt: 'handleToConfigure' },
     ],
     blue_tooth_state: false,
-    voltage_state: false
+    voltage_state: false,
+    manual_state: false
   },
 
   /**
@@ -498,7 +499,18 @@ Page({
   // 快捷控制命令方法
   handleUnlock: function () { this._sendVehicleCommand(0x03, ''); },   // 开锁命令
   handleLock: function () { this._sendVehicleCommand(0x04, ''); },     // 锁车命令
-  handleOpenTrunk: function () { this._sendVehicleCommand(0x05, ''); },// 尾箱命令
+  handleOpenTrunk: function () {
+    wx.showModal({
+      title: '提示',
+      content: '如原车钥匙不支持此功能请自行点击【更多钥匙功能】关闭',
+      confirmText: '支持且下发指令',
+      complete: (res) => {
+        if (res.confirm) {
+          this._sendVehicleCommand(0x05, '');
+        }
+      }
+    })
+  },// 尾箱命令
   handleFindCar: function () { this._sendVehicleCommand(0x06, ''); },  // 寻车命令
   handlRaiseTheWindow: function () { this._sendVehicleCommand(0x07, 0x03); },  // 升窗命令
   handleLowerTheWindow: function () { this._sendVehicleCommand(0x07, 0x04); }, // 降窗命令
@@ -535,32 +547,42 @@ Page({
     });
   },
   handleSetUpInduction: function (evt) {
+    const _this = this
     const induction = this.data.parsedData.induction;
     const mode = evt?.currentTarget?.dataset?.mode;
     const isManualInduction = !induction || induction === '手动模式';
-    if (
-      (isManualInduction && mode === 'manual') ||
-      (!isManualInduction && mode === 'auto')
-    ) {
+    if ((mode === 'manual')) {
+      this.setData({ manual_state: true })
+      setTimeout(() => {
+        _this.setData({
+          manual_state: false
+        });
+      }, 3000); // 3000 是 setTimeout 的延迟时间
       return;
     }
+
     if (this.data?.bluetoothData?.platenumber) {
-      wx.showModal({
-        title: '提示',
-        content: this.data.parsedData.induction != '感应模式' ? '切换模式为手机蓝牙感应开关锁' : '切换模式为手动操作小程序开关锁',
-        complete: (res) => {
-          if (res.confirm) {
-            wx.redirectTo({
-              url: `/pages/listOfPrivateCars/index?sn=${this.data.bluetoothData?.sn}&bluetoothKey=${this.data.bluetoothData?.bluetoothKey}&flag=1`,
-            })
+      if ((!isManualInduction && mode === 'auto')) {
+        return
+      } if (this.data.parsedData.induction != '感应模式') {
+        wx.showModal({
+          title: '提示',
+          content: '请到开通设定-感应设置处完善设置',
+          complete: (res) => {
+            if (res.confirm) {
+              wx.redirectTo({
+                // url: `/pages/listOfPrivateCars/index?sn=${this.data.bluetoothData?.sn}&bluetoothKey=${this.data.bluetoothData?.bluetoothKey}&flag=1`,
+                url: '/pages/listOfPrivateCars/list/index'
+              })
+            }
           }
-        }
-      })
+        })
+      }
     } else {
       wx.showModal({
         title: '提示',
-        content: '请先绑定车辆',
-        confirmText: '立即绑定',
+        content: '请先开通设定再到开通设定-感应设置处完善设置',
+        confirmText: '立即开通',
         success: (res) => {
           if (res.confirm) {
             wx.redirectTo({
@@ -624,22 +646,41 @@ Page({
 
   // 初始化获取缓存内容
   initToConfigureCache() {
-    const controlItems = this.data.controlItems
+    const controlItems = this.data.controlItems;
+
     wx.getStorage({
       key: 'controlItems',
       success: (res) => {
-        if (res?.data) {
-          // 创建新数组，将res.data插入到第三位
-          const updatedItems = [
-            ...controlItems.slice(0, 2),  // 取前两项
-            ...res?.data,                       // 插入缓存数据
-            ...controlItems.slice(2)     // 插入剩余项
-          ];
-          // 如果需要更新到data中
-          this.setData({ controlItems: updatedItems });
+        if (!Array.isArray(res.data) || res.data.length === 0) {
+          return; // 缓存数据无效或为空，无需处理
         }
+
+        // 去重逻辑：根据唯一标识去重（假设每项有 id 字段）
+        // 如果没有 id，可使用其他字段或 JSON.stringify(item) 做全等比较
+        const existingIds = new Set(controlItems.map(item => item.id)); // 假设每项有唯一 id
+
+        const uniqueNewItems = res.data.filter(item => {
+          // 判断是否已存在于原数组中（根据 id 判断）
+          return !existingIds.has(item.id);
+        });
+
+        if (uniqueNewItems.length === 0) {
+          return; // 没有新数据，无需更新
+        }
+
+        // 将去重后的数据插入到索引 2 的位置
+        const updatedItems = [
+          ...controlItems.slice(0, 2),     // 前两项
+          ...uniqueNewItems,               // 新的不重复数据
+          ...controlItems.slice(2)         // 原来的第3项及之后
+        ];
+
+        this.setData({
+          controlItems: updatedItems
+        });
       },
       fail: (err) => {
+        console.log('获取缓存失败：', err);
       }
     });
   },

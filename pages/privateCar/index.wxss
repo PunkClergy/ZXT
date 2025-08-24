@@ -202,7 +202,7 @@ page {
 .tips_bluetooth {
   position: absolute;
   top: -80%;
-  left: -10%;
+  right: 10%;
   /* background: #000; */
   background: rgba(66, 66, 66, 0.7);
   border-radius: 10rpx;
