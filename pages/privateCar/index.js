@@ -62,9 +62,11 @@ Page({
     controlItems: [
       { id: 1, name: '开锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
       { id: 2, name: '关锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/lock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
+      { id: 3, name: '尾箱', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/box_off.png', evt: 'handleOpenTrunk' },
+      { id: 4, name: '寻车', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleFindCar' },
       { id: 5, name: '升窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handlRaiseTheWindow' },
       { id: 6, name: '降窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleLowerTheWindow' },
-      { id: 5, name: '更多钥匙功能', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/set.png', evt: 'handleToConfigure' },
+      { id: 7, name: '更多钥匙功能', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/set.png', evt: 'handleToConfigure' },
     ],
     blue_tooth_state: false,
     voltage_state: false,
@@ -645,47 +647,29 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
-
-
-
-
   // 初始化获取缓存内容
   initToConfigureCache() {
-    const controlItems = this.data.controlItems;
-
+    const currentItems = this.data.controlItems || [];
     wx.getStorage({
       key: 'controlItems',
       success: (res) => {
-        if (!Array.isArray(res.data) || res.data.length === 0) {
-          return; // 缓存数据无效或为空，无需处理
-        }
-
-        // 去重逻辑：根据唯一标识去重（假设每项有 id 字段）
-        // 如果没有 id，可使用其他字段或 JSON.stringify(item) 做全等比较
-        const existingIds = new Set(controlItems.map(item => item.id)); // 假设每项有唯一 id
-
-        const uniqueNewItems = res.data.filter(item => {
-          // 判断是否已存在于原数组中（根据 id 判断）
-          return !existingIds.has(item.id);
+        const storageItems = res.data || [];
+        const merged = [...currentItems, ...storageItems];
+        const uniqueMap = new Map();
+        merged.forEach(item => {
+          const existing = uniqueMap.get(item.id);
+  
+          if (!existing) {
+            uniqueMap.set(item.id, item);
+          } else {
+            if (item.enabled === false) {
+              uniqueMap.set(item.id, item);
+            }
+          }
         });
-
-        if (uniqueNewItems.length === 0) {
-          return; // 没有新数据，无需更新
-        }
-
-        // 将去重后的数据插入到索引 2 的位置
-        const updatedItems = [
-          ...controlItems.slice(0, 2),     // 前两项
-          ...uniqueNewItems,               // 新的不重复数据
-          ...controlItems.slice(2)         // 原来的第3项及之后
-        ];
-
-        this.setData({
-          controlItems: updatedItems
-        });
-      },
-      fail: (err) => {
-        console.log('获取缓存失败：', err);
+        const result = Array.from(uniqueMap.values());
+        console.log('合并并优先保留 enabled=false 的结果：', result);
+        this.setData({ controlItems: result });
       }
     });
   },
