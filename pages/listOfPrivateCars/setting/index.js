@@ -440,7 +440,7 @@ Page({
               if (cbRes_2?.confirm) {
                 wx.showModal({
                   title: '第三步',
-                  content: '请移步至离车头直线距离3米处',
+                  content: '请移步至离车头直线距离5米处',
                   confirmText: '立即校准',
                   success: (cbRes_3) => {
                     if (cbRes_3?.confirm) {
