@@ -96,7 +96,7 @@ Page({
   // 页面加载生命周期
   onLoad(options) {
     const sign = options?.sign || '';  // 从参数获取sign值
-    if (options?.sign === '1' || options?.sign == '3') {      // 如果sign为1则处理请求
+    if (options?.sign === '1' || options?.sign == '3'|| options?.sign == '5') {      // 如果sign为1则处理请求
       this.setData({
         deviceIDC: options?.deviceIDC,  // 默认设备ID
         orgKey: this.keyToHexArray(options?.orgKey)
