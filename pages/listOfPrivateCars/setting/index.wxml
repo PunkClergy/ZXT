@@ -120,5 +120,22 @@
         </view>
       </view>
     </block>
+    <!-- 其他个性设置 -->
+    <block wx:if="{{sign == 5}}">
+      <view class="settings-group">
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">蓝牙断开自动锁车</text>
+          </view>
+          <switch checked="{{parsedData.toBreakOff}}" bindchange="handleToBreakOff" color="#07C160" />
+        </view>
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">锁车自动升窗</text>
+          </view>
+          <switch checked="{{parsedData.autoCloseWin}}" bindchange="handleAutoCloseTheWindow" color="#07C160" />
+        </view>
+      </view>
+    </block>
   </scroll-view>
 </view>

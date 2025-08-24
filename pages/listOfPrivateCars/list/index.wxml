@@ -110,9 +110,9 @@
         <view class="card-footer">
           <view bindtap="handleSubmit">确认{{btnState}}</view>
         </view>
-        <view class="image-container">
+        <!-- <view class="image-container">
           <image src="https://k3a.wiselink.net.cn/img/video/blueinstall.png" class="image" style="width:750rpx; height: {{imageHeight}}rpx;" />
-        </view>
+        </view> -->
       </scroll-view>
     </block>
   </view>

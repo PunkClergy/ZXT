@@ -39,10 +39,10 @@
 
     <!-- 模式选择器 -->
     <view class="mode-selector" wx:if="{{!netWork}}">
-      <view class="mode-btn {{!parsedData.induction ? 'active' : ''}}" bindtap="handleSetUpInduction" data-mode="manual">
-        {{parsedData.induction||'手动模式'}}
+      <view class="mode-btn {{!parsedData.induction||parsedData.induction=='手动模式' ? 'active' : ''}}" bindtap="handleSetUpInduction" data-mode="manual">
+        手动模式
       </view>
-      <view class="mode-btn {{parsedData.induction ? 'active' : ''}}" bindtap="handleSetUpInduction" data-mode="auto">
+      <view class="mode-btn {{parsedData.induction=='感应模式' ? 'active' : ''}}" bindtap="handleSetUpInduction" data-mode="auto">
         感应模式
       </view>
     </view>
