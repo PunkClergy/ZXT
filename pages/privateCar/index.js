@@ -500,16 +500,7 @@ Page({
   handleUnlock: function () { this._sendVehicleCommand(0x03, ''); },   // 开锁命令
   handleLock: function () { this._sendVehicleCommand(0x04, ''); },     // 锁车命令
   handleOpenTrunk: function () {
-    wx.showModal({
-      title: '提示',
-      content: '如原车钥匙不支持此功能请自行点击【更多钥匙功能】关闭',
-      confirmText: '支持且下发指令',
-      complete: (res) => {
-        if (res.confirm) {
-          this._sendVehicleCommand(0x05, '');
-        }
-      }
-    })
+    this._sendVehicleCommand(0x05, '');
   },// 尾箱命令
   handleFindCar: function () { this._sendVehicleCommand(0x06, ''); },  // 寻车命令
   handlRaiseTheWindow: function () { this._sendVehicleCommand(0x07, 0x03); },  // 升窗命令
