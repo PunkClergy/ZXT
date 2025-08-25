@@ -6,7 +6,7 @@
     <view class="record-tabs" bindtap="handleSwitchTab">
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">设备清单</view>
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">{{btnState}}设定</view>
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_active_1:s_background_tabs_1}}');">感应设定</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_active_1:s_background_tabs_1}}');">功能设置</view>
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">

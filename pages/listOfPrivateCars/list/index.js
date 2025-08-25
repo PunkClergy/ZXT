@@ -189,7 +189,7 @@ Page({
       });
   },
   // 管控列表数据
-  initList() {
+  initList(evt) {
     const param = {
       [u_carList.page]: this.data.g_page,
     };
@@ -202,7 +202,11 @@ Page({
           g_items: this.data.g_items.concat(response.data.content),
           g_total: Number(response.data.count || 0).toLocaleString()
         }, () => {
-          if (this.data.g_items?.length > 0) {
+          if (evt?.tabs) {
+            this.setData({
+              c_activeTab: evt?.tabs
+            })
+          } else if (this.data.g_items?.length > 0) {
             this.setData({ c_activeTab: 1 })
           } else {
             this.setData({ c_activeTab: 2 })
@@ -397,7 +401,7 @@ Page({
         })
       }
     }
-    if (flag == '感应设定') {
+    if (flag == '功能设置') {
       if (this.data.c_activeTab != 3) {
         this.setData({
           c_activeTab: 3,
@@ -473,7 +477,7 @@ Page({
   },
   onLoad(options) {
     this.initCarryParams(options)
-    this.initList()
+    this.initList(options)
   },
   onShow() {
     this.initialiImageBaseConversion()

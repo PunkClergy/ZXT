@@ -4,9 +4,11 @@ const {
 } = require('../../utils/public').default
 const {
   byGet,
+  byPost
 } = require('../../utils/request/http')
 const {
-  u_carList
+  u_carList,
+  u_sendInfo
 } = require('../../utils/request/car')
 const bleKeyManager = require('../../utils/BleKeyFun-utils.js');  // 蓝牙密钥管理
 const appUtil = require('../../utils/app-util.js');               // 应用工具
@@ -513,7 +515,7 @@ Page({
     if (!this.data?.bluetoothData?.platenumber) {
       wx.showModal({
         title: '提示',
-        content: '请先开通设定再到开通设定-感应设置处完善设置',
+        content: '请先开通设定再到开通设定-功能设置处完善设置',
         confirmText: '立即开通',
         success: (res) => {
           if (res.confirm) {
@@ -540,6 +542,7 @@ Page({
             setTimeout(() => {
               wx.hideLoading()
             }, 5000)
+            this.handleSendInfo(commandCode, code)
           }
         }
       })
@@ -552,6 +555,14 @@ Page({
       });
       return;
     }
+  },
+  // 发送控制命令
+  handleSendInfo(commandCode, code) {
+    const temp = {
+      sn: this.data.deviceIDC,
+      controltype: `${commandCode}${code}`
+    }
+    byPost('https://k1sw.wiselink.net.cn/' + u_sendInfo.URL, temp, function () { });
   },
   handleSetUpInduction: function (evt) {
     const _this = this
@@ -574,12 +585,12 @@ Page({
       } if (this.data.parsedData.induction != '感应模式') {
         wx.showModal({
           title: '提示',
-          content: '请到开通设定-感应设置处完善设置',
+          content: '请到开通设定-功能设置处完善设置',
           complete: (res) => {
             if (res.confirm) {
               wx.redirectTo({
                 // url: `/pages/listOfPrivateCars/index?sn=${this.data.bluetoothData?.sn}&bluetoothKey=${this.data.bluetoothData?.bluetoothKey}&flag=1`,
-                url: '/pages/listOfPrivateCars/list/index'
+                url: '/pages/listOfPrivateCars/list/index?tabs=3'
               })
             }
           }
@@ -588,7 +599,7 @@ Page({
     } else {
       wx.showModal({
         title: '提示',
-        content: '请先开通设定再到开通设定-感应设置处完善设置',
+        content: '请先开通设定再到开通设定-功能设置处完善设置',
         confirmText: '立即开通',
         success: (res) => {
           if (res.confirm) {
@@ -658,7 +669,7 @@ Page({
         const uniqueMap = new Map();
         merged.forEach(item => {
           const existing = uniqueMap.get(item.id);
-  
+
           if (!existing) {
             uniqueMap.set(item.id, item);
           } else {

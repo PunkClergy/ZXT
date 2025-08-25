@@ -33,12 +33,9 @@
         </view> -->
         <view class="settings-item">
           <view class="item-left">
-            <text class="item-text">操控模式</text>
+            <text class="item-text">感应模式</text>
           </view>
-          <radio-group bindchange="handleRadioChange">
-            <radio class="radio-animate" value="0" checked="{{parsedData.induction =='手动模式'}}"> 手动模式</radio>
-            <radio class="radio-animate" value="1" checked="{{parsedData.induction =='感应模式'}}"> 感应模式</radio>
-          </radio-group>
+            <switch checked="{{parsedData.induction =='感应模式'}}" bindchange="handleRadioChange" color="#07C160" />
         </view>
       </view>
     </block>

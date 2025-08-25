@@ -43,7 +43,7 @@
 
     <view class="mode-selector" wx:if="{{!netWork}}" style="position: relative;">
 
-      <view class="mode-btn active" bindtap="handleSetUpInduction" data-mode="manual" style="border-right: 1px solid #999;">
+      <view class="mode-btn {{connectionState=='已连接' ? 'active' : ''}}" bindtap="handleSetUpInduction" data-mode="manual" style="border-right: 1px solid #999;">
         手动模式
       </view>
       <view class="mode-btn {{parsedData.induction=='感应模式' ? 'active' : ''}}" bindtap="handleSetUpInduction" data-mode="auto">

@@ -120,7 +120,11 @@ const u_vehBindCarManager={
 const u_carapiDeleteCar = {
   URL: fin3plusUrl + "carapi/deleteCar",
 }
+const u_sendInfo = {
+  URL: fin3plusUrl + "renterApi/uploadControlRecord",
+}
 module.exports = {
+  u_sendInfo,
   u_carapiDeleteCar,
   u_vehBindCarManager,
   u_improveLoseClaimFile,
