@@ -29,7 +29,7 @@
         },
         {
           "name": "",
-          "pathName": "pages/orderList/InquirySheet/index",
+          "pathName": "pages/slfSrvc/slfSrvc",
           "query": "",
           "launchMode": "default",
           "scene": null

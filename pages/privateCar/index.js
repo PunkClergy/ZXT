@@ -4,11 +4,13 @@ const {
 } = require('../../utils/public').default
 const {
   byGet,
-  byPost
+  byPost,
+  byPostJson
 } = require('../../utils/request/http')
 const {
   u_carList,
-  u_sendInfo
+  u_sendInfo,
+  u_uploadLog
 } = require('../../utils/request/car')
 const bleKeyManager = require('../../utils/BleKeyFun-utils.js');  // 蓝牙密钥管理
 const appUtil = require('../../utils/app-util.js');               // 应用工具
@@ -72,9 +74,34 @@ Page({
     ],
     blue_tooth_state: false,
     voltage_state: false,
-    manual_state: false
+    manual_state: false,
+    logs: [],//报文日志
+    deviceInfo: {},//设备信息
   },
+  // 获取设备信息
+  handleSystemInfo() {
+    wx.getSystemInfo({
+      success: (res) => {
+        this.setData({
+          deviceInfo: {
+            brand: res.brand,
+            model: res.model,
+            system: res.system,
+            platform: res.platform,
+            screenWidth: res.screenWidth,
+            screenHeight: res.screenHeight,
+            pixelRatio: res.pixelRatio,
+            statusBarHeight: res.statusBarHeight
+          }
+        })
 
+        console.log('设备信息:', this.data.deviceInfo)
+      },
+      fail: (err) => {
+        console.error('获取设备信息失败:', err)
+      }
+    })
+  },
   /**
    * 生命周期函数 - 页面加载
    * @param {Object} options 页面参数
@@ -82,6 +109,7 @@ Page({
   onLoad: function (options) {
     const that = this;
     that.initToConfigureCache()//获取缓存内容
+    this.handleSystemInfo()
     // 统一处理函数
     const handleData = (data) => {
       if (!data) return;
@@ -229,10 +257,15 @@ Page({
     // 设置定时状态检查
     that.data.pageInterval = setInterval(() => {
       const isConnected = bleKeyManager.getBLEConnectionState();
+
       that.setData({
         connectionState: isConnected ? "已连接" : "未连接",
         connectionID: isConnected ? bleKeyManager.getBLEConnectionID() : "",
         connectionDisplay: isConnected ? that.data.connectionID : "未连接",
+      }, () => {
+        if (that.data.connectionState == '已连接') {
+          console.log(1111111, '[[[]]]')
+        }
       });
     }, 200);
 
@@ -422,7 +455,30 @@ Page({
     resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式'
     return resultObject;
   },
-
+  // 上传报文
+  handleLoggerapi(evt) {
+    const logs = this.data.logs
+    if (logs.length > 10) {
+      byPostJson('https://k1sw.wiselink.net.cn/' + u_uploadLog.URL, logs, (response) => {
+        if (response.data.code == 1000) {
+          this.setData({
+            logs: []
+          })
+        }
+      });
+    } else {
+      const deviceInfo = this.data.deviceInfo
+      const sn = this.data.deviceIDC
+      const userId = getApp()?.data?.userInfo?.id
+      const mobileinfo = `${deviceInfo?.brand} ${deviceInfo?.model} ${deviceInfo?.platform} ${deviceInfo?.system}`
+      const content = evt
+      const info = { userId, sn, mobileinfo, content }
+      logs?.push(info)
+      this.setData({
+        logs: logs
+      })
+    }
+  },
   /**
    * 数据解析按钮处理
    * @param {string} hexData 16进制数据字符串
@@ -431,7 +487,9 @@ Page({
     const parsedResult = this.parseHexDataObject(hexData);
     const parsedDataob = this.parseHexData(hexData)
     if (parsedResult) {
-      this.setData({ parsedData: parsedResult, parsedDataob: parsedDataob });
+      this.setData({ parsedData: parsedResult, parsedDataob: parsedDataob }, () => {
+        this.handleLoggerapi(hexData)
+      });
     }
   },
 

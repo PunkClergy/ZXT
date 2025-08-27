@@ -81,8 +81,6 @@
     "pages/selfServicePickUpAndReturn/selfServicePickUpAndReturn",
     "pages/rentKeySend/rentKeySend",
     "pages/rentKeySend/sending/sending",
-    "pages/slfSrvc/slfSrvc",
-    "pages/slfSrvc/slfSrvcAdd/add",
     "pages/carManager/buyOilDevice/balance/index",
     "pages/carManager/buyOilDevice/balance/detailes",
     "pages/carManager/buyOilDevice/mcckSelf/index",

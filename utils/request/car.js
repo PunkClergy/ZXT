@@ -123,7 +123,11 @@ const u_carapiDeleteCar = {
 const u_sendInfo = {
   URL: fin3plusUrl + "renterApi/uploadControlRecord",
 }
+const u_uploadLog = {
+  URL: fin3plusUrl + "loggerapi/uploadLog",
+}
 module.exports = {
+  u_uploadLog,
   u_sendInfo,
   u_carapiDeleteCar,
   u_vehBindCarManager,

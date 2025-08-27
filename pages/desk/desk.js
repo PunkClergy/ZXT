@@ -540,7 +540,7 @@ Page({
     wx.getImageInfo({
       src: imgUrl,
       success: (res) => {
-        const proportion = res?.width / 600;
+        const proportion = res?.width / 700;
         this.setData({
           imageWidth: res.width,
           imageHeight: res.height / proportion
