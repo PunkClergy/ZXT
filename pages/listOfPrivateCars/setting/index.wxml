@@ -35,7 +35,7 @@
           <view class="item-left">
             <text class="item-text">感应模式</text>
           </view>
-            <switch checked="{{parsedData.induction =='感应模式'}}" bindchange="handleRadioChange" color="#07C160" />
+          <switch checked="{{parsedData.induction =='感应模式'}}" bindchange="handleRadioChange" color="#07C160" />
         </view>
       </view>
     </block>

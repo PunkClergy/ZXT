@@ -560,7 +560,8 @@ Page({
   handleSendInfo(commandCode, code) {
     const temp = {
       sn: this.data.deviceIDC,
-      controltype: `${commandCode}${code}`
+      controltype: `${commandCode}${code}`,
+      electricity: this?.data?.parsedData?.electric || 0
     }
     byPost('https://k1sw.wiselink.net.cn/' + u_sendInfo.URL, temp, function () { });
   },

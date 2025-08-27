@@ -54,7 +54,10 @@ Page({
     logoSrc: '/assets/images/login/logo.png',
     c_send_key_show_momal: false,
     c_send_key_show_type: null,
-    account: null
+    account: null,
+    image_state: false,
+    imageWidth: 0,
+    imageHeight: 0
   },
 
   // 转换背景图base64
@@ -476,6 +479,7 @@ Page({
   },
 
   onShow: function (e) {
+    this.hadleImage()
     if (getApp()?.data?.reflag == 1) {
       this.handleTermialList()
     }
@@ -493,6 +497,24 @@ Page({
         console.error("获取失败", err); // 失败时的错误信息
       }
     });
+    // 查询是否显示弹出
+    wx.getStorage({
+      key: 'image_state', // 替换为你的缓存键值
+      success(res) {
+        console.log("获取成功", res.data); // 成功时的数据
+        if (!res?.data) {
+          _this.setData({
+            image_state: true
+          })
+        }
+      },
+      fail(err) {
+        console.error("获取失败", err); // 失败时的错误信息
+        _this.setData({
+          image_state: true
+        })
+      }
+    });
 
     // 暂时取消更新token
     this.initialGetUserInfo()
@@ -501,6 +523,39 @@ Page({
     this.setData({
       sn_specific_value: this.data.sn_specific_value || ''
     })
+  },
+  handleImageClose() {
+    this.setData({
+      image_state: false
+    }, () => {
+      wx.setStorageSync('image_state', true)
+    })
+  },
+  hadleImage() {
+    wx.showLoading({
+      title: '加载中...',
+    })
+    const imgUrl = 'https://k3a.wiselink.net.cn/img/video/createShortcuts.gif';
+    // 使用 wx.getImageInfo 获取图片信息
+    wx.getImageInfo({
+      src: imgUrl,
+      success: (res) => {
+        const proportion = res?.width / 600;
+        this.setData({
+          imageWidth: res.width,
+          imageHeight: res.height / proportion
+        }, () => {
+          wx.hideLoading()
+        });
+      },
+      fail: (err) => {
+        console.error('获取图片信息失败', err);
+        this.setData({
+          imageWidth: '加载失败',
+          imageHeight: '加载失败'
+        });
+      }
+    });
   },
   onUnload: function () {
     this.setData({

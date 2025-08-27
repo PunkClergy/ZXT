@@ -41,14 +41,14 @@ const _OUTPUT = [
   [{ id: 1, name: '短按两次尾箱键' },//输出次数2 输出时间500ms 输出间隔1000ms
   { id: 2, name: '长按三秒尾箱键' },//输出次数1 输出时间3000ms 输出间隔0
   ],
-  // 左中门
-  [{ id: 1, name: '短按左中门键' },//输出次数为1 输出时间为500ms 输出间隔0
-  { id: 2, name: '长按3秒左中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
-  ],
-  // 右中门
-  [{ id: 1, name: '短按右中门键' },//输出次数为1 输出时间为500ms 输出间隔0
-  { id: 2, name: '长按3秒右中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
-  ],
+  // // 左中门
+  // [{ id: 1, name: '短按左中门键' },//输出次数为1 输出时间为500ms 输出间隔0
+  // { id: 2, name: '长按3秒左中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
+  // ],
+  // // 右中门
+  // [{ id: 1, name: '短按右中门键' },//输出次数为1 输出时间为500ms 输出间隔0
+  // { id: 2, name: '长按3秒右中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
+  // ],
   // 升窗
   [{ id: 1, name: '长按7秒关锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
   ],
@@ -96,7 +96,7 @@ Page({
   // 页面加载生命周期
   onLoad(options) {
     const sign = options?.sign || '';  // 从参数获取sign值
-    if (options?.sign === '1' || options?.sign == '3'|| options?.sign == '5') {      // 如果sign为1则处理请求
+    if (options?.sign === '1' || options?.sign == '3' || options?.sign == '5') {      // 如果sign为1则处理请求
       this.setData({
         deviceIDC: options?.deviceIDC,  // 默认设备ID
         orgKey: this.keyToHexArray(options?.orgKey)
@@ -195,35 +195,40 @@ Page({
   btnPair() {
     const that = this;
     const deviceInfo = wx.getDeviceInfo();  // 获取设备信息
-    console.log(deviceInfo);  // 打印设备信息
-
-    // 判断Android系统
-    if (deviceInfo.system.toLowerCase().includes('android')) {
-      // 发送配对命令
-      that.btnCmdSend(0x22, [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-      setTimeout(() => {
-        bleKeyManager.makePair();  // 执行配对
-      }, 200);
-    } else {
-      // iOS系统处理流程
-      that.btnCmdSend(0x22, [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-      setTimeout(() => {
-        that.btnCmdSend(0x22, [0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+    if (that.data.connectionState == '已连接') {
+      // 判断Android系统
+      if (deviceInfo.system.toLowerCase().includes('android')) {
+        // 发送配对命令
+        that.btnCmdSend(0x22, [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
         setTimeout(() => {
-          that.btnEndConnect();  // 结束连接
-          const pairInteval = setInterval(() => {
-            if (!bleKeyManager.getBLEConnectionState()) {  // 检查连接状态
-              clearInterval(pairInteval);  // 清除定时器
-              setTimeout(() => {
-                that.btnStartConnect();  // 重新开始连
-              }, 500);
-            }
-          }, 500);
-          setTimeout(() => {
-            clearInterval(pairInteval);  // 超时清除定时器
-          }, 3000);
+          bleKeyManager.makePair();  // 执行配对
         }, 200);
-      }, 200);
+      } else {
+        // iOS系统处理流程
+        that.btnCmdSend(0x22, [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        setTimeout(() => {
+          that.btnCmdSend(0x22, [0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+          setTimeout(() => {
+            that.btnEndConnect();  // 结束连接
+            const pairInteval = setInterval(() => {
+              if (!bleKeyManager.getBLEConnectionState()) {  // 检查连接状态
+                clearInterval(pairInteval);  // 清除定时器
+                setTimeout(() => {
+                  that.btnStartConnect();  // 重新开始连
+                }, 500);
+              }
+            }, 500);
+            setTimeout(() => {
+              clearInterval(pairInteval);  // 超时清除定时器
+            }, 3000);
+          }, 200);
+        }, 200);
+      }
+    } else {
+      wx.showToast({
+        title: '请等待蓝牙初始化',
+        icon:'none'
+      })
     }
   },
 
