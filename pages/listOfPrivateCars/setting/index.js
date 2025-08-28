@@ -227,7 +227,7 @@ Page({
     } else {
       wx.showToast({
         title: '请等待蓝牙初始化',
-        icon:'none'
+        icon: 'none'
       })
     }
   },
@@ -329,6 +329,16 @@ Page({
     this.consoleOut(`send: ${byteUtil.buf2hex(packet)}\r\n`);
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
+  PackAndSendspecial063(data) {
+    const packet = [
+      0x24,
+      0x63, 0x01,
+      data,
+      0x24
+    ];
+    this.consoleOut(`send: ${byteUtil.buf2hex(packet)}\r\n`);
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
+  },
 
   // 认证加密
   auth_encrypt(passwordSource, random) {
@@ -368,6 +378,9 @@ Page({
         break;
       case 0x4D: //设置锁车升窗
         this.PackAndSendspecial04d(data); // 发送6字节数据
+        break;
+      case 0x63:
+        this.PackAndSendspecial063(data); // 发送6字节数据
         break;
       default:
         break;
@@ -509,6 +522,7 @@ Page({
     resultObject.toBreakOff = bytes[6] === 1//蓝牙断开自动锁车
     resultObject.signal = bytes[10]//当前信号值
     resultObject.autoCloseWin = (bytes[7] & 0x10) !== 0//锁车自动关窗
+    resultObject.startSense = (bytes[13] & 0x02) !== 0//启动状态蓝牙感应是否生效
 
     // Update the signal cache
     let signalCache = this.data.signalCache;
@@ -568,6 +582,11 @@ Page({
     const isEnabled = Boolean(e?.detail?.value);
     // 发送指定 设置蓝牙断开自动锁车 (0x01: 开, 0x00: 关)
     this.btnCmdSend(0x4D, [isEnabled ? 0x01 : 0x00]);
+  },
+  handleStartSense(e) {
+    const isEnabled = Boolean(e?.detail?.value);
+    // 发送指定 设置启动状态蓝牙感应是否有效 (0x01: 感应开, 0x00: 感应关关)
+    this.btnCmdSend(0x63, [!isEnabled ? 0x01 : 0x00]);
   },
 
   // 设置 感应模式

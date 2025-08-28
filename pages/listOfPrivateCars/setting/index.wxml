@@ -132,6 +132,12 @@
           </view>
           <switch checked="{{parsedData.autoCloseWin}}" bindchange="handleAutoCloseTheWindow" color="#07C160" />
         </view>
+        <view class="settings-item">
+          <view class="item-left">
+            <text class="item-text">启动状态蓝牙感应是否生效</text>
+          </view>
+          <switch checked="{{!parsedData.startSense}}" bindchange="handleStartSense" color="#07C160" />
+        </view>
       </view>
     </block>
   </scroll-view>
