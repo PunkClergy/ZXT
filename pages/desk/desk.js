@@ -305,7 +305,7 @@ Page({
       return
     }
     // 1、分享朋友 2、订单采购 3、群二维码 4、充值页面
-    if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList' || item.path === '/pages/groupQrCode/index' || item.path == '/pages/carManager/buyOilDevice/balance/detailes') {
+    if (item.path === '/pages/redShare/index' || item.path === '/pages/orderList/orderList' || item.path === '/pages/groupQrCode/index' || item.path == '/pages/Shops/index') {
       wx.switchTab({
         url: item.path
       });

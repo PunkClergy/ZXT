@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "custom-header": "/components/CustomHeader/index"
+    "custom-header": "/components/CustomHeader/index",
+    "custom-tab-bar": "/custom-tab-bar/index"
   },
   "navigationStyle": "custom"
 }

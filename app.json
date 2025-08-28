@@ -23,10 +23,10 @@
         "text": "一键下单"
       },
       {
-        "pagePath": "pages/carManager/buyOilDevice/balance/detailes",
+        "pagePath": "pages/Shops/index",
         "iconPath": "/assets/images/index/work@2x.png",
         "selectedIconPath": "/assets/images/index/work_s@2x.png",
-        "text": "充值"
+        "text": "店铺"
       },
       {
         "pagePath": "pages/groupQrCode/index",
