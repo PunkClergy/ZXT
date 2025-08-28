@@ -514,9 +514,7 @@ Page({
     const parsedResult = this.parseHexDataObject(hexData);
     const parsedDataob = this.parseHexData(hexData)
     if (parsedResult) {
-      this.setData({ parsedData: parsedResult, parsedDataob: parsedDataob }, () => {
-        this.handleLoggerapi(hexData)
-      });
+      this.setData({ parsedData: parsedResult, parsedDataob: parsedDataob });
     }
   },
 
@@ -553,6 +551,7 @@ Page({
           that.btnCmdSend(0x10, arrayData)
         } else {
           that.parseData(that.trimHexData(hexTextData))
+          that.handleLoggerapi(hexTextData)
         };
 
         // 更新接收消息显示
