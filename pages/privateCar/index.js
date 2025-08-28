@@ -455,28 +455,55 @@ Page({
     resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式'
     return resultObject;
   },
-  // 上传报文
+  // 上传报文 
   handleLoggerapi(evt) {
-    const logs = this.data.logs
-    if (logs.length > 10) {
-      byPostJson('https://k1sw.wiselink.net.cn/' + u_uploadLog.URL, logs, (response) => {
-        if (response.data.code == 1000) {
+    const MAX_LOGS_BEFORE_UPLOAD = 10;
+    const UPLOAD_LOG_URL = 'https://k1sw.wiselink.net.cn/' + u_uploadLog.URL;
+    const { deviceInfo, deviceIDC, logs: currentLogs } = this.data;
+    const userId = getApp()?.data?.userInfo?.id;
+
+    // 构造当前日志项
+    const newLogEntry = {
+      userId,
+      sn: deviceIDC,
+      mobileinfo: `${deviceInfo?.brand || ''} ${deviceInfo?.model || ''} ${deviceInfo?.platform || ''} ${deviceInfo?.system || ''}`,
+      content: evt
+    };
+
+    // 创建新日志数组（避免直接修改原数组）
+    const updatedLogs = [...currentLogs, newLogEntry];
+
+    // 判断是否达到上传阈值
+    if (updatedLogs.length >= MAX_LOGS_BEFORE_UPLOAD) {
+      byPostJson(
+        UPLOAD_LOG_URL,
+        updatedLogs,
+        (response) => {
+          // 上传成功，清空日志
+          if (response?.data?.code === 1000) {
+            this.setData({
+              logs: []
+            });
+          } else {
+            // 上传失败，保留日志（后续可重试）
+            this.setData({
+              logs: updatedLogs
+            });
+          }
+        },
+        (err) => {
+          // 网络错误等异常情况，保留日志
+          console.warn('日志上传失败，保留本地日志:', err);
           this.setData({
-            logs: []
-          })
+            logs: updatedLogs
+          });
         }
-      });
+      );
     } else {
-      const deviceInfo = this.data.deviceInfo
-      const sn = this.data.deviceIDC
-      const userId = getApp()?.data?.userInfo?.id
-      const mobileinfo = `${deviceInfo?.brand} ${deviceInfo?.model} ${deviceInfo?.platform} ${deviceInfo?.system}`
-      const content = evt
-      const info = { userId, sn, mobileinfo, content }
-      logs?.push(info)
+      // 未达到阈值，仅本地保存
       this.setData({
-        logs: logs
-      })
+        logs: updatedLogs
+      });
     }
   },
   /**
