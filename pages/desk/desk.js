@@ -532,9 +532,6 @@ Page({
     })
   },
   hadleImage() {
-    wx.showLoading({
-      title: '加载中...',
-    })
     const imgUrl = 'https://k3a.wiselink.net.cn/img/video/createShortcuts.gif';
     // 使用 wx.getImageInfo 获取图片信息
     wx.getImageInfo({
@@ -544,8 +541,6 @@ Page({
         this.setData({
           imageWidth: res.width,
           imageHeight: res.height / proportion
-        }, () => {
-          wx.hideLoading()
         });
       },
       fail: (err) => {
