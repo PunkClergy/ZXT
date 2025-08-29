@@ -147,30 +147,57 @@ Page({
   },
   // 请求快捷入口数据
   initialQuickEntry(e) {
-    const _this = this
     const url = `${this.data.c_link}${u_midMenulist.URL}`;
-    const params = {
-      terminalId: e?.id || e?.currentTarget?.dataset?.item?.id
-    };
+    const terminalId = e?.id || e?.currentTarget?.dataset?.item?.id;
+    if (!terminalId) {
+      return;
+    }
+    const params = { terminalId };
     byGet(url, params).then(response => {
-      const content = response.data.content;
-      const chunks = Array.from({
-        length: Math.ceil(content.length / 5)
-      }, (_, i) => content.slice(i * 5, i * 5 + 5));
-      this.setData({
-        g_before_passing_by_icon: chunks,
-        termial_active: e?.id || e?.currentTarget?.dataset?.item?.id,
-        g_quickIndex: 0,
-        tabs_bg: params?.terminalId == '-1' ? _this.data.s_client_bg : (params?.terminalId == 222 ? _this.data.s_channel_bg : _this.data.s_service_bg),
-      }, () => {
-        this.handleGetMenuList({
-          id: content[0].id
-        })
-        this.handleRightSideData({
-          id: content[0].id
-        })
+      wx.getStorage({
+        key: 'quickEntry',
+        success: (res) => {
+          var data = res.data.filter(item => !item.isHidden);
+          process.call(this, data);
+        },
+        fail: () => {
+          var data = response.data?.content;
+          process.call(this, data);
+        }
       });
-    })
+
+      // 内联处理函数（避免重复）
+      function process(rawData) {
+        if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
+          console.warn('No valid data to process');
+          return;
+        }
+
+        const chunk = Array.from(
+          { length: Math.ceil(rawData.length / 5) },
+          (_, i) => rawData.slice(i * 5, i * 5 + 5)
+        );
+
+        const tabsBg = terminalId === '-1'
+          ? this.data.s_client_bg
+          : (terminalId == 222 ? this.data.s_channel_bg : this.data.s_service_bg);
+
+        this.setData({
+          g_before_passing_by_icon: chunk,
+          termial_active: terminalId,
+          g_quickIndex: 0,
+          tabs_bg: tabsBg
+        }, () => {
+          const firstId = rawData[0]?.id;
+          if (firstId) {
+            this.handleGetMenuList({ id: firstId });
+            this.handleRightSideData({ id: firstId });
+          }
+        });
+      }
+    }).catch(err => {
+      console.error('Request failed:', err);
+    });
   },
   // 请求右侧面板数据
   handleRightSideData(evt) {

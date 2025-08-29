@@ -27,7 +27,8 @@
       <swiper-item wx:for="{{g_before_passing_by_icon}}" wx:key="index">
         <view class="middle-swiper-item">
           <block wx:for="{{item}}" wx:key="index">
-            <view class="middle-swiper-container" style="background:{{item.id == menuId?'#c5c5cc':'22'}};border-radius: 10rpx;">
+      
+            <view class="middle-swiper-container"  style="background:{{item.id == menuId?'#c5c5cc':'22'}};border-radius: 10rpx;">
               <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList" style="height: {{s_quick_entrance_height}}px;">
                 <image src="{{!item.icon ? '/assets/images/index/icon5.png' : c_link + 'img/' + item.icon}}" />
                 <text>{{item.name}}</text>
