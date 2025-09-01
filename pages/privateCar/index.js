@@ -153,9 +153,40 @@ Page({
    * @param {Object} options 页面参数
    */
   onLoad: function (options) {
-    const that = this;
-    that.initToConfigureCache()//获取缓存内容
+
+    this.initToConfigureCache()//获取缓存内容
     this.handleSystemInfo()
+    this.setData({
+      options: options
+    })
+  },
+  /**
+  * 生命周期函数 - 页面显示
+  */
+  onShow: function () {
+    this.updateVehicleStatus();       // 启动状态更新
+    this.initialiImageBaseConversion() // 图片转换
+    this.handleStart()
+  },
+  /**
+   * 生命周期函数 - 页面隐藏
+   */
+  onHide: function () {
+    const that = this
+    setTimeout(() => bleKeyManager.releaseBle(), 1500);
+    this.setData({
+      connectionState: "未连接",                   // 连接状态
+      connectionID: "",                            // 连接ID
+      connectionDisplay: "未连接",                 // 连接显示文本
+      parsedData:{}
+    })
+    clearInterval(that.data.pageInterval);
+    wx.setKeepScreenOn({ keepScreenOn: false })
+  },
+  // 蓝牙连接处理
+  handleStart() {
+    const that = this
+    const options = this.data.options
     // 统一处理函数
     const handleData = (data) => {
       if (!data) return;
@@ -203,25 +234,6 @@ Page({
       });
     }
   },
-  /**
-  * 生命周期函数 - 页面显示
-  */
-  onShow: function () {
-    this.updateVehicleStatus();       // 启动状态更新
-    this.initialiImageBaseConversion() // 图片转换
-  },
-  /**
-   * 生命周期函数 - 页面隐藏
-   */
-  onHide: function () {
-    const that = this
-    if (that.data.connectionState == "已连接") {
-      setTimeout(() => bleKeyManager.releaseBle(), 1500);
-    }
-    clearInterval(that.data.pageInterval);
-    wx.setKeepScreenOn({ keepScreenOn: false });
-  },
-
   /**
    * 生命周期函数 - 页面卸载
    */
