@@ -41,13 +41,13 @@ Page({
     y_page: 1,
     y_triggered: false,
     c_tabs: [{
-        name: '报销记录',
-        value: '1'
-      },
-      {
-        name: '新增报销',
-        value: '2'
-      }
+      name: '报销记录',
+      value: '1'
+    },
+    {
+      name: '新增报销',
+      value: '2'
+    }
     ], //tabs切换签
     c_activeTab: 1,
     params: {},
@@ -113,7 +113,7 @@ Page({
     }, {
       path: '/assets/images/home/2-2.png',
       key: 's_background_tabs_active_2'
-    }, ];
+    },];
     const promises = imageMap.map(item =>
       new Promise((resolve, reject) => {
         wx.getFileSystemManager().readFile({
@@ -308,13 +308,13 @@ Page({
     } = this.data;
     const formData = evt.detail.value;
     const validations = [{
-        field: formData.personName,
-        message: '请输入使用人'
-      },
-      {
-        field: formData.mobile,
-        message: '请输入手机号'
-      }
+      field: formData.personName,
+      message: '请输入使用人'
+    },
+    {
+      field: formData.mobile,
+      message: '请输入手机号'
+    }
     ];
 
     const validationError = validations.find(({
@@ -333,14 +333,14 @@ Page({
       startDate: buildDateTime(startDate, startTime),
       endDate: buildDateTime(endDate, endTime),
       personName: formData.personName,
-      mobile: formData.mobile
+      mobile: formData.mobile,
+      bak: formData.bak
     };
 
     const API_ENDPOINTS = {
       baseURL: getApp().data.k1swUrl,
       sendRentKey: u_sendRentKey.URL
     };
-
     const submitRequest = async () => {
       try {
         const response = await byGet(
@@ -413,8 +413,10 @@ Page({
   handleForward(evt) {
     console.log(evt)
     const controlcode = evt.currentTarget.dataset.item.controlcode
+    const bak = evt?.currentTarget?.dataset?.item?.bak
     this.setData({
       controlcode: controlcode,
+      bak: bak
     });
   },
   handleEditKey(evt) {
@@ -476,23 +478,9 @@ Page({
     this.initialiImageBaseConversion()
     this.handleCurrentDate()
   },
-  // onShareAppMessage() {
-  //   const { controlcode  } = this.data;
-
-  //   return {
-  //     title: '我想分享的标题',
-  //     path: `/pages/desk/desk?scene=${controlcode}`, // 动态参数
-  //     success: function (res) {
-  //       console.log('转发成功');
-  //     },
-  //     fail: function (err) {
-  //       console.log('转发失败', err);
-  //     }
-  //   };
-  // },
   onShareAppMessage() {
     return {
-      title: '发送电子钥匙',
+      title: `请前往${this.data.bak || '车主指定位置'}寻找车辆`,
       path: '/pages/desk/desk?scene=' + this.data.controlcode,
     }
   }
