@@ -27,8 +27,8 @@
       <swiper-item wx:for="{{g_before_passing_by_icon}}" wx:key="index">
         <view class="middle-swiper-item">
           <block wx:for="{{item}}" wx:key="index">
-      
-            <view class="middle-swiper-container"  style="background:{{item.id == menuId?'#c5c5cc':'22'}};border-radius: 10rpx;">
+
+            <view class="middle-swiper-container" style="background:{{item.id == menuId?'#c5c5cc':'22'}};border-radius: 10rpx;">
               <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList" style="height: {{s_quick_entrance_height}}px;">
                 <image src="{{!item.icon ? '/assets/images/index/icon5.png' : c_link + 'img/' + item.icon}}" />
                 <text>{{item.name}}</text>
@@ -136,5 +136,6 @@
 </block>
 <custom-tab-bar selectedtext='首页' wx:if="{{!sn_state}}" />
 <view bindtap="handleImageClose" wx:if="{{image_state}}" style="background-color: rgba(163, 161, 161, 0.6); width: 100%;height: {{c_screen_height}}px; position: absolute;top: 20rpx;display: flex;justify-content: center;align-items: center;text-align: center;margin: auto;">
+  <image src='https://k3a.wiselink.net.cn/img/app/blue/close_red.png' style="width: 40rpx;height: 40rpx; position: absolute;top: 12%;right: 10%;" />
   <image src="https://k3a.wiselink.net.cn/img/video/createShortcuts.gif" style="height: {{imageHeight}}rpx;width: 700rpx;" mode="" />
 </view>
