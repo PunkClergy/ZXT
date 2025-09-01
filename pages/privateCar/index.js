@@ -72,11 +72,57 @@ Page({
       { id: 6, name: '降窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleLowerTheWindow' },
       { id: 7, name: '更多钥匙功能', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/set.png', evt: 'handleToConfigure' },
     ],
-    blue_tooth_state: false,
-    voltage_state: false,
-    manual_state: false,
+    blue_tooth_state: false,//点击蓝牙已连接
+    voltage_state: false,//点击电池电量处
+    manual_state: false,//点击手动模式文字（现已作废）
     logs: [],//报文日志
     deviceInfo: {},//设备信息
+  },
+  // 切换感应模式
+  toggleSensorMode() {
+    const induction = this.data.parsedData.induction;
+    const isManualInduction = !induction || induction === '手动模式';
+    if (this.data?.bluetoothData?.platenumber) {
+      if ((!isManualInduction)) {
+        // 此时为感应模式，可直接切换手动模式
+        wx.showModal({
+          title: '提示',
+          content: '确认关闭感应模式?',
+          complete: (res) => {
+            if (res.confirm) {
+              this.btnCmdSend(0x3a, [0x00]);
+            }
+          }
+        })
+        return
+      } if (this.data.parsedData.induction != '感应模式') {
+        wx.showModal({
+          title: '提示',
+          content: '请到开通设定-功能设置处完善设置',
+          complete: (res) => {
+            if (res.confirm) {
+              wx.redirectTo({
+                url: '/pages/listOfPrivateCars/list/index?tabs=3'
+              })
+            }
+          }
+        })
+      }
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '请先开通设定再到开通设定-功能设置处完善设置',
+        confirmText: '立即开通',
+        success: (res) => {
+          if (res.confirm) {
+            wx.redirectTo({
+              url: '/pages/listOfPrivateCars/list/index'
+            });
+          }
+        }
+      });
+    }
+
   },
   // 获取设备信息
   handleSystemInfo() {
@@ -306,7 +352,7 @@ Page({
         break;
       case 0x3a: // 设置 手动或感应模式
         const flameoutData = data; // 第一个字节为0x01，后面补11个0x00
-        this.PackAndSend(type, 12, flameoutData); // 发送12字节数据
+        this.PackAndSend3a(type, 12, flameoutData); // 发送12字节数据
         break;
     }
   },
@@ -320,8 +366,17 @@ Page({
   PackAndSend: function (type, len, data) {
     // 数据包格式: 起始符(0x24) + 类型 + 长度 + 数据 + 结束符(0x24)
     var packet = [0x24, type, len, ...data, 0x24];
-    console.log(packet)
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
+  },
+  // 打包并发送数据（支持动态数据体长度）
+  PackAndSend3a(type, dataLength, data, sign) {
+    console.log(type, dataLength, data, sign)
+    const header = [0x24];  // 数据头
+    const end = [0x24];     // 数据尾
+    // 根据要求的数据长度填充数据，不足补0
+    const paddedData = [...data].concat(new Array(dataLength - data.length).fill(0x00)).slice(0, dataLength);
+    const packet = dataLength == 8 ? [...header, type, dataLength, ...data, ...end] : [...header, type, ...paddedData, ...end];  // 组合数据包
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
   },
   // 升窗降窗指令封装
   PackAndSend07: function (type, len, data) {
