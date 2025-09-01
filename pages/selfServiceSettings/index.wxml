@@ -1,7 +1,7 @@
 <view class="container">
   <!-- 头部 -->
   <view class="header">
-    <text class="tip">拖动☰排序，点击✖️隐藏</text>
+    <text class="tip">拖动☰排序，点击✖隐藏</text>
     <view class="sort-btn" bindtap="sortListByNumber">🔢 排序</view>
   </view>
 
@@ -20,7 +20,7 @@
 
         <!-- 显示/隐藏按钮 -->
         <view class="toggle-btn" bindtap="toggleItem" data-id="{{item.id}}" wx:if="{{item.name!='系统设定'}}">
-          {{ item.isHidden ? '👁️' : '✖️' }}
+          {{ item.isHidden ? '👁️' : '✖' }}
         </view>
       </movable-view>
     </movable-area>
