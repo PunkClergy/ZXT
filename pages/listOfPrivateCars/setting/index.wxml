@@ -4,7 +4,7 @@
   <scroll-view class="settings-list" scroll-y style="margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 感应设置 -->
     <block wx:if="{{sign == 1&&!distance}}">
-      <view style="font-size: 20rpx;display: flex;justify-content: center;flex-direction: column;align-items: center;padding: 20rpx;gap: 20rpx;">
+      <view style="font-size: 24rpx;display: flex;justify-content: center;flex-direction: column;align-items: center;padding: 20rpx;gap: 20rpx;">
         <text>*请检查蓝牙是否连接，是否已经站在车辆旁。连接蓝牙后才可进行配对。</text>
         <view bindtap="btnPair" style="background-color: #fff;padding: 15rpx 100rpx; font-size: 26rpx;border-radius: 10rpx;">蓝牙配对</view>
         <text>发起系统蓝牙与车载设备进行配对，将会弹出配对请求对话框，请点击【配对】。如果在手机系统蓝牙取消了配对，感应将会失效，需重新点击【蓝牙配对】进行配对</text>
@@ -13,6 +13,7 @@
         <view class="settings-item">
           <view class="item-left">
             <text class="item-text">感应设置</text>
+            <text class="item-tips">数值为信号档位，不代表实际距离 </text>
           </view>
           <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;" bindtap="handleDistance">
             <text>开锁{{parsedData.unlock||0}}，关锁{{parsedData.lock||0}}</text>
@@ -34,6 +35,7 @@
         <view class="settings-item">
           <view class="item-left">
             <text class="item-text">感应模式</text>
+            <text class="item-tips"> 开启感应模式，将根据手机距离自动开锁/关锁（蓝牙连接有效），关闭则为手动模式需点击图标操作，两种模式离车均请注意锁车安全。 </text>
           </view>
           <switch checked="{{parsedData.induction =='感应模式'}}" bindchange="handleRadioChange" color="#07C160" />
         </view>
@@ -56,9 +58,10 @@
       <view class="controls" style="padding: 0;" bindtap="handleCalibration">
         <view class="settings-item">
           <view class="item-left">
-            <text class="item-text">自动校准</text>
+            <text class="item-text" style="font-size: 30rpx;">自动校准</text>
           </view>
-          <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;" bindtap="handleDistance">
+          <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;">
+            <text style="font-size: 24rpx;color: #999;">当前所在位置距离设备信号值 : {{signalCache[(signalCache.length) -1]}} </text>
             <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
           </view>
         </view>
@@ -78,6 +81,7 @@
 
       <!-- 动态调整滑块 -->
       <view class="controls">
+        <view style="color: 28rpx;">手动校准 : <text class="item-tips">左右滑动图中白点可调节距离信号</text></view>
         <view class="slider-container">
           <text class="slider-label">开锁信号值：{{smallRadius}} (范围:40-{{bigRadius - 5}})</text>
           <slider value="{{smallRadius}}" min="40" max="{{bigRadius - 5}}" activeColor="#e74c3c" block-size="12" bindchange="updateSmallRadius" />
@@ -123,18 +127,21 @@
         <view class="settings-item">
           <view class="item-left">
             <text class="item-text">蓝牙断开自动锁车</text>
+            <text class="item-tips">启用后，若在开锁状态下与车载蓝牙断开，设备将自动执行一次关锁</text>
           </view>
           <switch checked="{{parsedData.toBreakOff}}" bindchange="handleToBreakOff" color="#07C160" />
         </view>
         <view class="settings-item">
           <view class="item-left">
             <text class="item-text">锁车自动升窗</text>
+            <text class="item-tips">启用后，按关锁按钮将执行升窗。需提前配置升窗动作</text>
           </view>
           <switch checked="{{parsedData.autoCloseWin}}" bindchange="handleAutoCloseTheWindow" color="#07C160" />
         </view>
         <view class="settings-item">
           <view class="item-left">
             <text class="item-text">启动状态蓝牙感应是否生效</text>
+            <text class="item-tips">开启后，行车时将自动禁用感应开车门功能</text>
           </view>
           <switch checked="{{!parsedData.startSense}}" bindchange="handleStartSense" color="#07C160" />
         </view>

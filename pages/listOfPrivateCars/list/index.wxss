@@ -725,7 +725,14 @@
 
 .item-left {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
+  flex-direction: column;
+  justify-content: center;
+}
+
+.item-tips {
+  font-size: 24rpx;
+  color: #999999;
 }
 
 .item-icon {
