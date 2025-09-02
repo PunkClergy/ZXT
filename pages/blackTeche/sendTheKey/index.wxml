@@ -235,6 +235,12 @@
             </view>
 
           </view>
+          <view class="middle-form-item">
+            <label>备注</label>
+            <view class="modal-form-region">
+              <text>{{g_edit_info.bak||'-'}}</text>
+            </view>
+          </view>
         </view>
         <view class="modal-container-footer">
           <button formType="submit">确认</button>
