@@ -37,14 +37,20 @@ Page({
     const itemMargin = rpxToPx(20); // 20rpx 转 px
     const totalItemHeight = itemHeight + itemMargin; // 每个项占据的总空间
 
-    const positioned = list.map((item, index) => ({
-      ...item,
-      y: index * totalItemHeight, // 👈 y 值现在基于总高度计算
-      x: 0,
-    }));
+    const positioned = list
+      .sort((a, b) => {
+        if (a.id === 148 && b.id !== 148) return 1;
+        if (a.id !== 148 && b.id === 148) return -1;
+        return 0;
+      })
+      .map((item, index) => ({
+        ...item,
+        y: index * totalItemHeight,
+        x: 0,
+      }));
 
     // 计算 movable-area 所需总高度
-    const totalHeight = list.length * totalItemHeight + 20; // +20 安全边距
+    const totalHeight = (list.length) * totalItemHeight + 20; // +20 安全边距
 
     this.setData({
       dataList: positioned,
