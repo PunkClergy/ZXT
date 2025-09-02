@@ -178,7 +178,7 @@ Page({
       connectionState: "未连接",                   // 连接状态
       connectionID: "",                            // 连接ID
       connectionDisplay: "未连接",                 // 连接显示文本
-      parsedData:{}
+      parsedData: {}
     })
     clearInterval(that.data.pageInterval);
     wx.setKeepScreenOn({ keepScreenOn: false })
@@ -439,10 +439,16 @@ Page({
   // 剩余电量处转换
   getBatteryLevel(voltage) {
     if (voltage > 90) return '100';
-    if (voltage > 70) return '75';
-    if (voltage > 50) return '50';
-    if (voltage > 25) return '25';
-    return '0';
+    if (voltage > 80) return '90';
+    if (voltage > 70) return '80';
+    if (voltage > 60) return '70';
+    if (voltage > 50) return '60';
+    if (voltage > 40) return '50';
+    if (voltage > 30) return '40';
+    if (voltage > 20) return '30';
+    if (voltage > 10) return '20';
+    if (voltage > 5) return '10';
+    return '1';
   },
   /**
    * 解析16进制车辆状态数据
@@ -516,10 +522,10 @@ Page({
     }
     const resultObject = {}
     resultObject.lock = bytes[2] === 1 ? true : false;//锁状态
-    resultObject.voltage = this.initVoltage((bytes[12] / 10).toFixed(1));//电池剩余电压计算
+    resultObject.voltage = (bytes[12] / 10).toFixed(1);//电池剩余电压计算
     resultObject.electric = this.getBatteryLevel(this.initVoltage((bytes[12] / 10).toFixed(1)));//电池剩余电量计算图片
     resultObject.supply = bytes[3];
-    resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式'
+    resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式';//执行模式
     return resultObject;
   },
   // 上传报文 
@@ -534,12 +540,11 @@ Page({
       userId,
       sn: deviceIDC,
       mobileinfo: `${deviceInfo?.brand || ''} ${deviceInfo?.model || ''} ${deviceInfo?.platform || ''} ${deviceInfo?.system || ''}`,
-      content: evt
+      content: `${evt}${JSON.stringify(this.parseHexDataObject(this.trimHexData(evt)))}`,
     };
 
     // 创建新日志数组（避免直接修改原数组）
     const updatedLogs = [...currentLogs, newLogEntry];
-
     // 判断是否达到上传阈值
     if (updatedLogs.length >= MAX_LOGS_BEFORE_UPLOAD) {
       byPostJson(
