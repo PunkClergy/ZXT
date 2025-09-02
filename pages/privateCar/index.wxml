@@ -33,7 +33,11 @@
       <view class="tips_bluetooth" wx:if="{{blue_tooth_state}}">{{connectionState=='已连接'?'可开关锁':'设备不可用'}}</view>
       <!-- <view class="tips_voltage" wx:if="{{manual_state}}" style=" top: 68%;right: 3%;z-index: 9999;">这是基本操作，可以开关门儿，实现手机钥匙功能</view> -->
       <view class="bluetooth-status {{connectionState=='已连接' ? 'connected' : 'disconnected'}}" bindtap="handleBlueToothState">
-        <icon type="{{connectionState=='已连接' ? 'success' : 'warn'}}" size="16" color="{{connectionState=='已连接'?'#2d8cf0':'#000'}}"></icon>
+        <icon wx:if="{{connectionState == '已连接'}}" type="success" size="16" color="#2d8cf0"></icon>
+
+        <!-- 连接中：显示 loading 动画 -->
+        <view wx:else class="loading-icon"></view>
+        <!-- <icon type="{{connectionState=='已连接' ? 'success' : 'warn'}}" size="16" color="{{connectionState=='已连接'?'#2d8cf0':'#000'}}"></icon> -->
         <text>{{connectionState=='已连接' ? '蓝牙已连接' : '蓝牙已断开'}}</text>
       </view>
     </view>
