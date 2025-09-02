@@ -58,7 +58,7 @@ Page({
     scrollTo: "hiddenview",                      // 滚动位置1
     scrollTo2: "hiddenview2",                    // 滚动位置2
     parseLen: 0,                                 // 解析数据长度
-    parsedData: [],                              // 解析后的数据
+    parsedData: {},                              // 解析后的数据
 
     // 定时器相关
     pageInterval: 0,                              // 状态检查定时器

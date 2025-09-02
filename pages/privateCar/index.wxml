@@ -50,14 +50,14 @@
       </view> -->
       <!-- 感应模式开关 -->
       <view class="GY-sensor-mode-wrapper" bindtap="toggleSensorMode">
-        <view class="GY-sensor-mode {{parsedData.induction=='感应模式' ? 'on' : 'off'}}">
-          <view class="GY-ripple {{parsedData.induction=='感应模式' ? 'active' : ''}}"></view>
+        <view class="GY-sensor-mode {{parsedData.induction=='感应模式'&&connectionState=='已连接' ? 'on' : 'off'}}">
+          <view class="GY-ripple {{parsedData.induction=='感应模式'&&connectionState=='已连接' ? 'active' : ''}}"></view>
           <view class="GY-icon">
             <view class="GY-dot"></view>
           </view>
-          <view class="GY-label" style="color:{{parsedData.induction=='感应模式' ? '#fff' : '#333'}};">
-            <text>{{parsedData.induction=='感应模式' ? '感应模式已开启' : '感应模式已关闭'}}</text>
-            <image src="{{parsedData.induction=='感应模式'?'https://k3a.wiselink.net.cn/img/app/blue/arrow.png':'https://k3a.wiselink.net.cn/img/app/blue/arrow_01.png'}}" style="width: 37rpx;height: 37rpx;" />
+          <view class="GY-label" style="color:{{parsedData.induction=='感应模式'&&connectionState=='已连接' ? '#fff' : '#333'}};">
+            <text>{{parsedData.induction=='感应模式'&&connectionState=='已连接' ? '感应模式已开启' : '感应模式已关闭'}}</text>
+            <image src="{{parsedData.induction=='感应模式'&&connectionState=='已连接'?'https://k3a.wiselink.net.cn/img/app/blue/arrow.png':'https://k3a.wiselink.net.cn/img/app/blue/arrow_01.png'}}" style="width: 37rpx;height: 37rpx;" />
           </view>
         </view>
       </view>
