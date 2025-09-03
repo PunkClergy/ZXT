@@ -79,7 +79,8 @@
 .item {
   width: calc(100% - 40rpx);
   height: 100rpx;
-  margin: 10rpx auto; /* 👈 这就是上下间距的来源 */
+  margin: 10rpx auto;
+  /* 👈 这就是上下间距的来源 */
   background: #ffffff;
   border-radius: 16rpx;
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
@@ -117,7 +118,8 @@
   background: #ffffff;
   left: 10rpx;
   width: calc(100% - 20rpx);
-  margin: 14rpx auto; /* 拖拽时也调整了间距，保持视觉稳定 */
+  margin: 14rpx auto;
+  /* 拖拽时也调整了间距，保持视觉稳定 */
 }
 
 .handle {
@@ -187,4 +189,27 @@
 
 .toggle-btn:hover {
   color: #e53e3e;
+}
+
+.card-footer {
+  position: absolute;
+  text-align: center;
+  /* margin: 0rpx 20rpx 0rpx 0rpx; */
+  bottom: 120rpx;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #ffffff;
+}
+
+.card-footer view {
+  width: 50%;
+  background-color: #2196f3;
+  padding: 10rpx;
+  background: linear-gradient(88deg, #1576dc, #1b64b1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
 }

@@ -21,5 +21,9 @@
         </view>
       </movable-view>
     </movable-area>
+   
   </scroll-view>
+  <view class="card-footer">
+      <view bindtap="handleSubmit">确认</view>
+    </view>
 </view>

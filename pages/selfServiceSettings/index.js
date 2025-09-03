@@ -28,7 +28,19 @@ Page({
   onShow() {
     this.initialQuickEntry();
   },
-
+  handleSubmit() {
+    wx.setStorage({
+      key: 'quickEntry',
+      data: this.data.dataList,
+      success: function () {
+        getApp().data.reflag = 1
+        // 返回上一级页面
+        wx.navigateBack({
+          delta: 1 // 返回的页面数，1 表示返回上一页
+        })
+      },
+    })
+  },
   // 刷新列表并计算容器高度
   refreshList(list) {
     const { itemHeight } = this.data;
@@ -55,15 +67,6 @@ Page({
     this.setData({
       dataList: positioned,
       containerHeight: totalHeight
-    }, () => {
-      wx.setStorage({
-        key: 'quickEntry',
-        data: this.data.dataList,
-        success: function () {
-          getApp().data.reflag = 1
-        },
-
-      })
     });
   },
 
