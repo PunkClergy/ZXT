@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "手机汽车钥匙-网络版",
+  "usingComponents": {
+    "map-pribate-com": "/components/MapPribateCom/index"
+  },
+  "disableScroll": true
+}

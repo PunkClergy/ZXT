@@ -1,0 +1,6 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <!-- 原有部分 -->
+  <view style="height: {{c_screen_height-(searchBarHeight+totalNavHeight)}}px; margin: 15rpx;position: relative">
+    <map-pribate-com cellData="{{cellData}}" sn="{{cellData.sn}}" source="carDetail" isfooter="{{fasle}}" />
+  </view>
+</view>
