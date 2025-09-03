@@ -26,8 +26,8 @@
     <view class="status-row" style="position: relative;">
       <view class="battery-status" bindtap="handleVoltage">
         <view class="tips_voltage" wx:if="{{voltage_state}}" style=" top: -80%;right: -50%;">设备剩余电量</view>
-        <image src="https://k3a.wiselink.net.cn/img/app/blue/battery_{{parsedData.electric||100}}.png" class="battery-icon" />
-        <text style="font-size: 28rpx;" wx:if="{{parsedData.voltage}}">{{parsedData.voltage||100}}%</text>
+        <image src="https://k3a.wiselink.net.cn/img/app/blue/battery_{{parsedData.electric?75:100}}.png" class="battery-icon" />
+        <text style="font-size: 28rpx;" wx:if="{{parsedData.electric}}">{{parsedData.electric||100}}%</text>
         <text wx:else>--</text>
       </view>
       <view class="tips_bluetooth" wx:if="{{blue_tooth_state}}">{{connectionState=='已连接'?'可开关锁':'设备不可用'}}</view>
