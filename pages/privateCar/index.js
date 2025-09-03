@@ -59,6 +59,7 @@ Page({
     scrollTo2: "hiddenview2",                    // 滚动位置2
     parseLen: 0,                                 // 解析数据长度
     parsedData: {},                              // 解析后的数据
+    voltage_image: '100',                        //剩余电池电量显示图片
 
     // 定时器相关
     pageInterval: 0,                              // 状态检查定时器
@@ -315,15 +316,10 @@ Page({
     // 设置定时状态检查
     that.data.pageInterval = setInterval(() => {
       const isConnected = bleKeyManager.getBLEConnectionState();
-
       that.setData({
         connectionState: isConnected ? "已连接" : "未连接",
         connectionID: isConnected ? bleKeyManager.getBLEConnectionID() : "",
         connectionDisplay: isConnected ? that.data.connectionID : "未连接",
-      }, () => {
-        if (that.data.connectionState == '已连接') {
-          console.log(1111111, '[[[]]]')
-        }
       });
     }, 200);
 
@@ -409,7 +405,6 @@ Page({
     return typedArray.buffer;
   },
   handleTransformation(number) {
-
     if (!number) return
     const numStr = number.toString();
     // 分割成每两个字符一组
@@ -422,33 +417,29 @@ Page({
   },
   // 转换电池剩余电量
   initVoltage(dy) {
-    const thresholds = [
-      { min: 4.0, score: 100 },
-      { min: 3.9, score: 90 },
-      { min: 3.8, score: 80 },
-      { min: 3.7, score: 70 },
-      { min: 3.6, score: 60 },
-      { min: 3.5, score: 50 },
-      { min: 3.4, score: 40 },
-      { min: 3.3, score: 30 },
-      { min: 3.2, score: 20 },
-      { min: 3.1, score: 10 }
+    const thresholds = [4.0, 3.9, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.1];
+    const scores = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];
+    const index = thresholds.findIndex(threshold => dy >= threshold);
+    return index !== -1 ? scores[index] : 0;
+  },
+  // 剩余电量显示图片
+  getBatteryImage(voltage) {
+    const levels = [
+      { min: 75, value: '100' },
+      { min: 50, value: '75' },
+      { min: 25, value: '50' },
+      { min: 10, value: '25' }
     ];
-    return thresholds.find(t => dy >= t.min)?.score || 0;
+    const level = levels.find(item => voltage > item.min) || { value: '0' };
+    this.setData({ voltage_image: level.value });
   },
   // 剩余电量处转换
   getBatteryLevel(voltage) {
-    if (voltage > 90) return '100';
-    if (voltage > 80) return '90';
-    if (voltage > 70) return '80';
-    if (voltage > 60) return '70';
-    if (voltage > 50) return '60';
-    if (voltage > 40) return '50';
-    if (voltage > 30) return '40';
-    if (voltage > 20) return '30';
-    if (voltage > 10) return '20';
-    if (voltage > 5) return '10';
-    return '1';
+    this.getBatteryImage(voltage);
+    const thresholds = [90, 80, 70, 60, 50, 40, 30, 20, 10, 5];
+    const values = ['100', '90', '80', '70', '60', '50', '40', '30', '20', '10'];
+    const index = thresholds.findIndex(threshold => voltage > threshold);
+    return index !== -1 ? values[index] : '1';
   },
   /**
    * 解析16进制车辆状态数据
@@ -721,54 +712,6 @@ Page({
     }
     byPost('https://k1sw.wiselink.net.cn/' + u_sendInfo.URL, temp, function () { });
   },
-  handleSetUpInduction: function (evt) {
-    const _this = this
-    const induction = this.data.parsedData.induction;
-    const mode = evt?.currentTarget?.dataset?.mode;
-    const isManualInduction = !induction || induction === '手动模式';
-    if ((mode === 'manual')) {
-      this.setData({ manual_state: true })
-      setTimeout(() => {
-        _this.setData({
-          manual_state: false
-        });
-      }, 3000); // 3000 是 setTimeout 的延迟时间
-      return;
-    }
-
-    if (this.data?.bluetoothData?.platenumber) {
-      if ((!isManualInduction && mode === 'auto')) {
-        return
-      } if (this.data.parsedData.induction != '感应模式') {
-        wx.showModal({
-          title: '提示',
-          content: '请到开通设定-功能设置处完善设置',
-          complete: (res) => {
-            if (res.confirm) {
-              wx.redirectTo({
-                // url: `/pages/listOfPrivateCars/index?sn=${this.data.bluetoothData?.sn}&bluetoothKey=${this.data.bluetoothData?.bluetoothKey}&flag=1`,
-                url: '/pages/listOfPrivateCars/list/index?tabs=3'
-              })
-            }
-          }
-        })
-      }
-    } else {
-      wx.showModal({
-        title: '提示',
-        content: '请先开通设定再到开通设定-功能设置处完善设置',
-        confirmText: '立即开通',
-        success: (res) => {
-          if (res.confirm) {
-            wx.redirectTo({
-              url: '/pages/listOfPrivateCars/list/index'
-            });
-          }
-        }
-      });
-    }
-
-  },  // 切换感应或手动模式
   handleToConfigure: function () {
     wx.redirectTo({
       url: '/pages/listOfPrivateCars/setting/index?sign=4',
