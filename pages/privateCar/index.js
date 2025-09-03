@@ -129,32 +129,18 @@ Page({
   handleSystemInfo() {
     wx.getSystemInfo({
       success: (res) => {
-        this.setData({
-          deviceInfo: {
-            brand: res.brand,
-            model: res.model,
-            system: res.system,
-            platform: res.platform,
-            screenWidth: res.screenWidth,
-            screenHeight: res.screenHeight,
-            pixelRatio: res.pixelRatio,
-            statusBarHeight: res.statusBarHeight
-          }
-        })
-
-        console.log('设备信息:', this.data.deviceInfo)
+        const { brand, model, system, platform, screenWidth, screenHeight, pixelRatio, statusBarHeight } = res;
+        this.setData({ deviceInfo: { brand, model, system, platform, screenWidth, screenHeight, pixelRatio, statusBarHeight } });
+        console.log('设备信息:', this.data.deviceInfo);
       },
-      fail: (err) => {
-        console.error('获取设备信息失败:', err)
-      }
-    })
+      fail: console.error
+    });
   },
   /**
    * 生命周期函数 - 页面加载
    * @param {Object} options 页面参数
    */
   onLoad: function (options) {
-
     this.initToConfigureCache()//获取缓存内容
     this.handleSystemInfo()
     this.setData({
