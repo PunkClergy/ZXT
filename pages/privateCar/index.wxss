@@ -32,6 +32,30 @@ page {
   margin-bottom: 30rpx;
 }
 
+/* 车牌和提示的水平布局容器 */
+.license-plate-container {
+  display: flex;
+  gap: 10rpx;
+  align-items: center;
+}
+
+/* "安装使用手册" 提示框样式 */
+.manual-tip {
+  font-size: 24rpx;
+  border: 1px solid #ddd;
+  padding: 0 4rpx;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rpx;
+}
+
+/* "详细设置" 提示样式 */
+.connection-tip {
+  font-size: 26rpx;
+}
+
 .license-plate {
   font-size: 40rpx;
   font-weight: bold;
@@ -107,43 +131,48 @@ page {
 .mode-selector {
   display: flex;
   margin-bottom: 30rpx;
+  position: relative;
 }
 
-.mode-btn {
-  flex: 1;
-  height: 80rpx;
-  line-height: 80rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #666;
-  background: #f5f5f5;
-  border: none;
-  margin: 0;
-  padding: 0;
-  border-radius: 0;
-}
-
-.mode-btn:first-child {
-  border-top-left-radius: 40rpx;
-  border-bottom-left-radius: 40rpx;
-}
-
-.mode-btn:last-child {
-  border-top-right-radius: 40rpx;
-  border-bottom-right-radius: 40rpx;
-}
-
-.mode-btn.active {
-  background: #2d8cf0;
-  color: #fff;
-}
 
 /* 控制功能区 - 每行3个大按钮 */
 .control-section {
   background: #fff;
   border-radius: 16rpx;
-  padding: 30rpx;
+  padding: 0rpx 30rpx 10rpx 30rpx;
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  display: flex;
+  gap: 40rpx;
+  flex-direction: column;
+}
+
+.control-title {
+  border-bottom: 1px solid #f0f0f0;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 30rpx;
+}
+
+.control-title .title-bold {
+  font-weight: bold;
+  color: #333;
+}
+
+.control-title .more-functions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  /* 注意：rpx是微信小程序特有的单位，确保在其他环境中使用合适的单位 */
+}
+
+.control-title .more-functions image {
+  width: 40rpx;
+  height: 30rpx;
 }
 
 .control-grid {
@@ -283,6 +312,11 @@ page {
   font-weight: 500;
   margin-left: 8px;
 }
+
+.GY-grant {
+  font-size: 24rpx;
+}
+
 .loading-icon {
   width: 16px;
   height: 16px;
@@ -293,6 +327,11 @@ page {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
