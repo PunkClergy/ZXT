@@ -438,6 +438,10 @@ Page({
         })
       })
 
+    }).catch((err) => {
+      wx.redirectTo({
+        url: '/pages/privateCar/index',
+      })
     })
   },
   initLogo() {
