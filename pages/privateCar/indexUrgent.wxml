@@ -1,0 +1,41 @@
+<view class="container">
+  <!-- 车辆信息卡片 -->
+  <view class="vehicle-card">
+    <!-- 车牌与提示信息 -->
+    <view class="license-plate-section">
+      <view class="license-plate-container">
+        <text class="license-plate" wx:if="{{bluetoothData.platenumber}}">{{bluetoothData.platenumber}}</text>
+        <text class="license-plate bind-vehicle" bindtap="handleBindVechi" wx:else>请点击，开始连接</text>
+      </view>
+      <view class="connection-tip" bindtap="handleSelectJump">开始连接</view>
+    </view>
+    <!-- 电量与蓝牙状态行 -->
+    <view class="status-row" style="position: relative;">
+      <view class="battery-status" bindtap="handleVoltage">
+        <view class="tips_voltage" wx:if="{{voltage_state}}" style=" top: -80%;right: -50%;">设备剩余电量</view>
+        <text style="font-size: 28rpx;" wx:if="{{parsedData.electric}}">{{parsedData.electric||100}}%</text>
+        <text wx:else>--</text>
+      </view>
+
+      <view class="tips_bluetooth" wx:if="{{blue_tooth_state}}">{{connectionState=='已连接'?'可开关锁':'设备不可用'}}</view>
+      <view class="bluetooth-status {{connectionState=='已连接' ? 'connected' : 'disconnected'}}" bindtap="handleBlueToothState">
+        <icon wx:if="{{connectionState == '已连接'}}" type="success" size="16" color="#2d8cf0"></icon>
+        <view wx:else class="loading-icon"></view>
+        <text>{{connectionState=='已连接' ? '蓝牙已连接' : '蓝牙已断开'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 控制功能区 - 每行3个大按钮 -->
+  <view class="control-section">
+    <view class="control-title">
+      <view class="title-bold">手动操作</view>
+    </view>
+    <view class="control-grid">
+      <view class="control-item" wx:for="{{controlItems}}" wx:key="index" bindtap="{{item.evt}}" data-id="{{item.id}}" wx:if="{{item.enabled}}">
+        <view class="control-icon"></view>
+        <text class="control-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -440,7 +440,7 @@ Page({
 
     }).catch((err) => {
       wx.redirectTo({
-        url: '/pages/privateCar/index',
+        url: '/pages/privateCar/indexUrgent',
       })
     })
   },

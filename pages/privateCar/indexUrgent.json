@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+
+  },
+  "navigationBarTitleText": "应急手机钥匙",
+  "navigationBarBackgroundColor": "#0a192f",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#0a192f",
+  "enablePullDownRefresh": false
+
+}

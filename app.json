@@ -3,8 +3,7 @@
     "custom": false,
     "color": "#8a8a8a",
     "selectedColor": "#ff4e00",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/desk/desk",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
@@ -142,6 +141,7 @@
     "pages/lostClaims/index",
     "pages/electronicFence/index",
     "pages/privateCar/index",
+    "pages/privateCar/indexUrgent",
     "pages/listOfPrivateCars/index",
     "pages/listOfPrivateCars/setting/index",
     "pages/listOfPrivateCars/engineering/index",
@@ -171,6 +171,9 @@
     },
     "scope.writePhotosAlbum": {
       "desc": "需要您的授权才能保存图片到相册"
+    },
+    "scope.bluetooth": {
+      "desc": "用于连接蓝牙设备"
     }
   },
   "sitemapLocation": "sitemap.json",
