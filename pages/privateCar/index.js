@@ -213,6 +213,7 @@ Page({
           byGet('https://k1sw.wiselink.net.cn/' + u_carList.URL, param).then(response => {
             if (response.statusCode == 200) {
               console.log(response)
+              wx.setStorageSync('bluetoothData', response?.data?.content?.[0])
               handleData(response?.data?.content?.[0])
             }
           })

@@ -5,7 +5,7 @@
     <view class="license-plate-section">
       <view class="license-plate-container">
         <text class="license-plate" wx:if="{{bluetoothData.platenumber}}">{{bluetoothData.platenumber}}</text>
-        <text class="license-plate bind-vehicle" bindtap="handleBindVechi" wx:else>请点击，开始连接</text>
+        <text class="license-plate bind-vehicle" bindtap="handleBindVechi" wx:else>当前无可用车辆</text>
       </view>
       <view class="connection-tip" bindtap="handleSelectJump">开始连接</view>
     </view>
