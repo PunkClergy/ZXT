@@ -63,7 +63,17 @@ Page({
     voltage_state: false,//点击电池电量处
   },
 
-
+  onShow() {
+    const that = this
+    wx.getStorage({
+      key: 'bluetoothData',
+      success(res) {
+        that.setData({
+          bluetoothData: res.data
+        });
+      }
+    });
+  },
 
   /**
    * 生命周期函数 - 页面隐藏
@@ -256,11 +266,25 @@ Page({
     const resultObject = {}
     resultObject.lock = bytes[2] === 1 ? true : false;//锁状态
     resultObject.voltage = (bytes[12] / 10).toFixed(1);//电池剩余电压计算
+    resultObject.electric = this.getBatteryLevel(this.initVoltage((bytes[12] / 10).toFixed(1)));//电池剩余电量计算图片
     resultObject.supply = bytes[3];
     resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式';//执行模式
     return resultObject;
   },
-
+  // 剩余电量处转换
+  getBatteryLevel(voltage) {
+    const thresholds = [90, 80, 70, 60, 50, 40, 30, 20, 10, 5];
+    const values = ['100', '90', '80', '70', '60', '50', '40', '30', '20', '10'];
+    const index = thresholds.findIndex(threshold => voltage > threshold);
+    return index !== -1 ? values[index] : '1';
+  },
+  // 转换电池剩余电量
+  initVoltage(dy) {
+    const thresholds = [4.0, 3.9, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.1];
+    const scores = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];
+    const index = thresholds.findIndex(threshold => dy >= threshold);
+    return index !== -1 ? scores[index] : 0;
+  },
   /**
    * 数据解析按钮处理
    * @param {string} hexData 16进制数据字符串
@@ -352,15 +376,7 @@ Page({
     if (!this.data?.bluetoothData?.platenumber) {
       wx.showModal({
         title: '提示',
-        content: '请先开通设定再到开通设定-功能设置处完善设置',
-        confirmText: '立即开通',
-        success: (res) => {
-          if (res.confirm) {
-            wx.redirectTo({
-              url: '/pages/listOfPrivateCars/list/index'
-            });
-          }
-        }
+        content: '当前无可用车辆',
       });
       return
     }
@@ -385,9 +401,9 @@ Page({
       return
     }
     if (this.data.connectionState == '未连接') {
-      wx.showToast({
-        title: '请等待蓝牙连接后重试',
-        icon: 'none'
+      wx.showModal({
+        title: '提示',
+        content: '请点击右上角「···」重新进入小程序后，再次点击「开始连接」',
       });
       return;
     }

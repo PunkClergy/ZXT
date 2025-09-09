@@ -33,7 +33,9 @@
     </view>
     <view class="control-grid">
       <view class="control-item" wx:for="{{controlItems}}" wx:key="index" bindtap="{{item.evt}}" data-id="{{item.id}}" wx:if="{{item.enabled}}">
-        <view class="control-icon"></view>
+        <view class="control-icon">
+          <icon type="info" size="20" color="#999991" />
+        </view>
         <text class="control-name">{{item.name}}</text>
       </view>
     </view>
