@@ -427,8 +427,8 @@ Page({
     if (options.type) {
       this.setData({
         title_info: {
-          name: options?.name,
-          type: options?.type
+          name: '',
+          type: ''
         }
       })
     }

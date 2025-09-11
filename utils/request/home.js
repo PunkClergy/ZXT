@@ -37,8 +37,9 @@ const u_getUserinfo = {
 }
 // 修改用户名
 const u_updateUserName = {
-  URL: "api/updateUserName",
+  URL: "accountapi/setUsernameAndPassword",
   newUserName: 'newUserName',
+  newPassword:'newPassword',
   userId: 'userId'
 }
 // 密码

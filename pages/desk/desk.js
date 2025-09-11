@@ -10,8 +10,7 @@ const {
   u_termialList,
   u_logo,
   u_getUserinfo,
-  u_updateUserName,
-  u_updatePassword
+  u_updateUserName
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -319,15 +318,9 @@ Page({
       });
       return
     }
-    if (item.name == '修改用户名密码') {
-      wx.showActionSheet({
-        itemList: ['修改用户名', '修改密码'],
-        success(res) {
-          _this.setData({
-            c_send_key_show_momal: true,
-            c_send_key_show_type: res.tapIndex
-          })
-        }
+    if (item.name == '手机号登录增设账号登录') {
+      _this.setData({
+        c_send_key_show_momal: true,
       })
       return
     }
@@ -347,50 +340,43 @@ Page({
     const _this = this
     const {
       name_1,
-      name_2
+      name_2,
+      name_3,
+      name_4,
     } = evt?.detail.value
     if (name_1.length < 6) {
-      showToast('长度不能小于6位')
+      showToast('账号长度不能小于6位')
+      return
     }
     if (name_1 != name_2) {
-      showToast('两次输入不一致')
+      showToast('两次账号输入不一致')
+      return
     }
-    if (this.data.c_send_key_show_type == 0) {
-      // 修改用户名
-      console.log(u_updateUserName.newUserName, u_updateUserName.userId)
-      const params = {
-        [u_updateUserName.newUserName]: name_1,
-        [u_updateUserName.userId]: getApp().data.userInfo.id
-      }
-
-      byPost(getApp().data.k1swUrl + u_updateUserName.URL, params, (res) => {
-        const data = res.data;
-        if (data.code == 1000) {
-          showToast('修改成功')
-          _this.setData({
-            c_send_key_show_momal: false,
-            c_send_key_show_type: null
-          })
-        }
-      });
-    } else {
-      // 修改密码
-      const params = {
-        [u_updatePassword.newPassword]: name_1,
-        [u_updatePassword.userId]: getApp().data.userInfo.id
-      }
-
-      byPost(getApp().data.k1swUrl + u_updatePassword.URL, params, (res) => {
-        const data = res.data;
-        if (data.code == 1000) {
-          showToast('修改成功')
-          _this.setData({
-            c_send_key_show_momal: false,
-            c_send_key_show_type: null
-          })
-        }
-      });
+    if (name_3.length < 6) {
+      showToast('密码长度不能小于6位')
+      return
     }
+    if (name_3 != name_4) {
+      showToast('密码两次输入不一致')
+      return
+    }
+    const params = {
+      [u_updateUserName.newUserName]: name_1,
+      [u_updateUserName.newUserName]: name_3,
+      [u_updateUserName.userId]: getApp().data.userInfo.id
+    }
+
+    byPost(getApp().data.k1swUrl + u_updateUserName.URL, params, (res) => {
+      const data = res.data;
+      if (data.code == 1000) {
+        showToast('修改成功')
+        _this.setData({
+          c_send_key_show_momal: false,
+          c_send_key_show_type: null
+        })
+      }
+    });
+
   },
   // 取消修改用户名或密码
   handleHideSengKeyModal() {
