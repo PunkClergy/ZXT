@@ -117,9 +117,9 @@ Page({
     return 'unknown';
   },
   hadleCopyLink(evt) {
-    // 复制文本
+    const info = evt?.currentTarget?.dataset?.item
     wx.setClipboardData({
-      data: `https://k3a.wiselink.net.cn/img/${evt?.currentTarget?.dataset?.item.filepath}`,
+      data: `${info?.title} https://k3a.wiselink.net.cn/img/${encodeURI(info.filepath)}`,
       success: function () {
         wx.showToast({ title: '已复制到剪贴板', icon: 'none' },);
       },
