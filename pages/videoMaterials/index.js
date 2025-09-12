@@ -1,14 +1,13 @@
 const {
-  showLoading,
   hideLoading,
   showToast
 } = require('../../utils/Inspect/tips')
 const {
   u_promotionalApi,
+  u_promotionalApiWxBooklist
 } = require('../../utils/request/car')
 
 const {
-  byPost,
   byGet
 } = require('../../utils/request/http')
 const {
@@ -26,6 +25,7 @@ Page({
     g_page: 1, //列表页码
     g_items: [], //列表数据
     g_triggered: false, //下拉刷新状态
+    pageType: 0
   },
 
   // 全屏背景图
@@ -59,11 +59,11 @@ Page({
       });
   },
   // 列表数据
-  initList() {
+  initList(evt) {
     const param = {
-      [u_promotionalApi.page]: this.data.g_page,
+      page: this.data.g_page
     };
-    byGet(getApp().data.k1swUrl + u_promotionalApi.URL, param).then(response => {
+    byGet(getApp().data.k1swUrl + (evt ? u_promotionalApiWxBooklist : u_promotionalApi).URL, param).then(response => {
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
           showToast(`已加载全部数据：共${this.data.g_items.length}条`);
@@ -137,7 +137,12 @@ Page({
     })
   },
   onLoad(options) {
-    this.initList()
+    this.setData({
+      pageType: options?.type
+    }, () => {
+      this.initList(options?.type)
+    })
+
   },
   onShow() {
     this.initialiImageBaseConversion()

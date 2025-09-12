@@ -131,9 +131,14 @@ const u_promotionalApi = {
   URL: fin3plusUrl + "promotionalApi/list",
   page: 'page'
 }
+const u_promotionalApiWxBooklist = {
+  URL: fin3plusUrl + "promotionalApi/wxFilelist",
+  page: 'page'
+}
 
 
 module.exports = {
+  u_promotionalApiWxBooklist,
   u_promotionalApi,
   u_uploadLog,
   u_sendInfo,
