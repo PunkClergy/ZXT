@@ -86,7 +86,7 @@ const u_improveShutdownClaimFile = {
   URL: fin3plusUrl + "insuranceApi/improveShutdownClaimFile",
 }
 // 失联险第二部
-const u_improveLoseClaimFile={
+const u_improveLoseClaimFile = {
   URL: fin3plusUrl + "insuranceApi/improveLoseClaimFile",
 }
 const u_getBatchWycPrice = {
@@ -114,7 +114,7 @@ const u_updateLoseInsure = {
 const u_newLoseClaim = {
   URL: fin3plusUrl + "insuranceApi/newLoseClaim",
 }
-const u_vehBindCarManager={
+const u_vehBindCarManager = {
   URL: fin3plusUrl + "rentKeyApi/vehBindCarManager",
 }
 const u_carapiDeleteCar = {
@@ -126,7 +126,15 @@ const u_sendInfo = {
 const u_uploadLog = {
   URL: fin3plusUrl + "loggerapi/uploadLog",
 }
+// 视频物料
+const u_promotionalApi = {
+  URL: fin3plusUrl + "promotionalApi/list",
+  page: 'page'
+}
+
+
 module.exports = {
+  u_promotionalApi,
   u_uploadLog,
   u_sendInfo,
   u_carapiDeleteCar,

@@ -147,7 +147,8 @@
     "pages/listOfPrivateCars/engineering/index",
     "pages/listOfPrivateCars/list/index",
     "pages/listOfPrivateCars/pdf/index",
-    "pages/selfServiceSettings/index"
+    "pages/selfServiceSettings/index",
+    "pages/videoMaterials/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
