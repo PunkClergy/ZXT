@@ -20,7 +20,7 @@
               </view>
               <view class="head-right">
                 <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
-                <image src="/assets/images/home/SetUp.png" data-item="{{item}}" bindtap="handleSetUp" />
+                <!-- <image src="/assets/images/home/SetUp.png" data-item="{{item}}" bindtap="handleSetUp" /> -->
                 <image src="/assets/images/home/_delete.png" data-id="{{item.id}}" bindtap="handleDelete" />
               </view>
             </view>
@@ -72,8 +72,8 @@
                       <view class="checkbox {{item.checked ? 'checked' : ''}} {{item.indeterminate ? 'indeterminate' : ''}}" data-id="{{item.id}}" bindtap="handleCheck">
                         <view class="checkmark" wx:if="{{item.checked}}">✓</view>
                         <view class="indeterminate-line" wx:if="{{item.indeterminate}}"></view>
-                      </view> 
-                      <text class="node-name">{{item.name}}</text> 
+                      </view>
+                      <text class="node-name">{{item.name}}</text>
                     </view>
 
                     <!-- 二级节点 -->

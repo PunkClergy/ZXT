@@ -34,7 +34,7 @@ const u_companyInfo = {
 }
 // 删除子账户
 const u_delChildUser = {
-  URL: fin3plusUrl + "companyapi/delChildUser",
+  URL: fin3plusUrl + "accountapi/delChildUser",
   id: 'id'
 }
 // 订单购买记录

@@ -131,6 +131,7 @@
     "pages/merchantInfo/index",
     "pages/merchantAddress/index",
     "pages/system/roleSeparation/index",
+    "pages/system/roleSeparationNew/index",
     "pages/aboutInstall/index",
     "pages/Shops/index",
     "pages/InstallVendor/index",
