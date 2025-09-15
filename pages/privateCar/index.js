@@ -12,7 +12,7 @@ const {
   u_sendInfo,
   u_uploadLog
 } = require('../../utils/request/car')
-const bleKeyManager = require('../../utils/BleKeyFun-utils.js');  // 蓝牙密钥管理
+const bleKeyManager = require('../../utils/BleKeyFun-utils-single.js');  // 蓝牙密钥管理
 const appUtil = require('../../utils/app-util.js');               // 应用工具
 const {
   u_getCarBluetoothKeyByCode
@@ -33,7 +33,6 @@ Page({
     // 界面显示相关
     s_background_picture_of_the_front_page: '',  // 首页背景图
     isBluetoothConnected: true,                  // 蓝牙连接状态
-    batteryLevel: 78,                            // 电池电量(百分比)
     mode: 'manual',                              // 当前模式(manual/auto)
 
     // 控制项分页相关
@@ -135,6 +134,23 @@ Page({
       fail: console.error
     });
   },
+  // 启动连接状态轮询
+  startConnectionStatusPolling() {
+    if (this.pageInterval) return;
+    this.pageInterval = setInterval(() => {
+      const isConnected = bleKeyManager.getBLEConnectionState();
+      const connectionID = isConnected ? bleKeyManager.getBLEConnectionID() : '';
+      const displayText = isConnected ? connectionID : '未连接';
+      const firmware = isConnected ? this.data.firmware : '';
+      this.setData({
+        connectionState: isConnected ? '已连接' : '未连接',
+        connectionID,
+        connectionDisplay: displayText,
+        firmware
+      });
+    }, 200);
+  },
+
   /**
    * 生命周期函数 - 页面加载
    * @param {Object} options 页面参数
@@ -150,9 +166,9 @@ Page({
   * 生命周期函数 - 页面显示
   */
   onShow: function () {
-    this.updateVehicleStatus();       // 启动状态更新
     this.initialiImageBaseConversion() // 图片转换
-    this.handleStart()
+    this.handleStart()//开始执行链接蓝牙
+    this.startConnectionStatusPolling()//启动连接状态轮询
   },
   /**
    * 生命周期函数 - 页面隐藏
@@ -229,6 +245,7 @@ Page({
     setTimeout(() => bleKeyManager.releaseBle(), 500);
     clearInterval(that.data.pageInterval);
     wx.setKeepScreenOn({ keepScreenOn: false });
+
   },
 
   /**
@@ -291,34 +308,87 @@ Page({
       }, 3000); // 3000 是 setTimeout 的延迟时间
     });
   },
+  // 调整安装手册
   handleJumpSc() {
     wx.redirectTo({
       url: '/pages/listOfPrivateCars/pdf/index?flag=1',
     })
   },
+  /**
+* 处理蓝牙连接状态：检查设备是否已连接，决定执行连接或重连逻辑
+*/
   handleBule() {
-    const that = this
-    that.btnStartConnect();  // 自动连接蓝牙
-    // 设置定时状态检查
-    that.data.pageInterval = setInterval(() => {
-      const isConnected = bleKeyManager.getBLEConnectionState();
-      that.setData({
-        connectionState: isConnected ? "已连接" : "未连接",
-        connectionID: isConnected ? bleKeyManager.getBLEConnectionID() : "",
-        connectionDisplay: isConnected ? that.data.connectionID : "未连接",
-      });
-    }, 200);
-
-    // 初始化数据
-    that.setData({
-      msg: "",
-      consolemsg: "",
-      parseLen: 0,
+    bleKeyManager.isDeviceConnected(this.data.deviceIDC, (status, param) => {
+      if (status) {
+        //设备已连接，执行已连接逻辑
+        this.btnStartConnectConnected();
+      } else {
+        // 设备未连接，执行连接逻辑;
+        this.btnStartConnect();
+      }
     });
-
-    // 保持屏幕常亮
-    wx.setKeepScreenOn({ keepScreenOn: true });
   },
+  // 设备已连接，执行已连接逻辑
+  btnStartConnectConnected() {
+    if (this.data.connectionID == "") {
+      bleKeyManager.connectBLEConnected(
+        this.data.deviceIDC,
+        (state) => { this.bluetoothStateMonitor(state); },
+        (type, arrayData, hexData, hexTextData) => { this.bluetoothDataMonitor(type, arrayData, hexData, hexTextData); }
+      );
+    } else {
+      appUtil.showModal('已连接蓝牙', false, (confirm) => { });
+    }
+  },
+  // 蓝牙状态执行对应操作
+  bluetoothStateMonitor: function (state) {
+    if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_PRE_EXECUTE == state) {
+      //显示加载框
+      //appUtil.showLoading('加载中...');
+    } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR == state) {
+      //异常取消加载框
+      appUtil.hideLoading();
+    } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ADAPTER_UNAVAILABLE == state) {
+      //蓝牙不可用
+      appUtil.showModal('请打开蓝牙', false, function (confirm) { });
+    } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND == state) {
+      //没有扫描到设备信息
+      appUtil.showModal('没有发现设备', false, function (confirm) { });
+    } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED == state) {
+      //连接失败
+      //appUtil.showModal('蓝牙连接失败', false, function (confirm) { });
+    } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_UNSUPPORTED == state) {
+      //不支持ble
+      appUtil.showModal('您的手机不支持低功耗蓝牙', false, function (confirm) { });
+    } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_SEND_FAILED == state) {
+      //发送失败
+      appUtil.showModal('数据发送失败', false, function (confirm) { });
+    } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NO_RESPONSE == state) {
+      //无响应
+      appUtil.showModal('设备超时无响应', false, function (confirm) { });
+    } else if (bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_SUCESS == state) {
+      appUtil.hideLoading();
+    }
+  },
+  // 解析数据+验证合法性
+  bluetoothDataMonitor: function (type, arrayData, hexData, hexTextData) {
+    const dataStr = hexTextData || '';
+    if (type === 0) {
+      this.btnCmdSend(0x10, arrayData);
+      setTimeout(() => {
+        this.PackAndSend(0x10, 8, [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+      }, 1000);
+    }
+    this.parseData(this.trimHexData(dataStr));
+    this.handleLoggerapi(dataStr)
+    const newMsg = this.data.msg + `receive: type:${type}, data:${dataStr}\r\n`;
+    const scrollTarget = "hiddenview";
+    this.setData({
+      msg: newMsg,
+      scrollTo: scrollTarget
+    });
+  },
+
   /**
    * 发送控制命令
    * @param {number} type 命令类型
@@ -432,59 +502,6 @@ Page({
    * @param {string} hexString 30字符的16进制字符串
    * @returns {Array|null} 解析结果数组，格式为[{key: string, value: any}]
    */
-  parseHexData: function (hexString) {
-    // 验证数据长度
-    if (hexString.length !== 30) {
-      // wx.showToast({ title: '数据长度不正确', icon: 'none' });
-      return null;
-    }
-
-    // 转换为字节数组
-    const bytes = [];
-    for (let i = 0; i < 30; i += 2) {
-      bytes.push(parseInt(hexString.substr(i, 2), 16));
-    }
-
-    // 解析各项状态数据
-    const result = [];
-    const resultObject = {}
-
-    // 1. 基础状态解析
-    result.push({ key: '感应状态', value: bytes[0] === 1 ? '有效' : '无效' });
-    result.push({ key: 'ACC状态', value: bytes[1] === 1 ? '开' : '关' });
-    result.push({ key: '锁状态', value: bytes[2] === 1 ? true : false });
-    resultObject.lock = bytes[2] === 1 ? true : false;
-    result.push({ key: '3V断电剩余时间', value: bytes[3] + '分钟' });
-    result.push({ key: '感应检测次数', value: bytes[4] });
-    result.push({
-      key: '自动感应模式',
-      value: bytes[5] === 0 ? '操作后失效' : bytes[5] === 1 ? '一直有效' : '未知'
-    });
-    result.push({ key: '蓝牙断开自动锁车', value: bytes[6] === 1 ? '开' : '关' });
-
-    // 2. 功能标志1解析
-    result.push({ key: '洗车模式', value: (bytes[7] & 0x01) === 0x01 ? '开' : '关' });
-    result.push({ key: '蓝牙广播模式', value: (bytes[7] >> 1 & 0x01) === 0x01 ? '开' : '关' });
-    result.push({ key: '工作模式', value: (bytes[7] >> 6 & 0x01) === 0x00 ? '正常模式' : '网约车模式' });
-
-    // 3. 感应信息解析
-    result.push({ key: '感应缓冲值', value: bytes[8] });
-    result.push({ key: '感应门把手开关', value: bytes[9] === 1 ? '开' : '关' });
-    result.push({ key: '信号强度值', value: bytes[10] });
-    result.push({ key: '感应开锁信号值', value: bytes[11] });
-
-    // 4. 电压信息
-    result.push({ key: '电压值', value: (bytes[12] / 10).toFixed(1) + 'V' });
-
-    // 5. 功能标志2解析
-    result.push({ key: '常供电开关', value: (bytes[13] & 0x01) === 0x01 ? '开' : '关' });
-    result.push({ key: '蓝牙感应生效', value: (bytes[13] >> 1 & 0x01) === 0x00 ? '是' : '否' });
-
-    // 6. 配对信息
-    result.push({ key: '配对连接序号', value: bytes[14] & 0x07 });
-
-    return result;
-  },
   parseHexDataObject: function (hexString) {
     // 验证数据长度
     if (hexString.length !== 30) {
@@ -497,20 +514,30 @@ Page({
     for (let i = 0; i < 30; i += 2) {
       bytes.push(parseInt(hexString.substr(i, 2), 16));
     }
+    console.log(bytes, '7777777')
     const resultObject = {}
     resultObject.lock = bytes[2] === 1 ? true : false;//锁状态
     resultObject.voltage = (bytes[12] / 10).toFixed(1);//电池剩余电压计算
     resultObject.electric = this.getBatteryLevel(this.initVoltage((bytes[12] / 10).toFixed(1)));//电池剩余电量计算图片
     resultObject.supply = bytes[3];
     resultObject.induction = bytes[0] === 1 ? '感应模式' : '手动模式';//执行模式
+    console.log(resultObject, '6666666')
     return resultObject;
   },
+
   // 上传报文 
   handleLoggerapi(evt) {
     const MAX_LOGS_BEFORE_UPLOAD = 10;
     const UPLOAD_LOG_URL = 'https://k1sw.wiselink.net.cn/' + u_uploadLog.URL;
     const { deviceInfo, deviceIDC, logs: currentLogs } = this.data;
     const userId = getApp()?.data?.userInfo?.id;
+    const d = new Date();
+    const fmt = d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0') + ' ' +
+      String(d.getHours()).padStart(2, '0') + ':' +
+      String(d.getMinutes()).padStart(2, '0') + ':' +
+      String(d.getSeconds()).padStart(2, '0');
 
     // 构造当前日志项
     const newLogEntry = {
@@ -518,6 +545,7 @@ Page({
       sn: deviceIDC,
       mobileinfo: `${deviceInfo?.brand || ''} ${deviceInfo?.model || ''} ${deviceInfo?.platform || ''} ${deviceInfo?.system || ''}`,
       content: `${evt}${JSON.stringify(this.parseHexDataObject(this.trimHexData(evt)))}`,
+      logdate: fmt
     };
 
     // 创建新日志数组（避免直接修改原数组）
@@ -561,9 +589,8 @@ Page({
    */
   parseData: function (hexData) {
     const parsedResult = this.parseHexDataObject(hexData);
-    const parsedDataob = this.parseHexData(hexData)
     if (parsedResult) {
-      this.setData({ parsedData: parsedResult, parsedDataob: parsedDataob });
+      this.setData({ parsedData: parsedResult });
     }
   },
 
@@ -573,45 +600,13 @@ Page({
   btnStartConnect: function () {
     const that = this
     if (that.data.connectionID == "") {
-      bleKeyManager.connectBLE(that.data.deviceIDC, function (state) {
-        // 蓝牙状态处理映射
-        const stateHandlers = {
-          [bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_PRE_EXECUTE]: () => { },
-          [bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ERROR]: () => appUtil.hideLoading(),
-          [bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_ADAPTER_UNAVAILABLE]: () =>
-            appUtil.showModal('请打开蓝牙', false, () => { }),
-          [bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND]: () =>
-            appUtil.showModal('没有发现设备', false, () => { }),
-          [bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_FAILED]: () => { },
-          [bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_UNSUPPORTED]: () =>
-            appUtil.showModal('您的手机不支持低功耗蓝牙', false, () => { }),
-          [bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_SEND_FAILED]: () =>
-            appUtil.showModal('数据发送失败', false, () => { }),
-          [bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NO_RESPONSE]: () =>
-            appUtil.showModal('设备超时无响应', false, () => { }),
-          [bleKeyManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_CONNECT_SUCESS]: () => appUtil.hideLoading()
-        };
-
-        if (stateHandlers[state]) stateHandlers[state]();
-      }, function (type, arrayData, hexData, hexTextData) {
-        wx.hideLoading()
-        // 认证响应处理
-        if (type == 0) {
-          that.btnCmdSend(0x10, arrayData)
-        } else {
-          that.parseData(that.trimHexData(hexTextData))
-          that.handleLoggerapi(hexTextData)
-        };
-
-        // 更新接收消息显示
-        that.setData({
-          msg: that.data.msg + "receive: type:" + type + ",data:" + hexTextData + "\r\n",
-          scrollTo: "hiddenview"
-        });
-      });
-    } else {
-      appUtil.showModal('已连接蓝牙', false, () => { });
+      bleKeyManager.connectBLE(that.data.deviceIDC,
+        function (state) { that.bluetoothStateMonitor(state) },
+        function (type, arrayData, hexData, hexTextData) { that.bluetoothDataMonitor(type, arrayData, hexData, hexTextData) }
+      )
     }
+    else
+      appUtil.showModal('已连接蓝牙', false, function (confirm) { });
   },
 
   /**
@@ -674,7 +669,7 @@ Page({
             this.btnCmdSend(commandCode, code);
             setTimeout(() => {
               wx.hideLoading()
-            }, 5000)
+            }, 1000)
             this.handleSendInfo(commandCode, code)
           }
         }
@@ -770,16 +765,4 @@ Page({
       }
     });
   },
-  /**
-   * 更新车辆状态信息
-   */
-  updateVehicleStatus: function () {
-    setTimeout(() => {
-      this.setData({
-        batteryLevel: Math.max(0, Math.min(100,
-          this.data.batteryLevel + (Math.random() > 0.5 ? 1 : -1)))
-      });
-      this.updateVehicleStatus();  // 递归调用实现持续更新
-    }, 5000);
-  }
 });
