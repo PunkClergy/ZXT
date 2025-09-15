@@ -339,11 +339,20 @@ Page({
   handleFormSubmit(evt) {
     const _this = this
     const {
+      name, name_0,
       name_1,
       name_2,
       name_3,
       name_4,
     } = evt?.detail.value
+    if (name.length < 6) {
+      showToast('原始账号不得为空且长度不能小于6位')
+      return
+    }
+    if (name_0.length < 6) {
+      showToast('原始密码不得为空且账号长度不能小于6位')
+      return
+    }
     if (name_1.length < 6) {
       showToast('账号长度不能小于6位')
       return
