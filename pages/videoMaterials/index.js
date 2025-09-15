@@ -150,4 +150,12 @@ Page({
   onReady() {
 
   },
+  onShareAppMessage(evt) {
+    const info = `https://k3a.wiselink.net.cn/img/${encodeURI(evt?.target?.dataset?.item?.filepath)}`
+    return {
+      title: evt?.target?.dataset?.item?.title,
+      path: `/pages/agreementWebView/agreementWebView?url=${info}`,
+      imageUrl: info
+    }
+  }
 })

@@ -43,9 +43,7 @@
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="hadleView">
                   <text>查看</text>
                 </view>
-                <view class="footer-right-btn" data-item="{{item}}" bindtap="hadleCopyLink">
-                  <text>复制链接</text>
-                </view>
+                <button class="footer-right-btn" open-type="share" data-item="{{item}}" style="height: 42rpx;">分享给好友</button>
               </view>
             </view>
           </view>
