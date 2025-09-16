@@ -85,7 +85,7 @@ Page({
     this.setData({
       g_page: this.data.g_page + 1
     }, () => {
-      this.initList();
+      this.initList(this.data.pageType);
     });
   },
   // 下拉刷新
@@ -95,7 +95,7 @@ Page({
       g_page: 1,
       g_items: []
     }, () => {
-      this.initList();
+      this.initList(this.data.pageType);
     });
   },
   /**
