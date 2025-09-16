@@ -238,7 +238,11 @@ const u_efenceUnbindVeh = {
 const u_vehUnBindCarManager = {
   URL: fin3plusUrl + "rentKeyApi/vehUnBindCarManager",
 }
+const u_getShopLink = {
+  URL: fin3plusUrl + "deskapi/getShopLink",
+}
 module.exports = {
+  u_getShopLink,
   u_vehUnBindCarManager,
   u_efenceUnbindVeh,
   u_efenceBindVeh,

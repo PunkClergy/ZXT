@@ -3,11 +3,11 @@ const {
   _handleDeviceInfo
 } = require('../../utils/public').default
 const {
-  u_inquirySheet
+  u_getShopLink
 } = require('../../utils/request/data_info')
 const {
   byPost,
-  byGet 
+  byGet
 } = require('../../utils/request/http')
 const {
   u_addMessage,
@@ -26,7 +26,7 @@ Page({
     isShowInputModal: false,
     inputValue: '',
     imageUrl: '/assets/images/qr.png', // 替换为你自己的图片 URL
-    codeText:'333',
+    codeText: '333',
     tempFilePath: '' // 用于存储下载后的临时路径
   },
 
@@ -68,9 +68,8 @@ Page({
       inputValue: '' // 清空输入框
     });
   },
-  onCopyCode() {
-    const { codeText } = this.data;
-    console.log(codeText)
+  onCopyCode(evt) {
+    const codeText = evt?.currentTarget?.dataset?.item;
     wx.setClipboardData({
       data: codeText,
       success: () => {
@@ -96,12 +95,12 @@ Page({
     });
   },
 
-  initShopApiList(){
+  initShopApiList() {
     byGet(getApp().data.k1swUrl + u_shopApiList.URL, {}).then(response => {
       if (response.statusCode == 200) {
         this.setData({
-          imageUrl: response.data.content?.qrcode||'',
-          codeText:response.data.content?.link||'',
+          imageUrl: response.data.content?.qrcode || '',
+          codeText: response.data.content?.link || '',
         })
       } else {
         showToast('请求失败，请稍后再试');
@@ -151,7 +150,7 @@ Page({
       sources: [{
         url: this.data.imageUrl, // 图片路径
         type: 'image',
-      }, ],
+      },],
     });
   },
   // 下载图片
@@ -261,8 +260,17 @@ Page({
       isShowInputModal: false
     });
   },
-
-  onLoad(options) {},
+  handleLink() {
+    byGet(getApp().data.k1swUrl + u_getShopLink.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        console.log(response?.data)
+        this.setData({
+          content: response?.data?.content
+        })
+      }
+    })
+  },
+  onLoad(options) { },
 
 
   onReady() {
@@ -272,7 +280,7 @@ Page({
   onShow() {
     this.initialiImageBaseConversion()
     this.initShopApiList()
-
+    this.handleLink()
   },
 
 
