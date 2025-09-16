@@ -18,7 +18,7 @@
               </view> -->
             </view>
             <view class="content-item-info">
-              <view class="info-item  {{item.createusername.length > 15 ? 'long-info-item' : ''}}">
+              <view class="info-item  {{item.createusername.length > 15 ? 'long-info-item' : ''}}" wx:if="{{!pageType}}">
                 <label>创建人 ：</label>
                 <text>{{item.createusername||'-'}}</text>
               </view>
