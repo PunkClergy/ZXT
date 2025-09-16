@@ -100,6 +100,7 @@ Component({
     includePoints: [],
     currentSelectControlType: '-4', //当前选择网络或蓝牙
     showModalState: false, //车辆状态弹窗显隐
+    infoShowModal: false,//公司信息弹出显示和隐藏
     statusInfo: {}, //车辆状态数据
     s_trajectory_show: false, //历史轨迹弹窗状态
     startDate: '2025-03-21', //历史轨迹查询时间
@@ -119,6 +120,8 @@ Component({
     c_fin3_link: 'https://fin3.wiselink.net.cn/fin/',
     blueKey: '', //蓝牙密码
     idc: '', //设备唯一标志
+    qu_num: 0,//点击问号展示
+    companyInfo:{},//公司信息
 
   },
 
@@ -392,7 +395,12 @@ Component({
         default:
       }
     },
-
+    // 公司信息显示隐藏
+    handleCarInfo() {
+      this.setData({
+        infoShowModal: true
+      })
+    },
     // 点击 按钮"车辆状态" 执行方法
     handleCarStatus() {
       const {
@@ -434,8 +442,10 @@ Component({
 
     // 关闭车辆状态弹窗 执行方法
     handleHideShowModal() {
+      console.log(this.data, '22222')
       this.setData({
-        showModalState: false
+        showModalState: false,
+        infoShowModal: false
       })
     },
 
@@ -883,7 +893,8 @@ Component({
             g_plateNumber: resn.plateNumber,
             blueKey: resn?.blueKey,
             idc: resn.idc,
-            deviceType: resn.deviceType
+            deviceType: resn.deviceType,
+            companyInfo: resn?.rentCompany,//车辆所属公司
           }, () => {
             this.handleGetCarPostion(response?.data?.content?.sn)
           })
@@ -1021,6 +1032,18 @@ Component({
       }, () => {
         this.handleLocation()
       })
+    },
+    // 点击问号执行事件
+    handleQuestionMark(evt) {
+      const num = evt?.currentTarget?.dataset?.num
+      this.setData({
+        qu_num: num
+      }, () => {
+        setTimeout(() => {
+          this.setData({ qu_num: 0 })
+        }, 3000)
+      })
+
     }
   }
 })

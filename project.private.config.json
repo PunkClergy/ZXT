@@ -42,9 +42,10 @@
           "scene": null
         },
         {
-          "name": "pages/sublet/sublet",
-          "pathName": "pages/control/control",
-          "query": "scene=D5A94CE9CFDF4BADA6E225A873B190A0",
+          "name": "desk",
+          "pathName": "pages/desk/desk",
+          "query": "scene=9C960F949390458E93DD02D58634A97F",
+          "launchMode": "default",
           "scene": null
         }
       ]

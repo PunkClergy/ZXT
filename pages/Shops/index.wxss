@@ -23,7 +23,9 @@
   display: flex;
   flex-direction: column;
   /* 子元素垂直排列 */
-} /* index.wxss */
+}
+
+/* index.wxss */
 /* index.wxss */
 .modal-mask {
   position: fixed;
@@ -67,4 +69,69 @@
 .btn-confirm {
   font-size: 28rpx;
   padding: 0 30rpx;
+}
+
+.control_content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  overflow-y: auto;
+  /* 添加滚动条以便在内容超出容器高度时可以滚动 */
+}
+
+.control_image {
+  width: 300rpx;
+  height: 300rpx;
+}
+
+.item-container {
+  width: 95%;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+  padding: 10rpx 0rpx;
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  margin: auto;
+}
+
+.contact-us {
+  margin-top: 30rpx;
+  margin-left: 20rpx;
+  border: 1px solid #409EFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx 90rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #409EFF;
+  width: 200rpx;
+}
+
+.title-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20rpx 10rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  font-size: 28rpx;
+}
+
+.copy-link {
+  color: steelblue;
+}
+
+.qr-code-section {
+  display: flex;
+  flex-direction: row;
+  gap: 30rpx;
+  padding: 30rpx 10rpx;
+}
+
+.qr-code-text {
+  font-size: 28rpx;
 }

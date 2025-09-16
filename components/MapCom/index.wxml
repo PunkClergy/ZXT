@@ -30,39 +30,38 @@
       <image src="/assets/images/home/dh.png" />
     </view>
   </view>
-
-  <view class="info-lower" wx:if="{{isfooter}}">
-    <view class="info-lower-layer" id="3" bindtap="handleReturningVehicles" wx:if="{{source=='desk'}}">
-      <image src="/assets/images/home/c_return.png" />
-      <text>归还车辆</text>
-    </view>
-    <view class="info-lower-layer" id="3" bindtap="handleFooterBtn">
-      <image src="/assets/images/home/map2.png" />
-      <text>开锁</text>
-    </view>
-    <view class="info-lower-layer" id="1" bindtap="handleFooterBtn">
-      <image src="/assets/images/home/map4.png" />
-      <text>关锁</text>
-    </view>
-    <view class="info-lower-layer" id="5" bindtap="handleFooterBtn">
-      <image src="/assets/images/home/map1.png" />
-      <text>寻车</text>
-    </view>
-    <view class="info-lower-layer" id="8" bindtap="handleFooterBtn" wx:if="{{source!='desk'}}">
-      <image src="/assets/images/home/map3.png" />
-      <text>风控拦截</text>
-    </view>
-    <view class="info-lower-layer" id="6" bindtap="handleFooterBtn" wx:if="{{source!='desk'}}">
-      <image src="/assets/images/home/map5.png" />
-      <text>取消拦截</text>
-    </view>
-    <view class="info-lower-layer" id="3" bindtap="handleViewPhotos" wx:if="{{source=='desk'}}">
-      <image src="/assets/images/home/c_return.png" />
-      <text>查看照片</text>
+  <!-- 公司信息展示 -->
+  <view class="info-middle" style="bottom: 50rpx;" wx:if="{{source=='desk'}}">
+    <view class="info-middle-layer" bindtap="handleCarInfo">
+      <image src="/assets/images/home/info.png" />
+      <text>公司信息</text>
     </view>
   </view>
-
-
+  <!-- 公司信息弹出 -->
+  <view class="car-status-info" wx:if="{{infoShowModal}}" bindtap="handleHideShowModal">
+    <view class="car-status-container">
+      <view class="status-info-title">
+        公司信息
+      </view>
+      <view class="status-info-content">
+        <view class="status-info-item">
+          <text>公司名称:{{companyInfo.name||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>公司地址:{{companyInfo.address||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>联系电话:{{companyInfo.contactstel||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>客服联络人:{{companyInfo.linkman||'-'}}</text>
+        </view>
+        <view class="status-info-item">
+          <text>客服电话:{{companyInfo.serviceTel||'-'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
   <!-- 车辆状态弹窗 -->
   <view class="car-status-info" wx:if="{{showModalState}}" bindtap="handleHideShowModal">
     <view class="car-status-container">
@@ -111,6 +110,85 @@
     </view>
   </view>
 </map>
+<view class="control-panel" style="display: flex;flex-direction: row;align-items: flex-end">
+  <!-- 归还车辆 -->
+  <view class="control_item" wx:if="{{source=='desk'}}">
+    <view class="control_tooltip" wx:if="{{qu_num == 1}}">
+      <text>点击归还车辆</text>
+    </view>
+    <image data-num="1" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <view class="control_button" id="3" bindtap="handleReturningVehicles">
+      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_return.png" class="control_button-image" />
+    </view>
+    <text class="control_label">归还车辆</text>
+  </view>
+
+  <view class="control_item">
+    <view class="control_tooltip" wx:if="{{qu_num == 2}}">
+      <text>点击车门解锁</text>
+    </view>
+    <image data-num="2" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <view class="control_button" id="3" bindtap="handleFooterBtn">
+      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_unlock.png" class="control_button-image" />
+    </view>
+    <text class="control_label">开锁</text>
+  </view>
+
+  <view class="control_item">
+    <view class="control_tooltip" wx:if="{{qu_num == 3}}">
+      <text>点击车门关锁</text>
+    </view>
+    <image data-num="3" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <view class="control_button" id="1" bindtap="handleFooterBtn">
+      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_lock.png" class="control_button-image" />
+    </view>
+    <text class="control_label">关锁</text>
+  </view>
+  <!-- 寻车 -->
+  <view class="control_item">
+    <view class="control_tooltip" wx:if="{{qu_num == 4}}">
+      <text>点击寻找车辆</text>
+    </view>
+    <image data-num="4" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <view class="control_button" id="5" bindtap="handleFooterBtn">
+      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_lookFor.png" class="control_button-image" />
+    </view>
+    <text class="control_label">寻车</text>
+  </view>
+  <!-- 查看照片 -->
+  <view class="control_item" wx:if="{{source=='desk'}}">
+    <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
+      <text>点击查看车辆照片</text>
+    </view>
+    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <view class="control_button" id="3" bindtap="handleViewPhotos">
+      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
+    </view>
+    <text class="control_label">查看照片</text>
+  </view>
+  <!-- 风控拦截 -->
+  <view class="control_item" wx:if="{{source!='desk'}}">
+    <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
+      <text>点击查看车辆照片</text>
+    </view>
+    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <view class="control_button" id="8" bindtap="handleFooterBtn">
+      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
+    </view>
+    <text class="control_label">风控拦截</text>
+  </view>
+  <!-- 取消拦截 -->
+  <view class="control_item" wx:if="{{source!='desk'}}">
+    <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
+      <text>点击查看车辆照片</text>
+    </view>
+    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <view class="control_button" id="6" bindtap="handleFooterBtn">
+      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
+    </view>
+    <text class="control_label">取消拦截</text>
+  </view>
+</view>
 <!-- 选择历史轨迹弹窗 -->
 <block>
   <view class="modal-mask" wx:if="{{s_trajectory_show}}" bindtap="handleHideTrajectory"></view>
@@ -125,12 +203,12 @@
           <view class="middle-form-item">
             <label>开始时间</label>
             <view class="modal-form-region">
-              <picker mode="date"  data-index="startDate" bindchange="bindTimeChange">
+              <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
                 <view class="form-item-text">
                   <text>{{startDate}}</text>
                 </view>
               </picker>
-              <picker mode="time"  data-index="startTime" bindchange="bindTimeChange">
+              <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
                 <view class="form-item-text">
                   <text>{{startTime}}</text>
                 </view>
