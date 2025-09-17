@@ -1,10 +1,10 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
 
   <!-- 自定义头部 -->
-  <custom-header title="智信通商铺" tabr="{{true}}"/>
+  <custom-header title="智信通商铺" tabr="{{true}}" />
 
-  <scroll-view class="control_content-container" scroll-y="{{true}}" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
-    <view wx:for="{{content}}" class="item-container">
+  <scroll-view class="control_content-container" scroll-y="{{true}}" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight  + c_navBarHeight+100)}}px;">
+    <view wx:for="{{content}}" class="item-container" style="margin-bottom: 20rpx;">
       <view class="title-bar">
         <text>{{item.title}}</text>
         <text class="copy-link" data-item="{{item.link}}" bindtap="onCopyCode">复制链接</text>

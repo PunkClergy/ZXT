@@ -79,6 +79,7 @@
   width: 100%;
   overflow-y: auto;
   /* 添加滚动条以便在内容超出容器高度时可以滚动 */
+  gap: 40rpx;
 }
 
 .control_image {
