@@ -352,12 +352,12 @@ map {
 }
 
 .control_tooltip {
-  width: 150rpx;
+  width: 300rpx;
   top: -100rpx;
 }
 
 .control_tooltip-photo {
-  width: 200rpx;
+  width: 220rpx;
   top: -100rpx;
   /* Adjusted for longer text */
 }

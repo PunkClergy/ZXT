@@ -117,7 +117,7 @@
 <view class="control-panel" style="display: flex;flex-direction: row;align-items: flex-end">
   <!-- 归还车辆 -->
   <view class="control_item" wx:if="{{source=='desk'}}">
-    <view class="control_tooltip" wx:if="{{qu_num == 1}}">
+    <view class="control_tooltip" style="width: 150rpx;" wx:if="{{qu_num == 1}}">
       <text>点击归还车辆</text>
     </view>
     <image data-num="1" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
@@ -129,7 +129,7 @@
 
   <view class="control_item">
     <view class="control_tooltip" wx:if="{{qu_num == 2}}">
-      <text>点击车门解锁</text>
+      <text>点击可执行"车门解锁"操作</text>
     </view>
     <image data-num="2" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="3" bindtap="handleFooterBtn">
@@ -140,7 +140,7 @@
 
   <view class="control_item">
     <view class="control_tooltip" wx:if="{{qu_num == 3}}">
-      <text>点击车门关锁</text>
+      <text>点击可执行"车门关锁"操作</text>
     </view>
     <image data-num="3" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="1" bindtap="handleFooterBtn">
@@ -151,7 +151,7 @@
   <!-- 寻车 -->
   <view class="control_item">
     <view class="control_tooltip" wx:if="{{qu_num == 4}}">
-      <text>点击寻找车辆</text>
+      <text>点击可执行"寻车"操作</text>
     </view>
     <image data-num="4" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="5" bindtap="handleFooterBtn">
@@ -162,7 +162,7 @@
   <!-- 查看照片 -->
   <view class="control_item" wx:if="{{source=='desk'}}">
     <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
-      <text>点击查看车辆照片</text>
+      <text>点击可查看车辆照片</text>
     </view>
     <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="3" bindtap="handleViewPhotos">
@@ -172,8 +172,8 @@
   </view>
   <!-- 风控拦截 -->
   <view class="control_item" wx:if="{{source!='desk'}}">
-    <view class="control_tooltip-photo" style="width: 500rpx;" wx:if="{{qu_num == 6}}">
-      <text>点击风控拦截车辆-(ZC-Y28不能实现控车)</text>
+    <view class="control_tooltip-photo" style="width: 520rpx;right: -80rpx;" wx:if="{{qu_num == 6}}">
+      <text>点击可启用风控拦截-(注:ZC-Y28不支持该功能)</text>
     </view>
     <image data-num="6" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="8" bindtap="handleFooterBtn">
@@ -183,8 +183,8 @@
   </view>
   <!-- 取消拦截 -->
   <view class="control_item" wx:if="{{source!='desk'}}">
-    <view class="control_tooltip-photo" style="width: 500rpx;right: -20rpx;" wx:if="{{qu_num == 7}}">
-      <text>点击取消风控拦截-(ZC-Y28不能实现控车)</text>
+    <view class="control_tooltip-photo" style="width: 520rpx;right: -20rpx;" wx:if="{{qu_num == 7}}">
+      <text>点击可取消风控拦截-(注:ZC-Y28不支持该功能)</text>
     </view>
     <image data-num="7" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="6" bindtap="handleFooterBtn">
