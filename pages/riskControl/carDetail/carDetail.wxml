@@ -1,5 +1,5 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-  <custom-header title="车辆风控" />
+  <custom-header title="车辆使用及取还" />
   <!-- 车辆基本信息Card -->
   <block wx:if="{{!cellData.sn}}">
     <view wx:if="{{!cellData.sn}}" class="no-vehicle-selected" style="height: {{searchBarHeight}}px; margin-top: {{totalNavHeight}}px;">

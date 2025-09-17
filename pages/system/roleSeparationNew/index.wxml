@@ -25,11 +25,11 @@
             <view class="info-item  {{item.roleName.length > 15 ? 'long-info-item' : ''}}" style="display: flex;flex-direction: row;">
               <label>角色 ：</label>
               <text wx:if="{{item.roleName}}">{{item.roleName}}</text>
-              <picker data-item="{{item}}" mode="selector" range="{{roleArray}}" range-key="name" value="{{index}}" bindchange="handleBindPickerChange" wx:else>
+              <!-- <picker data-item="{{item}}" mode="selector" range="{{roleArray}}" range-key="name" value="{{index}}" bindchange="handleBindPickerChange">
                 <view class="picker" style="color: royalblue;">
-                  绑定角色
+                  {{item.roleName?item.roleName:'绑定角色'}}
                 </view>
-              </picker>
+              </picker> -->
             </view>
             <view class="info-item  {{item.mobile.length > 15 ? 'long-info-item' : ''}}">
               <label>手机号 ：</label>
@@ -63,19 +63,19 @@
           <image src="/assets/images/home/right_1.png" bindtap="handleHideSengKeyModal" />
         </view>
         <view class="modal-container-middle">
-          <view class="middle-form-item">
+          <!-- <view class="middle-form-item">
             <label>账号</label>
             <view class="modal-form-region">
               <input placeholder="请输入账号" value="{{g_uesr_details.username}}" name='username' style="text-align: right;font-size: 28rpx;" />
             </view>
 
-          </view>
-          <view class="middle-form-item">
+          </view> -->
+          <!-- <view class="middle-form-item">
             <label>密码</label>
             <view class="modal-form-region">
               <input placeholder="请输入密码" value="{{g_uesr_details.password}}" name='password' style="text-align: right;font-size: 28rpx;" />
             </view>
-          </view>
+          </view> -->
           <view class="middle-form-item">
             <label>姓名</label>
             <view class="modal-form-region">
@@ -88,7 +88,16 @@
             <view class="modal-form-region">
               <input placeholder="请输入手机号" value="{{g_uesr_details.mobile}}" name='mobile' style="text-align: right;font-size: 28rpx;" />
             </view>
-
+          </view>
+          <view class="middle-form-item">
+            <label>角色</label>
+            <view class="modal-form-region">
+              <picker data-item="{{item}}" mode="selector" range="{{roleArray}}" range-key="name" value="{{index}}" bindchange="handleBindPickerChange">
+                <view class="picker" style="font-size: 28rpx;color: #575656;">
+                  {{new_role.name?new_role.name:'请选择角色'}}
+                </view>
+              </picker>
+            </view>
           </view>
         </view>
         <view class="modal-container-footer">

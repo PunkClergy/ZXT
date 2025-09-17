@@ -172,8 +172,8 @@
   </view>
   <!-- 风控拦截 -->
   <view class="control_item" wx:if="{{source!='desk'}}">
-    <view class="control_tooltip-photo" wx:if="{{qu_num == 6}}">
-      <text>点击风控拦截车辆</text>
+    <view class="control_tooltip-photo" style="width: 500rpx;" wx:if="{{qu_num == 6}}">
+      <text>点击风控拦截车辆-(ZC-Y28不能实现控车)</text>
     </view>
     <image data-num="6" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="8" bindtap="handleFooterBtn">
@@ -183,8 +183,8 @@
   </view>
   <!-- 取消拦截 -->
   <view class="control_item" wx:if="{{source!='desk'}}">
-    <view class="control_tooltip-photo" wx:if="{{qu_num == 7}}">
-      <text>点击取消风控拦截</text>
+    <view class="control_tooltip-photo" style="width: 500rpx;right: -20rpx;" wx:if="{{qu_num == 7}}">
+      <text>点击取消风控拦截-(ZC-Y28不能实现控车)</text>
     </view>
     <image data-num="7" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="6" bindtap="handleFooterBtn">

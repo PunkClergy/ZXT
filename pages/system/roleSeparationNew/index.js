@@ -33,6 +33,7 @@ Page({
     c_send_key_show_momal: false,
     g_uesr_details: {},
     user_text: '新增',
+    new_role: {}
   },
 
 
@@ -96,7 +97,11 @@ Page({
     this.setData({
       c_send_key_show_momal: true,
       g_uesr_details: info,
-      user_text: '修改'
+      user_text: '修改',
+      new_role: {
+        id: info?.roleId,
+        name: info?.roleName
+      }
     })
   },
 
@@ -143,7 +148,7 @@ Page({
   // 新增人员
   handleJumpInfo() {
     this.setData({
-      c_send_key_show_momal: true
+      c_send_key_show_momal: true,
     })
   },
   // 取消弹窗
@@ -151,7 +156,8 @@ Page({
     this.setData({
       c_send_key_show_momal: false,
       user_text: '新增',
-      g_uesr_details: {}
+      g_uesr_details: {},
+      new_role: {}
     })
   },
   // 提交用户数据的统一方法
@@ -159,7 +165,7 @@ Page({
     const url = `${getApp().data.k1swUrl}${u_addOrUpdateChildUser.URL}`;
 
     // 参数基础校验
-    if (!params.username && !params.realname) {
+    if (!params.realname && !this.data.new_role?.id) {
       showToast('用户信息不完整，无法保存');
       return;
     }
@@ -191,14 +197,16 @@ Page({
 
     const params = {
       ...formData,
-      id: this.data.g_uesr_details?.id || '' // 注意：字段名疑似拼写错误，应为 user_details？
+      id: this.data.g_uesr_details?.id || '', // 注意：字段名疑似拼写错误，应为 user_details？
+      roleId: this.data.new_role?.id
     };
 
     // 调用统一提交方法
     this.submitUserUpdate(params, () => {
       this.setData({
         c_send_key_show_momal: false,
-        g_uesr_details: {}
+        g_uesr_details: {},
+        new_role: {}
       }, () => {
         this.initList();
       });
@@ -215,24 +223,27 @@ Page({
       showToast('请选择有效的角色');
       return;
     }
-
-    const params = {
-      id: user.id,
-      roleId: role.id,
-      username: user.username,
-      realname: user.realname,
-      mobile: user.mobile,
-      password: user.password // 注意：是否需要传密码？根据后端要求决定
-    };
+    console.log(role)
+    this.setData({
+      new_role: role
+    })
+    // const params = {
+    //   id: user.id,
+    //   roleId: role.id,
+    //   username: user.username,
+    //   realname: user.realname,
+    //   mobile: user.mobile,
+    //   password: user.password // 注意：是否需要传密码？根据后端要求决定
+    // };
 
     // 调用统一提交方法
-    this.submitUserUpdate(params, () => {
-      this.setData({
-        c_send_key_show_momal: false
-      }, () => {
-        this.initList();
-      });
-    });
+    // this.submitUserUpdate(params, () => {
+    //   this.setData({
+    //     c_send_key_show_momal: false
+    //   }, () => {
+    //     this.initList();
+    //   });
+    // });
   },
   // 请求角色列表
   handleRole() {
