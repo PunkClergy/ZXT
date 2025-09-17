@@ -7,6 +7,10 @@ Component({
     state:{
       type:String,
       value:0
+    },
+    tabr:{
+      type:Boolean,
+      value:false
     }
   },
 

@@ -1,7 +1,7 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
 
   <!-- 自定义头部 -->
-  <custom-header title="红人分享" />
+  <custom-header title="红人分享" tabr="{{true}}"/>
   <view class="share-container" style="top:{{c_statusBarHeight + c_navBarHeight}}px;">
     <image src="{{personal_qr_code}}" mode="widthFix" class="share-image" show-menu-by-longpress="{{true}}"></image>
 
@@ -11,4 +11,4 @@
     </view>
   </view>
 </view>
-<custom-tab-bar selectedtext='分享朋友' />
+<custom-tab-bar selectedtext='分享朋友'/>
