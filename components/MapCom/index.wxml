@@ -32,10 +32,10 @@
   </view>
   <!-- 公司信息展示 -->
   <view class="info-middle" style="bottom: 30rpx;right: 40rpx;" wx:if="{{source=='desk'}}">
-    <view class="control_tooltip-photo" wx:if="{{qu_num == 7}}">
+    <view class="control_tooltip-photo" wx:if="{{qu_num == 8}}">
       <text>点击获取帮助查看公司信息</text>
     </view>
-    <image data-num="7" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" style="position:absolute;top: -15px;right: -25rpx;" />
+    <image data-num="8" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" style="position:absolute;top: -15px;right: -25rpx;" />
     <view class="info-middle-layer" bindtap="handleCarInfo">
       <image src="/assets/images/home/info.png" />
       <text>获得帮助</text>
@@ -172,10 +172,10 @@
   </view>
   <!-- 风控拦截 -->
   <view class="control_item" wx:if="{{source!='desk'}}">
-    <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
-      <text>点击查看车辆照片</text>
+    <view class="control_tooltip-photo" wx:if="{{qu_num == 6}}">
+      <text>点击风控拦截车辆</text>
     </view>
-    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
+    <image data-num="6" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="8" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
     </view>
@@ -183,10 +183,10 @@
   </view>
   <!-- 取消拦截 -->
   <view class="control_item" wx:if="{{source!='desk'}}">
-    <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
-      <text>点击查看车辆照片</text>
+    <view class="control_tooltip-photo" wx:if="{{qu_num == 7}}">
+      <text>点击取消风控拦截</text>
     </view>
-    <image data-num="6" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <image data-num="7" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="6" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
     </view>

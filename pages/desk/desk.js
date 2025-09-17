@@ -319,7 +319,9 @@ Page({
       return
     }
     if (item.name == '手机号登录增设账号登录') {
+      console.log(getApp())
       _this.setData({
+        mobie_info: getApp()?.data?.userInfo?.mobile,
         c_send_key_show_momal: true,
       })
       return

@@ -110,34 +110,35 @@
     <form bindsubmit="handleFormSubmit">
       <view class="modal-container">
         <view class="modal-container-head">
-          <text>修改用户名和密码</text>
+          <text>修改账号和密码</text>
           <image src="/assets/images/home/right_1.png" bindtap="handleHideSengKeyModal" />
         </view>
         <view class="modal-container-middle">
           <view class="middle-form-item">
-            <label>请输入用户名</label>
+            <label>手机号</label>
             <view class="modal-form-region">
-              <input placeholder="请输入用户名" name='name' style="text-align: right;font-size: 28rpx;" />
+            <text>{{mobie_info}}</text>
+              <!-- <input placeholder="请输入用户名" name='name' style="text-align: right;font-size: 28rpx;" /> -->
             </view>
           </view>
-          <view class="middle-form-item">
+          <!-- <view class="middle-form-item">
             <label>请输入密码</label>
             <view class="modal-form-region">
               <input placeholder="请输入密码" name='name_0' style="text-align: right;font-size: 28rpx;" />
             </view>
-          </view>
+          </view> -->
           <view class="middle-form-item">
-            <label>请输入新用户名</label>
+            <label>请输入新账号</label>
             <view class="modal-form-region">
               <input placeholder="请输入用户名" name='name_1' style="text-align: right;font-size: 28rpx;" />
             </view>
           </view>
-          <view class="middle-form-item">
+          <!-- <view class="middle-form-item">
             <label>请再次输入新用户名</label>
             <view class="modal-form-region">
               <input placeholder="再次请输入用户名" name='name_2' style="text-align: right;font-size: 28rpx;" />
             </view>
-          </view>
+          </view> -->
           <view class="middle-form-item">
             <label>请输入新密码</label>
             <view class="modal-form-region">
