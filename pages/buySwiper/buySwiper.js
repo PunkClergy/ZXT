@@ -54,22 +54,18 @@ Page({
       { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '' }
     ]
   },
-  handlePay2359(){
-    const id = getApp()?.data?.userInfo?.id
-    const type = this.data.insurance_type
+  handlePay2359() {
+    //跳转23.59无忧在线小程序
     wx.navigateToMiniProgram({
-      appId: 'wxcdd55b1d2e790195', // 必填
-      path: `/pages/index/index?userId=${id}&type=${type}`, // 可为空，但建议填写
-      envVersion: 'release', // 可选值：develop（开发版），trial（体验版），release（正式版）
-      success: function (res) {
-        // 成功跳转的回调
-        console.log("跳转成功");
+      appId: 'wxae69a35f76d6116b',
+      path: 'pages/desk/desk',
+      extraData: {
+        token: getApp()?.data?.userInfo?.token
       },
-      fail: function (err) {
-        // 失败回调
-        console.error("跳转失败", err);
+      success(res) {
+        // 打开成功
       }
-    });
+    })
   },
   // 停保统一处理方法
   handleStop(evt) {
@@ -514,7 +510,7 @@ Page({
           { applicantName: '', applicantIdcard: '', platenumber: '' }
         ],
         datalistOne: [
-          { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '',insuranceamount:'' }
+          { ylname: '', sn: '', yladdresss: '', platenumber: '', vin: '', insuranceamount: '' }
         ]
       })
     }
