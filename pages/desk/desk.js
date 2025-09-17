@@ -341,28 +341,17 @@ Page({
   handleFormSubmit(evt) {
     const _this = this
     const {
-      name, name_0,
       name_1,
-      name_2,
       name_3,
       name_4,
     } = evt?.detail.value
-    if (name.length < 6) {
-      showToast('原始账号不得为空且长度不能小于6位')
-      return
-    }
-    if (name_0.length < 6) {
-      showToast('原始密码不得为空且账号长度不能小于6位')
-      return
-    }
+
+
     if (name_1.length < 6) {
       showToast('账号长度不能小于6位')
       return
     }
-    if (name_1 != name_2) {
-      showToast('两次账号输入不一致')
-      return
-    }
+
     if (name_3.length < 6) {
       showToast('密码长度不能小于6位')
       return
@@ -373,10 +362,9 @@ Page({
     }
     const params = {
       [u_updateUserName.newUserName]: name_1,
-      [u_updateUserName.newUserName]: name_3,
+      [u_updateUserName.newPassword]: name_3,
       [u_updateUserName.userId]: getApp().data.userInfo.id
     }
-
     byPost(getApp().data.k1swUrl + u_updateUserName.URL, params, (res) => {
       const data = res.data;
       if (data.code == 1000) {
@@ -384,6 +372,11 @@ Page({
         _this.setData({
           c_send_key_show_momal: false,
           c_send_key_show_type: null
+        })
+      } else {
+        wx.showToast({
+          title: data?.msg,
+          icon:'none'
         })
       }
     });
