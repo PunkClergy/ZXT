@@ -4,7 +4,7 @@ page {
 
 map {
   width: 100%;
-  height: 82%;
+  height: 80%;
 }
 
 .container-head {
@@ -342,7 +342,8 @@ map {
   position: relative;
 }
 
-.control_tooltip, .control_tooltip-photo {
+.control_tooltip,
+.control_tooltip-photo {
   position: absolute;
   font-size: 24rpx;
   background-color: #fff;
@@ -357,7 +358,8 @@ map {
 
 .control_tooltip-photo {
   width: 200rpx;
-  top: -100rpx; /* Adjusted for longer text */
+  top: -100rpx;
+  /* Adjusted for longer text */
 }
 
 .control_question-mark {

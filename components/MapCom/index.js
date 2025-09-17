@@ -121,7 +121,7 @@ Component({
     blueKey: '', //蓝牙密码
     idc: '', //设备唯一标志
     qu_num: 0,//点击问号展示
-    companyInfo:{},//公司信息
+    companyInfo: {},//公司信息
 
   },
 
@@ -1035,15 +1035,20 @@ Component({
     },
     // 点击问号执行事件
     handleQuestionMark(evt) {
-      const num = evt?.currentTarget?.dataset?.num
-      this.setData({
-        qu_num: num
-      }, () => {
-        setTimeout(() => {
-          this.setData({ qu_num: 0 })
-        }, 3000)
-      })
+      const num = evt?.currentTarget?.dataset?.num;
+      if (!num) return;
 
+      // 清除之前的定时器
+      if (this.questionMarkTimer) {
+        clearTimeout(this.questionMarkTimer);
+      }
+
+      this.setData({ qu_num: num }, () => {
+        this.questionMarkTimer = setTimeout(() => {
+          this.setData({ qu_num: 0 });
+          this.questionMarkTimer = null;
+        }, 3000);
+      });
     }
   }
 })

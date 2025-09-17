@@ -31,10 +31,14 @@
     </view>
   </view>
   <!-- 公司信息展示 -->
-  <view class="info-middle" style="bottom: 50rpx;" wx:if="{{source=='desk'}}">
+  <view class="info-middle" style="bottom: 30rpx;right: 40rpx;" wx:if="{{source=='desk'}}">
+    <view class="control_tooltip-photo" wx:if="{{qu_num == 7}}">
+      <text>点击获取帮助查看公司信息</text>
+    </view>
+    <image data-num="7" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" style="position:absolute;top: -15px;right: -25rpx;" />
     <view class="info-middle-layer" bindtap="handleCarInfo">
       <image src="/assets/images/home/info.png" />
-      <text>公司信息</text>
+      <text>获得帮助</text>
     </view>
   </view>
   <!-- 公司信息弹出 -->
@@ -116,7 +120,7 @@
     <view class="control_tooltip" wx:if="{{qu_num == 1}}">
       <text>点击归还车辆</text>
     </view>
-    <image data-num="1" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <image data-num="1" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="3" bindtap="handleReturningVehicles">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_return.png" class="control_button-image" />
     </view>
@@ -127,7 +131,7 @@
     <view class="control_tooltip" wx:if="{{qu_num == 2}}">
       <text>点击车门解锁</text>
     </view>
-    <image data-num="2" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <image data-num="2" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="3" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_unlock.png" class="control_button-image" />
     </view>
@@ -138,7 +142,7 @@
     <view class="control_tooltip" wx:if="{{qu_num == 3}}">
       <text>点击车门关锁</text>
     </view>
-    <image data-num="3" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <image data-num="3" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="1" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_lock.png" class="control_button-image" />
     </view>
@@ -149,7 +153,7 @@
     <view class="control_tooltip" wx:if="{{qu_num == 4}}">
       <text>点击寻找车辆</text>
     </view>
-    <image data-num="4" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <image data-num="4" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="5" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_lookFor.png" class="control_button-image" />
     </view>
@@ -160,7 +164,7 @@
     <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
       <text>点击查看车辆照片</text>
     </view>
-    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="3" bindtap="handleViewPhotos">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
     </view>
@@ -171,7 +175,7 @@
     <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
       <text>点击查看车辆照片</text>
     </view>
-    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="8" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
     </view>
@@ -182,7 +186,7 @@
     <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
       <text>点击查看车辆照片</text>
     </view>
-    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
+    <image data-num="6" bindtap="handleQuestionMark" src="/assets/images/q.png" class="control_question-mark" />
     <view class="control_button" id="6" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
     </view>
