@@ -1,0 +1,129 @@
+/* 基础样式 */
+page {
+  background: linear-gradient(to bottom, #abd2fa, #ffffff);
+  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
+}
+
+.container {
+  padding: 20rpx;
+  padding-top: 40rpx;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+/* 车辆卡片 */
+.vehicle-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+/* 车牌与提示信息 */
+.license-plate-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+/* 车牌和提示的水平布局容器 */
+.license-plate-container {
+  display: flex;
+  gap: 10rpx;
+  align-items: center;
+}
+
+
+
+
+
+.license-plate {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+
+
+/* 控制功能区 - 每行3个大按钮 */
+.control-section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 0rpx 30rpx 10rpx 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  display: flex;
+  gap: 40rpx;
+  flex-direction: column;
+}
+
+.control-title {
+  border-bottom: 1px solid #f0f0f0;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 30rpx;
+}
+
+.control-title .title-bold {
+  font-weight: bold;
+  color: #333;
+}
+
+.control-title .more-functions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  /* 注意：rpx是微信小程序特有的单位，确保在其他环境中使用合适的单位 */
+}
+
+.control-title .more-functions image {
+  width: 40rpx;
+  height: 30rpx;
+}
+
+.control-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.control-item {
+  width: 30%;
+  /* 每行3个按钮 */
+  margin-bottom: 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.control-icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.control-name {
+  font-size: 28rpx;
+  color: #333;
+  text-align: center;
+}
+
+.control-icon-image {
+  width: 40rpx;
+  height: 40rpx;
+}

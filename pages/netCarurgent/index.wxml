@@ -1,0 +1,39 @@
+<view class="container">
+  <!-- 车辆信息卡片 -->
+  <view class="vehicle-card">
+    <!-- 车牌与提示信息 -->
+    <view class="license-plate-section">
+      <view class="license-plate-container">
+        <text class="license-plate" wx:if="{{bluetoothData.platenumber}}">{{bluetoothData.platenumber}}</text>
+        <text class="license-plate bind-vehicle" bindtap="handleBindVechi" wx:else>京A34R45</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 控制功能区 - 每行3个大按钮 -->
+  <view class="control-section">
+    <view class="control-title">
+      <view class="title-bold">手动操作</view>
+    </view>
+    <view class="control-grid">
+      <view class="control-item" id="3" bindtap="handleFooterBtn">
+        <view class="control-icon">
+          <icon type="info" size="20" color="#999991" />
+        </view>
+        <text class="control-name">开锁</text>
+      </view>
+      <view class="control-item" id="1" bindtap="handleFooterBtn">
+        <view class="control-icon">
+          <icon type="info" size="20" color="#999991" />
+        </view>
+        <text class="control-name">关锁</text>
+      </view>
+      <view class="control-item" id="5" bindtap="handleFooterBtn">
+        <view class="control-icon">
+          <icon type="info" size="20" color="#999991" />
+        </view>
+        <text class="control-name">寻车</text>
+      </view>
+    </view>
+  </view>
+</view>

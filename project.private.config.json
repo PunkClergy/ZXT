@@ -22,7 +22,7 @@
       "list": [
         {
           "name": "dentistId=100",
-          "pathName": "pages/desk/desk",
+          "pathName": "pages/myProfile/index",
           "query": "",
           "launchMode": "default",
           "scene": 1011

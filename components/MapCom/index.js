@@ -897,6 +897,9 @@ Component({
             companyInfo: resn?.rentCompany,//车辆所属公司
           }, () => {
             this.handleGetCarPostion(response?.data?.content?.sn)
+            if (response?.data?.content?.sn) {
+              wx.setStorageSync('networkBlue', response?.data?.content)
+            }
           })
         } else {
           evt.length > 6 && showToast(response?.data?.msg || '请求失败')

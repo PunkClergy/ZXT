@@ -376,7 +376,7 @@ Page({
       } else {
         wx.showToast({
           title: data?.msg,
-          icon:'none'
+          icon: 'none'
         })
       }
     });
@@ -429,9 +429,25 @@ Page({
       })
 
     }).catch((err) => {
-      wx.redirectTo({
-        url: '/pages/privateCar/indexUrgent',
-      })
+      wx.getStorage({
+        key: 'bluetoothData',
+        success(res) {
+          wx.redirectTo({
+            url: '/pages/privateCar/indexUrgent',
+          })
+        },
+        fail(err) {
+          console.log('获取缓存失败:', err);
+          wx.getStorage({
+            key: 'networkBlue',
+            success(res) {
+              wx.redirectTo({
+                url: '/pages/netCarurgent/index',
+              })
+            }
+          });
+        }
+      });
     })
   },
   initLogo() {
