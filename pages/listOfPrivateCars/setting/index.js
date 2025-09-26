@@ -191,7 +191,9 @@ Page({
       }
     });
   },
-
+  btnEndConnect: function () {
+    bleKeyManager.releaseBle();
+  },
   // 配对按钮点击处理
   btnPair() {
     const that = this;
