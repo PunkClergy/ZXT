@@ -39,7 +39,7 @@ Page({
     g_before_passing_by_icon: [], //快捷入口数据
     s_background_image_of_the_tree: '', //树的背景图
     s_background_image_of_the_banner: '', //banner背景
-    s_quick_entrance_height: 90, //快捷入口高度 70为一行 140为两行 210为三行...
+    s_quick_entrance_height: 140, //快捷入口高度 70为一行 140为两行 210为三行...
     c_link: 'https://k1sw.wiselink.net.cn/', //域名
     g_tree_structure_data: [], //分类树结构
     s_platform_height: _handleDeviceInfo.platform == "ios" || _handleDeviceInfo.platform == "devtools" ? 95 : 60, //判断系统获取底部高度
@@ -145,57 +145,65 @@ Page({
     })
   },
   // 请求快捷入口数据
-  initialQuickEntry(e) {
+  initialQuickEntry() {
+    const _this = this;
     const url = `${this.data.c_link}${u_midMenulist.URL}`;
-    const terminalId = e?.id || e?.currentTarget?.dataset?.item?.id;
-    if (!terminalId) {
-      return;
-    }
-    const params = { terminalId };
+    const params = {
+      terminalId: -1 // 根据实际业务调整
+    };
+
     byGet(url, params).then(response => {
-      wx.getStorage({
-        key: 'quickEntry',
-        success: (res) => {
-          var data = res.data.filter(item => !item.isHidden);
-          process.call(this, data);
-        },
-        fail: () => {
-          var data = response.data?.content;
-          process.call(this, data);
+      let content = response.data.content || [];
+
+      // 每页15个（3行×5列）
+      const pageSize = 15;
+      const pages = [];
+
+      for (let i = 0; i < content.length; i += pageSize) {
+        let page = content.slice(i, i + pageSize);
+
+        // 如果当前页不足15个，补空白占位符（仅用于布局）
+        if (page.length < pageSize) {
+          const emptyPlaceholder = { id: 'empty', name: '', icon: '', isEmpty: true };
+          const fillCount = pageSize - page.length;
+          for (let j = 0; j < fillCount; j++) {
+            page.push({ ...emptyPlaceholder });
+          }
+        }
+
+        pages.push(page);
+      }
+
+      // 如果 content 为空，至少显示一页空白（可选）
+      if (pages.length === 0) {
+        const emptyPage = Array(pageSize).fill({ id: 'empty', name: '', icon: '', isEmpty: true });
+        pages.push(emptyPage);
+      }
+
+      this.setData({
+        pagedIcons: pages,
+        g_quickIndex: 0,
+        termial_active: params.terminalId,
+        tabs_bg: params.terminalId == '-1' ? _this.data.s_client_bg :
+                 (params.terminalId == 222 ? _this.data.s_channel_bg : _this.data.s_service_bg),
+      }, () => {
+        const page_index = this.data.pagedIcons
+        this.setData({
+          s_quick_entrance_height:page_index>20?210:(page_index>5?140:70)
+        })
+        if (content.length > 0) {
+          this.handleGetMenuList({ currentTarget: { dataset: { item: content[0] } } });
+          this.handleRightSideData({ id: content[0].id });
         }
       });
-
-      // 内联处理函数（避免重复）
-      function process(rawData) {
-        if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-          console.warn('No valid data to process');
-          return;
-        }
-
-        const chunk = Array.from(
-          { length: Math.ceil(rawData.length / 5) },
-          (_, i) => rawData.slice(i * 5, i * 5 + 5)
-        );
-
-        const tabsBg = terminalId === '-1'
-          ? this.data.s_client_bg
-          : (terminalId == 222 ? this.data.s_channel_bg : this.data.s_service_bg);
-
-        this.setData({
-          g_before_passing_by_icon: chunk,
-          termial_active: terminalId,
-          g_quickIndex: 0,
-          tabs_bg: tabsBg
-        }, () => {
-          const firstId = rawData[0]?.id;
-          if (firstId) {
-            this.handleGetMenuList({ id: firstId });
-            this.handleRightSideData({ id: firstId });
-          }
-        });
-      }
     }).catch(err => {
-      console.error('Request failed:', err);
+      console.error('获取快捷入口失败:', err);
+      // 错误时显示一页空白
+      const emptyPage = Array(15).fill({ id: 'empty', name: '', icon: '', isEmpty: true });
+      this.setData({
+        pagedIcons: [emptyPage],
+        g_quickIndex: 0
+      });
     });
   },
   // 请求右侧面板数据

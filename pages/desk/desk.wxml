@@ -24,12 +24,11 @@
   <!-- 快捷入口部分 -->
   <view class="middle" style="height: {{s_quick_entrance_height}}px;">
     <swiper current="{{g_quickIndex}}" class="middle-swiper" bindchange="handleQuickEntry">
-      <swiper-item wx:for="{{g_before_passing_by_icon}}" wx:key="index">
+      <swiper-item wx:for="{{pagedIcons}}" wx:key="index">
         <view class="middle-swiper-item">
           <block wx:for="{{item}}" wx:key="index">
-
-            <view class="middle-swiper-container" style="background:{{item.id == menuId?'#c5c5cc':'22'}};border-radius: 10rpx;">
-              <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList" style="height: {{s_quick_entrance_height}}px;">
+            <view class="middle-swiper-container"  wx:if="{{item.name}}">
+              <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList">
                 <image src="{{!item.icon ? '/assets/images/index/icon5.png' : c_link + 'img/' + item.icon}}" />
                 <text>{{item.name}}</text>
               </view>
@@ -41,7 +40,7 @@
   </view>
   <!-- 指示点部分 -->
   <view class="dots-container">
-    <view wx:for="{{g_before_passing_by_icon.length}}" wx:key="index" class="dot {{index === g_quickIndex ? 'active-dot' : ''}}"></view>
+    <view wx:for="{{pagedIcons.length}}" wx:key="index" class="dot {{index === g_quickIndex ? 'active-dot' : ''}}"></view>
   </view>
   <!-- 主要功能区 -->
   <!-- 40为新增tabs高度；10为圆点高度;s_platform_height可能在苹果x以下异常 -->
