@@ -189,7 +189,7 @@ Page({
       }, () => {
         const page_index = this.data.pagedIcons
         this.setData({
-          s_quick_entrance_height:page_index>20?210:(page_index>5?140:70)
+          s_quick_entrance_height:page_index[0]?.length>20?210:(page_index[0]?.length>5?140:70)
         })
         if (content.length > 0) {
           this.handleGetMenuList({ currentTarget: { dataset: { item: content[0] } } });
