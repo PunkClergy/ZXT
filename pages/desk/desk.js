@@ -58,7 +58,13 @@ Page({
     imageWidth: 0,
     imageHeight: 0
   },
-
+  // 点击banner图跳转视频
+  hadleView(evt){
+    const path = `https://k3a.wiselink.net.cn/img/${evt?.currentTarget?.dataset?.item?.img}`
+    wx.navigateTo({
+      url: `/pages/agreementWebView/agreementWebView?url=${path}`,
+    })
+  },
   // 转换背景图base64
   initialiImageBaseConversion() {
     const _this = this;
