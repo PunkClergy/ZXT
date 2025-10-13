@@ -14,13 +14,7 @@
             <view class="content-item-head">
               <view class="head-left">
                 <view class="left-category">
-                  <text>{{item.deviceTypeName||'-'}}</text>
-                </view>
-                <view class="left-brand">
-                  {{item.num||'-'}}
-                </view>
-                <view class="left-model">
-                  {{item.deviceVersionName||'-'}}
+                  <text>原始订单 ：{{item.orderno||'-'}}</text>
                 </view>
               </view>
               <view class="head-right">
@@ -29,24 +23,51 @@
               </view>
             </view>
             <view class="content-item-info">
+              <view class="info-item  {{item.industry.length > 8 ? 'long-info-item' : ''}}">
+                <label>行业 ：</label>
+                <text>{{item.industry||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.devicefun.length > 8 ? 'long-info-item' : ''}}">
+                <label>功能 ：</label>
+                <text>{{item.devicefun||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.deviceclass.length > 15 ? 'long-info-item' : ''}}">
+                <label>设备类型 ：</label>
+                <text>{{item.deviceclass||'-'}}</text>
+              </view>
               <view class="info-item  {{item.buycount.length > 15 ? 'long-info-item' : ''}}">
                 <label>设备数量 ：</label>
                 <text>{{item.buycount||'-'}}</text>
               </view>
 
-              <view class="info-item  {{item.typeName.length > 15 ? 'long-info-item' : ''}}">
-                <label>客户名称 ：</label>
-                <text>{{item.typeName||'-'}}</text>
-              </view>
-              <view class="info-item  {{item.linkman.length > 15 ? 'long-info-item' : ''}}">
-                <label>联系人 ：</label>
-                <text>{{item.linkman||'-'}}</text>
-              </view>
-
-              <view class="info-item  {{item.linkmobile.length > 15 ? 'long-info-item' : ''}}">
-                <label>联系电话 ：</label>
-                <text>{{item.linkmobile||'-'}}</text>
-              </view>
+              <block wx:for="{{item.childOrderList}}" wx:key="index" wx:for-item="childItem">
+                <view class="content-item" data-item="{{childItem}}" bindtap="handleView" style="width: 100%;">
+                  <view class="content-item-head">
+                    <view class="head-left">
+                      <view class="left-category">
+                        <text>子订单{{index+1}} ：{{childItem.num||'-'}}</text>
+                      </view>
+                    </view>
+                    <view class="head-right">
+                      <image src="/assets/images/home/_see.png" data-item="{{childItem}}" catchtap="handleView" />
+                    </view>
+                  </view>
+                  <view class="content-item-info">
+                    <view class="info-item  {{childItem.deviceTypeName.length > 8 ? 'long-info-item' : ''}}">
+                      <label>销售单代号 ：</label>
+                      <text>{{childItem.deviceTypeName||'-'}}</text>
+                    </view>
+                    <view class="info-item  {{childItem.devicefun.length > 8 ? 'long-info-item' : ''}}">
+                      <label>数量 ：</label>
+                      <text>{{childItem.deviceCount||'-'}}</text>
+                    </view>
+                    <view class="info-item  {{childItem.cost.length > 15 ? 'long-info-item' : ''}}">
+                      <label>金额 ：</label>
+                      <text>{{childItem.cost||'待确认'}}</text>
+                    </view>
+                  </view>
+                </view>
+              </block>
             </view>
             <view class="content-item-footer">
               <view class="footer-left">开单时间: {{item.createdate||'-'}}</view>
