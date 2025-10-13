@@ -22,7 +22,7 @@
       "list": [
         {
           "name": "dentistId=100",
-          "pathName": "pages/myProfile/index",
+          "pathName": "pages/desk/desk",
           "query": "",
           "launchMode": "default",
           "scene": 1011
@@ -43,8 +43,8 @@
         },
         {
           "name": "desk",
-          "pathName": "pages/desk/desk",
-          "query": "scene=9C960F949390458E93DD02D58634A97F",
+          "pathName": "pages/orderList/orderList",
+          "query": "",
           "launchMode": "default",
           "scene": null
         }

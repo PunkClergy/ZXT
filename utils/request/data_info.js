@@ -39,7 +39,7 @@ const u_delChildUser = {
 }
 // 订单购买记录
 const u_buyRecord = {
-  URL: fin3plusUrl + "deviceBuyApi/buyRecord",
+  URL: fin3plusUrl + "deviceBuyApi/customerOrderList",
   days: 'days',
   orderTypes: 'orderTypes',
   status: 'status',
@@ -65,8 +65,11 @@ const u_getDeviceType = {
   productTypeId: 'producttypeid'
 }
 // 设备购买（数据全部由用户填写）
+// const u_buyDevice = {
+//   URL: fin3plusUrl + "deviceBuyApi/buyDevice"
+// }
 const u_buyDevice = {
-  URL: fin3plusUrl + "deviceBuyApi/buyDevice"
+  URL: fin3plusUrl + "deviceBuyApi/submitCustomerOrder"
 }
 // 地址列表
 const u_addressapiList = {
@@ -107,8 +110,15 @@ const u_getIndustry = {
   URL: fin3plusUrl + "deviceBuyApi/getIndustry",
 }
 // 获取核心功能
+// const u_getIntroduction = {
+//   URL: fin3plusUrl + "deviceBuyApi/getIntroduction",
+// }
 const u_getIntroduction = {
-  URL: fin3plusUrl + "deviceBuyApi/getIntroduction",
+  URL: fin3plusUrl + "deviceBuyApi/getDeviceFun",
+}
+// 获取设备类型
+const u_getDeviceClass = {
+  URL: fin3plusUrl + "deviceBuyApi/getDeviceClass",
 }
 // 获取销售代号
 const u_saleCode = {
@@ -295,5 +305,6 @@ module.exports = {
   u_addOrUpdateChildUser,
   u_companyInfo,
   u_delChildUser,
-  u_buyRecord
+  u_buyRecord,
+  u_getDeviceClass
 }

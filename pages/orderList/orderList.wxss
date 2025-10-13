@@ -57,6 +57,7 @@
   width: 42rpx;
   height: 46rpx;
 }
+
 /* 内容项 */
 .content-item {
   margin: 15rpx;
@@ -122,6 +123,7 @@
   width: 30rpx;
   height: 30rpx;
 }
+
 .right-state {
   font-family: PingFang SC;
   font-weight: bold;
@@ -162,6 +164,7 @@
   flex-basis: 100% !important;
   /* 长内容时占满整行 */
 }
+
 .content-item-footer {
   display: flex;
   padding: 10rpx;
@@ -224,24 +227,29 @@
   font-size: 32rpx;
   color: #ffffff;
 }
+
 /* 下单部分style */
 .card-info-item-input {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .card-consignee text {
   font-weight: bold;
   font-size: 26rpx;
 }
+
 .card-information {
   display: flex;
   gap: 20rpx;
 }
+
 .card-information text {
   font-size: 22rpx;
   font-weight: 400;
 }
+
 .card-head {
   display: flex;
   align-items: center;
@@ -310,6 +318,7 @@
   font-size: 26rpx;
   color: #333333;
 }
+
 .viewText {
   text-align: right;
   font-family: PingFang SC;
@@ -318,8 +327,7 @@
   color: #333333;
 }
 
-.card-info-item-tabs {
-}
+.card-info-item-tabs {}
 
 .card-info-item-tabs-btn {
   display: flex;
@@ -379,6 +387,7 @@
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
 }
+
 .vehicle-container {
   width: 96%;
   margin: 30rpx auto;
@@ -387,15 +396,18 @@
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   font-size: 28rpx;
 }
+
 .vehicle-container-head {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #f0f0f0;
 }
+
 picker {
   font-size: 28rpx;
   color: #7b7c7c;
 }
+
 .card-upload {
   font-size: 26rpx;
   color: #7b7c7c;
@@ -403,15 +415,18 @@ picker {
   padding: 0rpx 20rpx;
   border-radius: 8rpx;
 }
+
 .vehicle-card-info-item {
   display: flex;
   justify-content: space-between;
   padding: 20rpx 0 0 0;
   box-shadow: 0rpx 0rpx 0rpx 0rpx rgba(240, 240, 240, 0.31);
 }
+
 .vehicle-container-info {
   width: 100%;
 }
+
 /* index.wxss */
 
 .tabs-scroll {
@@ -478,4 +493,147 @@ picker {
 .content {
   padding: 20px;
   font-size: 16px;
+}
+
+/* 请选择功能 */
+.function-tags {
+  display: flex;
+  gap: 10rpx;
+  flex-direction: column;
+}
+
+.function-tags label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tag {
+  border: 1rpx solid #c9c6c6;
+  border-radius: 8rpx;
+  padding: 0rpx 5rpx;
+  font-size: 14px;
+}
+
+
+
+/* 选择地址 */
+
+/* 弹窗蒙版 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+}
+
+.modal-base-map {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 20rpx;
+  z-index: 998;
+  padding: 20rpx;
+}
+
+.modal-container {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-container-head {
+  display: flex;
+  justify-content: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 60rpx;
+}
+
+.modal-container-head text {
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #333333;
+}
+
+.modal-container-head image {
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.modal-container-middle {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.modal-container-footer {
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container-footer button {
+  background: linear-gradient(88deg, #1576dc, #1b64b1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #ffffff;
+  width: 50%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.middle-form-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 45rpx;
+  width: 80%;
+}
+
+.middle-form-item label {
+  font-family: PingFang SC;
+  font-weight: 600;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.modal-form-region {
+  display: flex;
+  gap: 10rpx;
+}
+
+.form-item-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4rpx;
+  padding: 4rpx 2rpx 4rpx 10rpx;
+  gap: 20rpx;
+}
+
+.form-item-text text {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 28rpx;
+  color: #7b7c7c;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.form-item-text image {
+  width: 30rpx;
+  height: 30rpx;
 }
