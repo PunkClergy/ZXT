@@ -114,7 +114,7 @@
 .head-right {
   display: flex;
   flex-direction: row;
-  gap: 20rpx;
+  gap: 25rpx;
   align-items: center;
   justify-content: center;
 }

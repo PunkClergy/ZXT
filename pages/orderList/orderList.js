@@ -48,9 +48,9 @@ Page({
       id: 0,
       title: '车型1',
     }],
-    currentIndex: 0,
-    scrollLeft: 0,
-    params: {},
+    currentIndex: 0,//当前显示车辆tab签
+    scrollLeft: 0,//车辆参数
+    params: {},//新增订单form参数
     g_install_list: [{
       value: 0,
       name: '否'
@@ -68,12 +68,15 @@ Page({
     region: [],//地址 当前选择地区
     bak: '',//备注
   },
+  // 选择区间日期
   bindDateChange(e) {
     this.setData({ date: e.detail.value });
   },
+  // 选择取件时间
   bindTimeChange(e) {
     this.setData({ time: e.detail.value });
   },
+  // 选择地区
   bindRegionChange(e) {
     this.setData({
       region: e.detail.value
@@ -415,6 +418,10 @@ Page({
       url: '/pages/orderList/orderDetails/orderDetails?info=' + JSON.stringify(evt.currentTarget.dataset.item),
     })
   },
+  // 删除原始订单
+  handleDelete() { },
+  // 取消原始订单
+  handleCancel() { },
   // 选择地址弹窗调起
   handleSelectAddress(evt) {
     const addressType = evt?.currentTarget?.dataset?.type
@@ -464,12 +471,7 @@ Page({
     }
 
   },
-  // 提交参数
-  /**
- * 提交表单数据
- * 
- * 从 this.data 中提取用户输入和选择的数据，进行必要校验后，构造提交参数并发送请求。
- */
+  // 提交订单参数
   handleSubmit() {
     const {
       buycount = 0,                // 购买设备数量（默认为 0）
@@ -632,133 +634,6 @@ Page({
       }
     );
   },
-  // handleSubmit() {
-  //   const {
-  //     buycount = 0,//设备数量
-  //     params = {},
-  //     g_core_functions = [],       // 所属功能，state 为 true 表示选中
-  //     g_industry = [],             // 所有行业集合
-  //     g_industry_index = null,     // 当前选中行业索引
-  //     g_install_index = null,      // 是否安装（建议明确默认值）
-  //     g_core_type_index = null,    // 当前选中设备类型索引
-  //     g_door_address,//上门地址
-  //     g_receiving_address,//收货地址
-  //     date,
-  //     time,
-  //     bak
-  //   } = this.data;
-
-  //   // 获取选中的行业名称
-  //   const industry = g_industry_index != null ? g_industry[g_industry_index]?.name?.trim() : null;
-  //   // 获取选中的功能
-  //   const devicefun = g_core_functions
-  //     .filter(item => item?.state === true)
-  //     .map(item => item?.name?.trim())
-  //     .filter(name => name)
-  //     .join('||');
-  //   // 获取设备类型名称
-  //   const deviceclass = g_core_type_index?.name;
-  //   // 获取是否安装
-  //   const isinstall = g_install_index;
-  //   //  上门地址
-  //   const parts_door = g_door_address.trim().split(/\s+/);
-  //   const pickperson = parts_door?.[0];
-  //   const pickmobile = parts_door?.[1];
-  //   const pickaddress = parts_door?.slice(2)?.join(' ');
-  //   const picktime = `${date} ${time}`
-  //   // 收货地址
-  //   const parts_receiving = g_receiving_address.trim().split(/\s+/);
-  //   const takeperson = parts_receiving?.[0];
-  //   const takemobile = parts_receiving?.[1];
-  //   const takeaddress = parts_receiving?.slice(2)?.join(' ');
-  //   // 校验逻辑：使用提前 return，避免嵌套
-  //   if (!industry) {
-  //     showToast('请选择行业');
-  //     return;
-  //   }
-  //   if (!devicefun) {
-  //     showToast('请选择功能');
-  //     return;
-  //   }
-  //   if (!deviceclass) {
-  //     showToast('请选择设备类型');
-  //     return;
-  //   }
-  //   if (!g_door_address) {
-  //     showToast('请输入上门取钥匙地址');
-  //     return;
-  //   }
-  //   if (!g_receiving_address) {
-  //     showToast('请输入客户收货地址');
-  //     return;
-  //   }
-
-  //   const CAR_FIELD_PATTERN = /^(\D+)(\d+)$/;
-  //   const paramKeys = Object.keys(params);
-  //   const carIndices = new Set(paramKeys.map(key => {
-  //     const match = key.match(CAR_FIELD_PATTERN);
-  //     return match ? parseInt(match[2], 10) : null;
-  //   }).filter(index => index !== null));
-
-
-  //   if (g_core_type_index?.isneedcar && carIndices.size === 0) {
-  //     showToast('列表数据不得为空');
-  //     return;
-  //   }
-  //   const carList = [];
-  //   Array.from(carIndices).sort((a, b) => a - b).forEach(index => {
-  //     const carItem = {};
-  //     paramKeys.forEach(key => {
-  //       const match = key.match(new RegExp(`^(.+?)${index}$`));
-  //       if (match) {
-  //         const fieldName = match[1];
-  //         const value = params[key]?.trim() || '';
-  //         carItem[fieldName] = value;
-  //       }
-  //     });
-  //     carList.push(carItem)
-  //   });
-  //   for (let i = 0; i < carList.length; i++) {
-  //     const car = carList[i];
-  //     if (!car.carmodel?.trim() || !car.carserial?.trim() || !car.runtype?.trim()) {
-  //       showToast(`请补全${car.carmodel}的信息`);
-  //       return false;
-  //     }
-  //   }
-  //   const submitParams = {
-  //     industry,//行业
-  //     devicefun,//功能
-  //     deviceclass,//设备类型
-  //     isinstall,//是否安装
-  //     buycount: Number(buycount),//数量
-  //     pickperson,
-  //     pickmobile,
-  //     pickaddress,
-  //     picktime,
-  //     takeperson,
-  //     takemobile,
-  //     takeaddress,
-  //     bak,
-  //     carList: g_core_type_index?.isneedcar ? carList?.map(item => ({
-  //       ...item,
-  //     })) : [],
-  //   };
-  //   byPostJson(
-  //     getApp().data.k1swUrl + u_buyDevice.URL,
-  //     submitParams,
-  //     (response) => {
-  //       if (response.data?.code == 1000) {
-  //         wx.navigateBack({
-  //           delta: 1
-  //         });
-  //         showToast(response.data?.msg || '提交成功');
-  //       } else {
-  //         showToast(response.data?.msg || '服务器返回未知错误');
-  //       }
-  //     }
-  //   );
-
-  // },
   onLoad(options) {
     this.getOrderList()
   },
