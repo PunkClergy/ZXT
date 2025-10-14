@@ -160,6 +160,10 @@
   color: #333333;
 }
 
+.info-item label {
+  font-weight: bold;
+}
+
 .long-info-item {
   flex-basis: 100% !important;
   /* 长内容时占满整行 */
