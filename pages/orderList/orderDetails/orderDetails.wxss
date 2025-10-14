@@ -52,11 +52,13 @@
   align-items: center;
   font-size: 40rpx;
 }
+
 .info-container {
   display: flex;
   flex-direction: column;
   gap: 30rpx;
 }
+
 /* 具体内容样式 */
 .main-content-area {
   display: flex;
@@ -66,6 +68,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .main-content-area-head {
   display: flex;
   flex-direction: row;
@@ -94,19 +97,24 @@
   font-size: 24rpx;
   color: #333333;
 }
+
 .long-info-item {
   flex-basis: 100% !important;
 }
+
 .head-left {
   font-size: 28rpx;
 }
+
 .head-right {
   font-size: 26rpx;
 }
+
 .cost-main-order {
   font-size: 26rpx;
   font-weight: bold;
 }
+
 .tabs-container {
   display: inline-block;
 }
@@ -138,6 +146,7 @@
   background: #007aff;
   border-radius: 2rpx;
 }
+
 .middle-content-item-info {
   display: flex;
   flex-wrap: wrap;
@@ -149,24 +158,34 @@
   gap: 20rpx;
   /* border-bottom: 1px solid #f0f0f0; */
 }
+
 /* 寄送钥匙信息 */
-.mailing_address{
-  display: flex;gap: 40rpx;
+.mailing_address {
+  display: flex;
+  gap: 40rpx;
 }
-.mailing_address label{
+
+.mailing_address label {
   font-size: 26rpx;
 }
-.mailing_address text{
+
+.mailing_address text {
   font-size: 24rpx;
 }
-.key-modular-num{
-  background: rgba(245, 111, 72, 1);padding: 5rpx 20rpx;border-radius: 10rpx;color: #fff;
+
+.key-modular-num {
+  background: rgba(245, 111, 72, 1);
+  padding: 5rpx 20rpx;
+  border-radius: 10rpx;
+  color: #fff;
 }
+
 .key-modular {
   display: flex;
   align-items: center;
   gap: 10rpx;
 }
+
 /* 弹窗蒙版 */
 .modal-mask {
   position: fixed;
@@ -290,6 +309,7 @@
   width: 30rpx;
   height: 30rpx;
 }
+
 .card-footer {
   height: 50px;
   margin: 20rpx 0;
@@ -312,3 +332,31 @@
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
 }
+
+.keys_container {
+  padding: 10rpx;
+  display: flex;
+  flex-direction: row;
+  gap: 20rpx;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.keys_label {
+  /* 保留原有类名 cost-main-order 可继续定义其样式 */
+}
+
+.keys_options {
+  font-size: 24rpx;
+  display: flex;
+  gap: 20rpx;
+  flex-direction: row;
+}
+
+.keys_option {
+  border: 1rpx solid #d1cdcd;
+  padding: 2rpx 10rpx;
+  border-radius: 10rpx;
+}
+
+/* 上门取钥匙 */

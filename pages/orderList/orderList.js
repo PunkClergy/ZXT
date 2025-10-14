@@ -60,7 +60,15 @@ Page({
       value: 1,
       name: '是'
     }], // 是否安装
-    g_install_index: 1,
+    // g_sending_keys: [{
+    //   value: 0,
+    //   name: '否'
+    // }, {
+    //   value: 1,
+    //   name: '是'
+    // }],// 是否接受寄送钥匙
+    g_install_index: 1,//是否安装当前选择
+    // g_sending_keys_index: 1,//是否寄送钥匙当前选择
     date: '2025-10-11',//上门取钥匙日期
     time: '18:30',//上门取钥匙时间
     c_address_type: '',// 地址选择类型
@@ -411,9 +419,15 @@ Page({
   // 是否安装切换函数
   handleVicheRadioChange(evt) {
     this.setData({
-      g_industry_index: evt.detail.value
+      g_install_index: evt.detail.value
     })
   },
+  // 是否接受寄送钥匙切换函数
+  // handleSendingKeysRadioChange(evt) {
+  //   this.setData({
+  //     g_sending_keys_index: evt.detail.value
+  //   })
+  // },
   // 跳转到详情
   handleView(evt) {
     wx.navigateTo({
@@ -537,8 +551,9 @@ Page({
       g_industry = [],             // 行业选项列表
       g_industry_index = null,     // 当前选中的行业索引
       g_install_index = null,      // 是否安装（true/false 或其他标识，建议后续明确类型）
+      // g_sending_keys_index = null, // 是否接受寄送钥匙
       g_core_type_index = null,    // 当前选中的设备类型对象（含 isneedcar 等属性）
-      g_door_address = '',         // 上门取钥匙地址（格式：姓名 手机号 详细地址）
+      // g_door_address = '',         // 上门取钥匙地址（格式：姓名 手机号 详细地址）
       g_receiving_address = '',    // 客户收货地址（格式：姓名 手机号 详细地址）
       date = '',                   // 预约日期
       time = '',                   // 预约时间
@@ -579,6 +594,8 @@ Page({
     const takeperson = partsReceiving[0] || '';
     const takemobile = partsReceiving[1] || '';
     const takeaddress = partsReceiving.slice(2).join(' ') || '';
+    // 8. 是否接受寄送钥匙
+    // const sending_keys = g_sending_keys_index;
 
     // ========== 表单校验（使用提前 return 避免深层嵌套） ==========
 
@@ -597,10 +614,10 @@ Page({
       return;
     }
 
-    if (!g_door_address.trim()) {
-      showToast('请输入上门取钥匙地址（格式：姓名 手机 详细地址）');
-      return;
-    }
+    // if (!g_door_address.trim() && g_sending_keys_index == 1) {
+    //   showToast('请输入上门取钥匙地址（格式：姓名 手机 详细地址）');
+    //   return;
+    // }
 
     if (!g_receiving_address.trim()) {
       showToast('请输入客户收货地址（格式：姓名 手机 详细地址）');
@@ -664,6 +681,7 @@ Page({
       devicefun,          // 功能（"||" 分隔）
       deviceclass,        // 设备类型
       isinstall,          // 是否安装
+      // sending_keys,      // 是否接受寄送钥匙
       buycount: Number(buycount) || 0, // 购买数量（转为数字）
       pickperson,         // 上门联系人
       pickmobile,         // 上门联系电话

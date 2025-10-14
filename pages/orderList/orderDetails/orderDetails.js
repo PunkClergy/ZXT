@@ -34,8 +34,16 @@ Page({
     c_install_show_momal: false, //申请安装弹窗
     install_params: {}, //安装信息
     startDate: '',
-    startTime: ''
+    startTime: '',
+    g_keys_type: [{ value: 1, name: '不寄钥匙，自行安装' }, { value: 2, name: '上门取件' }, { value: 3, name: '自行邮寄' }],// 钥匙邮寄方式
+    g_keys_type_index: 1,
 
+  },
+  // 钥匙邮寄方式切换函数
+  handleKeysCurrType(evt) {
+    this.setData({
+      g_keys_type_index: evt?.currentTarget?.dataset?.item?.value
+    })
   },
   // 全屏背景
   initialiImageBaseConversion() {
@@ -113,29 +121,29 @@ Page({
       [orderIdField]: id
     };
     const orderModules = [{
-        key: 'carList',
-        id: '10',
-        name: '订单信息'
-      }, {
-        key: 'orderCostList',
-        id: '11',
-        name: '报价信息'
-      },
-      {
-        key: 'orderKeyMailingList',
-        id: '12',
-        name: '寄送钥匙信息'
-      },
-      {
-        key: 'orderLogisticsList',
-        id: '13',
-        name: '物流信息'
-      },
-      {
-        key: 'orderInstallList',
-        id: '14',
-        name: '安装信息'
-      },
+      key: 'carList',
+      id: '10',
+      name: '订单信息'
+    }, {
+      key: 'orderCostList',
+      id: '11',
+      name: '报价信息'
+    },
+    {
+      key: 'orderKeyMailingList',
+      id: '12',
+      name: '寄送钥匙信息'
+    },
+    {
+      key: 'orderLogisticsList',
+      id: '13',
+      name: '物流信息'
+    },
+    {
+      key: 'orderInstallList',
+      id: '14',
+      name: '安装信息'
+    },
     ];
 
     byGet(apiUrl, params)
@@ -199,9 +207,13 @@ Page({
       c_send_key_show_momal: false
     })
   },
+
+  // 确定钥匙邮寄方式
+  handleSendingKeyFunction(){
+    const type = this.data.g_keys_type_index
+  },
   // 上传or修改单号
   handleUploadTrackingNumber(evt) {
-    console.log(evt)
     const info = evt?.currentTarget?.dataset?.item
     this.setData({
       key_params: info ? info : {}
@@ -312,11 +324,12 @@ Page({
     })
   },
   onLoad(options) {
+    console.log(options, '222')
     if (options.info) {
       this.initDetails(JSON.parse(options.info))
     }
   },
-  onReady() {},
+  onReady() { },
   onShow() {
     this.initialiImageBaseConversion()
     this.handleCurrentDate()

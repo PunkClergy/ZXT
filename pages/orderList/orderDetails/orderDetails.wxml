@@ -113,7 +113,16 @@
                   {{item.name}}
                 </view>
               </view>
-              <view class="main-content-area-info">
+              <!-- 钥匙邮寄方式选择 -->
+              <view class="keys_container">
+                <label class="keys_label cost-main-order">钥匙邮寄方式 :</label>
+                <view class="keys_options">
+                  <view style="background: {{g_keys_type_index == item.value?'rgba(69, 135, 253, 1)':''}};color: {{g_keys_type_index == item.value?'#fff':''}};" class="keys_option" wx:for="{{g_keys_type}}" wx:key="index" bindtap="handleKeysCurrType" data-item="{{item}}">{{item.name}}</view>
+                </view>
+              </view>
+              <!-- 钥匙邮寄方式选择后的渲染 -->
+              <!-- 自行邮寄 -->
+              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 3}}">
                 <label class="long-info-item cost-main-order">寄送地址</label>
                 <view class="long-info-item mailing_address">
                   <label>智信通</label>
@@ -140,6 +149,16 @@
                   <view bindtap="handleUploadTrackingNumber" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">上传单号</view>
                 </block>
               </view>
+              <!-- 无需邮寄 -->
+              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 1}}">
+                <view bindtap="handleSendingKeyFunction" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">确认</view>
+              </view>
+              <!-- 上门取钥匙 -->
+              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 2}}">
+              
+                <!-- 上门地址和上门时间 -->
+                <view bindtap="handleSendingKeyFunction" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">确认</view>
+              </view>
             </view>
           </block>
           <!-- 物流信息 -->
@@ -158,7 +177,6 @@
                 </view>
                 <view class="mailing_address">
                   <text>北京市丰台区海鹰路智信通大厦2楼</text>
-
                 </view>
                 <label class="long-info-item cost-main-order">收货物流信息</label>
                 <block wx:for="{{item.list}}" wx:for-item="keymodule" wx:for-index="index" wx:key="id">
@@ -207,13 +225,10 @@
                 <view bindtap="handleInstall" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">申请安装</view>
               </block>
             </view>
-
-
-
           </block>
         </view>
       </view>
-      <view class="card-footer" wx:if="{{all_data.status == 2}}">
+      <view class="card-footer" wx:if="{{all_data.status == 4}}">
         <view bindtap="handleOneClickOrdering">支付</view>
       </view>
     </scroll-view>

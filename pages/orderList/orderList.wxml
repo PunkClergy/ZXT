@@ -202,8 +202,20 @@
               </radio-group>
             </view>
           </view>
+          <!-- 是否接受寄送钥匙 -->
+          <!-- <view class="card-info-item">
+            <label>是否接受寄送钥匙<text>*</text></label>
+            <view class="card-info-item-input">
+              <radio-group bindchange="handleSendingKeysRadioChange" style="display: flex;align-items: center;gap: 20rpx;">
+                <label wx:for="{{g_sending_keys}}" wx:key="index" style="display: flex;align-items: center;">
+                  <radio value="{{item.value}}" checked="{{g_sending_keys_index == item.value}}" style=" transform: scale(0.7);" />
+                  <view>{{item.name}}</view>
+                </label>
+              </radio-group>
+            </view>
+          </view> -->
           <!-- 上门取钥匙时间 -->
-          <view class="card-info-item">
+          <!-- <view class="card-info-item" wx:if="{{g_sending_keys_index == 1}}">
             <label>上门取钥匙时间<text>*</text></label>
             <view class="card-info-item-input">
               <view class="picker" style="display: flex;flex-direction: row;gap: 20rpx;">
@@ -215,16 +227,16 @@
                 </picker>
               </view>
             </view>
-          </view>
+          </view> -->
           <!-- 上门取钥匙地址 -->
-          <view class="card-info-item">
+          <!-- <view class="card-info-item" wx:if="{{g_sending_keys_index == 1}}">
             <label>上门取钥匙地址<text>*</text></label>
             <view class="card-info-item-input">
               <view disabled="true" data-type="door" data-item="{{g_door_address}}" bindtap="handleSelectAddress" style="font-size: 26rpx;color: #666;">
                 {{g_door_address?g_door_address:'请输入上门取钥匙地址'}}
               </view>
             </view>
-          </view>
+          </view> -->
           <!-- 客户收货地址 -->
           <view class="card-info-item">
             <label>客户收货地址<text>*</text></label>
