@@ -111,7 +111,7 @@
             <view class="function-tags">
               <block wx:for="{{g_core_functions}}" wx:key="index">
                 <label>类型{{index+1}}:</label>
-                <view class="tag" data-item="{{item}}" bindtap="handleFunction" style="background-color: {{item.state?'#a0cef3':''}};">
+                <view class="tag" data-item="{{item}}" bindtap="handleFunction" style="background-color: {{item.state?'#e4edfd ':''}};border: {{item.state?'1px solid rgba(23, 114, 246, 0.5)':'1rpx solid  #f1f1f1'}};">
                   {{item.name}}
                 </view>
               </block>
@@ -122,7 +122,7 @@
             <label style="min-width: 20%;">设备类型<text>*</text></label>
             <block>
               <view class="card-info-item-input" style="display: flex;gap: 10rpx;">
-                <text class="tag" wx:for="{{g_core_type}}" wx:key="index" data-item="{{item}}" bindtap="handleEquipmentType" style="background-color: {{g_core_type_index.id == item.id?'#a0cef3':''}};">{{item.name}}</text>
+                <text class="tag" wx:for="{{g_core_type}}" wx:key="index" data-item="{{item}}" bindtap="handleEquipmentType" style="background-color: {{g_core_type_index.id == item.id?'#e4edfd':''}};border: {{g_core_type_index.id == item.id?'1px solid rgba(23, 114, 246, 0.5)':'1rpx solid  #f1f1f1'}}">{{item.name}}</text>
               </view>
             </block>
           </view>

@@ -508,9 +508,9 @@ picker {
 }
 
 .tag {
-  border: 1rpx solid #c9c6c6;
+  border: 1rpx solid #f1f1f1;
   border-radius: 8rpx;
-  padding: 0rpx 5rpx;
+  padding: 5rpx 10rpx;
   font-size: 14px;
 }
 
