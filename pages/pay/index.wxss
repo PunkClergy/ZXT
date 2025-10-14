@@ -1,8 +1,11 @@
 /* pages/pay/pay.wxss */
 .container {
   padding: 20rpx;
-  background: #f5f5f5;
-  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+  align-items: center;
 }
 
 .order-info,
