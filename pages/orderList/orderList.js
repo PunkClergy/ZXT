@@ -13,7 +13,9 @@ const {
   u_getIndustry,
   u_getIntroduction,
   u_isNeedCarInfo,
-  u_getDeviceClass
+  u_getDeviceClass,
+  u_cancalCustomerOrder,
+  u_delCustomerOrder
 } = require('../../utils/request/data_info')
 const {
   byGet,
@@ -419,9 +421,64 @@ Page({
     })
   },
   // 删除原始订单
-  handleDelete() { },
+  handleDelete(evt) {
+    const requestParam = {
+      orderId: evt?.currentTarget?.dataset?.item?.id
+    }
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除订单吗？',
+      success: (res) => {
+        if (res.confirm) {
+          showLoading()
+          byPost(getApp().data.k1swUrl + u_delCustomerOrder.URL, requestParam, (response) => {
+            hideLoading()
+            if (response.data.code !== 1000) {
+              showToast(response.data.msg);
+            } else {
+              showToast(response.data.msg);
+              this.getOrderList()
+            }
+          }, (error) => {
+            showToast('删除订单失败，请重试');
+          }, () => {
+            hideLoading();
+          });
+        }
+      }
+    });
+
+
+  },
   // 取消原始订单
-  handleCancel() { },
+  handleCancel(evt) {
+    const requestParam = {
+      orderId: evt?.currentTarget?.dataset?.item?.id
+    }
+    wx.showModal({
+      title: '提示',
+      content: '确定要取消订单吗？',
+      success: (res) => {
+        if (res.confirm) {
+          showLoading()
+          byPost(getApp().data.k1swUrl + u_cancalCustomerOrder.URL, requestParam, (response) => {
+            hideLoading()
+            if (response.data.code !== 1000) {
+              showToast(response.data.msg);
+            } else {
+              showToast(response.data.msg);
+              this.getOrderList()
+            }
+          }, (error) => {
+            showToast('取消订单失败，请重试');
+          }, () => {
+            hideLoading();
+          });
+        }
+      }
+    });
+
+  },
   // 选择地址弹窗调起
   handleSelectAddress(evt) {
     const addressType = evt?.currentTarget?.dataset?.type

@@ -109,6 +109,14 @@ const u_orderConfirm = {
 const u_getIndustry = {
   URL: fin3plusUrl + "deviceBuyApi/getIndustry",
 }
+// 原始订单取消
+const u_cancalCustomerOrder = {
+  URL: fin3plusUrl + "deviceBuyApi/cancalCustomerOrder",
+}
+// 原始订单删除
+const u_delCustomerOrder = {
+  URL: fin3plusUrl + "deviceBuyApi/delCustomerOrder",
+}
 // 获取核心功能
 // const u_getIntroduction = {
 //   URL: fin3plusUrl + "deviceBuyApi/getIntroduction",
@@ -306,5 +314,7 @@ module.exports = {
   u_companyInfo,
   u_delChildUser,
   u_buyRecord,
-  u_getDeviceClass
+  u_getDeviceClass,
+  u_cancalCustomerOrder,
+  u_delCustomerOrder
 }

@@ -69,8 +69,8 @@
                   </view>
                   <view class="content-item-footer">
                     <view class="footer-left"></view>
-                    <view class="footer-right" data-item="{{item}}">
-                      {{item.statusName}}
+                    <view class="footer-right" data-item="{{childItem}}">
+                      {{childItem.statusName}}
                     </view>
                   </view>
                 </view>
