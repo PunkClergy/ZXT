@@ -6,7 +6,7 @@
     <scroll-view enhanced show-scrollbar="{{false}}" scroll-x class="nav-scroll" scroll-left="{{navScrollLeft}}" scroll-with-animation style="white-space: nowrap;">
       <view class="nav-container">
         <block wx:for="{{navList}}" wx:key="index">
-          <view wx:if="{{ (item.id == 10) || (item.id == 11 && all_data.status > 1) || (item.id == 12 && all_data.isMailingKeys == 1) || (item.id == 13 && all_data.status > 7)|| (item.id == 14 && all_data.status > 7)}}" class="nav-item {{'section' + item.id == scrollIntoViewId ? 'active' : ''}}" data-id="{{item.id}}" bindtap="handleSwitchNav">
+          <view wx:if="{{ (item.id == 10) || (item.id == 11 && all_data.status > 1) || (item.id == 12 && all_data.isMailingKeys == 1&&all_data.status==5) || (item.id == 13 && all_data.status > 7)|| (item.id == 14 && all_data.status > 7)}}" class="nav-item {{'section' + item.id == scrollIntoViewId ? 'active' : ''}}" data-id="{{item.id}}" bindtap="handleSwitchNav">
             {{item.name}}
           </view>
         </block>
@@ -27,18 +27,18 @@
                 </view>
               </view>
               <view class="main-content-area-info">
-                <view class="main-content-area-info-item  {{all_data.productTypeName.length > 15 ? 'long-info-item' : ''}}">
-                  <label>行业 ：</label>
-                  <text>{{all_data.productTypeName||'-'}}</text>
+                <view class="main-content-area-info-item  {{all_data.deviceTypeName.length > 15 ? 'long-info-item' : ''}}">
+                  <label>销售代号 ：</label>
+                  <text>{{all_data.deviceTypeName||'-'}}</text>
                 </view>
-                <view class="main-content-area-info-item  {{all_data.deviceVersionName.length > 15 ? 'long-info-item' : ''}}">
+                <!-- <view class="main-content-area-info-item  {{all_data.deviceVersionName.length > 15 ? 'long-info-item' : ''}}">
                   <label>功能 ：</label>
                   <text>{{all_data.deviceVersionName||'-'}}</text>
-                </view>
-                <view class="main-content-area-info-item  {{all_data.deviceCount.length > 15 ? 'long-info-item' : ''}}">
+                </view> -->
+                <!-- <view class="main-content-area-info-item  {{all_data.deviceCount.length > 15 ? 'long-info-item' : ''}}">
                   <label>数量 ：</label>
                   <text>{{all_data.deviceCount||'-'}}</text>
-                </view>
+                </view> -->
                 <scroll-view scroll-x class="tabs-scroll" scroll-with-animation scroll-left="{{scrollLeft}}" scroll-into-view="{{'tab' + currentIndex}}" style="height: 50px;">
                   <view class="tabs-container">
                     <block wx:for="{{item.list}}" wx:for-item="carModule" wx:for-index="index" wx:key="index">
@@ -115,7 +115,7 @@
             </view>
           </block>
           <!-- 寄送钥匙 -->
-          <block wx:if="{{item.id == 12&&(all_data.isMailingKeys==1)}}">
+          <block wx:if="{{item.id == 12&&(all_data.isMailingKeys==1)&&all_data.status ==5}}">
             <view class="main-content-area">
               <view class="main-content-area-head">
                 <view class="head-left">
