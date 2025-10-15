@@ -209,7 +209,7 @@
 }
 
 .modal-container {
-  height: 30vh;
+  height: 40vh;
   display: flex;
   flex-direction: column;
 }
@@ -360,3 +360,51 @@
 }
 
 /* 上门取钥匙 */
+picker {
+  font-size: 24rpx;
+  color: #7b7c7c;
+}
+
+/* 容器 */
+.take_keys_container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 行布局：时间选择行、地址行 */
+.take_keys_row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+/* 地址行额外样式（无 align-items） */
+.take_keys_address_row {
+  align-items: flex-start;
+  /* 如果需要顶部对齐可保留，否则可删 */
+}
+
+/* 时间选择器容器 */
+.take_keys_picker {
+  display: flex;
+  flex-direction: row;
+  gap: 20rpx;
+}
+
+/* 地址文字样式 */
+.take_keys_address_text {
+  color: #7b7c7c;
+  font-size: 24rpx;
+}
+
+/* 确认按钮 */
+.take_keys_confirm_btn {
+  margin: 20rpx auto;
+  background: rgba(245, 111, 72, 1);
+  font-size: 26rpx;
+  color: #fff;
+  padding: 10rpx 80rpx;
+  border-radius: 20rpx;
+}

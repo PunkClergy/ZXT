@@ -154,10 +154,29 @@
                 <view bindtap="handleSendingKeyFunction" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">确认</view>
               </view>
               <!-- 上门取钥匙 -->
-              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 2}}">
-              
+              <view class="main-content-area-info take_keys_container" wx:if="{{g_keys_type_index == 2||g_keys_type_index == 0}}">
                 <!-- 上门地址和上门时间 -->
-                <view bindtap="handleSendingKeyFunction" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">确认</view>
+                <view class="take_keys_row">
+                  <label class="keys_label cost-main-order">上门取钥匙时间 ：</label>
+                  <view class="picker take_keys_picker">
+                    <picker mode="date" value="{{date}}" bindchange="takeBindDateChange">
+                      <view class="picker-item">{{date}}</view>
+                    </picker>
+                    <picker mode="time" value="{{time}}" bindchange="takeBindTimeChange">
+                      <view class="picker-item">{{time}}</view>
+                    </picker>
+                  </view>
+                </view>
+                <view class="take_keys_row take_keys_address_row">
+                  <label class="keys_label cost-main-order">上门取钥匙地址：</label>
+                  <view class="take_keys_address_text" bindtap="handleSelectAddress">
+                    <block wx:if="{{g_door_address}}">
+                      {{g_door_address}}
+                    </block>
+                    <block wx:else>请选择上门取钥匙地址</block>
+                  </view>
+                </view>
+                <view bindtap="handleSendingKeyFunction" class="take_keys_confirm_btn">确认</view>
               </view>
             </view>
           </block>
@@ -308,6 +327,55 @@
                   <text>{{startTime}}</text>
                 </view>
               </picker>
+            </view>
+          </view>
+        </view>
+        <view class="modal-container-footer">
+          <button formType="submit">确认</button>
+        </view>
+      </view>
+    </form>
+  </view>
+</block>
+
+<!-- 地址选择 -->
+<block>
+  <view class="modal-mask" wx:if="{{c_select_address}}" bindtap="handleHideSengKeyModal"></view>
+  <view class="modal-base-map" wx:if="{{c_select_address}}">
+    <form bindsubmit="handleKeysFormSubmit">
+      <view class="modal-container">
+        <view class="modal-container-head">
+          <text>{{c_address_type=='door'?'上门取钥匙地址':'客户收货地址'}}</text>
+          <image src="/assets/images/home/right_1.png" bindtap="handleHideSengKeyModal" />
+        </view>
+        <view class="modal-container-middle">
+          <view class="middle-form-item">
+            <label>联系人姓名 :</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入联系人选姓名" name='personName' style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>手机号码 :</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入手机号码" name='mobile' style="text-align: right;font-size: 28rpx;" />
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>所在地区 :</label>
+            <view class="modal-form-region">
+              <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+                <view class="picker" style="font-size: 28rpx;">
+                  <text wx:if="{{region[0]}}" style="color: #333;"> {{region[0]}}，{{region[1]}}，{{region[2]}}</text>
+                  <text wx:else>请选择地区</text>
+                </view>
+              </picker>
+            </view>
+          </view>
+          <view class="middle-form-item">
+            <label>详细地址 :</label>
+            <view class="modal-form-region">
+              <input placeholder="请输入详细地址" name='bak' style="text-align: right;font-size: 28rpx;" />
             </view>
           </view>
         </view>

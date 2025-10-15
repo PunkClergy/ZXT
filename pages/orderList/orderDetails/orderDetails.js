@@ -9,6 +9,7 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   u_orderConfirm,
+  u_willingkey,
   u_getOrderDetial,
   u_submitKeymailing,
   u_submitOrderInsall
@@ -36,13 +37,49 @@ Page({
     startDate: '',
     startTime: '',
     g_keys_type: [{ value: 1, name: '不寄钥匙，自行安装' }, { value: 2, name: '上门取件' }, { value: 3, name: '自行邮寄' }],// 钥匙邮寄方式
-    g_keys_type_index: 1,
+    g_keys_type_index: 0,
+    date: '2025-10-11',//上门取钥匙日期
+    time: '18:30',//上门取钥匙时间
+    region: [],//地址 当前选择地区
 
   },
   // 钥匙邮寄方式切换函数
   handleKeysCurrType(evt) {
     this.setData({
       g_keys_type_index: evt?.currentTarget?.dataset?.item?.value
+    })
+  },
+  // 选择取件日期
+  takeBindDateChange(e) {
+    this.setData({ date: e.detail.value });
+  },
+  // 选择取件时间
+  takeBindTimeChange(e) {
+    this.setData({ time: e.detail.value });
+  },
+  // 选择地址弹窗调起
+  handleSelectAddress() {
+    this.setData({
+      c_select_address: true
+    })
+  },
+  // 选择地区
+  bindRegionChange(e) {
+    this.setData({
+      region: e.detail.value
+    })
+  },
+  // 确认上门取钥匙地址
+  handleKeysFormSubmit(evt) {
+    const info = evt?.detail?.value
+    const region = this.data.region
+    this.setData({
+      g_door_address: `${info?.personName}  ${info?.mobile}  ${region?.join('')}${info?.bak}`
+    }, () => {
+      this.setData({
+        c_select_address: false,
+        region: []
+      })
     })
   },
   // 全屏背景
@@ -165,8 +202,10 @@ Page({
           })
           .filter(Boolean);
         this.setData({
+          g_keys_type_index: info?.willingKey || 0,
+          g_door_address: info?.personName ? `${info?.personName}  ${info?.mobile}  ${region?.join('')}${info?.bak}` : null,
           all_data: info,
-          navList
+          navList,
         });
       })
       .catch(error => {
@@ -203,14 +242,31 @@ Page({
   // 取消上传物流单号弹窗
   handleHideSengKeyModal() {
     this.setData({
-      key_params: {},
+      c_select_address: false,
       c_send_key_show_momal: false
     })
   },
 
   // 确定钥匙邮寄方式
-  handleSendingKeyFunction(){
-    const type = this.data.g_keys_type_index
+  handleSendingKeyFunction() {
+    const willing = this.data.g_keys_type_index//类型 1不邮寄 2上面取件
+    const g_door_address = this.data.g_door_address
+    const date = this.data.date
+    const time = this.data.time
+    const partsDoor = g_door_address?.trim().split(/\s+/);
+    const pamsg = {
+      orderId: this.data.all_data?.id,
+      willing,
+      pickperson: willing == 2 ? partsDoor[0] : '',
+      pickmobile: willing == 2 ? partsDoor[1] : '',
+      pickaddress: willing == 2 ? partsDoor.slice(2).join(' ') : '',
+      picktime: willing == 2 ? `${date} ${time}`?.trim() : ''
+    }
+    byPost(getApp().data.k1swUrl + u_willingkey.URL, pamsg, (response) => {
+      if (response.data.code == 1000) {
+        this.initDetails(this.data.all_data)
+      }
+    });
   },
   // 上传or修改单号
   handleUploadTrackingNumber(evt) {

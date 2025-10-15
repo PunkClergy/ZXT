@@ -259,7 +259,11 @@ const u_vehUnBindCarManager = {
 const u_getShopLink = {
   URL: fin3plusUrl + "deskapi/getShopLink",
 }
+const u_willingkey = {
+  URL: fin3plusUrl + "deviceBuyApi/willingKey",
+}
 module.exports = {
+  u_willingkey,
   u_getShopLink,
   u_vehUnBindCarManager,
   u_efenceUnbindVeh,
