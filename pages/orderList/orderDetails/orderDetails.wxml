@@ -87,21 +87,30 @@
                 </view>
               </view>
               <view class="main-content-area-info">
-                <block wx:for="{{item.list}}" wx:for-item="module" wx:for-index="idx" wx:key="id">
-                  <label class="long-info-item cost-main-order">{{module.productname}}</label>
-                  <view class="main-content-area-info-item  {{module.costType.length > 15 ? 'long-info-item' : ''}}">
-                    <label>价格 ：</label>
-                    <text>{{module.costType||'-'}}</text>
-                  </view>
-                  <view class="main-content-area-info-item  {{module.count.length > 15 ? 'long-info-item' : ''}}">
-                    <label>数量 ：</label>
-                    <text>{{module.count||'-'}}</text>
-                  </view>
-                  <view class="main-content-area-info-item  {{module.cost.length > 15 ? 'long-info-item' : ''}}">
-                    <label>小计 ：</label>
-                    <text>{{module.cost||'-'}}</text>
-                  </view>
-                </block>
+                <!-- <block wx:for="{{item.list}}" wx:for-item="module" wx:for-index="idx" wx:key="id"> -->
+                <!-- <label class="long-info-item cost-main-order">{{all_data.productname}}1</label> -->
+                <view class="main-content-area-info-item  {{all_data.hardUnitPrice.length > 15 ? 'long-info-item' : ''}}">
+                  <label>硬件单价 ：</label>
+                  <text>{{all_data.hardUnitPrice||'-'}}</text>
+                </view>
+                <view class="main-content-area-info-item  {{all_data.includeseveryears.length > 15 ? 'long-info-item' : ''}}">
+                  <label>硬件含服务年数 ：</label>
+                  <text>{{all_data.includeseveryears||'-'}}</text>
+                </view>
+                <view class="main-content-area-info-item  {{all_data.serviceUnitPrice.length > 15 ? 'long-info-item' : ''}}">
+                  <label>服务费单价 ：</label>
+                  <text>{{all_data.serviceUnitPrice||'-'}}</text>
+                </view>
+                <view class="main-content-area-info-item  {{all_data.keyUnitPrice.length > 15 ? 'long-info-item' : ''}}">
+                  <label>钥匙费用 ：</label>
+                  <text>{{all_data.keyUnitPrice||'-'}}</text>
+                </view>
+                <view class="main-content-area-info-item  {{all_data.installUnitPrice.length > 15 ? 'long-info-item' : ''}}">
+                  <label>安装费 ：</label>
+                  <text>{{all_data.installUnitPrice||'-'}}</text>
+                </view>
+
+                <!-- </block> -->
               </view>
             </view>
           </block>
@@ -115,7 +124,7 @@
               </view>
               <!-- 钥匙邮寄方式选择 -->
               <view class="keys_container">
-                <label class="keys_label cost-main-order">钥匙邮寄方式 :</label>
+                <label class="keys_label cost-main-order">钥匙寄送方式 :</label>
                 <view class="keys_options">
                   <view style="background: {{g_keys_type_index == item.value?'rgba(69, 135, 253, 1)':''}};color: {{g_keys_type_index == item.value?'#fff':''}};" class="keys_option" wx:for="{{g_keys_type}}" wx:key="index" bindtap="handleKeysCurrType" data-item="{{item}}">{{item.name}}</view>
                 </view>
@@ -132,7 +141,7 @@
                   <text>北京市丰台区海鹰路智信通大厦2楼</text>
                   <text style="color: rgba(69, 135, 253, 1);" bindtap="handleCopyAddress">复制</text>
                 </view>
-                <label class="long-info-item cost-main-order">寄送物流信息</label>
+                <label class="long-info-item cost-main-order">钥匙寄送物流信息</label>
                 <block wx:for="{{item.list}}" wx:for-item="keymodule" wx:for-index="index" wx:key="id">
                   <view class="main-content-area-info-item key-modular long-info-item}}">
                     <label>快递公司 ：</label>
@@ -189,15 +198,8 @@
                 </view>
               </view>
               <view class="main-content-area-info">
-                <label class="long-info-item cost-main-order">收货地址</label>
-                <view class="long-info-item mailing_address">
-                  <label>智信通</label>
-                  <text>13676767654</text>
-                </view>
-                <view class="mailing_address">
-                  <text>北京市丰台区海鹰路智信通大厦2楼</text>
-                </view>
-                <label class="long-info-item cost-main-order">收货物流信息</label>
+
+                <label class="long-info-item cost-main-order">客户收货物流信息</label>
                 <block wx:for="{{item.list}}" wx:for-item="keymodule" wx:for-index="index" wx:key="id">
                   <view class="main-content-area-info-item key-modular long-info-item}}">
                     <label>快递公司 ：</label>
@@ -207,6 +209,9 @@
                     <label>快递单号 ：</label>
                     <text>{{keymodule.num}}</text>
                   </view>
+                </block>
+                <block wx:if="{{item.list.length <1}}">
+                  <text style="font-size: 24rpx;color: #666;">暂无物流信息</text>
                 </block>
               </view>
             </view>

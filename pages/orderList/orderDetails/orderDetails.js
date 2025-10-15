@@ -20,7 +20,7 @@ const {
 } = require('../../../utils/request/http')
 Page({
   data: {
-    c_screen_height: _handleWindowInfo.screenHeight || 0,
+    c_screen_height: _handleWindowInfo.windowHeight || 0,
     c_statusBarHeight: _handleWindowInfo.statusBarHeight || 0, // 状态栏高度
     c_navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
     c_searchBarHeight: 70, // 搜索框高度，默认值
@@ -149,63 +149,86 @@ Page({
   },
   // 请求详情
   initDetails(evt) {
-    const {
-      id
-    } = evt || {};
-    const orderIdField = u_getOrderDetial.orderId;
-    const apiUrl = `${getApp().data.k1swUrl}${u_getOrderDetial.URL}`;
-    const params = {
-      [orderIdField]: id
+    // === 工具函数（内联定义）===
+    const formatDate = (d) => {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${dd}`;
     };
-    const orderModules = [{
-      key: 'carList',
-      id: '10',
-      name: '订单信息'
-    }, {
-      key: 'orderCostList',
-      id: '11',
-      name: '报价信息'
-    },
-    {
-      key: 'orderKeyMailingList',
-      id: '12',
-      name: '寄送钥匙信息'
-    },
-    {
-      key: 'orderLogisticsList',
-      id: '13',
-      name: '物流信息'
-    },
-    {
-      key: 'orderInstallList',
-      id: '14',
-      name: '安装信息'
-    },
+
+    const formatTime = (d) => {
+      const h = String(d.getHours()).padStart(2, '0');
+      const m = String(d.getMinutes()).padStart(2, '0');
+      return `${h}:${m}`;
+    };
+
+    // === 静态配置（内联）===
+    const ORDER_MODULES = [
+      { key: 'carList', id: '10', name: '订单信息' },
+      { key: 'orderCostList', id: '11', name: '报价信息' },
+      { key: 'orderKeyMailingList', id: '12', name: '寄送钥匙信息' },
+      { key: 'orderLogisticsList', id: '13', name: '物流信息' },
+      { key: 'orderInstallList', id: '14', name: '安装信息' }
     ];
+
+    // === 主逻辑开始 ===
+    const { id } = evt || {};
+    if (!id) {
+      console.warn('订单ID缺失，无法加载详情');
+      return;
+    }
+
+    const apiUrl = `${getApp().data.k1swUrl}${u_getOrderDetial.URL}`;
+    const params = { [u_getOrderDetial.orderId]: id };
 
     byGet(apiUrl, params)
       .then(response => {
         const info = response?.data?.content || {};
-        const navList = orderModules
-          .map(({
-            key,
-            id,
-            name
-          }) => {
-            const items = info[key];
-            return {
-              key: key,
-              list: items,
-              id,
-              name
-            };
-          })
-          .filter(Boolean);
+        const now = new Date();
+
+        // 构建 navList
+        const navList = ORDER_MODULES.map(({ key, id, name }) => ({
+          key,
+          id,
+          name,
+          list: info[key] || []
+        }));
+
+        // 默认日期时间
+        let pickupDate = formatDate(now);
+        let pickupTime = formatTime(now);
+
+        // 安全解析 pickupdate
+        const pickup = info?.orderPickup;
+        if (pickup?.pickupdate) {
+          const parts = pickup.pickupdate.trim().split(/\s+/);
+          if (parts.length >= 2) {
+            pickupDate = parts[0];
+            // 确保时间部分至少有 HH:mm 格式
+            const timeParts = parts[1].split(':');
+            pickupTime = timeParts.length >= 2 ? parts[1] : formatTime(now);
+          } else if (parts.length === 1 && /^\d{4}-\d{2}-\d{2}$/.test(parts[0])) {
+            pickupDate = parts[0];
+            // 时间仍用当前时间
+          }
+        }
+
+        // 拼接取件地址（过滤空值）
+        const g_door_address = pickup
+          ? [pickup.personname, pickup.mobile, pickup.address]
+            .filter(item => item != null && item !== '')
+            .join(' ')
+          : '';
+
+        // 更新数据
         this.setData({
-          g_keys_type_index: info?.willingKey || 0,
-          g_door_address: info?.personName ? `${info?.personName}  ${info?.mobile}  ${region?.join('')}${info?.bak}` : null,
+          g_keys_type_index: info.willingKey || 0,
+          g_door_address,
+          date: pickupDate,
+          time: pickupTime,
           all_data: info,
-          navList,
+          navList
         });
       })
       .catch(error => {
@@ -257,10 +280,10 @@ Page({
     const pamsg = {
       orderId: this.data.all_data?.id,
       willing,
-      pickperson: willing == 2 ? partsDoor[0] : '',
-      pickmobile: willing == 2 ? partsDoor[1] : '',
-      pickaddress: willing == 2 ? partsDoor.slice(2).join(' ') : '',
-      picktime: willing == 2 ? `${date} ${time}`?.trim() : ''
+      pickupPerson: willing == 2 ? partsDoor?.[0] : '',
+      pickupMobile: willing == 2 ? partsDoor?.[1] : '',
+      pickupAddress: willing == 2 ? partsDoor?.slice(2)?.join(' ') : '',
+      pickupTime: willing == 2 ? `${date} ${time}`?.trim() : ''
     }
     byPost(getApp().data.k1swUrl + u_willingkey.URL, pamsg, (response) => {
       if (response.data.code == 1000) {
