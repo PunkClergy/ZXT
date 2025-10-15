@@ -581,13 +581,13 @@ Page({
     const isinstall = g_install_index;
 
     // 5. 解析上门地址（格式：姓名 手机 详细地址）
-    const partsDoor = g_door_address.trim().split(/\s+/);
-    const pickperson = partsDoor[0] || '';
-    const pickmobile = partsDoor[1] || '';
-    const pickaddress = partsDoor.slice(2).join(' ') || '';
+    // const partsDoor = g_door_address.trim().split(/\s+/);
+    // const pickperson = partsDoor[0] || '';
+    // const pickmobile = partsDoor[1] || '';
+    // const pickaddress = partsDoor.slice(2).join(' ') || '';
 
     // 6. 拼接预约时间
-    const picktime = `${date} ${time}`.trim();
+    // const picktime = `${date} ${time}`.trim();
 
     // 7. 解析收货地址（格式：姓名 手机 详细地址）
     const partsReceiving = g_receiving_address.trim().split(/\s+/);
@@ -683,10 +683,10 @@ Page({
       isinstall,          // 是否安装
       // sending_keys,      // 是否接受寄送钥匙
       buycount: Number(buycount) || 0, // 购买数量（转为数字）
-      pickperson,         // 上门联系人
-      pickmobile,         // 上门联系电话
-      pickaddress,        // 上门地址
-      picktime,           // 预约时间
+      // pickperson,         // 上门联系人
+      // pickmobile,         // 上门联系电话
+      // pickaddress,        // 上门地址
+      // picktime,           // 预约时间
       takeperson,         // 收货联系人
       takemobile,         // 收货电话
       takeaddress,        // 收货地址
