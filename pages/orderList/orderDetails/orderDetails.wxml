@@ -189,6 +189,44 @@
               </view>
             </view>
           </block>
+          <!-- 寄送钥匙渲染 -->
+          <block wx:if="{{item.id == 12 && all_data.isMailingKeys == 1&&(all_data.status == 8 || all_data.status == 9 || all_data.status == 10 || all_data.status == 11 || all_data.status == 12)}}">
+            <view class="main-content-area">
+              <view class="main-content-area-head">
+                <view class="head-left">
+                  {{item.name}}
+                </view>
+              </view>
+              <!-- 自行邮寄 -->
+              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 3}}">
+                <label class="long-info-item cost-main-order">寄送地址</label>
+                <view class="long-info-item mailing_address">
+                  <label>智信通</label>
+                  <text>13676767654</text>
+                </view>
+                <view class="mailing_address">
+                  <text>北京市丰台区海鹰路智信通大厦2楼</text>
+                  <text style="color: rgba(69, 135, 253, 1);" bindtap="handleCopyAddress">复制</text>
+                </view>
+                <label class="long-info-item cost-main-order">钥匙寄送物流信息</label>
+                <block wx:for="{{item.list}}" wx:for-item="keymodule" wx:for-index="index" wx:key="id" wx:if="{{g_keys_type_index == 3||g_keys_type_index == 2}}">
+                  <view class="main-content-area-info-item key-modular long-info-item}}">
+                    <label>快递公司 ：</label>
+                    <text>{{keymodule.name}}</text>
+                  </view>
+                  <view class="main-content-area-info-item key-modular long-info-item}}">
+                    <label>快递单号 ：</label>
+                    <text>{{keymodule.num}}</text>
+                    <text style="color: rgba(69, 135, 253, 1);" wx:if="{{keymodule.num}}" data-item="{{keymodule}}" bindtap="handleCopyNum">复制</text>
+                  </view>
+                </block>
+                <view class="main-content-area-info" wx:if="{{g_keys_type_index == 1}}">
+                  <text style="color: #666;font-size: 24rpx;">无需邮寄</text>
+                </view>
+              </view>
+
+            </view>
+          </block>
           <!-- 物流信息 -->
           <block wx:if="{{item.id == 13 && (all_data.status == 8||all_data.status == 9||all_data.status == 10||all_data.status == 11||all_data.status == 12)}}">
             <view class="main-content-area">
@@ -208,6 +246,7 @@
                   <view class="main-content-area-info-item key-modular long-info-item}}">
                     <label>快递单号 ：</label>
                     <text>{{keymodule.num}}</text>
+                    <text style="color: rgba(69, 135, 253, 1);" wx:if="{{keymodule.num}}" data-item="{{keymodule}}" bindtap="handleCopyNum">复制</text>
                   </view>
                 </block>
                 <block wx:if="{{item.list.length <1}}">

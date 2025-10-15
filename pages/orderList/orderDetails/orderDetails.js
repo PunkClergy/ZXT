@@ -263,6 +263,25 @@ Page({
       }
     });
   },
+  // 复制寄送钥匙单号
+  handleCopyNum(evt) {
+    console.log(evt)
+    wx.setClipboardData({
+      data: evt?.currentTarget?.dataset?.item?.num,
+      success: () => {
+        wx.showToast({
+          title: '复制成功',
+          icon: 'none'
+        });
+      },
+      fail: () => {
+        wx.showToast({
+          title: '复制失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
   // 取消上传物流单号弹窗
   handleHideSengKeyModal() {
     this.setData({
