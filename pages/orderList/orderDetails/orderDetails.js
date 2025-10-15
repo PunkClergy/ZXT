@@ -43,6 +43,7 @@ Page({
     region: [],//地址 当前选择地区
 
   },
+  
   // 钥匙邮寄方式切换函数
   handleKeysCurrType(evt) {
     this.setData({
@@ -223,7 +224,7 @@ Page({
 
         // 更新数据
         this.setData({
-          g_keys_type_index: info.willingKey || 0,
+          g_keys_type_index: info.willingKey || 2,
           g_door_address,
           date: pickupDate,
           time: pickupTime,

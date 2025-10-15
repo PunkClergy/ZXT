@@ -6,7 +6,7 @@
     <scroll-view enhanced show-scrollbar="{{false}}" scroll-x class="nav-scroll" scroll-left="{{navScrollLeft}}" scroll-with-animation style="white-space: nowrap;">
       <view class="nav-container">
         <block wx:for="{{navList}}" wx:key="index">
-          <view wx:if="{{ (item.id == 10) || (item.id == 11 && all_data.status > 1) || (item.id == 12 && all_data.isMailingKeys == 1&&all_data.status==5) || (item.id == 13 && all_data.status > 7)|| (item.id == 14 && all_data.status > 7)}}" class="nav-item {{'section' + item.id == scrollIntoViewId ? 'active' : ''}}" data-id="{{item.id}}" bindtap="handleSwitchNav">
+          <view wx:if="{{(item.id == '10')||(item.id == '11' && all_data.status > 1)||(item.id == '12' && all_data.isMailingKeys == 1 && (all_data.status == 5 || all_data.status == 13 || all_data.status == 6))||(item.id == '13' && (all_data.status == 8 || all_data.status == 9 || all_data.status == 10 || all_data.status == 11 || all_data.status == 12))||(item.id == '14' && (all_data.status == 9 || all_data.status == 10 || all_data.status == 11))}}" class="nav-item {{'section' + item.id == scrollIntoViewId ? 'active' : ''}}" data-id="{{item.id}}" bindtap="handleSwitchNav">
             {{item.name}}
           </view>
         </block>
@@ -115,7 +115,7 @@
             </view>
           </block>
           <!-- 寄送钥匙 -->
-          <block wx:if="{{item.id == 12&&(all_data.isMailingKeys==1)&&all_data.status ==5}}">
+          <block wx:if="{{(item.id == 12 && all_data.isMailingKeys == 1&&(all_data.status==5||all_data.status==13||all_data.status==6))}}">
             <view class="main-content-area">
               <view class="main-content-area-head">
                 <view class="head-left">
@@ -163,7 +163,7 @@
                 <view bindtap="handleSendingKeyFunction" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">确认</view>
               </view>
               <!-- 上门取钥匙 -->
-              <view class="main-content-area-info take_keys_container" wx:if="{{g_keys_type_index == 2||g_keys_type_index == 0}}">
+              <view class="main-content-area-info take_keys_container" wx:if="{{g_keys_type_index == 2}}">
                 <!-- 上门地址和上门时间 -->
                 <view class="take_keys_row">
                   <label class="keys_label cost-main-order">上门取钥匙时间 ：</label>
@@ -190,7 +190,7 @@
             </view>
           </block>
           <!-- 物流信息 -->
-          <block wx:if="{{item.id == 13 && all_data.status > 7}}">
+          <block wx:if="{{item.id == 13 && (all_data.status == 8||all_data.status == 9||all_data.status == 10||all_data.status == 11||all_data.status == 12)}}">
             <view class="main-content-area">
               <view class="main-content-area-head">
                 <view class="head-left">
@@ -217,7 +217,7 @@
             </view>
           </block>
           <!-- 安装信息 -->
-          <block wx:if="{{item.id == 14 && all_data.status > 7}}">
+          <block wx:if="{{item.id == 14 && (all_data.status == 9||all_data.status == 10||all_data.status==11)}}">
             <view class="main-content-area">
               <view class="main-content-area-head">
                 <view class="head-left">
