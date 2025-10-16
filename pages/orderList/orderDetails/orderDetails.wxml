@@ -39,7 +39,7 @@
                   <label>数量 ：</label>
                   <text>{{all_data.deviceCount||'-'}}</text>
                 </view> -->
-                <scroll-view scroll-x class="tabs-scroll" scroll-with-animation scroll-left="{{scrollLeft}}" scroll-into-view="{{'tab' + currentIndex}}" style="height: 50px;">
+                <scroll-view wx:if="{{all_data.carList.length>0}}" scroll-x class="tabs-scroll" scroll-with-animation scroll-left="{{scrollLeft}}" scroll-into-view="{{'tab' + currentIndex}}" style="height: 50px;">
                   <view class="tabs-container">
                     <block wx:for="{{item.list}}" wx:for-item="carModule" wx:for-index="index" wx:key="index">
                       <view id="tab{{index}}" class="tab-item {{currentIndex === index ? 'active' : ''}}" bindtap="handleSwitchTab" data-index="{{index}}" style="height:50px">
@@ -49,7 +49,7 @@
                   </view>
                 </scroll-view>
                 <scroll-view scroll-y class="content-scroll">
-                  <view class="middle-content-item-info">
+                  <view class="middle-content-item-info" wx:if="{{all_data.carList.length>0}}">
                     <view class="main-content-area-info-item  {{all_data.carList[currentIndex].carmodel.length > 8 ? 'long-info-item' : ''}}">
                       <label>车型 ：</label>
                       <text>{{all_data.carList[currentIndex].carmodel||'-'}}</text>
@@ -91,23 +91,23 @@
                 <!-- <label class="long-info-item cost-main-order">{{all_data.productname}}1</label> -->
                 <view class="main-content-area-info-item  {{all_data.hardUnitPrice.length > 15 ? 'long-info-item' : ''}}">
                   <label>硬件单价 ：</label>
-                  <text>{{all_data.hardUnitPrice||'-'}}</text>
+                  <text>{{all_data.hardUnitPrice}}</text>
                 </view>
                 <view class="main-content-area-info-item  {{all_data.includeseveryears.length > 15 ? 'long-info-item' : ''}}">
                   <label>硬件含服务年数 ：</label>
-                  <text>{{all_data.includeseveryears||'-'}}</text>
+                  <text>{{all_data.includeseveryears}}</text>
                 </view>
                 <view class="main-content-area-info-item  {{all_data.serviceUnitPrice.length > 15 ? 'long-info-item' : ''}}">
                   <label>服务费单价 ：</label>
-                  <text>{{all_data.serviceUnitPrice||'-'}}</text>
+                  <text>{{all_data.serviceUnitPrice}}</text>
                 </view>
                 <view class="main-content-area-info-item  {{all_data.keyUnitPrice.length > 15 ? 'long-info-item' : ''}}">
                   <label>钥匙费用 ：</label>
-                  <text>{{all_data.keyUnitPrice||'-'}}</text>
+                  <text>{{all_data.keyUnitPrice}}</text>
                 </view>
                 <view class="main-content-area-info-item  {{all_data.installUnitPrice.length > 15 ? 'long-info-item' : ''}}">
                   <label>安装费 ：</label>
-                  <text>{{all_data.installUnitPrice||'-'}}</text>
+                  <text>{{all_data.installUnitPrice}}</text>
                 </view>
 
                 <!-- </block> -->

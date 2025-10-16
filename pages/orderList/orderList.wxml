@@ -24,6 +24,10 @@
               </view>
             </view>
             <view class="content-item-info">
+              <view class="info-item  {{item.createdate.length > 8 ? 'long-info-item' : ''}}">
+                <label>开单时间 ：</label>
+                <text>{{item.createdate||'-'}}</text>
+              </view>
               <view class="info-item  {{item.industry.length > 8 ? 'long-info-item' : ''}}">
                 <label>行业 ：</label>
                 <text>{{item.industry||'-'}}</text>
@@ -77,7 +81,9 @@
               </block>
             </view>
             <view class="content-item-footer">
-              <view class="footer-left">开单时间: {{item.createdate||'-'}}</view>
+              <view class="footer-left">
+                <!-- 开单时间: {{item.createdate||'-'}} -->
+              </view>
               <view class="footer-right" data-item="{{item}}">
                 {{item.statusName}}
               </view>
