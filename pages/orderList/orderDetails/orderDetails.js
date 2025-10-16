@@ -36,7 +36,7 @@ Page({
     install_params: {}, //安装信息
     startDate: '',
     startTime: '',
-    g_keys_type: [{ value: 1, name: '不寄钥匙，自行安装' }, { value: 2, name: '上门取件' }, { value: 3, name: '自行邮寄' }],// 钥匙邮寄方式
+    g_keys_type: [{ value: 1, name: '不寄钥匙，自行组装' }, { value: 2, name: '上门取件' }, { value: 3, name: '自行邮寄' }],// 钥匙邮寄方式
     g_keys_type_index: 0,
     date: '2025-10-11',//上门取钥匙日期
     time: '18:30',//上门取钥匙时间
@@ -221,7 +221,6 @@ Page({
             .filter(item => item != null && item !== '')
             .join(' ')
           : '';
-
         // 更新数据
         this.setData({
           g_keys_type_index: info.willingKey || 2,

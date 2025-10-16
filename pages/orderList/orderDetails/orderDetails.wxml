@@ -220,11 +220,10 @@
                     <text style="color: rgba(69, 135, 253, 1);" wx:if="{{keymodule.num}}" data-item="{{keymodule}}" bindtap="handleCopyNum">复制</text>
                   </view>
                 </block>
-                <view class="main-content-area-info" wx:if="{{g_keys_type_index == 1}}">
-                  <text style="color: #666;font-size: 24rpx;">无需邮寄</text>
-                </view>
               </view>
-
+              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 1}}">
+                <text style="color: #666;font-size: 24rpx;">不寄钥匙，自行组装</text>
+              </view>
             </view>
           </block>
           <!-- 物流信息 -->
