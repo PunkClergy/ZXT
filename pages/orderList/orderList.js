@@ -36,7 +36,7 @@ Page({
     totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_page: 1, //列表页码
     g_items: [], //列表数据
-    c_activeTab: 1, //当前页签值
+    c_activeTab: 2, //当前页签值
     // 下单参数
     g_core_functions: [], //所属功能
     g_core_functions_index: null, //当前功能
@@ -708,7 +708,40 @@ Page({
       (response) => {
         if (response.data?.code === 1000) {
           showToast(response.data?.msg || '提交成功');
-          wx.navigateBack({ delta: 1 }); // 返回上一页
+          this.setData({
+            c_activeTab: 1, //当前页签值
+            // 下单参数
+            g_core_functions: [], //所属功能
+            g_core_functions_index: null, //当前功能
+            g_core_functions_active: [],//当前所选功能
+            g_core_type: [],// 设备类型
+            g_core_type_index: null,// 当前选择设备类型
+            g_industry: [], //所属行业
+            g_industry_index: null, //当前行业
+            tabs: [{
+              id: 0,
+              title: '车型1',
+            }],
+            currentIndex: 0,//当前显示车辆tab签
+            scrollLeft: 0,//车辆参数
+            params: {},//新增订单form参数
+            g_install_list: [{
+              value: 0,
+              name: '否'
+            }, {
+              value: 1,
+              name: '是'
+            }], // 是否安装
+            g_install_index: 1,//是否安装当前选择
+            c_address_type: '',// 地址选择类型
+            c_select_address: false,//选择地址弹窗
+            g_door_address: '',//上门地址
+            g_receiving_address: '',//收货地址
+            region: [],//地址 当前选择地区
+            bak: '',//备注
+          }, () => {
+            this.getOrderList()
+          })
         } else {
           showToast(response.data?.msg || '提交失败，请稍后重试');
         }
