@@ -36,7 +36,7 @@
         },
         {
           "name": "work sheet",
-          "pathName": "pages/channel/workSheet/index",
+          "pathName": "pages/oneClickOrdering/oneClickOrdering",
           "query": "",
           "launchMode": "default",
           "scene": null

@@ -18,7 +18,7 @@
                 </view>
               </view>
               <view class="head-right">
-                <image src="/assets/images/home/_see.png" data-item="{{item}}" catchtap="handleView" />
+                <image src="/assets/images/home/_see.png" data-item="{{item}}" catchtap="handleOriginalView" />
                 <image wx:if="{{item.status!=-1}}" src="/assets/images/home/qxdd.png" data-item="{{item}}" bindtap="handleCancel" />
                 <image wx:if="{{item.status == -1}}" src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />
               </view>

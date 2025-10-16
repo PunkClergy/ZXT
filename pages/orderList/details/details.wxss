@@ -1,0 +1,410 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+  position: relative;
+}
+
+.anchor-container {
+  display: flex;
+  flex-direction: column;
+  width: 96%;
+  margin: auto;
+}
+
+.nav-scroll {
+  width: 100%;
+  position: relative;
+}
+
+.nav-container {
+  padding: 20rpx 0rpx;
+  display: flex;
+  gap: 15rpx;
+}
+
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 40rpx;
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 600;
+  position: relative;
+  transition: all 0.3s;
+  background-color: rgb(211, 212, 212);
+  border-radius: 30rpx;
+}
+
+.nav-item.active {
+  color: #fff;
+  background-color: rgba(69, 135, 253, 1);
+}
+
+.nav-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40rpx;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+/* 具体内容样式 */
+.main-content-area {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-content-area-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 10rpx;
+}
+
+.main-content-area-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 10rpx;
+  gap: 20rpx;
+  /* height: 500rpx; */
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.main-content-area-info-item {
+  flex: 0 0 48%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  transition: all 0.3s;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.long-info-item {
+  flex-basis: 100% !important;
+}
+
+.head-left {
+  font-size: 28rpx;
+}
+
+.head-right {
+  font-size: 26rpx;
+}
+
+.cost-main-order {
+  font-size: 26rpx;
+  font-weight: bold;
+}
+
+.tabs-container {
+  display: inline-block;
+}
+
+.tab-item {
+  display: inline-block;
+  padding: 0 30rpx;
+  line-height: 90rpx;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+  transition: all 0.3s;
+}
+
+
+.tab-item.active {
+  color: #007aff;
+  font-weight: bold;
+}
+
+.tab-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 4rpx;
+  background: #007aff;
+  border-radius: 2rpx;
+}
+
+.middle-content-item-info {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100rpx;
+  max-height: 50vh;
+  overflow-y: auto;
+  justify-content: flex-start;
+  padding: 10rpx;
+  gap: 20rpx;
+  /* border-bottom: 1px solid #f0f0f0; */
+}
+
+/* 寄送钥匙信息 */
+.mailing_address {
+  display: flex;
+  gap: 40rpx;
+}
+
+.mailing_address label {
+  font-size: 26rpx;
+}
+
+.mailing_address text {
+  font-size: 24rpx;
+}
+
+.key-modular-num {
+  background: rgba(245, 111, 72, 1);
+  padding: 5rpx 20rpx;
+  border-radius: 10rpx;
+  color: #fff;
+}
+
+.key-modular {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+/* 弹窗蒙版 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+}
+
+.modal-base-map {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 20rpx;
+  z-index: 998;
+  padding: 20rpx;
+}
+
+.modal-container {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-container-head {
+  display: flex;
+  justify-content: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 60rpx;
+}
+
+.modal-container-head text {
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #333333;
+}
+
+.modal-container-head image {
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.modal-container-middle {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.modal-container-footer {
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container-footer button {
+  background: linear-gradient(88deg, #1576DC, #1B64B1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #FFFFFF;
+  width: 50%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.middle-form-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 45rpx;
+  width: 80%;
+
+}
+
+.middle-form-item label {
+  font-family: PingFang SC;
+  font-weight: 600;
+  font-size: 28rpx;
+  color: #333333;
+
+}
+
+.modal-form-region {
+  display: flex;
+  gap: 10rpx;
+}
+
+.form-item-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4rpx;
+  padding: 4rpx 2rpx 4rpx 10rpx;
+  gap: 20rpx;
+}
+
+.form-item-text text {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 28rpx;
+  color: #7B7C7C;
+  border-bottom: 1rpx solid #f0f0f0;
+
+}
+
+.form-item-text image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.card-footer {
+  height: 50px;
+  margin: 20rpx 0;
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #ffffff;
+}
+
+.card-footer view {
+  width: 40%;
+  background-color: #2196f3;
+  padding: 10rpx;
+  background: linear-gradient(88deg, #1576dc, #1b64b1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
+}
+
+.keys_container {
+  padding: 10rpx;
+  display: flex;
+  flex-direction: row;
+  gap: 20rpx;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.keys_label {
+  /* 保留原有类名 cost-main-order 可继续定义其样式 */
+}
+
+.keys_options {
+  font-size: 24rpx;
+  display: flex;
+  gap: 20rpx;
+  flex-direction: row;
+}
+
+.keys_option {
+  border: 1rpx solid #d1cdcd;
+  padding: 2rpx 10rpx;
+  border-radius: 10rpx;
+}
+
+/* 上门取钥匙 */
+picker {
+  font-size: 24rpx;
+  color: #7b7c7c;
+}
+
+/* 容器 */
+.take_keys_container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 行布局：时间选择行、地址行 */
+.take_keys_row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+/* 地址行额外样式（无 align-items） */
+.take_keys_address_row {
+  align-items: flex-start;
+  /* 如果需要顶部对齐可保留，否则可删 */
+}
+
+/* 时间选择器容器 */
+.take_keys_picker {
+  display: flex;
+  flex-direction: row;
+  gap: 20rpx;
+}
+
+/* 地址文字样式 */
+.take_keys_address_text {
+  color: #7b7c7c;
+  font-size: 24rpx;
+}
+
+/* 确认按钮 */
+.take_keys_confirm_btn {
+  margin: 20rpx auto;
+  background: rgba(245, 111, 72, 1);
+  font-size: 26rpx;
+  color: #fff;
+  padding: 10rpx 80rpx;
+  border-radius: 20rpx;
+}

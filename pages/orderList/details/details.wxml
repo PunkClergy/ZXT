@@ -1,0 +1,71 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+
+  <!-- 自定义头部 -->
+  <custom-header title="订单详情" />
+  <view class="anchor-container" style="height:{{c_screen_height-(c_statusBarHeight + c_navBarHeight)}}px;margin-top: {{c_totalNavHeight}}px;">
+    <scroll-view enhanced show-scrollbar="{{false}}" scroll-y style="height:{{c_screen_height-(c_statusBarHeight + c_navBarHeight +45)}}px" scroll-into-view="{{scrollIntoViewId}}" scroll-with-animation>
+      <view class="info-container">
+        <!-- 基础信息 -->
+        <block>
+          <view class="main-content-area">
+            <view class="main-content-area-head">
+              <view class="head-left">
+                基础信息
+              </view>
+              <view class="head-right">
+                {{all_data.statusName}}
+              </view>
+            </view>
+            <view class="main-content-area-info">
+              <view class="main-content-area-info-item  {{all_data.industry.length > 15 ? 'long-info-item' : ''}}">
+                <label>行业 ：</label>
+                <text>{{all_data.industry||'-'}}</text>
+              </view>
+              <view class="main-content-area-info-item  {{all_data.devicefun.length > 15 ? 'long-info-item' : ''}}">
+                <label>功能 ：</label>
+                <text>{{all_data.devicefun||'-'}}</text>
+              </view>
+              <view class="main-content-area-info-item  {{all_data.buycount.length > 15 ? 'long-info-item' : ''}}">
+                <label>数量 ：</label>
+                <text>{{all_data.buycount||'-'}}</text>
+              </view>
+              <scroll-view scroll-x class="tabs-scroll" scroll-with-animation scroll-left="{{scrollLeft}}" scroll-into-view="{{'tab' + currentIndex}}" style="height: 50px;">
+                <view class="tabs-container">
+                  <block wx:for="{{all_data.carList}}" wx:for-item="carModule" wx:for-index="index" wx:key="index">
+                    <view id="tab{{index}}" class="tab-item {{currentIndex === index ? 'active' : ''}}" bindtap="handleSwitchTab" data-index="{{index}}" style="height:50px">
+                      {{carModule.carmodel}}
+                    </view>
+                  </block>
+                </view>
+              </scroll-view>
+              <scroll-view scroll-y class="content-scroll">
+                <view class="middle-content-item-info">
+                  <view class="main-content-area-info-item  {{all_data.carList[currentIndex].carmodel.length > 8 ? 'long-info-item' : ''}}">
+                    <label>车型 ：</label>
+                    <text>{{all_data.carList[currentIndex].carmodel||'-'}}</text>
+                  </view>
+                  <view class="main-content-area-info-item  {{all_data.carList[currentIndex].carserial.length > 8 ? 'long-info-item' : ''}}">
+                    <label>车系 ：</label>
+                    <text>{{all_data.carList[currentIndex].carserial||'-'}}</text>
+                  </view>
+                  <view class="main-content-area-info-item  {{all_data.carList[currentIndex].carversion.length > 8 ? 'long-info-item' : ''}}">
+                    <label>年款 ：</label>
+                    <text>{{all_data.carList[currentIndex].carversion||'-'}}</text>
+                  </view>
+                  <view class="main-content-area-info-item  {{all_data.carList[currentIndex].runtype.length > 8 ? 'long-info-item' : ''}}">
+                    <label>启动方式 ：</label>
+                    <text>{{all_data.carList[currentIndex].runtype||'-'}}</text>
+                  </view>
+                  <view class="main-content-area-info-item  {{all_data.orderCarList[currentIndex].vin.length > 8 ? 'long-info-item' : ''}}">
+                    <label>车架号 ：</label>
+                    <text>{{all_data.orderCarList[currentIndex].vin||'-'}}</text>
+                  </view>
+                </view>
+              </scroll-view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+  </view>
+</view>

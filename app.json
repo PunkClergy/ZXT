@@ -46,7 +46,6 @@
     "pages/carService/oilCalculator/oilCalculator",
     "pages/carManager/oilDeviceList/oilDeviceList",
     "pages/mapSelection/map",
-    "pages/oneClickOrdering/oneClickOrdering",
     "pages/system/carManager/carManager",
     "pages/carManager/carList/carList",
     "pages/carManager/netCarList/carList",
@@ -98,7 +97,6 @@
     "pages/system/UserAuthSys/add",
     "pages/orderList/orderList",
     "pages/orderList/orderDetails/orderDetails",
-    "pages/orderList/orderAdd/orderAdd",
     "pages/receivingAddress/index",
     "pages/channel/workSheet/index",
     "pages/channel/placeAddWork/index",
@@ -151,7 +149,8 @@
     "pages/listOfPrivateCars/pdf/index",
     "pages/selfServiceSettings/index",
     "pages/videoMaterials/index",
-    "pages/netCarurgent/index"
+    "pages/netCarurgent/index",
+    "pages/orderList/details/details"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

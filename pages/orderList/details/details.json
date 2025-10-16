@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "订单详情",
+  "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}
+

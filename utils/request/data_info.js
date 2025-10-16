@@ -172,6 +172,11 @@ const u_getOrderDetial = {
   URL: fin3plusUrl + "deviceBuyApi/getOrderDetial",
   orderId: 'orderId'
 }
+// 原始订单详情
+const u_customerOrderDetail = {
+  URL: fin3plusUrl + "deviceBuyApi/customerOrderDetail",
+  orderId: 'orderId'
+}
 // 移交管理员
 const u_transferAdminUser = {
   URL: fin3plusUrl + "accountapi/transferAdminUser",
@@ -320,5 +325,6 @@ module.exports = {
   u_buyRecord,
   u_getDeviceClass,
   u_cancalCustomerOrder,
-  u_delCustomerOrder
+  u_delCustomerOrder,
+  u_customerOrderDetail
 }

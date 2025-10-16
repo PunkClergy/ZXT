@@ -434,6 +434,12 @@ Page({
       url: '/pages/orderList/orderDetails/orderDetails?info=' + JSON.stringify(evt.currentTarget.dataset.item),
     })
   },
+  // 跳转到原始订单详情
+  handleOriginalView(evt) {
+    wx.navigateTo({
+      url: '/pages/orderList/details/details?info=' + JSON.stringify(evt.currentTarget.dataset.item),
+    })
+  },
   // 删除原始订单
   handleDelete(evt) {
     const requestParam = {
