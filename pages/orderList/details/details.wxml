@@ -29,7 +29,7 @@
                 <label>数量 ：</label>
                 <text>{{all_data.buycount||'-'}}</text>
               </view>
-              <scroll-view scroll-x class="tabs-scroll" scroll-with-animation scroll-left="{{scrollLeft}}" scroll-into-view="{{'tab' + currentIndex}}" style="height: 50px;">
+              <scroll-view wx:if="{{all_data.carList.length>0}}" scroll-x class="tabs-scroll" scroll-with-animation scroll-left="{{scrollLeft}}" scroll-into-view="{{'tab' + currentIndex}}" style="height: 50px;">
                 <view class="tabs-container">
                   <block wx:for="{{all_data.carList}}" wx:for-item="carModule" wx:for-index="index" wx:key="index">
                     <view id="tab{{index}}" class="tab-item {{currentIndex === index ? 'active' : ''}}" bindtap="handleSwitchTab" data-index="{{index}}" style="height:50px">
@@ -38,7 +38,7 @@
                   </block>
                 </view>
               </scroll-view>
-              <scroll-view scroll-y class="content-scroll">
+              <scroll-view wx:if="{{all_data.carList.length>0}}" scroll-y class="content-scroll">
                 <view class="middle-content-item-info">
                   <view class="main-content-area-info-item  {{all_data.carList[currentIndex].carmodel.length > 8 ? 'long-info-item' : ''}}">
                     <label>车型 ：</label>
@@ -56,9 +56,9 @@
                     <label>启动方式 ：</label>
                     <text>{{all_data.carList[currentIndex].runtype||'-'}}</text>
                   </view>
-                  <view class="main-content-area-info-item  {{all_data.orderCarList[currentIndex].vin.length > 8 ? 'long-info-item' : ''}}">
+                  <view class="main-content-area-info-item  {{all_data.carList[currentIndex].vin.length > 8 ? 'long-info-item' : ''}}">
                     <label>车架号 ：</label>
-                    <text>{{all_data.orderCarList[currentIndex].vin||'-'}}</text>
+                    <text>{{all_data.carList[currentIndex].vin||'-'}}</text>
                   </view>
                 </view>
               </scroll-view>

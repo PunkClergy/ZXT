@@ -306,6 +306,7 @@ Page({
     }
     byPost(getApp().data.k1swUrl + u_willingkey.URL, pamsg, (response) => {
       if (response.data.code == 1000) {
+        showToast(response.data?.msg)
         this.initDetails(this.data.all_data)
       }
     });
