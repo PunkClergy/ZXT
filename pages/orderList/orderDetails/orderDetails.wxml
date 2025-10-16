@@ -76,7 +76,7 @@
             </view>
           </block>
           <!-- 报价信息 -->
-          <block wx:if="{{item.id == 11&&all_data.status>1}}">
+          <block wx:if="{{item.id == 11&&all_data.status>1&&all_data.cost!=null}}">
             <view class="main-content-area">
               <view class="main-content-area-head">
                 <view class="head-left">
