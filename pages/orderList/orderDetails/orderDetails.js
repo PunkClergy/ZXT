@@ -43,7 +43,7 @@ Page({
     region: [],//地址 当前选择地区
 
   },
-  
+
   // 钥匙邮寄方式切换函数
   handleKeysCurrType(evt) {
     this.setData({
@@ -426,10 +426,16 @@ Page({
     console.log(options, '222')
     if (options.info) {
       this.initDetails(JSON.parse(options.info))
+      this.setData({
+        numInfo: JSON.parse(options.info)
+      })
     }
   },
   onReady() { },
   onShow() {
+    if (this?.data?.numInfo) {
+      this.initDetails(this.data.numInfo)
+    }
     this.initialiImageBaseConversion()
     this.handleCurrentDate()
   },

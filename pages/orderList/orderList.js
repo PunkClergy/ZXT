@@ -457,7 +457,12 @@ Page({
               showToast(response.data.msg);
             } else {
               showToast(response.data.msg);
-              this.getOrderList()
+              this.setData({
+                g_page: 1,
+                g_items: []
+              }, () => {
+                this.getOrderList()
+              })
             }
           }, (error) => {
             showToast('删除订单失败，请重试');
@@ -487,7 +492,13 @@ Page({
               showToast(response.data.msg);
             } else {
               showToast(response.data.msg);
-              this.getOrderList()
+              this.setData({
+                g_page: 1, //列表页码
+                g_items: [], //列表数据
+              }, () => {
+                this.getOrderList()
+              })
+
             }
           }, (error) => {
             showToast('取消订单失败，请重试');
@@ -709,6 +720,8 @@ Page({
         if (response.data?.code === 1000) {
           showToast(response.data?.msg || '提交成功');
           this.setData({
+            g_page: 1,
+            g_items: [],
             c_activeTab: 1, //当前页签值
             // 下单参数
             g_core_functions: [], //所属功能

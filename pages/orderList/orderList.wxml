@@ -19,14 +19,18 @@
               </view>
               <view class="head-right">
                 <image src="/assets/images/home/_see.png" data-item="{{item}}" catchtap="handleOriginalView" />
-                <image wx:if="{{item.status!=-1}}" src="/assets/images/home/qxdd.png" data-item="{{item}}" bindtap="handleCancel" />
                 <image wx:if="{{item.status == -1}}" src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />
+                <image wx:else src="/assets/images/home/qxdd.png" data-item="{{item}}" bindtap="handleCancel" />
               </view>
             </view>
             <view class="content-item-info">
               <view class="info-item  {{item.createdate.length > 8 ? 'long-info-item' : ''}}">
                 <label>开单时间 ：</label>
                 <text>{{item.createdate||'-'}}</text>
+              </view>
+              <view class="info-item  {{item.statusName.length > 8 ? 'long-info-item' : ''}}">
+                <label>订单状态 ：</label>
+                <text>{{item.statusName||'-'}}</text>
               </view>
               <view class="info-item  {{item.industry.length > 8 ? 'long-info-item' : ''}}">
                 <label>行业 ：</label>
@@ -80,14 +84,14 @@
                 </view>
               </block>
             </view>
-            <view class="content-item-footer">
+            <!-- <view class="content-item-footer">
               <view class="footer-left">
-                <!-- 开单时间: {{item.createdate||'-'}} -->
+                开单时间: {{item.createdate||'-'}}
               </view>
               <view class="footer-right" data-item="{{item}}">
                 {{item.statusName}}
               </view>
-            </view>
+            </view> -->
           </view>
         </block>
       </scroll-view>
