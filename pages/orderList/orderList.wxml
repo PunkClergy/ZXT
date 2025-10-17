@@ -212,9 +212,9 @@
               </radio-group>
             </view>
           </view>
-          <!-- 是否接受寄送钥匙 -->
-          <!-- <view class="card-info-item">
-            <label>是否接受寄送钥匙<text>*</text></label>
+          <!-- 购买方式 -->
+          <view class="card-info-item">
+            <label>购买方式<text>*</text></label>
             <view class="card-info-item-input">
               <radio-group bindchange="handleSendingKeysRadioChange" style="display: flex;align-items: center;gap: 20rpx;">
                 <label wx:for="{{g_sending_keys}}" wx:key="index" style="display: flex;align-items: center;">
@@ -223,30 +223,15 @@
                 </label>
               </radio-group>
             </view>
-          </view> -->
-          <!-- 上门取钥匙时间 -->
-          <!-- <view class="card-info-item" wx:if="{{g_sending_keys_index == 1}}">
-            <label>上门取钥匙时间<text>*</text></label>
-            <view class="card-info-item-input">
-              <view class="picker" style="display: flex;flex-direction: row;gap: 20rpx;">
-                <picker mode="date" value="{{date}}" bindchange="bindDateChange">
-                  <view class="picker-item">{{date}}</view>
-                </picker>
-                <picker mode="time" value="{{time}}" bindchange="bindTimeChange">
-                  <view class="picker-item">{{time}}</view>
-                </picker>
-              </view>
-            </view>
-          </view> -->
+          </view>
+
           <!-- 上门取钥匙地址 -->
-          <!-- <view class="card-info-item" wx:if="{{g_sending_keys_index == 1}}">
-            <label>上门取钥匙地址<text>*</text></label>
+          <view class="card-info-item" wx:if="{{g_sending_keys_index == 2}}">
+            <label>邀请码<text>*</text></label>
             <view class="card-info-item-input">
-              <view disabled="true" data-type="door" data-item="{{g_door_address}}" bindtap="handleSelectAddress" style="font-size: 26rpx;color: #666;">
-                {{g_door_address?g_door_address:'请输入上门取钥匙地址'}}
-              </view>
+              <input  placeholder="请输入邀请码" value="{{inviteCode}}" data-item="inviteCode" bindinput="handleInviteCodeBindinput" />
             </view>
-          </view> -->
+          </view>
           <!-- 客户收货地址 -->
           <view class="card-info-item">
             <label>客户收货地址<text>*</text></label>

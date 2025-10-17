@@ -60,17 +60,15 @@ Page({
       value: 1,
       name: '是'
     }], // 是否安装
-    // g_sending_keys: [{
-    //   value: 0,
-    //   name: '否'
-    // }, {
-    //   value: 1,
-    //   name: '是'
-    // }],// 是否接受寄送钥匙
+    g_sending_keys: [{
+      value: 1,
+      name: '直接购买'
+    }, {
+      value: 2,
+      name: '押金方式'
+    }],// 购买方式
     g_install_index: 1,//是否安装当前选择
-    // g_sending_keys_index: 1,//是否寄送钥匙当前选择
-    date: '2025-10-11',//上门取钥匙日期
-    time: '18:30',//上门取钥匙时间
+    g_sending_keys_index: 1,//是否寄送钥匙当前选择
     c_address_type: '',// 地址选择类型
     c_select_address: false,//选择地址弹窗
     g_door_address: '',//上门地址
@@ -398,6 +396,12 @@ Page({
       buycount: evt.detail.value
     })
   },
+    // 邀请码改变
+    handleInviteCodeBindinput(evt) {
+      this.setData({
+        inviteCode: evt.detail.value
+      })
+    },
   // 收货人发生改变
   handlePersonBindinput(evt) {
     this.setData({
@@ -423,11 +427,11 @@ Page({
     })
   },
   // 是否接受寄送钥匙切换函数
-  // handleSendingKeysRadioChange(evt) {
-  //   this.setData({
-  //     g_sending_keys_index: evt.detail.value
-  //   })
-  // },
+  handleSendingKeysRadioChange(evt) {
+    this.setData({
+      g_sending_keys_index: evt.detail.value
+    })
+  },
   // 跳转到详情
   handleView(evt) {
     wx.navigateTo({
@@ -562,13 +566,14 @@ Page({
   // 提交订单参数
   handleSubmit() {
     const {
+      inviteCode = null,
       buycount = 0,                // 购买设备数量（默认为 0）
       params = {},                 // 动态表单字段（如车辆信息等）
       g_core_functions = [],       // 所有可选功能列表，state 为 true 表示已选中
       g_industry = [],             // 行业选项列表
       g_industry_index = null,     // 当前选中的行业索引
       g_install_index = null,      // 是否安装（true/false 或其他标识，建议后续明确类型）
-      // g_sending_keys_index = null, // 是否接受寄送钥匙
+      g_sending_keys_index = null, // 是否接受寄送钥匙
       g_core_type_index = null,    // 当前选中的设备类型对象（含 isneedcar 等属性）
       // g_door_address = '',         // 上门取钥匙地址（格式：姓名 手机号 详细地址）
       g_receiving_address = '',    // 客户收货地址（格式：姓名 手机号 详细地址）
@@ -612,7 +617,7 @@ Page({
     const takemobile = partsReceiving[1] || '';
     const takeaddress = partsReceiving.slice(2).join(' ') || '';
     // 8. 是否接受寄送钥匙
-    // const sending_keys = g_sending_keys_index;
+    const sending_keys = g_sending_keys_index;
 
     // ========== 表单校验（使用提前 return 避免深层嵌套） ==========
 
@@ -631,10 +636,10 @@ Page({
       return;
     }
 
-    // if (!g_door_address.trim() && g_sending_keys_index == 1) {
-    //   showToast('请输入上门取钥匙地址（格式：姓名 手机 详细地址）');
-    //   return;
-    // }
+    if (inviteCode == null && g_sending_keys_index == 2) {
+      showToast('请输入邀请码）');
+      return;
+    }
 
     if (!g_receiving_address.trim()) {
       showToast('请输入客户收货地址（格式：姓名 手机 详细地址）');
@@ -698,8 +703,9 @@ Page({
       devicefun,          // 功能（"||" 分隔）
       deviceclass,        // 设备类型
       isinstall,          // 是否安装
-      // sending_keys,      // 是否接受寄送钥匙
+      buyType: sending_keys,      // 是否接受寄送钥匙
       buycount: Number(buycount) || 0, // 购买数量（转为数字）
+      inviteCode,
       // pickperson,         // 上门联系人
       // pickmobile,         // 上门联系电话
       // pickaddress,        // 上门地址
@@ -710,7 +716,8 @@ Page({
       bak,                // 备注
       carList: g_core_type_index?.isneedcar ? carList : [] // 仅当需要时提交车辆信息
     };
-
+    console.log(submitParams)
+    // return
     // ========== 发送提交请求 ==========
 
     byPostJson(
@@ -720,6 +727,8 @@ Page({
         if (response.data?.code === 1000) {
           showToast(response.data?.msg || '提交成功');
           this.setData({
+            inviteCode:null,
+            buycount:null,
             g_page: 1,
             g_items: [],
             c_activeTab: 1, //当前页签值
