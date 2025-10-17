@@ -204,7 +204,8 @@ Page({
         return simple_temp
       })
       this.setData({
-        g_core_type: simple_info
+        g_core_type: simple_info,
+        g_core_type_index: list?.[0]
       })
     })
   },
@@ -396,12 +397,12 @@ Page({
       buycount: evt.detail.value
     })
   },
-    // 邀请码改变
-    handleInviteCodeBindinput(evt) {
-      this.setData({
-        inviteCode: evt.detail.value
-      })
-    },
+  // 邀请码改变
+  handleInviteCodeBindinput(evt) {
+    this.setData({
+      inviteCode: evt.detail.value
+    })
+  },
   // 收货人发生改变
   handlePersonBindinput(evt) {
     this.setData({
@@ -597,7 +598,7 @@ Page({
       .join('||');
 
     // 3. 设备类型名称（注意：g_core_type_index 是对象，不是索引）
-    const deviceclass = g_core_type_index?.name || null;
+    const deviceclass = g_core_type_index?.name || g_core_type_index?.funname || null;
 
     // 4. 是否安装（直接使用原始值，建议后续明确其含义和类型）
     const isinstall = g_install_index;
@@ -727,8 +728,8 @@ Page({
         if (response.data?.code === 1000) {
           showToast(response.data?.msg || '提交成功');
           this.setData({
-            inviteCode:null,
-            buycount:null,
+            inviteCode: null,
+            buycount: null,
             g_page: 1,
             g_items: [],
             c_activeTab: 1, //当前页签值
@@ -763,6 +764,7 @@ Page({
             bak: '',//备注
           }, () => {
             this.getOrderList()
+            this.initialgetType()
           })
         } else {
           showToast(response.data?.msg || '提交失败，请稍后重试');
