@@ -89,6 +89,10 @@
               <view class="main-content-area-info">
                 <!-- <block wx:for="{{item.list}}" wx:for-item="module" wx:for-index="idx" wx:key="id"> -->
                 <!-- <label class="long-info-item cost-main-order">{{all_data.productname}}1</label> -->
+                <view class="main-content-area-info-item  {{all_data.deposit.length > 15 ? 'long-info-item' : ''}}">
+                  <label>押金 ：</label>
+                  <text>{{all_data.deposit}}</text>
+                </view>
                 <view class="main-content-area-info-item  {{all_data.hardUnitPrice.length > 15 ? 'long-info-item' : ''}}">
                   <label>硬件单价 ：</label>
                   <text>{{all_data.hardUnitPrice}}</text>
@@ -115,7 +119,7 @@
             </view>
           </block>
           <!-- 寄送钥匙 -->
-          <block wx:if="{{(item.id == 12 && all_data.isMailingKeys == 1&&(all_data.status==5||all_data.status==13||all_data.status==6))}}">
+          <block wx:if="{{(item.id == 12 && all_data.isMailingKeys == 1&&(all_data.status==5||all_data.status==13))}}">
             <view class="main-content-area">
               <view class="main-content-area-head">
                 <view class="head-left">
@@ -190,7 +194,7 @@
             </view>
           </block>
           <!-- 寄送钥匙渲染 -->
-          <block wx:if="{{item.id == 12 && all_data.isMailingKeys == 1&&(all_data.status == 8 || all_data.status == 9 || all_data.status == 10 || all_data.status == 11 || all_data.status == 12)}}">
+          <block wx:if="{{item.id == 12 && all_data.isMailingKeys == 1&&(all_data.status == 8 || all_data.status == 9 || all_data.status == 10 || all_data.status == 11 || all_data.status == 12||all_data.status==6)}}">
             <view class="main-content-area">
               <view class="main-content-area-head">
                 <view class="head-left">

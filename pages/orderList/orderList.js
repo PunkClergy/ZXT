@@ -626,10 +626,10 @@ Page({
       return;
     }
 
-    if (!devicefun) {
-      showToast('请选择至少一个功能');
-      return;
-    }
+    // if (!devicefun) {
+    //   showToast('请选择至少一个功能');
+    //   return;
+    // }
 
     if (!deviceclass) {
       showToast('请选择设备类型');

@@ -21,10 +21,10 @@
                 <label>行业 ：</label>
                 <text>{{all_data.industry||'-'}}</text>
               </view>
-              <view class="main-content-area-info-item  {{all_data.devicefun.length > 15 ? 'long-info-item' : ''}}">
+              <!-- <view class="main-content-area-info-item  {{all_data.devicefun.length > 15 ? 'long-info-item' : ''}}">
                 <label>功能 ：</label>
                 <text>{{all_data.devicefun||'-'}}</text>
-              </view>
+              </view> -->
               <view class="main-content-area-info-item  {{all_data.buycount.length > 15 ? 'long-info-item' : ''}}">
                 <label>数量 ：</label>
                 <text>{{all_data.buycount||'-'}}</text>
