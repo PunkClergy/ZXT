@@ -6,6 +6,9 @@ const u_bannerlist = {
 const u_midMenulist = {
   URL: fin3plusUrl + 'deskapi/midMenulist',
 }
+const u_industryList ={
+  URL: fin3plusUrl + 'promotionalApi/industryList',
+}
 const u_menulist = {
   URL: fin3plusUrl + 'deskapi/menulist',
   menuId: 'menuId',
@@ -57,6 +60,7 @@ module.exports = {
   u_navlist,
   u_bannerlist,
   u_midMenulist,
+  u_industryList,
   u_menulist,
   u_rightMenulist,
   u_termialList

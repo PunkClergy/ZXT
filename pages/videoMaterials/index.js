@@ -15,14 +15,14 @@ const {
   _handleDeviceInfo
 } = require('../../utils/public').default
 const {
-  u_midMenulist,
+  u_industryList,
 } = require('../../utils/request/home')
 const filter_sort = [
   { value: 'asc', name: '升序' },
   { value: 'desc', name: '降序' },
 ]
 const filter_type = [
-  { value: null, name: '全部' },
+  { value: '', name: '全部' },
   { value: 1, name: '图片' },
   { value: 2, name: '视频' },
   { value: 3, name: '文档' },
@@ -68,14 +68,14 @@ Page({
 
   // 查询行业数据
   initialQuickEntry() {
-    const url = `${getApp().data.k1swUrl}${u_midMenulist.URL}`;
+    const url = `${getApp().data.k1swUrl}${u_industryList.URL}`;
     const params = { terminalId: -1 };
 
     byGet(url, params)
       .then(response => {
         const content = response.data?.content || [];
         const info = content.map(({ id, name }) => ({ value: id, name }));
-        const infoWithAll = [{ value: null, name: '全部' }, ...info];
+        const infoWithAll = [{ value: '', name: '全部' }, ...info];
 
         const { filter_aggregate } = this.data;
         if (Array.isArray(filter_aggregate) && filter_aggregate[2]) {
@@ -159,7 +159,9 @@ Page({
     // 3. setData 并刷新列表
     this.setData({
       g_param: newGParam,
-      filter_aggregate: newFilterAggregate
+      filter_aggregate: newFilterAggregate,
+      g_page: 1, //列表页码
+      g_items: [], //列表数据
     }, () => {
       this.initList();
     });
