@@ -25,7 +25,8 @@ const filter_type = [
   { value: null, name: '全部' },
   { value: 1, name: '图片' },
   { value: 2, name: '视频' },
-  { value: 3, name: '其他' },
+  { value: 3, name: '文档' },
+  { value: 4, name: '其他' },
 ]
 Page({
   data: {
