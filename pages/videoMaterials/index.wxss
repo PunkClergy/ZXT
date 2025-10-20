@@ -277,6 +277,7 @@
   font-size: 26rpx;
   color: #333333;
 }
+
 .viewText {
   text-align: right;
   font-family: PingFang SC;
@@ -285,8 +286,7 @@
   color: #333333;
 }
 
-.card-info-item-tabs {
-}
+.card-info-item-tabs {}
 
 .card-info-item-tabs-btn {
   display: flex;
@@ -391,9 +391,11 @@
   width: 36rpx;
   height: 36rpx;
 }
+
 .child-node {
   margin-top: 5rpx;
 }
+
 .checkbox.indeterminate {
   background: #fff;
   border-color: #07c160;
@@ -621,7 +623,8 @@
   font-size: 26rpx;
   color: #333333;
 }
-.viewText{
+
+.viewText {
   text-align: right;
   font-family: PingFang SC;
   font-weight: 500;
@@ -808,4 +811,43 @@
 .form-item-text image {
   width: 30rpx;
   height: 30rpx;
+}
+
+/* 搜索框 */
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 200rpx;
+  padding: 8px 12px;
+  width: 90%;
+}
+
+/* 搜索图标 */
+.search-icon {
+  margin-right: 8px;
+  /* 图标与输入框之间留出间距 */
+}
+
+/* 输入框 */
+.search-input {
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 16px;
+}
+
+.search-count {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 90%;
+}
+
+.search-count text {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 22rpx;
+  color: #7B7C7C;
 }

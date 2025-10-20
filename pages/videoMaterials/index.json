@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "custom-header": "/components/CustomHeader/index"
+    "custom-header": "/components/CustomHeader/index",
+    "drop-filter-com": "/components/DropFilterCom/index"
   },
   "navigationStyle": "custom"
 }
