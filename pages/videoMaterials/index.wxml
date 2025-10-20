@@ -29,7 +29,11 @@
               </view> -->
             </view>
             <view class="content-item-info">
-              <view class="info-item  long-info-item" wx:if="{{!pageType}}">
+              <view class="info-item" wx:if="{{!pageType}}">
+                <label>主/子序号 ：</label>
+                <text>{{item.dsx||'-'}}/{{item.xsx}}</text>
+              </view>
+              <view class="info-item  {{item.createusername.length > 15 ? 'long-info-item' : ''}}" wx:if="{{!pageType}}">
                 <label>创建人 ：</label>
                 <text>{{item.createusername||'-'}}</text>
               </view>

@@ -173,7 +173,9 @@ Page({
       g_param: {
         ...g_param,
         name: inputValue
-      }
+      },
+      g_page: 1, //列表页码
+      g_items: [], //列表数据
     }, () => {
       this.initList();
     });
