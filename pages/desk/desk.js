@@ -572,7 +572,7 @@ Page({
     this.initLogo()
     const scene = wx.getStorageSync('scene');
     this.setData({
-      sn_specific_value: this.data.sn_specific_value || ''
+      sn_specific_value: this.data.sn_specific_value || scene
     })
   },
   handleImageClose() {
