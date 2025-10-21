@@ -37,6 +37,7 @@ Page({
     totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     g_page: 1, //列表页码
     g_items: [], //列表数据
+    c_fin3_link: 'https://fin3.wiselink.net.cn/fin/',
     y_items: [],
     y_page: 1,
     y_triggered: false,
@@ -288,7 +289,7 @@ Page({
       }
       this.setData({
         y_total: resp.count || 0,
-        y_items: [...this.data.y_items, ...resp.content]
+        y_items: [...this.data.y_items, ...resp.content],
       });
     } catch (error) {
       showToast("数据加载失败，请重试");
@@ -296,7 +297,28 @@ Page({
       hideLoading();
     }
   },
+  // 查看照片
+  handleViewPhotos(evt) {
+    const info = evt?.currentTarget?.dataset?.item;
+    if (!info) {
+      showToast('无效数据');
+      return;
+    }
+    const g_images = [info.img1, info.img2, info.img3, info.img4, info.img5]
+      .filter(img => img != null && img !== ''); 
+    if (g_images.length < 1) {
+      showToast('无可查看照片');
+      return;
+    }
 
+    const images = g_images.map(ele => {
+      return this.data.c_fin3_link + ele.replace(/\\/g, "/");
+    });
+
+    wx.previewImage({
+      urls: images // 需要预览的图片http链接列表
+    });
+  },
   // 提交发送钥匙
   handleFormSubmit(evt) {
     const {

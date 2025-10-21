@@ -80,16 +80,24 @@
             <view class="card-info">
               <time-line events="{{[{createdate:item.startdate||'-'},{createdate:item.enddate||'-'}]}}" />
             </view>
-            <view class="card-footer1" wx:if="{{!item.status}}" style="display: flex;justify-content: space-between;">
-              <view>
-                <text bindtap="handleEditKey" data-item="{{item}}" style="float: left;">修改</text>
-              </view>
-              <view style="display: flex;flex-direction: row;">
-                <button data-item="{{item}}" open-type="share" bindtap="handleForward">一键转发</button>
-                <text bindtap="handleCopy" data-item="{{item}}">{{ copied ? '已复制' : '复制链接' }}</text>
-                <text bindtap="handleCance" data-item="{{item}}">取消用车</text>
-              </view>
-
+            <view class="card-footer1" style="display: flex;justify-content: space-between;">
+              <block wx:if="{{!item.status}}">
+                <view>
+                  <text bindtap="handleEditKey" data-item="{{item}}" style="float: left;">修改</text>
+                </view>
+                <view style="display: flex;flex-direction: row;">
+                  <button data-item="{{item}}" open-type="share" bindtap="handleForward">一键转发</button>
+                  <text bindtap="handleCopy" data-item="{{item}}">{{ copied ? '已复制' : '复制链接' }}</text>
+                  <text bindtap="handleCance" data-item="{{item}}">取消用车</text>
+                </view>
+              </block>
+              <block wx:else>
+                <view>
+                </view>
+                <view style="display: flex;flex-direction: row;">
+                  <text bindtap="handleViewPhotos" data-item="{{item}}">查看照片</text>
+                </view>
+              </block>
             </view>
           </view>
         </block>
