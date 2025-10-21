@@ -51,7 +51,7 @@
   </block>
 
   <!-- 原有部分 -->
-  <view style="height: {{c_screen_height}}px; margin: 15rpx;position: relative">
+  <view style=" margin: 15rpx;flex: 1;">
     <map-com cellData="{{cellData}}" sn="{{cellData.sn}}" source="carDetail" bindmyMethod="handleChildEvent" />
   </view>
 </view>
