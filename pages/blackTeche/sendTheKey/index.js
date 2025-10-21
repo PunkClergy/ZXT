@@ -352,15 +352,18 @@ Page({
           throw new Error(response.data.msg);
         }
 
-        showToast('发送成功');
+
         this.setData({
           c_send_key_show_momal: false,
           g_items: [],
           y_items: [],
           y_page: 1,
         }, () => {
-          this.getKeySendingList()
-          this.getOrderList()
+          showToast('发送成功');
+          setTimeout(() => {
+            this.getKeySendingList()
+            this.getOrderList()
+          }, 1000)
         });
 
       } catch (error) {
