@@ -36,14 +36,14 @@
         },
         {
           "name": "work sheet",
-          "pathName": "pages/oneClickOrdering/oneClickOrdering",
+          "pathName": "pages/carManager/buyCount/buyCountRecord/buyCountRecord",
           "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "desk",
-          "pathName": "pages/orderList/orderList",
+          "pathName": "pages/desk/desk",
           "query": "",
           "launchMode": "default",
           "scene": null

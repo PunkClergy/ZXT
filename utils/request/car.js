@@ -8,6 +8,14 @@ const u_carList = {
   comParam: 'comParam',
   page: 'page'
 }
+const u_houseFlowList = {
+  URL: fin3plusUrl + "unmannedStoreApi/unmannedStoreList",
+  page: 'page'
+}
+const u_unmannedStoreApidel = {
+  URL: fin3plusUrl + "unmannedStoreApi/del",
+  page: 'page'
+}
 const u_userInsureList = {
   URL: fin3plusUrl + "insuranceApi/userInsureList",
   page: 'page'
@@ -20,6 +28,10 @@ const u_loseInsureList = {
 const u_addOrUpdateCar = {
   URL: fin3plusUrl + "carapi/addOrUpdateCar",
 }
+const u_houseFlowApirAdd = {
+  URL: fin3plusUrl + "unmannedStoreApi/addOrUpdate",
+}
+
 // 新增车辆钥匙
 const u_safekeyapiaddOrUpdate = {
   URL: fin3plusUrl + "safekeyapi/addOrUpdate",
@@ -156,6 +168,7 @@ module.exports = {
   u_improveShutdownClaimFile,
   u_newShutdownClaim,
   u_shutdownClaimList,
+  u_houseFlowList,
   u_batchNewWycInsure,
   u_batchNewLoseInsure,
   u_newLoselnsure,
@@ -170,5 +183,7 @@ module.exports = {
   u_carManagerapi_list,
   u_carList,
   u_addOrUpdateCar,
-  u_safekeyapiList
+  u_safekeyapiList,
+  u_houseFlowApirAdd,
+  u_unmannedStoreApidel
 }

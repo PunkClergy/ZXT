@@ -150,7 +150,8 @@
     "pages/selfServiceSettings/index",
     "pages/videoMaterials/index",
     "pages/netCarurgent/index",
-    "pages/orderList/details/details"
+    "pages/orderList/details/details",
+    "pages/UnmannedStores/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
