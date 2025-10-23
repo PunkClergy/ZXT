@@ -12,8 +12,16 @@ const u_houseFlowList = {
   URL: fin3plusUrl + "unmannedStoreApi/unmannedStoreList",
   page: 'page'
 }
+const u_phouseFlowList = {
+  URL: fin3plusUrl + "houseFlowApi/houseFlowList",
+  page: 'page'
+}
 const u_unmannedStoreApidel = {
   URL: fin3plusUrl + "unmannedStoreApi/del",
+  page: 'page'
+}
+const u_houseFlowApidel = {
+  URL: fin3plusUrl + "houseFlowApi/del",
   page: 'page'
 }
 const u_userInsureList = {
@@ -31,7 +39,9 @@ const u_addOrUpdateCar = {
 const u_houseFlowApirAdd = {
   URL: fin3plusUrl + "unmannedStoreApi/addOrUpdate",
 }
-
+const u_paddOrUpdate = {
+  URL: fin3plusUrl + "houseFlowApi/addOrUpdate",
+}
 // 新增车辆钥匙
 const u_safekeyapiaddOrUpdate = {
   URL: fin3plusUrl + "safekeyapi/addOrUpdate",
@@ -185,5 +195,8 @@ module.exports = {
   u_addOrUpdateCar,
   u_safekeyapiList,
   u_houseFlowApirAdd,
-  u_unmannedStoreApidel
+  u_unmannedStoreApidel,
+  u_paddOrUpdate,
+  u_phouseFlowList,
+  u_houseFlowApidel
 }

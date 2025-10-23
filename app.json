@@ -151,7 +151,8 @@
     "pages/videoMaterials/index",
     "pages/netCarurgent/index",
     "pages/orderList/details/details",
-    "pages/UnmannedStores/index"
+    "pages/UnmannedStores/index",
+    "pages/PrivateDomain/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
