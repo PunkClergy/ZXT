@@ -244,10 +244,22 @@ Page({
       enddate: info
     })
   },
+  handleOnTimeChange1(evt) {
+    const info = evt?.detail?.value
+    this.setData({
+      endtime: info
+    })
+  },
   handleOnDateChange2(evt) {
     const info = evt?.detail?.value
     this.setData({
       startdate: info
+    })
+  },
+  handleOnTimeChange2(evt) {
+    const info = evt?.detail?.value
+    this.setData({
+      starttime: info
     })
   },
   handleOnDateChange3(evt) {
@@ -289,8 +301,8 @@ Page({
     };
     const param = {
       ...this.data.params,
-      startdate: this.data.startdate,
-      enddate: this.data.enddate,
+      startdate: `${this.data.startdate} ${this.data.starttime}`,
+      enddate: `${this.data.enddate} ${this.data.endtime}`,
       id: this.data.id || ''
     };
     const validations = [
@@ -432,6 +444,7 @@ Page({
     const params = this.data.params
     const { id, vehicleSerialName, vehicleModeName, platenumber } = info
     const returnValue = Object.assign(params, { vehid: id, vehicleSerialName, vehicleModeName, platenumber })
+    console.log(returnValue)
     this.setData({
       params: returnValue
     })

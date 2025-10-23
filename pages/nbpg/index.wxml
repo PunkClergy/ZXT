@@ -37,13 +37,13 @@
                 <text>{{item.dispatcher||'-'}}</text>
               </view>
 
-              <view class="info-item  {{item.rentstartdate.length > 15 ? 'long-info-item' : ''}}">
+              <view class="info-item  {{item.startdate.length > 15 ? 'long-info-item' : ''}}">
                 <label>开始时间 ：</label>
-                <text>{{item.rentstartdate||-''}}</text>
+                <text>{{item.startdate||-''}}</text>
               </view>
-              <view class="info-item  {{item.rentenddate.length > 15 ? 'long-info-item' : ''}}">
+              <view class="info-item  {{item.enddate.length > 15 ? 'long-info-item' : ''}}">
                 <label>结束时间 ：</label>
-                <text>{{item.rentenddate||-''}}</text>
+                <text>{{item.enddate||-''}}</text>
               </view>
             </view>
             <view class="content-item-footer" wx:if="{{g_source}}">
@@ -74,13 +74,13 @@
             <block>
               <view class="card-info-item-input">
                 <picker mode="selector" range="{{pickerOptions}}" range-key="label" bindchange="handleClOnPickerChange">
-                  <input value="{{params.plateNumber?params.plateNumber:'请选择车牌号'}}" disabled />
+                  <input value="{{params.plateNumber||params.platenumber?params.plateNumber||params.platenumber:'请选择车牌号'}}" disabled />
                 </picker>
               </view>
             </block>
           </view>
           <!-- 信息 -->
-          <view class="card-info-item" wx:if="{{params.plateNumber}}">
+          <view class="card-info-item" wx:if="{{params.plateNumber||params.platenumber}}">
             <label>车系<text>*</text></label>
             <block>
               <view class="card-info-item-input">
@@ -88,7 +88,7 @@
               </view>
             </block>
           </view>
-          <view class="card-info-item" wx:if="{{params.plateNumber}}">
+          <view class="card-info-item" wx:if="{{params.plateNumber||params.platenumber}}">
             <label>车型<text>*</text></label>
             <block>
               <view class="card-info-item-input">
@@ -117,7 +117,17 @@
             <block>
               <view class="card-info-item-input">
                 <picker mode="date" bindchange="handleOnDateChange2">
-                  <view class="picker">{{startdate?startdate:'请选择开始时间'}}</view>
+                  <view class="picker">{{startdate?startdate:'请选择开始日期'}}</view>
+                </picker>
+              </view>
+            </block>
+          </view>
+          <view class="card-info-item" wx:if="{{startdate}}">
+            <label></label>
+            <block>
+              <view class="card-info-item-input">
+                <picker mode="time" bindchange="handleOnTimeChange2">
+                  <view class="picker">{{starttime?starttime:'请选择开始时间'}}</view>
                 </picker>
               </view>
             </block>
@@ -129,7 +139,17 @@
             <block>
               <view class="card-info-item-input">
                 <picker mode="date" bindchange="handleOnDateChange1">
-                  <view class="picker">{{enddate?enddate:'请选择结束时间'}}</view>
+                  <view class="picker">{{enddate?enddate:'请选择结束日期'}}</view>
+                </picker>
+              </view>
+            </block>
+          </view>
+          <view class="card-info-item" wx:if="{{enddate}}">
+            <label></label>
+            <block>
+              <view class="card-info-item-input">
+                <picker mode="time" bindchange="handleOnTimeChange1">
+                  <view class="picker">{{endtime?endtime:'请选择开始时间'}}</view>
                 </picker>
               </view>
             </block>
