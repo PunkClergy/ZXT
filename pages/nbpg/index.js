@@ -357,6 +357,8 @@ Page({
   handleEdit(evt) {
     const info = evt.currentTarget.dataset.item
     const { createdate, ...newObj } = info;
+    const [startdate, starttime] = info?.startdate?.split(' ');
+    const [enddate, endtime] = info?.enddate?.split(' ');
     this.setData({
       c_activeTab: 2,
       btnState: '修改',
@@ -364,9 +366,11 @@ Page({
       params: {
         ...newObj
       },
-      rentenddate: info.rentenddate,
-      rentstartdate: info.rentstartdate,
-      signdate: info.signdate,
+
+      startdate,
+      starttime,
+      enddate,
+      endtime
 
     })
   },
