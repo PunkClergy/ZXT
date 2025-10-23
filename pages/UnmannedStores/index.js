@@ -342,12 +342,13 @@ Page({
   // 修改管控
   handleEdit(evt) {
     const info = evt.currentTarget.dataset.item
+    const { createdate, ...newObj } = info;
     this.setData({
       c_activeTab: 2,
       btnState: '修改',
       id: info?.id,
       params: {
-        ...info
+        ...newObj
       },
       rentenddate: info.rentenddate,
       rentstartdate: info.rentstartdate,
