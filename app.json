@@ -152,7 +152,8 @@
     "pages/netCarurgent/index",
     "pages/orderList/details/details",
     "pages/UnmannedStores/index",
-    "pages/PrivateDomain/index"
+    "pages/PrivateDomain/index",
+    "pages/nbpg/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
