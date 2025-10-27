@@ -286,7 +286,7 @@
     <form bindsubmit="sureButtonTap">
       <view class="modal-container">
         <view class="modal-container-head">
-          <text>发送电子钥匙</text>
+          <text>请选择设备</text>
           <image src="/assets/images/home/right_1.png" bindtap="cancelButttonTap" />
         </view>
         <view class="modal-container-middle">
