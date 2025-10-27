@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "用车人",
+  "usingComponents": {
+    "map-com":"/components/MapCom/index",
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}

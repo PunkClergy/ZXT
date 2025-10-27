@@ -153,7 +153,8 @@
     "pages/orderList/details/details",
     "pages/UnmannedStores/index",
     "pages/PrivateDomain/index",
-    "pages/nbpg/index"
+    "pages/nbpg/index",
+    "pages/vehicleUser/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

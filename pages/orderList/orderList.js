@@ -75,6 +75,7 @@ Page({
     g_receiving_address: '',//收货地址
     region: [],//地址 当前选择地区
     bak: '',//备注
+    c_link: 'https://k1sw.wiselink.net.cn/', //域名
   },
   // 选择区间日期
   bindDateChange(e) {
@@ -158,7 +159,7 @@ Page({
   },
   // 行业数据
   initialiIndustry() {
-    byGet(getApp().data.k1swUrl + u_getIndustry.URL, {}).then(response => {
+    byGet(getApp().data.k1swUrl||this.data.c_link + u_getIndustry.URL, {}).then(response => {
       const list = response.data.content
       const info = list.map(ele => {
         let temp = {
@@ -174,7 +175,7 @@ Page({
   },
   // 功能数据
   initialgetIntroduction() {
-    byGet(getApp().data.k1swUrl + u_getIntroduction.URL, {}).then(response => {
+    byGet(getApp().data.k1swUrl||this.data.c_link + u_getIntroduction.URL, {}).then(response => {
       const list = response.data.content
       const simple_info = list.map(ele => {
         let simple_temp = {
@@ -191,7 +192,7 @@ Page({
   },
   // 获取设备类型数据
   initialgetType() {
-    byGet(getApp().data.k1swUrl + u_getDeviceClass.URL, {}).then(response => {
+    byGet(getApp().data.k1swUrl||this.data.c_link + u_getDeviceClass.URL, {}).then(response => {
       const list = response.data.content
       console.log(list)
       const simple_info = list.map(ele => {
@@ -232,7 +233,7 @@ Page({
       // [u_buyRecord.comParam]: this.data.g_comParam,
       [u_buyRecord.page]: this.data.g_page,
     };
-    byGet(getApp().data.k1swUrl + u_buyRecord.URL, param).then(response => {
+    byGet(getApp().data.k1swUrl||this.data.c_link + u_buyRecord.URL, param).then(response => {
       hideLoading()
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
@@ -320,7 +321,7 @@ Page({
       introduction: g_core_functions[g_core_functions_index]?.name,
       industry: g_industry[g_industry_index]?.name
     }
-    byGet(getApp().data.k1swUrl + u_isNeedCarInfo.URL, parmas).then(response => {
+    byGet(getApp().data.k1swUrl||this.data.c_link + u_isNeedCarInfo.URL, parmas).then(response => {
       const state = response.data.content
       this.setData({
         whether_vehicle: state
@@ -456,7 +457,7 @@ Page({
       success: (res) => {
         if (res.confirm) {
           showLoading()
-          byPost(getApp().data.k1swUrl + u_delCustomerOrder.URL, requestParam, (response) => {
+          byPost(getApp().data.k1swUrl||this.data.c_link + u_delCustomerOrder.URL, requestParam, (response) => {
             hideLoading()
             if (response.data.code !== 1000) {
               showToast(response.data.msg);
@@ -491,7 +492,7 @@ Page({
       success: (res) => {
         if (res.confirm) {
           showLoading()
-          byPost(getApp().data.k1swUrl + u_cancalCustomerOrder.URL, requestParam, (response) => {
+          byPost(getApp().data.k1swUrl||this.data.c_link + u_cancalCustomerOrder.URL, requestParam, (response) => {
             hideLoading()
             if (response.data.code !== 1000) {
               showToast(response.data.msg);
@@ -722,7 +723,7 @@ Page({
     // ========== 发送提交请求 ==========
 
     byPostJson(
-      getApp().data.k1swUrl + u_buyDevice.URL,
+      getApp().data.k1swUrl||this.data.c_link + u_buyDevice.URL,
       submitParams,
       (response) => {
         if (response.data?.code === 1000) {

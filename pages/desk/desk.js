@@ -495,6 +495,9 @@ Page({
         sn_specific_value: options?.scene || options?.query
       }, () => {
         wx.setStorageSync('scene', options?.scene || options?.query);
+        wx.navigateTo({
+          url: '/pages/vehicleUser/index',
+        })//只添加一行代码
       })
     }
   },

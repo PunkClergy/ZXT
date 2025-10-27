@@ -28,9 +28,9 @@
         <view class="middle-swiper-item">
           <block wx:for="{{item}}" wx:key="index">
             <view class="middle-swiper-container"  wx:if="{{item.name}}">
-              <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList">
+              <view class="middle-swiper-container-icon" data-item="{{item}}" bindtap="handleGetMenuList" style="font-weight: {{item.id == menuId?'bold':''}};">
                 <image src="{{!item.icon ? '/assets/images/index/icon5.png' : c_link + 'img/' + item.icon}}" />
-                <text>{{item.name}}</text>
+                <text style="font-size: {{item.id == menuId?'24rpx':'22rpx'}};">{{item.name}}</text>
               </view>
             </view>
           </block>

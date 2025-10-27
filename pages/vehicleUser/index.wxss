@@ -1,0 +1,11 @@
+/* 最外层样式 */
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+  align-items: center;
+}
