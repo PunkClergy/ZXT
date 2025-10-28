@@ -107,7 +107,7 @@ const u_orderConfirm = {
 }
 // 获取行业列表
 const u_getIndustry = {
-  URL: fin3plusUrl + "deviceBuyApi/getIndustry",
+  URL: fin3plusUrl + "publicApi/getIndustry",
 }
 // 原始订单取消
 const u_cancalCustomerOrder = {
@@ -126,7 +126,7 @@ const u_getIntroduction = {
 }
 // 获取设备类型
 const u_getDeviceClass = {
-  URL: fin3plusUrl + "deviceBuyApi/getDeviceClass",
+  URL: fin3plusUrl + "publicApi/getDeviceClass",
 }
 // 获取销售代号
 const u_saleCode = {
