@@ -7,4 +7,4 @@
   <view style="font-size: 26rpx;color: #575857;">商务合作咨询、更多产品了解，请点击、长按官方群二维码，有专属客服服务！</view>
 </view>
 </view>
-<custom-tab-bar selectedtext='群二维码' />
+<custom-tab-bar selectedtext='专属客服' />

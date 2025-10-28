@@ -64,10 +64,10 @@
               <view class="classification-department">
                 <block wx:for="{{item.children}}" wx:for-item="item" wx:key="index">
                   <block wx:if="{{item.isdir == 1}}">
-                    <view id="{{'section'+item.id}}" class="section" style="display: flex;justify-content: space-between; color: #f0f0f0;font-size: 22rpx;width: 100%;margin: 0 30rpx;font-weight: bold;">
-                      <view>————</view>
+                    <view id="{{'section'+item.id}}" class="section" style="display: flex;justify-content: space-between; color: #f0f0f0;font-size: 25rpx;width: 100%;margin: 0;font-weight: bold;">
+                      <!-- <view>————</view> -->
                       <text style="color: #7B7C7C;">{{item.name}}</text>
-                      <view>————</view>
+                      <!-- <view>————</view> -->
                     </view>
                     <!-- 第三层数据 -->
                     <block wx:for="{{item.children}}" wx:for-item="item" wx:key="index">
@@ -76,20 +76,20 @@
                       </block>
                       <view wx:else class="classification-department-item {{item.isdevelop == 0?'developed':'not-developed'}}" data-item="{{item}}" bindtap="handleJumpPage">
                         <image src="{{c_link}}/img/{{item.icon}}" style="width: 80rpx;height: 80rpx;" />
-                        <view style="color: #333;font-size: 23rpx;">{{item.name}}</view>
+                        <view style="color: #333;font-size: 23rpx;text-align: left;">{{item.name}}</view>
                       </view>
                     </block>
                   </block>
                   <view wx:else class="classification-department-item {{item.isdevelop == 0?'developed':'not-developed'}}" data-item="{{item}}" bindtap="handleJumpPage">
                     <image src="{{c_link}}/img/{{item.icon}}" style="width: 80rpx;height: 80rpx;" />
-                    <view style="color: #333;font-size: 23rpx;">{{item.name}}</view>
+                    <view style="color: #333;font-size: 23rpx;text-align: left;">{{item.name}}</view>
                   </view>
                 </block>
               </view>
             </block>
             <view wx:else class="classification-department-item {{item.isdevelop == 0?'developed':'not-developed'}}" data-item="{{item}}" bindtap="handleJumpPage" style="position: relative;">
               <image style="width: 80rpx;height: 80rpx;" src="/assets/images/home/01.png" />
-              <view style="color: #333;font-size: 23rpx;">
+              <view style="color: #333;font-size: 23rpx;text-align: left;">
                 <text>{{item.name}}</text>
                 <!-- <text style="position: absolute;top: 15rpx;background-color: red;width: 10rpx;height: 10rpx;border-radius: 50%;left: 60%;"></text> -->
               </view>
