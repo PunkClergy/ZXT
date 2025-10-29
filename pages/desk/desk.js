@@ -65,6 +65,15 @@ Page({
       url: `/pages/agreementWebView/agreementWebView?url=${path}`,
     })
   },
+  // 预览图片
+  handlePreviewImage(evt) {
+    wx.previewMedia({
+      sources: [{
+        url: 'https://k3a.wiselink.net.cn/img/video/createShortcuts.gif', // 图片路径
+        type: 'image',
+      },],
+    });
+  },
   // 转换背景图base64
   initialiImageBaseConversion() {
     const _this = this;
