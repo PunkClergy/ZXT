@@ -59,7 +59,7 @@ Page({
     imageHeight: 0
   },
   // 点击banner图跳转视频
-  hadleView(evt){
+  hadleView(evt) {
     const path = `https://k3a.wiselink.net.cn/img/${evt?.currentTarget?.dataset?.item?.img}`
     wx.navigateTo({
       url: `/pages/agreementWebView/agreementWebView?url=${path}`,
@@ -191,11 +191,11 @@ Page({
         g_quickIndex: 0,
         termial_active: params.terminalId,
         tabs_bg: params.terminalId == '-1' ? _this.data.s_client_bg :
-                 (params.terminalId == 222 ? _this.data.s_channel_bg : _this.data.s_service_bg),
+          (params.terminalId == 222 ? _this.data.s_channel_bg : _this.data.s_service_bg),
       }, () => {
         const page_index = this.data.pagedIcons
         this.setData({
-          s_quick_entrance_height:page_index[0]?.length>20?210:(page_index[0]?.length>5?140:70)
+          s_quick_entrance_height: page_index[0]?.length > 20 ? 210 : (page_index[0]?.length > 5 ? 140 : 70)
         })
         if (content.length > 0) {
           this.handleGetMenuList({ currentTarget: { dataset: { item: content[0] } } });
@@ -495,9 +495,11 @@ Page({
         sn_specific_value: options?.scene || options?.query
       }, () => {
         wx.setStorageSync('scene', options?.scene || options?.query);
-        wx.navigateTo({
-          url: '/pages/vehicleUser/index',
-        })//只添加一行代码
+        if ((options?.scene || options?.query).length > 6) {
+          wx.navigateTo({
+            url: '/pages/vehicleUser/index',
+          })//只添加一行代码
+        }
       })
     }
   },
