@@ -156,7 +156,7 @@
     </view>
 
     <view class="car-select-actions">
-      <view class="car-select-action-btn car-select-cancel" bindtap="closeMask">取消</view>
+      <view class="car-select-action-btn car-select-cancel" bindtap="handleCloseMask">取消</view>
       <view class="car-select-action-btn car-select-confirm" bindtap="handleSpecialAreaConfirmSelect">确认</view>
     </view>
   </view>

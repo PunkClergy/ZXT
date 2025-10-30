@@ -403,6 +403,9 @@ Page({
     });
 
   },
+  handleCloseMask() {
+    this.setData({ special_area_modal: false })
+  },
   // 点击关闭群二维码
   handleQRClose() {
     console.log(111)
