@@ -237,3 +237,91 @@ page {
 .btn_tapcolor {
   opacity: 0.8;
 }
+
+
+/* 选择上架or个人弹窗 */
+/* 基础样式 - 统一前缀 */
+.identity-modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+}
+
+.identity-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.identity-modal-content {
+  width: 80%;
+  min-width: 500rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+.identity-modal-title {
+  font-size: 36rpx;
+  text-align: center;
+  margin-bottom: 40rpx;
+  color: #333;
+}
+
+.identity-modal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+/* 选项基础样式 */
+.identity-modal-option {
+  padding: 28rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #666;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+/* 选项选中状态样式 */
+.identity-modal-option--selected {
+  border-color: #07c160;
+  color: #07c160;
+  background-color: rgba(7, 193, 96, 0.1);
+}
+
+/* 按钮基础样式 */
+.identity-modal-confirm {
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  font-size: 32rpx;
+  border-radius: 8rpx;
+  padding: 0;
+  color: #fff;
+}
+
+/* 按钮可用状态样式 */
+.identity-modal-confirm--enabled {
+  background-color: #07c160;
+}
+
+/* 按钮禁用状态样式 */
+.identity-modal-confirm--disabled {
+  background-color: #ccc;
+}

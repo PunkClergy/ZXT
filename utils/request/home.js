@@ -34,6 +34,10 @@ const u_logo = {
 const u_getQrcodeImg = {
   URL:'deskapi/getQrcodeImg',
 }
+// 获取未选择的专区
+const u_getNotHaveMidMenulist = {
+  URL:'deskapi/getNotHaveMidMenulist',
+}
 // 获取最新的token
 const u_getUserinfo = {
   URL:'deskapi/getUserInfo',
@@ -51,7 +55,15 @@ const u_updatePassword = {
   newPassword: 'newPassword',
   userId: 'userId'
 }
+const u_setBtype ={
+  URL:"accountapi/setBtype",
+}
+const u_applyMenus ={
+  URL:"accountapi/applyMenus",
+}
 module.exports = {
+  u_applyMenus,
+  u_setBtype,
   u_updatePassword,
   u_updateUserName,
   u_getQrcodeImg,
@@ -63,5 +75,6 @@ module.exports = {
   u_industryList,
   u_menulist,
   u_rightMenulist,
-  u_termialList
+  u_termialList,
+  u_getNotHaveMidMenulist
 }

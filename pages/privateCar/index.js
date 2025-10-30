@@ -5,7 +5,8 @@ const {
 const {
   byGet,
   byPost,
-  byPostJson
+  byPostJson,
+  isLogin
 } = require('../../utils/request/http')
 const {
   u_carList,
@@ -79,6 +80,12 @@ Page({
   },
   // 切换感应模式
   toggleSensorMode() {
+    if (!isLogin()) {
+      wx.navigateTo({
+        url: '/pages/system/managerLoginView/loginView',
+      });
+      return
+    }
     const induction = this.data.parsedData.induction;
     const isManualInduction = !induction || induction === '手动模式';
     if (this.data?.bluetoothData?.platenumber) {
@@ -261,13 +268,27 @@ Page({
     }
     return passwordEncrypt;
   },
+  // 去绑定车辆
   handleBindVechi() {
+    if (!isLogin()) {
+      wx.navigateTo({
+        url: '/pages/system/managerLoginView/loginView',
+      });
+      return
+    }
     wx.redirectTo({
       url: '/pages/listOfPrivateCars/list/index'
     });
+
   },
   // 跳转到详细设置
   handleSelectJump() {
+    if (!isLogin()) {
+      wx.navigateTo({
+        url: '/pages/system/managerLoginView/loginView',
+      });
+      return
+    }
     if (this.data?.bluetoothData?.platenumber) {
       wx.redirectTo({
         url: `/pages/listOfPrivateCars/index?sn=${this.data.deviceIDC}&bluetoothKey=${this.data.orgKeyOld}`,
@@ -310,6 +331,12 @@ Page({
   },
   // 调整安装手册
   handleJumpSc() {
+    if (!isLogin()) {
+      wx.navigateTo({
+        url: '/pages/system/managerLoginView/loginView',
+      });
+      return
+    }
     wx.redirectTo({
       url: '/pages/listOfPrivateCars/pdf/index?flag=1',
     })
@@ -640,6 +667,12 @@ Page({
 
   // 指令公共方法
   _sendVehicleCommand: function (commandCode, code) {
+    if (!isLogin()) {
+      wx.navigateTo({
+        url: '/pages/system/managerLoginView/loginView',
+      });
+      return
+    }
     if (!this.data?.bluetoothData?.platenumber) {
       wx.showModal({
         title: '提示',
@@ -694,6 +727,12 @@ Page({
     byPost('https://k1sw.wiselink.net.cn/' + u_sendInfo.URL, temp, function () { });
   },
   handleToConfigure: function () {
+    if (!isLogin()) {
+      wx.navigateTo({
+        url: '/pages/system/managerLoginView/loginView',
+      });
+      return
+    }
     wx.redirectTo({
       url: '/pages/listOfPrivateCars/setting/index?sign=4',
     })

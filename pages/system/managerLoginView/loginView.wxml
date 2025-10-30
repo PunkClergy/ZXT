@@ -51,11 +51,12 @@
   <view class="info-area">
     <view class="info-card">
       <text class="product-name">智前通wiselink</text>
-      <view style="font-size: 26rpx;color: #575658;">商务合作咨询、更多产品了解，请点击、长按官方群二维码，有专属客服服务！</view>
-     <view style="display: flex;justify-content: center;">
-      <image src="{{init_qr_code}}" style="width: 300rpx;height: 300rpx;" bindtap="handlePreviewImage"/>
-     </view>
- 
+      <view style="font-size: 26rpx;color: #575658;">不怕丢失，高性价比，可以"魔变"无穷把，可以分享授权使用的手机汽车电子钥匙，仅需599元起；</view>
+      <view style="font-size: 26rpx;color: #575658;">请点击、长按官方群二维码，有专属客服服务！</view>
+      <view style="display: flex;justify-content: center;">
+        <image src="{{init_qr_code}}" style="width: 300rpx;height: 300rpx;" bindtap="handlePreviewImage" />
+      </view>
+
       <view class="contact-info">
         <text class="company-name">智信通·中国北京</text>
         <!-- <view class="contact-details">
@@ -63,5 +64,31 @@
         </view> -->
       </view>
     </view>
+  </view>
+</view>
+
+<!-- 遮罩层 -->
+<view class="identity-modal-mask" wx:if="{{btypeM}}"></view>
+<!-- 弹窗内容 -->
+<view class="identity-modal-container" wx:if="{{btypeM}}">
+  <view class="identity-modal-content">
+    <view class="identity-modal-title">请选择您的身份</view>
+
+    <view class="identity-modal-options">
+      <!-- 选项1：动态class切换选中状态 -->
+      <view class="identity-modal-option {{selected === 1 ? 'identity-modal-option--selected' : ''}}" bindtap="handleSelectOption" data-value="1">
+        我是商家
+      </view>
+
+      <!-- 选项2：动态class切换选中状态 -->
+      <view class="identity-modal-option {{selected === 2 ? 'identity-modal-option--selected' : ''}}" bindtap="handleSelectOption" data-value="2">
+        我是个人
+      </view>
+    </view>
+
+    <!-- 确认按钮：动态class切换可用状态 -->
+    <button class="identity-modal-confirm {{selected ? 'identity-modal-confirm--enabled' : 'identity-modal-confirm--disabled'}}" bindtap="handleConfirmSelect" disabled="{{!selected}}">
+      确定
+    </button>
   </view>
 </view>

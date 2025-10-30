@@ -10,8 +10,12 @@ const {
   u_termialList,
   u_logo,
   u_getUserinfo,
-  u_updateUserName
+  u_updateUserName,
+  u_getQrcodeImg,
+  u_getNotHaveMidMenulist,
+  u_applyMenus
 } = require('../../utils/request/home')
+
 const {
   byGet,
   byPost,
@@ -54,9 +58,56 @@ Page({
     c_send_key_show_momal: false,
     c_send_key_show_type: null,
     account: null,
-    image_state: false,
-    imageWidth: 0,
-    imageHeight: 0
+    special_area_modal: false,// 选择专区弹窗
+    join_the_group_modal: false,// 入群二维码弹窗
+    selected: [],
+    areaOptions: [] // 动态生成带长度标记的选项
+  },
+  // 请求更多功能数据
+  initMoreData() {
+    byGet(getApp().data.k1swUrl + u_getNotHaveMidMenulist.URL, {}).then(response => {
+      const rawOptions = response?.data?.content
+      const optionsWithLength = rawOptions.map(item => ({
+        ...item,
+        isLong: item.name.length > 5 // 超过5个字符视为长文本
+      }));
+
+      this.setData({ areaOptions: optionsWithLength });
+    })
+
+  },
+  // 选择所选专区
+  handleMoreToggleSelect(e) {
+    const value = e.currentTarget.dataset.value;
+    const { selected } = this.data;
+    const index = selected.indexOf(value);
+    if (index > -1) {
+      selected.splice(index, 1);
+    } else {
+      selected.push(value);
+    }
+    this.setData({ selected });
+  },
+  // 请求入群码
+  initQrCode() {
+    byGet(getApp().data.k1swUrl + u_getQrcodeImg.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          personal_qr_code: response.data.content.img
+        })
+      } else {
+        showToast('请求失败，请稍后再试');
+      }
+    })
+  },
+  // 预览图片
+  handleQRShowImageMask() {
+    wx.previewMedia({
+      sources: [{
+        url: this.data.personal_qr_code, // 图片路径
+        type: 'image',
+      },],
+    });
   },
   // 点击banner图跳转视频
   hadleView(evt) {
@@ -65,15 +116,7 @@ Page({
       url: `/pages/agreementWebView/agreementWebView?url=${path}`,
     })
   },
-  // 预览图片
-  handlePreviewImage(evt) {
-    wx.previewMedia({
-      sources: [{
-        url: 'https://k3a.wiselink.net.cn/img/video/createShortcuts.gif', // 图片路径
-        type: 'image',
-      },],
-    });
-  },
+
   // 转换背景图base64
   initialiImageBaseConversion() {
     const _this = this;
@@ -160,52 +203,101 @@ Page({
     })
   },
   // 请求快捷入口数据
+  // initialQuickEntry() {
+  //   const _this = this;
+  //   const url = `${this.data.c_link}${u_midMenulist.URL}`;
+  //   const params = {
+  //     terminalId: -1 // 根据实际业务调整
+  //   };
+
+  //   byGet(url, params).then(response => {
+  //     let content = response.data.content || [];
+
+  //     // 每页15个（3行×5列）
+  //     const pageSize = 15;
+  //     const pages = [];
+
+  //     for (let i = 0; i < content.length; i += pageSize) {
+  //       let page = content.slice(i, i + pageSize);
+
+  //       // 如果当前页不足15个，补空白占位符（仅用于布局）
+  //       if (page.length < pageSize) {
+  //         const emptyPlaceholder = { id: 'empty', name: '', icon: '', isEmpty: true };
+  //         const fillCount = pageSize - page.length;
+  //         for (let j = 0; j < fillCount; j++) {
+  //           page.push({ ...emptyPlaceholder });
+  //         }
+  //       }
+
+  //       pages.push(page);
+  //     }
+
+  //     // 如果 content 为空，至少显示一页空白（可选）
+  //     if (pages.length === 0) {
+  //       const emptyPage = Array(pageSize).fill({ id: 'empty', name: '', icon: '', isEmpty: true });
+  //       pages.push(emptyPage);
+  //     }
+
+  //     this.setData({
+  //       pagedIcons: pages,
+  //       g_quickIndex: 0,
+  //       termial_active: params.terminalId,
+  //       tabs_bg: params.terminalId == '-1' ? _this.data.s_client_bg :
+  //         (params.terminalId == 222 ? _this.data.s_channel_bg : _this.data.s_service_bg),
+  //     }, () => {
+  //       const page_index = this.data.pagedIcons
+  //       console.log(page_index,'222222')
+  //       this.setData({
+  //         s_quick_entrance_height: page_index[0]?.length > 10 ? 180 : (page_index[0]?.length > 5 ? 120 : 60)
+  //       })
+  //       if (content.length > 0) {
+  //         this.handleGetMenuList({ currentTarget: { dataset: { item: content[0] } } });
+  //         this.handleRightSideData({ id: content[0].id });
+  //       }
+  //     });
+  //   }).catch(err => {
+  //     console.error('获取快捷入口失败:', err);
+  //     // 错误时显示一页空白
+  //     const emptyPage = Array(15).fill({ id: 'empty', name: '', icon: '', isEmpty: true });
+  //     this.setData({
+  //       pagedIcons: [emptyPage],
+  //       g_quickIndex: 0
+  //     });
+  //   });
+  // },
   initialQuickEntry() {
-    const _this = this;
     const url = `${this.data.c_link}${u_midMenulist.URL}`;
-    const params = {
-      terminalId: -1 // 根据实际业务调整
-    };
+    const params = { terminalId: -1 }; // 根据实际业务调整
 
     byGet(url, params).then(response => {
-      let content = response.data.content || [];
-
-      // 每页15个（3行×5列）
-      const pageSize = 15;
+      const content = response.data.content || [];
+      const pageSize = 15; // 每页15个（3行×5列）
       const pages = [];
 
+      // 按页拆分数据，不添加空白占位符
       for (let i = 0; i < content.length; i += pageSize) {
-        let page = content.slice(i, i + pageSize);
-
-        // 如果当前页不足15个，补空白占位符（仅用于布局）
-        if (page.length < pageSize) {
-          const emptyPlaceholder = { id: 'empty', name: '', icon: '', isEmpty: true };
-          const fillCount = pageSize - page.length;
-          for (let j = 0; j < fillCount; j++) {
-            page.push({ ...emptyPlaceholder });
-          }
-        }
-
-        pages.push(page);
+        pages.push(content.slice(i, i + pageSize));
       }
 
-      // 如果 content 为空，至少显示一页空白（可选）
-      if (pages.length === 0) {
-        const emptyPage = Array(pageSize).fill({ id: 'empty', name: '', icon: '', isEmpty: true });
-        pages.push(emptyPage);
-      }
+      // 计算第一页实际长度用于高度控制
+      const firstPageLen = pages[0]?.length || 0;
 
       this.setData({
         pagedIcons: pages,
         g_quickIndex: 0,
         termial_active: params.terminalId,
-        tabs_bg: params.terminalId == '-1' ? _this.data.s_client_bg :
-          (params.terminalId == 222 ? _this.data.s_channel_bg : _this.data.s_service_bg),
+        tabs_bg: params.terminalId === '-1'
+          ? this.data.s_client_bg
+          : params.terminalId === 222
+            ? this.data.s_channel_bg
+            : this.data.s_service_bg,
+        // 根据实际数量计算高度，替代通过占位符判断
+        s_quick_entrance_height: firstPageLen > 10
+          ? 180
+          : firstPageLen > 5
+            ? 120
+            : 60
       }, () => {
-        const page_index = this.data.pagedIcons
-        this.setData({
-          s_quick_entrance_height: page_index[0]?.length > 20 ? 210 : (page_index[0]?.length > 5 ? 140 : 70)
-        })
         if (content.length > 0) {
           this.handleGetMenuList({ currentTarget: { dataset: { item: content[0] } } });
           this.handleRightSideData({ id: content[0].id });
@@ -213,11 +305,10 @@ Page({
       });
     }).catch(err => {
       console.error('获取快捷入口失败:', err);
-      // 错误时显示一页空白
-      const emptyPage = Array(15).fill({ id: 'empty', name: '', icon: '', isEmpty: true });
       this.setData({
-        pagedIcons: [emptyPage],
-        g_quickIndex: 0
+        pagedIcons: [],
+        g_quickIndex: 0,
+        s_quick_entrance_height: 60 // 错误时默认高度
       });
     });
   },
@@ -249,7 +340,13 @@ Page({
   },
   // 获取右侧树内容
   handleGetMenuList: function (e) {
-    const menuId = e?.id || e?.currentTarget?.dataset?.item?.id;
+    const menuId = e?.id ?? e?.currentTarget?.dataset?.item?.id;
+    if (menuId == '-100') {
+      !isLogin()
+        ? wx.navigateTo({ url: '/pages/system/managerLoginView/loginView' })
+        : this.setData({ special_area_modal: true });
+      return;
+    }
     getApp().data.funAreaId = menuId
     if (!menuId) {
       wx.showToast({
@@ -286,6 +383,32 @@ Page({
           id: menuId
         })
       });
+    })
+  },
+  // 选择专区后回调
+  handleSpecialAreaConfirmSelect() {
+    console.log(this.data.selected)
+    const selected = this.data.selected
+    byPost(getApp().data.k1swUrl + u_applyMenus.URL, { menuIds: selected?.toString() }, (res) => {
+      if (res?.data?.code == 1000) {
+        showToast('申请成功,请加群获得权限')
+        setTimeout(() => {
+          this.setData({
+            special_area_modal: false,
+            join_the_group_modal: true,
+            selected: []
+          })
+        }, 3000)
+
+      }
+    });
+
+  },
+  // 点击关闭群二维码
+  handleQRClose() {
+    console.log(111)
+    this.setData({
+      join_the_group_modal: false
     })
   },
   // 判断当前为三行排列还是单行排列
@@ -488,28 +611,26 @@ Page({
   },
   onLoad: function (options) {
     wx.hideTabBar();
-    this.initialGetBanner()
-    this.handleTermialList()
-    if (options?.scene || options?.query) {
-      if ((options?.scene || options?.query).startsWith('blue_')) {
-        console.log(options)
+    const { scene, query } = options || {};
+    const sceneParam = scene ?? query;
+    if (sceneParam) {
+      if (sceneParam.startsWith('blue_')) {
         wx.navigateTo({
-          url: `/pages/privateCar/index?scene=${options?.scene || options?.query}`,
-        })
-        return
+          url: `/pages/privateCar/index?scene=${sceneParam}`,
+        });
+        return;
       }
-      console.log(options?.scene || options?.query)
       this.setData({
         sn_state: true,
-        sn_specific_value: options?.scene || options?.query
+        sn_specific_value: sceneParam
       }, () => {
-        wx.setStorageSync('scene', options?.scene || options?.query);
-        if ((options?.scene || options?.query).length > 6) {
-          wx.navigateTo({
-            url: '/pages/vehicleUser/index',
-          })//只添加一行代码
+        wx.setStorageSync('scene', sceneParam);
+        if (sceneParam.length > 6) {
+          wx.navigateTo({ url: '/pages/vehicleUser/index' });
         }
-      })
+      });
+    } else if (!isLogin()) {
+      wx.navigateTo({ url: '/pages/privateCar/index' });
     }
   },
   triggerChildEvent() {
@@ -544,7 +665,10 @@ Page({
   },
 
   onShow: function (e) {
-    this.hadleImage()
+    this.initialGetBanner()
+    this.handleTermialList()
+    this.initQrCode()
+    this.initMoreData()
     if (getApp()?.data?.reflag == 1) {
       this.handleTermialList()
     }
@@ -562,24 +686,7 @@ Page({
         console.error("获取失败", err); // 失败时的错误信息
       }
     });
-    // 查询是否显示弹出
-    wx.getStorage({
-      key: 'image_state', // 替换为你的缓存键值
-      success(res) {
-        console.log("获取成功", res.data); // 成功时的数据
-        if (!res?.data) {
-          _this.setData({
-            image_state: true
-          })
-        }
-      },
-      fail(err) {
-        console.error("获取失败", err); // 失败时的错误信息
-        _this.setData({
-          image_state: true
-        })
-      }
-    });
+
 
     // 暂时取消更新token
     this.initialGetUserInfo()
@@ -589,34 +696,7 @@ Page({
       sn_specific_value: this.data.sn_specific_value || scene
     })
   },
-  handleImageClose() {
-    this.setData({
-      image_state: false
-    }, () => {
-      wx.setStorageSync('image_state', true)
-    })
-  },
-  hadleImage() {
-    const imgUrl = 'https://k3a.wiselink.net.cn/img/video/createShortcuts.gif';
-    // 使用 wx.getImageInfo 获取图片信息
-    wx.getImageInfo({
-      src: imgUrl,
-      success: (res) => {
-        const proportion = res?.width / 700;
-        this.setData({
-          imageWidth: res.width,
-          imageHeight: res.height / proportion
-        });
-      },
-      fail: (err) => {
-        console.error('获取图片信息失败', err);
-        this.setData({
-          imageWidth: '加载失败',
-          imageHeight: '加载失败'
-        });
-      }
-    });
-  },
+
   onUnload: function () {
     this.setData({
       sn_state_num: 0
