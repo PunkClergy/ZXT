@@ -387,7 +387,6 @@ Page({
   },
   // 选择专区后回调
   handleSpecialAreaConfirmSelect() {
-    console.log(this.data.selected)
     const selected = this.data.selected
     byPost(getApp().data.k1swUrl + u_applyMenus.URL, { menuIds: selected?.toString() }, (res) => {
       if (res?.data?.code == 1000) {
@@ -398,7 +397,7 @@ Page({
             join_the_group_modal: true,
             selected: []
           })
-        }, 3000)
+        }, 2000)
 
       }
     });
