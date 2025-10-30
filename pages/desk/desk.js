@@ -390,15 +390,24 @@ Page({
     const selected = this.data.selected
     byPost(getApp().data.k1swUrl + u_applyMenus.URL, { menuIds: selected?.toString() }, (res) => {
       if (res?.data?.code == 1000) {
-        showToast('申请成功,请加群获得权限')
-        setTimeout(() => {
-          this.setData({
-            special_area_modal: false,
-            join_the_group_modal: true,
-            selected: []
-          })
-        }, 2000)
-
+        this.setData({
+          special_area_modal: false,
+        }, () => {
+          wx.showModal({
+            title: '申请成功',
+            content: '请加入专属客服群，并联系管理员完成权限审批。',
+            showCancel: false, 
+            confirmText: '我知道了',
+            success: (res) => {
+              if (res.confirm) {
+                this.setData({
+                  join_the_group_modal: true,
+                  selected: []
+                });
+              }
+            }
+          });
+        })
       }
     });
 
