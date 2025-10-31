@@ -304,4 +304,4 @@
     </form>
   </view>
 </block>
-<custom-tab-bar selectedtext='采购下单' />
+<custom-tab-bar selectedtext='采购下单' wx:if="{{!c_select_address}}"/>

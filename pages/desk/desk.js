@@ -395,7 +395,7 @@ Page({
         }, () => {
           wx.showModal({
             title: '申请成功',
-            content: '请加入专属客服群，并联系管理员完成权限审批。',
+            content: '恭喜您申请成功！请加入专属客服群，并联系管理员完成权限审批。',
             showCancel: false, 
             confirmText: '我知道了',
             success: (res) => {
@@ -690,7 +690,7 @@ Page({
       success(res) {
         console.log("获取成功", res.data); // 成功时的数据
         _this.setData({
-          account: res?.data?.realname || res?.data?.username
+          account: res?.data?.companyName || res?.data?.username
         })
       },
       fail(err) {
