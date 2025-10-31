@@ -99,6 +99,73 @@
       </view>
     </block>
   </view>
+  <!-- 咨询部分 -->
+  <view class="float-button" bindtap="handleShowContact">
+    <text style="font-size: 24rpx;color: #fff;">咨询</text>
+  </view>
+  <!-- 咨询弹窗 -->
+  <view class="contact-modal" wx:if="{{showModal}}" bindtap="hideContact">
+
+  </view>
+
+
+
+  <!-- 专业商务登录弹窗（精致版） -->
+  <view class="pop-popup" wx:if="{{showLoginPopup}}">
+    <view class="pop-mask"></view>
+
+    <view class="pop-card">
+      <!-- 品牌头部（带精致分割） -->
+      <view class="pop-header">
+        <view class="pop-header-inner">
+          <view class="pop-brand-identity">
+            <text class="pop-brand-name">智信通 Wiselink</text>
+          </view>
+          <view class="pop-brand-tag" bindtap="handleLogin">已有账号</view>
+        </view>
+      </view>
+
+      <view class="pop-content">
+        <!-- 标题区域（专业排版） -->
+        <view class="pop-title-group">
+          <text class="pop-main-title">欢迎回来</text>
+          <text class="pop-sub-title">体验更多功能，咨询领取专属权益</text>
+        </view>
+        <!-- 信任标识区（精致图标+文字） -->
+        <view class="pop-trust-container">
+          <view class="pop-trust-item">
+            <view class="pop-trust-icon">
+              <view class="pop-icon-shield"></view>
+            </view>
+            <text class="pop-trust-text">租车专属方案</text>
+          </view>
+          <view class="pop-trust-item">
+            <view class="pop-trust-icon">
+              <view class="pop-icon-check"></view>
+            </view>
+            <text class="pop-trust-text">网约车服务方案</text>
+          </view>
+          <view class="pop-trust-item">
+            <view class="pop-trust-icon">
+              <view class="pop-icon-clock"></view>
+            </view>
+            <text class="pop-trust-text">私家车定制方案</text>
+          </view>
+        </view>
+
+        <!-- 按钮组（专业质感按钮） -->
+        <view class="pop-button-group">
+          <button class="pop-btn-login" class="pop-btn-login" open-type="getPhoneNumber" hover-class="btn_tapcolor" bindgetphonenumber="onGetPhoneNumber">
+            <text class="pop-btn-text">体验功能</text>
+          </button>
+          <button class="pop-btn-consult" bindtap="handleConsult">
+            <text class="pop-btn-text">在线咨询</text>
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
 </view>
 <!-- 发送电子钥匙弹窗 -->
 <block>
@@ -170,4 +237,30 @@
       <text class="qr-group-preview-desc">请点击、长按官方群二维码加入交流群，获取体验权限！</text>
     </view>
   </view>
+</view>
+
+<!-- 遮罩层 -->
+<view class="identity-modal-mask" wx:if="{{btypeM}}"></view>
+<view class="identity-modal-container" wx:if="{{btypeM}}">
+  <view class="identity-modal-content">
+    <view class="identity-modal-title">请选择您的身份</view>
+
+    <view class="identity-modal-options">
+      <!-- 选项1：动态class切换选中状态 -->
+      <view class="identity-modal-option {{selectedqu === 1 ? 'identity-modal-option--selected' : ''}}" bindtap="handleSelectOption" data-value="1">
+        我是商家
+      </view>
+
+      <!-- 选项2：动态class切换选中状态 -->
+      <view class="identity-modal-option {{selectedqu === 2 ? 'identity-modal-option--selected' : ''}}" bindtap="handleSelectOption" data-value="2">
+        我是个人
+      </view>
+    </view>
+
+    <!-- 确认按钮：动态class切换可用状态 -->
+    <button class="identity-modal-confirm {{selectedqu ? 'identity-modal-confirm--enabled' : 'identity-modal-confirm--disabled'}}" bindtap="handleConfirmSelect" disabled="{{!selected}}">
+      确定
+    </button>
+  </view>
+
 </view>
