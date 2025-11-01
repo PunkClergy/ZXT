@@ -428,7 +428,9 @@ Page({
     this.setData({ join_the_group_modal: true })
   },
   handleCloseMask() {
-    this.setData({ special_area_modal: false })
+    this.setData({ special_area_modal: false }, () => {
+      this.initMoreData()
+    })
   },
   // 点击关闭群二维码
   handleQRClose() {
