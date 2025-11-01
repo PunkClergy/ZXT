@@ -374,147 +374,12 @@
   height: 30rpx;
 }
 
-/* 选择专区 */
-.car-select-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20rpx;
-}
 
-.car-select-container {
-  width: 90%;
-  max-width: 600rpx;
-  background-color: white;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
-}
-
-.car-select-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #333;
-  text-align: center;
-  margin-bottom: 30rpx;
-  padding-bottom: 15rpx;
-  border-bottom: 1rpx solid #f1f1f1;
-}
-
-/* 核心：自适应网格，短文本最多3列，长文本1列 */
-.car-select-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140rpx, 1fr)); /* 基础列宽，确保不超边框 */
-  gap: 20rpx; /* 统一间距 */
-  margin-bottom: 35rpx;
-  width: 100%; /* 限制网格宽度不超容器 */
-  box-sizing: border-box;
-}
-
-/* 短文本选项样式 */
-.car-select-item {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-  padding: 18rpx 15rpx;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  justify-content: center;
-  white-space: nowrap; /* 禁止折行 */
-  box-sizing: border-box; /* 确保内边距不撑大容器 */
-  overflow: hidden; /* 极端情况防止内容溢出 */
-  text-overflow: ellipsis; /* 超宽时显示省略号（备选方案） */
-}
-
-/* 长文本选项独占一行 */
-.long-item {
-  grid-column: 1 / -1; /* 横跨所有列 */
-  justify-content: flex-start; /* 长文本左对齐更美观 */
-  padding-left: 30rpx; /* 增加左内边距 */
-}
-
-.car-select-checkbox {
-  width: 28rpx;
-  height: 28rpx;
-  border-radius: 6rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0; /* 复选框不压缩 */
-}
-
-.car-select-check-icon {
-  width: 16rpx;
-  height: 16rpx;
-  background-color: white;
-  transform: rotate(45deg);
-  border-width: 0 3rpx 3rpx 0;
-  border-style: solid;
-  border-color: white;
-}
-
-.car-select-actions {
-  display: flex;
-  gap: 20rpx;
-}
-
-.car-select-action-btn {
-  flex: 1;
-  height: 80rpx;
-  line-height: 80rpx;
-  text-align: center;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  white-space: nowrap;
-}
-
-.car-select-cancel {
-  border: 2rpx solid #ddd;
-  color: #666;
-}
-
-.car-select-confirm {
-  background-color: #4096ff;
-  color: white;
-  box-shadow: 0 4rpx 8rpx rgba(64, 150, 255, 0.3);
-}
 /* 群二维码后的弹出 */
-/* 容器基础样式 */
+/* 仅保留必要样式 */
 .qr-group-container {
   width: 100%;
-  padding: 20rpx;
   box-sizing: border-box;
-}
-
-/* 小图预览区域 */
-.qr-group-preview {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10rpx;
-}
-
-.qr-group-img {
-  width: 200rpx;
-  height: 200rpx;
-  border-radius: 8rpx;
-  object-fit: cover;
-  cursor: pointer;
-}
-
-.qr-group-desc {
-  font-size: 26rpx;
-  color: #666;
-  line-height: 1.4;
 }
 
 /* 遮罩层样式 */
@@ -535,7 +400,7 @@
 /* 关闭按钮 */
 .qr-group-close {
   position: absolute;
-  top: 30rpx;
+  top: 12vh;
   right: 30rpx;
   color: white;
   font-size: 60rpx;
@@ -570,4 +435,127 @@
   text-align: center;
   padding: 0 40rpx;
   line-height: 1.5;
+}
+
+
+
+/* 选择专区 */
+.car-select-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx;
+}
+
+.car-select-container {
+  width: 90%;
+  max-width: 600rpx;
+  background-color: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
+}
+
+.car-select-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30rpx;
+  padding-bottom: 15rpx;
+  border-bottom: 1rpx solid #f1f1f1;
+}
+
+/* 核心修改：固定为1列，实现每个选项独占一行 */
+.car-select-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 仅1列，强制每个选项占满一行 */
+  gap: 15rpx; /* 选项之间的上下间距 */
+  margin-bottom: 35rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 每个选项独占一行的样式 */
+.car-select-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 20rpx 25rpx; /* 适当增加内边距，让行高更舒适 */
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  justify-content: flex-start; /* 左对齐，更符合单行显示习惯 */
+  box-sizing: border-box;
+}
+
+/* 不可取消选项样式 */
+.fixed-item {
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+/* 选中状态的样式强化（可选） */
+.car-select-item[checked] {
+  border-color: #4096ff;
+  background-color: #f0f7ff;
+}
+
+.car-select-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.car-select-action-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  white-space: nowrap;
+}
+
+.car-select-cancel {
+  border: 2rpx solid #ddd;
+  color: #666;
+}
+
+.car-select-confirm {
+  background-color: #4096ff;
+  color: white;
+  box-shadow: 0 4rpx 8rpx rgba(64, 150, 255, 0.3);
+}
+
+/* 咨询部分 */
+
+.float-button {
+  position: fixed;
+  right: 20rpx;
+  top: 70%;
+  transform: translateY(-50%);
+  width: 80rpx;
+  height: 80rpx;
+  background-color: #409eff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(64, 158, 255, 0.3);
+  z-index: 999;
+  transition: all 0.2s ease;
+}
+
+.float-button:active {
+  transform: translateY(-50%) scale(0.9);
+  background-color: #3a8ee6;
+  box-shadow: 0 2rpx 8rpx rgba(64, 158, 255, 0.2);
 }

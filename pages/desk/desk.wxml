@@ -150,7 +150,7 @@
     <view class="car-select-title">请选择您想关注的专区</view>
 
     <view class="car-select-grid">
-      <checkbox wx:for="{{areaOptions}}" wx:key="value" bindtap="handleMoreToggleSelect" data-value="{{item.id}}" class="car-select-item {{item.isLong ? 'long-item' : ''}}" style=" border: 2rpx solid #ddd; background-color:white; color: {{selected.includes(item.value) ? '#4096ff' : '#666'}};">
+      <checkbox wx:for="{{areaOptions}}" wx:key="value" bindtap="handleMoreToggleSelect" data-value="{{item.id}}" data-selected="{{item.selected}}" class="car-select-item {{item.isLong ? 'long-item' : ''}}" checked="{{item.selected}}" style="border: 2rpx solid #ddd;">
         <text>{{item.name}}</text>
       </checkbox>
     </view>
@@ -161,10 +161,14 @@
     </view>
   </view>
 </view>
-
+<view class="float-button" bindtap="handleShowContact">
+  <text style="font-size: 24rpx;color: #fff;">咨询</text>
+</view>
 <!-- 专区之后的群二维码弹窗 -->
 <view class="qr-group-container" wx:if="{{join_the_group_modal}}">
   <view class="qr-group-mask" bindtap="handleQRClose">
+    <!-- 关闭按钮 -->
+    <view class="qr-group-close" bindtap="handleQRClose">×</view>
     <view class="qr-group-preview-content">
       <image catchtap="handleQRShowImageMask" class="qr-group-preview-img" src="{{personal_qr_code}}" mode="widthFix"></image>
       <text class="qr-group-preview-desc">请点击、长按官方群二维码加入交流群，获取体验权限！</text>

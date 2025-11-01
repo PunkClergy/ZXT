@@ -66,27 +66,37 @@ Page({
   // 请求更多功能数据
   initMoreData() {
     byGet(getApp().data.k1swUrl + u_getNotHaveMidMenulist.URL, {}).then(response => {
-      const rawOptions = response?.data?.content
-      const optionsWithLength = rawOptions.map(item => ({
+      const rawOptions = response?.data?.content || [];
+      // 先过滤掉allowShow等于1的项，再处理剩余项
+      const filteredOptions = rawOptions.filter(item => item.allowShow !== 1);
+      const optionsWithLength = filteredOptions.map(item => ({
         ...item,
         isLong: item.name.length > 5 // 超过5个字符视为长文本
       }));
 
       this.setData({ areaOptions: optionsWithLength });
     })
-
   },
   // 选择所选专区
   handleMoreToggleSelect(e) {
+    console.log(e)
     const value = e.currentTarget.dataset.value;
-    const { selected } = this.data;
-    const index = selected.indexOf(value);
-    if (index > -1) {
-      selected.splice(index, 1);
-    } else {
-      selected.push(value);
-    }
-    this.setData({ selected });
+    // 从当前数据中获取areaOptions
+    const { areaOptions } = this.data;
+
+    // 映射新数组，找到id和value相同的项并翻转selected
+    const updatedOptions = areaOptions.map(item => {
+      if (item.id === value) {
+        return {
+          ...item,
+          selected: !item.selected
+        };
+      }
+      return item;
+    });
+    this.setData({
+      areaOptions: updatedOptions
+    });
   },
   // 请求入群码
   initQrCode() {
@@ -387,7 +397,11 @@ Page({
   },
   // 选择专区后回调
   handleSpecialAreaConfirmSelect() {
-    const selected = this.data.selected
+    const selected = this.data.areaOptions
+      ? this.data.areaOptions
+        .filter(item => item.selected == true)
+        .map(item => item.id)
+      : [];
     byPost(getApp().data.k1swUrl + u_applyMenus.URL, { menuIds: selected?.toString() }, (res) => {
       if (res?.data?.code == 1000) {
         this.setData({
@@ -395,29 +409,29 @@ Page({
         }, () => {
           wx.showModal({
             title: '申请成功',
-            content: '恭喜您申请成功！请加入专属客服群，并联系管理员完成权限审批。',
-            showCancel: false, 
+            // content: '恭喜您申请成功！请加入专属客服群，并联系管理员完成权限审批。',
+            content: '恭喜您申请成功！',
+            showCancel: false,
             confirmText: '我知道了',
             success: (res) => {
               if (res.confirm) {
-                this.setData({
-                  join_the_group_modal: true,
-                  selected: []
-                });
+                this.initMoreData()
+                this.handleTermialList()
               }
             }
           });
         })
       }
     });
-
+  },
+  handleShowContact() {
+    this.setData({ join_the_group_modal: true })
   },
   handleCloseMask() {
     this.setData({ special_area_modal: false })
   },
   // 点击关闭群二维码
   handleQRClose() {
-    console.log(111)
     this.setData({
       join_the_group_modal: false
     })
