@@ -136,7 +136,9 @@ Page({
         this.setData({
           btypeM: false
         }, () => {
-          wx.navigateBack({ delta: 1 });
+          wx.switchTab({
+            url: '/pages/desk/desk',
+          })
         })
       }
     });
@@ -220,7 +222,10 @@ Page({
           btypeM: true
         })
       } else {
-        wx.navigateBack({ delta: 1 });
+        // wx.navigateBack({ delta: 1 });
+        wx.switchTab({
+          url: '/pages/desk/desk',
+        })
       }
       return
     } catch (error) {
