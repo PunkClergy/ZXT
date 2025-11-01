@@ -1,6 +1,6 @@
 /* 基础样式 */
 page {
-  background: linear-gradient(to bottom, #2d8cf0, #ffffff);
+  /* background: linear-gradient(to bottom, #2d8cf0, #ffffff); */
   font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
   min-height: 100vh;
 }
@@ -13,6 +13,7 @@ page {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+   background: linear-gradient(to bottom, #2d8cf0, #ffffff);
 }
 
 /* 车辆卡片 */

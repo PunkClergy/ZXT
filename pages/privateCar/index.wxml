@@ -1,6 +1,7 @@
-<view class="container">
+<view class="container" style="height: {{c_screen_height}}px;">
+  <custom-header title="手机汽车钥匙" />
   <!-- 车辆信息卡片 -->
-  <view class="vehicle-card">
+  <view class="vehicle-card"  style="margin-top: {{c_navBarHeight + c_statusBarHeight}}px;">
     <!-- 车牌与提示信息 -->
     <view class="license-plate-section">
       <view class="license-plate-container">

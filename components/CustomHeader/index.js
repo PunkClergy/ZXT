@@ -1,16 +1,19 @@
+const {
+  isLogin
+} = require('../../utils/request/http')
 Component({
   properties: {
     title: {
       type: String,
       value: {}
     },
-    state:{
-      type:String,
-      value:0
+    state: {
+      type: String,
+      value: 0
     },
-    tabr:{
-      type:Boolean,
-      value:false
+    tabr: {
+      type: Boolean,
+      value: false
     }
   },
 
@@ -65,11 +68,17 @@ Component({
     },
 
     handleBack(e) {
+      if (!isLogin()) {
+        wx.navigateTo({
+          url: '/pages/system/managerLoginView/loginView',
+        })
+        return
+      }
       const pages = getCurrentPages();
       if (pages.length >= 2) {
         wx.navigateBack({
           delta: 1,
-          success: () => {},
+          success: () => { },
           fail: (err) => {
             wx.switchTab({
               url: '/pages/desk/desk'
@@ -84,6 +93,12 @@ Component({
     },
 
     handleGoHome() {
+      if (!isLogin()) {
+        wx.navigateTo({
+          url: '/pages/system/managerLoginView/loginView',
+        })
+        return
+      }
       wx.reLaunch({
         url: '/pages/desk/desk'
       })
