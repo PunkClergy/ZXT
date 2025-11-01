@@ -77,7 +77,7 @@
     <view class="identity-modal-options">
       <!-- 选项1：动态class切换选中状态 -->
       <view class="identity-modal-option {{selected === 1 ? 'identity-modal-option--selected' : ''}}" bindtap="handleSelectOption" data-value="1">
-        我是商家
+        我是企业
       </view>
 
       <!-- 选项2：动态class切换选中状态 -->
