@@ -1,0 +1,274 @@
+/* 页面容器 */
+.coupon-page {
+  background-color: #f5f5f7;
+  min-height: 100vh;
+  padding-bottom: 30rpx;
+}
+
+/* 标题栏 */
+.title-bar {
+  display: flex;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.title-item {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 0;
+  font-size: 32rpx;
+  color: #666;
+  position: relative;
+}
+
+.title-item.active {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.title-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 6rpx;
+  background-color: #ff4d4f;
+  border-radius: 3rpx;
+}
+
+.badge {
+  position: absolute;
+  top: 16rpx;
+  right: 30%;
+  background-color: #ff4d4f;
+  color: #fff;
+  font-size: 20rpx;
+  width: 30rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  text-align: center;
+  border-radius: 50%;
+}
+
+/* 优惠券列表 */
+.coupon-list {
+  padding: 20rpx 30rpx;
+}
+
+/* 优惠券项 */
+.coupon-item {
+  display: flex;
+  background-color: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 24rpx;
+  position: relative;
+  overflow: hidden;
+  height: 220rpx;
+}
+
+/* 折扣券特殊样式 */
+.discount-type .coupon-left {
+  background: linear-gradient(135deg, #ff7a45 0%, #ff4d4f 100%);
+}
+
+/* 已领取样式 */
+.received .coupon-left {
+  background: linear-gradient(135deg, #52c41a 0%, #13c2c2 100%);
+}
+
+/* 已使用样式 */
+.used {
+  opacity: 0.7;
+}
+
+/* 已过期样式 */
+.expired {
+  opacity: 0.6;
+}
+
+.expired .coupon-left {
+  background: linear-gradient(135deg, #8c8c8c 0%, #595959 100%);
+}
+
+/* 左侧金额区域 */
+.coupon-left {
+  width: 240rpx;
+  background: linear-gradient(135deg, #faad14 0%, #ff9a2e 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 0;
+  position: relative;
+  z-index: 1;
+}
+
+.amount-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.symbol {
+  font-size: 40rpx;
+  margin-bottom: 10rpx;
+  margin-right: 5rpx;
+}
+
+.amount {
+  font-size: 70rpx;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.discount-unit {
+  font-size: 40rpx;
+  margin-bottom: 10rpx;
+  margin-left: 5rpx;
+}
+
+.condition {
+  font-size: 26rpx;
+  margin-top: 10rpx;
+}
+
+/* 右侧信息区域 */
+.coupon-right {
+  flex: 1;
+  padding: 30rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.coupon-title {
+  font-size: 34rpx;
+  color: #333;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.coupon-desc {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 10rpx;
+  line-height: 1.4;
+}
+
+.coupon-date {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+/* 右侧操作区 */
+.coupon-operate {
+  width: 160rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.get-btn {
+  width: 120rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background-color: #ff4d4f;
+  color: #fff;
+  font-size: 26rpx;
+  border-radius: 30rpx;
+  padding: 0;
+  margin: 0;
+}
+
+.get-btn::after {
+  border: none;
+}
+
+/* 状态标签 */
+.coupon-status {
+  width: 160rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.used-tag {
+  font-size: 28rpx;
+  color: #999;
+  padding: 8rpx 20rpx;
+  border: 1px solid #999;
+  border-radius: 30rpx;
+}
+
+.unused-tag {
+  font-size: 28rpx;
+  color: #13c2c2;
+  padding: 8rpx 20rpx;
+  border: 1px solid #13c2c2;
+  border-radius: 30rpx;
+}
+
+.expired-tag {
+  font-size: 28rpx;
+  color: #999;
+  padding: 8rpx 20rpx;
+  border: 1px solid #999;
+  border-radius: 30rpx;
+}
+
+/* 优惠券装饰线 */
+.coupon-line {
+  position: absolute;
+  top: 0;
+  left: 240rpx;
+  width: 2rpx;
+  height: 100%;
+  background-image: radial-gradient(#eee 0%, transparent 50%);
+  background-size: 2rpx 20rpx;
+  background-repeat: repeat-y;
+  z-index: 2;
+}
+
+/* 左上角装饰角 */
+.coupon-corner {
+  position: absolute;
+  top: 0;
+  left: 240rpx;
+  width: 20rpx;
+  height: 20rpx;
+  background-color: #f5f5f7;
+  border-radius: 0 0 0 20rpx;
+  z-index: 2;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-img {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 40rpx;
+  border-radius: 50%;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: #999;
+}

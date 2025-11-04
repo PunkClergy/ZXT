@@ -29,7 +29,7 @@
   <!-- 支付按钮 -->
   <view class="footer">
     <view class="pay-btn" bindtap="handlePay">
-      {{isWechat?'微信支付':'余额支付'}} ¥{{orderInfo.cost||orderInfo.premium}}
+      {{isWechat?'微信支付':'余额支付'}} ¥{{orderInfo.cost - coupon.amount||orderInfo.premium- coupon.amount}}
     </view>
   </view>
 </view>

@@ -267,7 +267,12 @@ const u_getShopLink = {
 const u_willingkey = {
   URL: fin3plusUrl + "deviceBuyApi/willingKey",
 }
+const u_getMyCoupon = {
+  URL: fin3plusUrl + "accountapi/getMyCoupon",
+  
+}
 module.exports = {
+  u_getMyCoupon,
   u_willingkey,
   u_getShopLink,
   u_vehUnBindCarManager,

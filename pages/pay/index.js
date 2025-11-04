@@ -67,10 +67,10 @@ Page({
         this.setData({
           balance: content.balance
         }, () => {
-          const cost = this.data.orderInfo.cost||this.data.orderInfo.premium
+          const cost = this.data.orderInfo.cost || this.data.orderInfo.premium
           const balance = this.data.balance
-          console.log(cost,balance)
-          if (Number(cost) > Number(balance)) {
+          console.log(cost, balance)
+          if (Number(cost - this.data.coupon.amount) > Number(balance)) {
             this.setData({
               isWechat: true
             })
@@ -89,7 +89,7 @@ Page({
       console.log(1)
       // 微信支付
       const params = {
-        [urlUtil.pay.amount]: Math.abs(_this.data.orderInfo.cost||this.data.orderInfo.premium),
+        [urlUtil.pay.amount]: Math.abs(_this.data.orderInfo.cost || this.data.orderInfo.premium) - this.data.coupon?.amount,
         [urlUtil.pay.userId]: getApp().data.userInfo.id
       };
       appUtil.showLoading("处理中...")
@@ -106,10 +106,12 @@ Page({
             paySign: content.paySign,
             success(res) {
               const params_pay = {
-                [u_pay.orderNum]: _this.data.orderInfo.num||_this.data.orderInfo.guid
+                [u_pay.orderNum]: _this.data.orderInfo.num || _this.data.orderInfo.guid,
+                couponGuid: _this.data.coupon?.guid
               }
               byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
                 if (resp.data.code == 1000) {
+                  wx.removeStorageSync('coupon');
                   wx.showModal({
                     title: '提示',
                     content: '支付成功',
@@ -128,10 +130,12 @@ Page({
       });
     } else {
       const params_pay = {
-        [u_pay.orderNum]: _this.data.orderInfo.num||_this.data.orderInfo.guid
+        [u_pay.orderNum]: _this.data.orderInfo.num || _this.data.orderInfo.guid,
+        couponGuid: _this.data.coupon?.guid
       }
       byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
         if (resp.data.code == 1000) {
+          wx.removeStorageSync('coupon');
           wx.showModal({
             title: '提示',
             content: '支付成功',
@@ -150,7 +154,8 @@ Page({
   onLoad(options) {
     if (options?.info) {
       this.setData({
-        orderInfo: JSON.parse(options?.info)
+        orderInfo: JSON.parse(options?.info),
+        coupon: JSON.parse(options?.coupon)
       }, () => {
         this.initAmountSizeBalance()
       })

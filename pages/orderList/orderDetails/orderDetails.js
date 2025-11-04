@@ -43,7 +43,12 @@ Page({
     region: [],//地址 当前选择地区
 
   },
-
+  // 跳转到优惠券列表
+  handleUseCoupon() {
+    wx.navigateTo({
+      url: '/pages/coupon/index?tab=1&back=true',
+    })
+  },
   // 钥匙邮寄方式切换函数
   handleKeysCurrType(evt) {
     this.setData({
@@ -419,7 +424,7 @@ Page({
   // 去支付
   handleOneClickOrdering() {
     wx.navigateTo({
-      url: '/pages/pay/index?info=' + JSON.stringify(this.data.all_data),
+      url: `/pages/pay/index?info=${JSON.stringify(this.data.all_data)}&coupon=${JSON.stringify(this.data.couponText)}`
     })
   },
   onLoad(options) {
@@ -432,10 +437,24 @@ Page({
     }
   },
   onReady() { },
+  // 获取已选择优惠券
+  handleGetStorageCoupon() {
+    wx.getStorage({
+      key: 'coupon',
+      success: (res) => {
+        const coupon = res.data
+        this.setData({
+          couponText: coupon
+        })
+      }
+    })
+  },
   onShow() {
     if (this?.data?.numInfo) {
       this.initDetails(this.data.numInfo)
     }
+    // 获取缓存
+    this.handleGetStorageCoupon()
     this.initialiImageBaseConversion()
     this.handleCurrentDate()
   },

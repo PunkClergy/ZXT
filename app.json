@@ -154,7 +154,8 @@
     "pages/UnmannedStores/index",
     "pages/PrivateDomain/index",
     "pages/nbpg/index",
-    "pages/vehicleUser/index"
+    "pages/vehicleUser/index",
+    "pages/coupon/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
