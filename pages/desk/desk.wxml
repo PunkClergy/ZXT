@@ -143,7 +143,7 @@
     </form>
   </view>
 </block>
-<custom-tab-bar selectedtext='首页' wx:if="{{!sn_state&&!join_the_group_modal&&!special_area_modal}}" />
+<custom-tab-bar selectedtext='首页' wx:if="{{!sn_state&&!join_the_group_modal&&!special_area_modal&&!coupon_modal}}" />
 <!-- 选择专区 -->
 <view class="car-select-mask" wx:if="{{special_area_modal}}">
   <view class="car-select-container">
@@ -175,3 +175,11 @@
     </view>
   </view>
 </view>
+
+<button class="mask-container" wx:if="{{coupon_modal}}" open-type="getPhoneNumber" hover-class="btn_tapcolor" bindgetphonenumber="onGetPhoneNumber">
+  <!-- 优惠券图片容器（阻止冒泡） -->
+  <view class="coupon-image-wrapper" bindtap="stopPropagation">
+    <!-- 优惠券图片（网络图片示例） -->
+    <image src="https://k3a.wiselink.net.cn/img/app/coupon50.png" mode="widthFix" class="coupon-image"></image>
+  </view>
+</button>

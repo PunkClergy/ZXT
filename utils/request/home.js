@@ -38,6 +38,9 @@ const u_getQrcodeImg = {
 const u_getNotHaveMidMenulist = {
   URL:'deskapi/getNotHaveMidMenulist',
 }
+const u_forceLogin = {
+  URL:'deskapi/forceLogin',
+}
 // 获取最新的token
 const u_getUserinfo = {
   URL:'deskapi/getUserInfo',
@@ -62,6 +65,7 @@ const u_applyMenus ={
   URL:"accountapi/applyMenus",
 }
 module.exports = {
+  u_forceLogin,
   u_applyMenus,
   u_setBtype,
   u_updatePassword,

@@ -2,6 +2,7 @@ const {
   _handleWindowInfo,
   _handleDeviceInfo
 } = require('../../utils/public').default
+const appUtil = require('../../utils/app-util.js');
 const {
   u_bannerlist,
   u_midMenulist,
@@ -13,7 +14,8 @@ const {
   u_updateUserName,
   u_getQrcodeImg,
   u_getNotHaveMidMenulist,
-  u_applyMenus
+  u_applyMenus,
+  u_forceLogin
 } = require('../../utils/request/home')
 
 const {
@@ -61,7 +63,8 @@ Page({
     special_area_modal: false,// 选择专区弹窗
     join_the_group_modal: false,// 入群二维码弹窗
     selected: [],
-    areaOptions: [] // 动态生成带长度标记的选项
+    areaOptions: [], // 动态生成带长度标记的选项
+    coupon_modal: false
   },
   // 请求更多功能数据
   initMoreData() {
@@ -100,7 +103,7 @@ Page({
   },
   // 请求入群码
   initQrCode() {
-    byGet(getApp().data.k1swUrl + u_getQrcodeImg.URL, {}).then(response => {
+    byGet((getApp().data.k1swUrl || this.data.c_link) + u_getQrcodeImg.URL, {}).then(response => {
       if (response.statusCode == 200) {
         this.setData({
           personal_qr_code: response.data.content.img
@@ -347,9 +350,9 @@ Page({
           special_area_modal: false,
         }, () => {
           wx.showModal({
-            title: '申请成功',
+            title: '配置成功',
             // content: '恭喜您申请成功！请加入专属客服群，并联系管理员完成权限审批。',
-            content: '恭喜您申请成功！',
+            content: '可点击右侧"咨询"，进群了解更多！',
             showCancel: false,
             confirmText: '我知道了',
             success: (res) => {
@@ -599,7 +602,131 @@ Page({
         }
       });
     } else if (!isLogin()) {
-      wx.navigateTo({ url: '/pages/privateCar/index' });
+      // wx.navigateTo({ url: '/pages/privateCar/index' });
+    }
+  },
+  async onGetPhoneNumber(e) {
+    console.log(e);
+    try {
+      // 获取登录凭证（使用箭头函数避免_this引用）
+      const loginRes = await new Promise((resolve, reject) => {
+        wx.login({
+          success: resolve,
+          fail: (err) => reject(new Error(`登录失败: ${err.errMsg}`))
+        });
+      });
+
+      if (!loginRes.code) {
+        throw new Error('无法获取登录凭证');
+      }
+
+      // 检查授权码
+      if (!e.detail?.code) {
+        console.warn('用户拒绝了授权');
+        return;
+      }
+
+      // 发送登录请求
+      const response = await new Promise((resolve, reject) => {
+        byPost(
+          `${this.data.c_link}userapi/wxLogin`,
+          {
+            code: e.detail.code,
+            inviteCode: this.data.invit_code || '',
+            wxCode: loginRes.code
+          },
+          (res) => {
+            if (res?.data?.content) {
+              resolve(res);
+            } else {
+              reject(new Error(res?.data?.message || '登录接口响应异常'));
+            }
+          },
+          (err) => reject(new Error(`网络请求失败: ${err.errMsg}`))
+        );
+      });
+
+      const userInfo = response.data.content;
+      if (!userInfo) {
+        throw new Error('用户信息获取失败');
+      }
+
+      // 配置URL（简化条件判断）
+      const isTestUser = userInfo.username === '13683187039*';
+      const urlConfig = {
+        k1swUrl: isTestUser
+          ? 'https://k1swtest.wiselink.net.cn/'
+          : 'https://k3a.wiselink.net.cn/',
+        fin3Url: 'https://fin3.wiselink.net.cn/fin/' // 固定地址
+      };
+
+      // 批量存储数据（使用async/await简化存储逻辑）
+      const app = getApp();
+      const storageKeys = [
+        [app.data.k1swUrlKey, urlConfig.k1swUrl],
+        [app.data.fin3UrlKey, urlConfig.fin3Url],
+        [app.data.userKey, userInfo]
+      ];
+
+      for (const [key, value] of storageKeys) {
+        await new Promise((resolve, reject) => {
+          appUtil.setStorage(key, value, (success) =>
+            success ? resolve() : reject(`存储失败: ${key}`)
+          );
+        });
+      }
+
+      // 更新应用数据（集中赋值）
+      Object.assign(app.data, {
+        k1swUrl: urlConfig.k1swUrl,
+        fin3Url: urlConfig.fin3Url,
+        userInfo,
+        reflag: 1
+      });
+      // 统一处理模态框和用户信息设置（合并重复逻辑）
+      this.setData({ coupon_modal: false });
+
+      // 使用await优化异步存储读取
+      try {
+        const { data } = await new Promise((resolve, reject) => {
+          wx.getStorage({
+            key: 'userKey',
+            success: resolve,
+            fail: reject
+          });
+        });
+        this.setData({
+          account: data?.companyName || data?.username
+        });
+        wx.showModal({
+          title: '立即下单？',
+          content: '关键步骤提醒：商家报价后 → 付款时 → 用优惠券直接抵消金额！',
+          confirmText: '去下单',
+          cancelText: '先逛逛',
+          success: (res) => {
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/orderList/orderList',
+              });
+            }
+          },
+        });
+      } catch (err) {
+        console.error("获取失败", err);
+      }
+
+    } catch (error) {
+      console.error('处理流程异常:', error);
+      // 错误信息精细化
+      const errorMsg = error.message.includes('存储失败')
+        ? '本地数据处理失败，请重新登录！'
+        : error.message.includes('登录失败')
+          ? '登录过程出错，请重试！'
+          : '操作失败，请检查网络后重试';
+
+      appUtil.showModal(errorMsg, false, () => {
+        // 可添加重试逻辑
+      });
     }
   },
   triggerChildEvent() {
@@ -632,15 +759,25 @@ Page({
   onReady: function () {
     this.initialiImageBaseConversion()
   },
-
+  initforceLogin() {
+    byGet((getApp().data.k1swUrl || this.data.c_link) + u_forceLogin.URL, {}).then(response => {
+      if (!isLogin() && response?.data?.content == 1) {
+        this.setData({
+          coupon_modal: true
+        })
+      }
+    })
+  },
   onShow: function (e) {
     this.initialGetBanner()
     this.handleTermialList()
     this.initQrCode()
     this.initMoreData()
+    this.initforceLogin()
     if (getApp()?.data?.reflag == 1) {
       this.handleTermialList()
     }
+
 
     const _this = this
     wx.getStorage({
