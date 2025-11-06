@@ -194,9 +194,10 @@ Page({
   },
   // 蓝牙连接处理
   handleStart() {
-    const that = this
-    const options = this.data.options
-    // 统一处理函数
+    const that = this;
+    const options = this.data.options;
+
+    // 统一处理数据的函数
     const handleData = (data) => {
       if (!data) return;
       that.setData({
@@ -208,38 +209,58 @@ Page({
         that.handleBule();
       });
     };
-    if (options?.scene) {
-      byGet('https://k1sw.wiselink.net.cn/' + u_getCarBluetoothKeyByCode.URL, {
-        code: options.scene
-      }).then(response => {
-        if (!response?.data?.content) {
-          return;
-        }
-        this.setData({
-          netWork: true,
-          code: options?.scene
+
+    // 统一请求蓝牙数据的函数
+    const fetchBluetoothData = (code) => {
+      byGet('https://k1sw.wiselink.net.cn/' + u_getCarBluetoothKeyByCode.URL, { code })
+        .then(response => {
+          if (!response?.data?.content) return;
+
+          that.setData({
+            netWork: true,
+            code: code
+          });
+          handleData(response.data.content);
         })
-        handleData(response.data.content);
-      }).catch(err => {
+        .catch(err => {
+          console.error('获取蓝牙数据失败:', err);
+        });
+    };
+
+    // 1. 优先处理URL参数
+    if (options?.scene) {
+      console.log('处理URL参数:', options.scene);
+      fetchBluetoothData(options.scene);
+
+      // 同时将URL参数存入缓存，便于后续使用
+      wx.setStorage({
+        key: 'scene',
+        data: options.scene
       });
-    } else {
-      // 本地存储处理
+    }
+    // 2. URL参数不存在时处理缓存参数
+    else {
       wx.getStorage({
-        key: 'bluetoothData',
-        success(res) {
-          handleData(res.data);
+        key: 'scene',
+        success: res => {
+          console.log('处理缓存参数:', res.data);
+          fetchBluetoothData(res.data);
         },
-        fail(err) {
-          const param = {
-            [u_carList.page]: 1,
-          };
-          byGet('https://k1sw.wiselink.net.cn/' + u_carList.URL, param).then(response => {
-            if (response.statusCode == 200) {
-              console.log(response)
-              wx.setStorageSync('bluetoothData', response?.data?.content?.[0])
-              handleData(response?.data?.content?.[0])
-            }
-          })
+        // 3. 缓存也不存在时处理车辆列表数据
+        fail: () => {
+          console.log('缓存不存在，处理车辆列表数据');
+          const param = { [u_carList.page]: 1 };
+          byGet('https://k1sw.wiselink.net.cn/' + u_carList.URL, param)
+            .then(response => {
+              if (response.statusCode === 200 && response?.data?.content?.[0]) {
+                const firstCar = response.data.content[0];
+                wx.setStorageSync('bluetoothData', firstCar);
+                handleData(firstCar);
+              }
+            })
+            .catch(err => {
+              console.error('获取车辆列表失败:', err);
+            });
         }
       });
     }

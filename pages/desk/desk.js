@@ -587,6 +587,7 @@ Page({
     const sceneParam = scene ?? query;
     if (sceneParam) {
       if (sceneParam.startsWith('blue_')) {
+        wx.setStorageSync('scene', sceneParam);
         wx.navigateTo({
           url: `/pages/privateCar/index?scene=${sceneParam}`,
         });
