@@ -1,0 +1,327 @@
+/* 基础样式 */
+page {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/* 自定义头部样式 */
+.custom-header {
+  width: 100%;
+  /* background: linear-gradient(90deg, #2c3e50, #3498db); */
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.header-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  /* 关键：确保内容与胶囊按钮垂直居中对齐 */
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  height: 70%; /* 相对于头部内容高度的70%，确保与胶囊按钮高度协调 */
+  width: auto;
+  border-radius: 10rpx;
+  margin-right: 15rpx;
+}
+
+.company-name {
+  font-size: 36rpx;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  /* 关键：与胶囊按钮保持相同的右侧距离 */
+
+}
+
+.login-btn {
+  height: 70%; /* 与胶囊按钮高度保持一致 */
+  min-width: 140rpx;
+  line-height: normal; /* 重置行高，使用padding垂直居中 */
+  padding: 0 20rpx;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #3498db;
+  border-radius: 35rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.avatar {
+  height: 70%; /* 与胶囊按钮高度保持一致 */
+  width: auto;
+  border-radius: 50%;
+  border: 2rpx solid rgba(255, 255, 255, 0.8);
+  margin-right: 15rpx;
+}
+
+.user-name {
+  color: #ffffff;
+  font-size: 28rpx;
+  max-width: 200rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 内容区域样式 */
+.content {
+  width: 100%;
+  position: absolute;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* 轮播图样式 */
+.swiper-container {
+  width: 100%;
+  background-color: #fff;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.banner-img {
+  width: 100%;
+  height: auto;
+  border-radius: 20rpx;
+}
+
+/* 公告样式 */
+.notice {
+  width: 100%;
+  height: 80rpx;
+  background-color: #fff;
+  margin: 10rpx 0;
+  padding: 0 30rpx;
+  display: flex;
+  align-items: center;
+}
+
+.notice-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
+}
+
+.notice-content {
+  flex: 1;
+  height: 60rpx;
+  overflow: hidden;
+}
+
+.notice-content text {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 60rpx;
+}
+
+/* 专区入口样式 */
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  padding: 20rpx 30rpx;
+  background-color: #fff;
+  margin-top: 10rpx;
+}
+
+.special-zone {
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 15rpx 20rpx;
+  box-sizing: border-box;
+}
+
+.zone-item {
+  width: 50%;
+  padding: 0 15rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+}
+
+.zone-img {
+  width: 100%;
+  height: 240rpx;
+  border-radius: 15rpx;
+  margin-bottom: 10rpx;
+}
+
+.zone-name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 全宽轮播图样式 */
+.full-width-swiper {
+  width: 100%;
+  background-color: #fff;
+  padding: 20rpx;
+  margin-top: 10rpx;
+  box-sizing: border-box;
+}
+
+.full-banner-img {
+  width: 100%;
+  height: 200rpx;
+  border-radius: 20rpx;
+}
+
+/* 海报样式 */
+.poster {
+  width: 100%;
+  background-color: #fff;
+  padding: 20rpx;
+  margin-top: 10rpx;
+  box-sizing: border-box;
+}
+
+.poster-img {
+  width: 100%;
+  height: auto;
+  border-radius: 20rpx;
+}
+
+/* 瀑布流动态内容样式 */
+.dynamic-content {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10rpx 15rpx 0;
+  box-sizing: border-box;
+  background-color: #f5f5f5;
+}
+
+.waterfall-item {
+  width: 50%;
+  padding: 10rpx 15rpx;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 10rpx;
+  margin-bottom: 10rpx;
+}
+
+.waterfall-img {
+  width: 100%;
+  height: auto;
+  border-radius: 5rpx;
+}
+
+.waterfall-desc {
+  font-size: 26rpx;
+  color: #333;
+  padding: 10rpx 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* 加载提示样式 */
+.loading {
+  width: 100%;
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+}
+
+.loading text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 没有更多数据提示 */
+.no-more {
+  width: 100%;
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+}
+
+.no-more text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 底部tabar样式 */
+.tabbar {
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+}
+
+.tab-icon {
+  width: 50rpx;
+  height: 50rpx;
+  margin-bottom: 10rpx;
+}
+
+.tab-item text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.tab-item.active text {
+  color: #3498db;
+}

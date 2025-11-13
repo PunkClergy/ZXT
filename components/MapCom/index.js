@@ -293,12 +293,12 @@ Component({
                     padding: 8
                   }
                 };
-
                 _this.setData({
                   a_deputy_latitude: mainCar.tlatitude,
                   a_deputy_longitude: mainCar.tlongitude,
                   latitude: mainCar.tlatitude,
                   longitude: mainCar.tlongitude,
+                  blueKey: mainCar?.blueKey,
                   markers: [mainMarker, ...otherMarkers]
                 });
                 safeHideLoading();
@@ -347,25 +347,30 @@ Component({
             const callout = {
               ...(marker.callout || {})
             };
+
             callout.display = marker.id === markerId ? 'ALWAYS' : 'BYCLICK';
             return {
               ...marker,
               callout,
             };
           });
-          if (JSON.stringify(this.data.markers) !== JSON.stringify(updatedMarkers)) {
-            this.setData({
-              markers: updatedMarkers,
-              showModalState: false,
-              idc: updatedMarkers?.[1]?.idc,
-              blueKey: updatedMarkers?.[1]?.blueKey,
-              deviceType: updatedMarkers?.[1]?.deviceType
-            }, () => {
-              this.triggerEvent('myMethod', {
-                info: updatedMarkers.find(item => item?.callout?.display == 'ALWAYS')
+          this.data.markers?.forEach((item) => {
+            if (item?.id == markerId) {
+              this.setData({
+                markers: updatedMarkers,
+                showModalState: false,
+                idc: item?.idc,
+                blueKey: item?.blueKey,
+                deviceType: item?.deviceType
+              }, () => {
+                console.log(this.data)
+                this.triggerEvent('myMethod', {
+                  info: updatedMarkers.find(item => item?.callout?.display == 'ALWAYS')
+                });
               });
-            });
-          }
+            }
+          })
+
 
         } catch (error) {
           showToast('操作失败，请重试');
@@ -608,7 +613,7 @@ Component({
     },
     // 蓝牙控制车辆
     handleExecuteBluetooth(type) {
-      console.log(this.data.idc, '000------')
+      console.log(this.data.idc || `19${this.data.sn}`, this.data.blueKey, '蓝牙设备号和密钥')
       const COMMAND_MAPPING = {
         5: 5, // 远程寻车
         1: this?.data?.deviceType ? 4 : 3, // 锁门
@@ -660,7 +665,7 @@ Component({
         const command = COMMAND_MAPPING[type];
         if (type == 5) {
           bleManager.sendData(
-            this.data.idc,
+            this.data.idc || `19${this.data.sn}`,
             this.data.blueKey,
             command,
             state => BLUETOOTH_HANDLERS[state]?.(),
@@ -679,7 +684,7 @@ Component({
         if (type == 8 || type == 6) {
           console.log(12323232323)
           bleManager.sendData(
-            this.data.idc,
+            this.data.idc || `19${this.data.sn}`,
             this.data.blueKey,
             command,
             state => BLUETOOTH_HANDLERS[state]?.(),
@@ -696,16 +701,15 @@ Component({
           return;
         }
         if ([1, 3].includes(type)) {
-          bleManager.sendData(this.data.idc, this.data.blueKey, command, state => BLUETOOTH_HANDLERS[state]?.(),
-            data => {
-              hideLoading();
-              if (data.controlType === 4) {
-                showToast(data.result);
-                if (data.result.includes("控制成功")) {
-                  // 上传服务器逻辑
-                }
+          bleManager.sendData(this.data.idc || `19${this.data.sn}`, this.data.blueKey, command, state => BLUETOOTH_HANDLERS[state]?.(), data => {
+            hideLoading();
+            if (data.controlType === 4) {
+              showToast(data.result);
+              if (data.result.includes("控制成功")) {
+                // 上传服务器逻辑
               }
-            });
+            }
+          });
         }
       } finally {
         //  统一清理 (如果需要)

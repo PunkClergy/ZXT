@@ -766,6 +766,10 @@ Page({
         this.setData({
           coupon_modal: true
         })
+      }else{
+        this.setData({
+          coupon_modal: false
+        })
       }
     })
   },
@@ -803,7 +807,9 @@ Page({
       sn_specific_value: this.data.sn_specific_value || scene
     })
   },
-
+  onExistingAccountTap() {
+    wx.navigateTo({ url: '/pages/system/managerLoginView/loginView' })
+  },
   onUnload: function () {
     this.setData({
       sn_state_num: 0

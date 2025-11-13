@@ -176,10 +176,28 @@
   </view>
 </view>
 
-<button class="mask-container" wx:if="{{coupon_modal}}" open-type="getPhoneNumber" hover-class="btn_tapcolor" bindgetphonenumber="onGetPhoneNumber">
-  <!-- 优惠券图片容器（阻止冒泡） -->
-  <view class="coupon-image-wrapper" bindtap="stopPropagation">
-    <!-- 优惠券图片（网络图片示例） -->
-    <image src="https://k3a.wiselink.net.cn/img/app/coupon50.png" mode="widthFix" class="coupon-image"></image>
+<view class="mask-container" wx:if="{{coupon_modal}}">
+  <!-- 优惠券图片容器（点击图片触发授权） -->
+  <view class="coupon-wrapper">
+    <!-- 授权按钮仅包裹图片 -->
+    <button 
+      class="image-auth-btn" 
+      open-type="getPhoneNumber" 
+      hover-class="btn_tapcolor" 
+      bindgetphonenumber="onGetPhoneNumber"
+    >
+      <image src="https://k3a.wiselink.net.cn/img/app/coupon50.png" mode="widthFix" class="coupon-image"></image>
+    </button>
+    
+    <!-- 已有账号按钮（独立于授权区域） -->
+    <button 
+      class="existing-account-btn" 
+      bindtap="onExistingAccountTap"
+    >
+      已有账号？点击登录
+    </button>
   </view>
-</button>
+  
+  <!-- 点击空白区域关闭弹窗（不触发授权） -->
+  <view class="mask-close" bindtap="closeCouponModal"></view>
+</view>

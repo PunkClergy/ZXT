@@ -118,20 +118,24 @@ Page({
       confirmText: "确定",
       cancelText: "取消",
       success(res) {
-        byPost(
-          `${getApp().data.k1swUrl}${u_transferAdminUser.URL}`, params,
-          (response) => {
-            if (response.data.code == 1000) {
-              showToast(response.data.msg)
-              wx.switchTab({
-                url: '/pages/desk/desk',
-              })
+        if (res?.confirm) {
+          byPost(
+            `${getApp().data.k1swUrl}${u_transferAdminUser.URL}`, params,
+            (response) => {
+              if (response.data.code == 1000) {
+                showToast(response.data.msg)
+                wx.switchTab({
+                  url: '/pages/desk/desk',
+                })
+              }
+            },
+            (error) => {
+              hideLoading();
             }
-          },
-          (error) => {
-            hideLoading();
-          }
-        );
+          );
+        }
+
+
       },
       fail(res) {
         console.log('调用showModal失败', res)

@@ -155,7 +155,8 @@
     "pages/PrivateDomain/index",
     "pages/nbpg/index",
     "pages/vehicleUser/index",
-    "pages/coupon/index"
+    "pages/coupon/index",
+    "pages/index/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

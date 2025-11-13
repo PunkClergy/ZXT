@@ -1,0 +1,63 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');">
+  <!-- 自定义头部（包含系统状态栏高度） -->
+  <view class="custom-header" style="padding-top: {{height_from_head}}px;padding-left: {{capsule_distance_to_the_right}}px; height: {{head_height}}px;display: flex;align-items: center;">
+
+    智信通
+
+  </view>
+
+  <!-- 中间滚动内容区 -->
+  <scroll-view class="content" scroll-y="true" style="top: {{90}}px; bottom: {{tabBarHeight}}px;" bindscrolltolower="onReachBottom">
+    <!-- 第一块：轮播图 -->
+    <view class="swiper-container">
+      <swiper indicator-dots="{{true}}" autoplay="{{true}}" interval="3000" duration="500">
+        <swiper-item wx:for="{{bannerList}}" wx:key="index">
+          <image src="{{item}}" class="banner-img" mode="widthFix"></image>
+        </swiper-item>
+      </swiper>
+    </view>
+
+    <!-- 第二块：公告模块 -->
+    <view class="notice">
+      <image src="https://picsum.photos/40/40?random=2" class="notice-icon" mode="widthFix"></image>
+      <view class="notice-content">
+        <swiper vertical="{{true}}" autoplay="{{true}}" interval="3000" duration="500" circular="{{true}}">
+          <swiper-item wx:for="{{noticeList}}" wx:key="index">
+            <text>{{item}}</text>
+          </swiper-item>
+        </swiper>
+      </view>
+    </view>
+
+    <!-- 第三块：专区入口（一行两列） -->
+    <view class="special-zone">
+      <view class="zone-item" wx:for="{{zoneList}}" wx:key="index">
+        <image src="{{item.img}}" class="zone-img" mode="widthFix"></image>
+        <text class="zone-name">{{item.name}}</text>
+      </view>
+    </view>
+
+    <!-- 第四块：宽度百分百的图片轮播 -->
+    <view class="full-width-swiper">
+      <swiper indicator-dots="{{true}}" autoplay="{{true}}" interval="4000" duration="500">
+        <swiper-item wx:for="{{fullBannerList}}" wx:key="index">
+          <image src="{{item}}" class="full-banner-img" mode="widthFix"></image>
+        </swiper-item>
+      </swiper>
+    </view>
+
+    <!-- 第五块：宽度百分百的海报 -->
+    <view class="section-title">精选海报</view>
+    <view class="poster">
+      <image src="{{posterImg}}" class="poster-img" mode="widthFix"></image>
+    </view>
+  </scroll-view>
+
+  <!-- 固定底部tabar -->
+  <view class="tabbar" style="height: {{tabBarHeight}}px;">
+    <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="switchTab" data-index="{{index}}">
+      <image src="{{item.icon}}" class="tab-icon" mode="widthFix"></image>
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+</view>

@@ -559,33 +559,78 @@
   background-color: #3a8ee6;
   box-shadow: 0 2rpx 8rpx rgba(64, 158, 255, 0.2);
 }
-   /* 遮罩层 */
-   .mask-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40rpx;
-    box-sizing: border-box;
-  }
-  /* 优惠券图片容器 */
-  .coupon-image-wrapper {
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-  /* 优惠券图片样式 */
-  .coupon-image {
-    width: 100%;
-    border-radius: 16rpx;
-    box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.3);
-  }
-  
+
+
+/* 遮罩层容器 */
+.mask-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+/* 空白区域关闭层 */
+.mask-close {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* 优惠券及按钮容器 */
+.coupon-wrapper {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2; /* 确保在关闭层上方 */
+}
+
+/* 图片授权按钮（仅包裹图片） */
+.image-auth-btn {
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  margin: 0;
+}
+
+/* 优惠券图片样式 */
+.coupon-image {
+  width: 100%;
+  border-radius: 16rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.3);
+}
+
+/* 已有账号按钮样式（不触发授权） */
+.existing-account-btn {
+  margin-top: 20rpx;
+  padding: 10rpx 20rpx;
+  background-color: transparent;
+  color: #cccccc;
+  font-size: 24rpx;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 4rpx;
+  z-index: 3; /* 确保点击优先级 */
+}
+
+/* 按钮交互效果 */
+.btn_tapcolor {
+  opacity: 0.9;
+}
+
+.existing-account-btn:hover {
+  color: #ffffff;
+}
