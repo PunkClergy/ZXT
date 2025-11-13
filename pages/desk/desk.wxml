@@ -88,7 +88,7 @@
               </view>
             </block>
             <view wx:else class="classification-department-item {{item.isdevelop == 0?'developed':'not-developed'}}" data-item="{{item}}" bindtap="handleJumpPage" style="position: relative;">
-              <image style="width: 80rpx;height: 80rpx;" src="/assets/images/home/01.png" />
+              <image style="width: 80rpx;height: 80rpx;" src="{{c_link}}/img/{{item.icon}}" />
               <view style="color: #333;font-size: 23rpx;text-align: left;">
                 <text>{{item.name}}</text>
               </view>
