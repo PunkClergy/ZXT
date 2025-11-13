@@ -193,7 +193,6 @@ page {
   
      float: left;
      background-color: #007BFD;
-     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABHNCSVQICAgIfAhkiAAAATJJREFUaEPtm7ENwkAUQ3OTQAcdsAkVc8ACgBiHilGggwqY5HCiKIpCkcofiXtIKQDp+2zZcfSlpKqwTyqMbxVOOOe8kcinVuh9SukcKfovCN9FcNaSfIjw/N8J5z5BEQ4VPRSsJipLQxhLGxXA0kZxm9FkmLu012Nk2KsvGa540jJbjAybBaaHybDZYmTYLDAZJsNmi5Fhs8BkmAybLdZlWKuXtbAOupZmzOjxLwHu5KRLDdwn/NT3afRpgvCuIrwaEq6VmAQdIBrmJsKNc4eWPuq3RfRpzHhvzd9+WdoM2o1nTcua1us1Hi29+rKmZU3rdhgZditMD9PDXo+RYa++9DA97HYYGXYrTA/Tw16PkWGvvvQwPex2GBl2K6weLu4lj7Je43E7aGx+eIbHDuT+/wP2Ieo9oFXCUgAAAABJRU5ErkJggg==') ;
      background-size: 70% 70%;
      background-repeat: no-repeat;
      background-position:center ;

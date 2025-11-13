@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "客户新增/编辑",
+  "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}
+

@@ -582,6 +582,7 @@ Page({
     })
   },
   onLoad: function (options) {
+    this.handleTermialList()
     wx.hideTabBar();
     const { scene, query } = options || {};
     const sceneParam = scene ?? query;
@@ -775,7 +776,6 @@ Page({
   },
   onShow: function (e) {
     this.initialGetBanner()
-    this.handleTermialList()
     this.initQrCode()
     this.initMoreData()
     this.initforceLogin()

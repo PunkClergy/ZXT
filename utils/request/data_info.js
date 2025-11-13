@@ -23,6 +23,11 @@ const u_childUserList = {
   URL: fin3plusUrl + "accountapi/childUserList",
   page: 'page'
 }
+// 渠道合租协议列表
+const u_channelAgreementList = {
+  URL: fin3plusUrl + "/promotionalApi/channelAgreementList",
+  page: 'page'
+}
 // 车务
 const u_carManagerList = {
   URL: fin3plusUrl + "rentKeyApi/carManagerList",
@@ -272,6 +277,7 @@ const u_getMyCoupon = {
   
 }
 module.exports = {
+  u_channelAgreementList,
   u_getMyCoupon,
   u_willingkey,
   u_getShopLink,
