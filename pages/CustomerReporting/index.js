@@ -8,9 +8,8 @@ const {
   byPost
 } = require('../../utils/request/http')
 const {
-  u_myCompanyList,
-  u_resetMyCompanyPassword,
-  u_comfirmMyCompany
+  u_customerList,
+  u_delCustomer
 } = require('../../utils/request/dispatch')
 const {
   _handleWindowInfo,
@@ -96,14 +95,43 @@ Page({
       this.getOrderList();
     });
   },
+  handleEdit(evt) {
+    console.log(evt)
+    const {
+      item
+    } = evt.currentTarget.dataset
+    wx.navigateTo({
+      url: '/pages/CustomerReporting/scanCodeAdd/index?source=' + JSON.stringify(item),
+    })
+  },
+  handleDelete(evt) {
+    const {
+      item
+    } = evt.currentTarget.dataset
+    byPost(`${getApp().data.k1swUrl}${u_delCustomer.URL}`, {
+      id: item?.id
+    }, (response) => {
+      if (response?.data?.code != 1000) {
+        showToast(response?.data?.msg);
+        hideLoading();
+        return
+      }
+      showToast(response?.data?.msg);
+      this.handleRefresh()
+    }, (error) => {
+      hideLoading();
+      showToast('删除失败，请稍后重试');
+    });
+  },
   // 查询列表
   getOrderList() {
     showLoading("加载中...");
     const param = {
-      [u_myCompanyList.name]: this.data.g_comParam,
-      [u_myCompanyList.page]: this.data.g_page,
+      [u_customerList.customerName]: this.data.g_comParam,
+      [u_customerList.page]: this.data.g_page,
+      type: this.data.type
     };
-    byGet(getApp().data.k1swUrl + u_myCompanyList.URL, param).then(response => {
+    byGet(getApp().data.k1swUrl + u_customerList.URL, param).then(response => {
       hideLoading()
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
@@ -153,79 +181,24 @@ Page({
   // 跳转下单页面
   handleOneClickOrdering() {
     wx.navigateTo({
-      url: '/pages/channel/scanCodeList/scanCodeAdd/index',
+      url: '/pages/CustomerReporting/scanCodeAdd/index',
     })
   },
-  // 跳转编辑
-  handleEdit(evt) {
-    const {
-      item
-    } = evt.currentTarget.dataset
-    wx.navigateTo({
-      url: '/pages/channel/scanCodeList/scanCodeAdd/index?source= ' + JSON.stringify(item),
-    })
-  },
-  //确认客户资料
-  handleDataConfim(evt) {
-    const {
-      item
-    } = evt.currentTarget.dataset
-    wx.showModal({
-      title: '资料确认',
-      content: '确定要确认客户资料！',
-      confirmText: '确定',
-      cancelText: '取消',
-      success(res) {
-        if (res.confirm) {
-          const pagems = {
-            [u_comfirmMyCompany.userId]: item.id
-          }
-          byPost(`${getApp().data.k1swUrl}${u_comfirmMyCompany.URL}`, pagems, (response) => {
-            showToast(response.data.msg)
-          }, (error) => {
-            hideLoading();
-          });
-        }
-      },
-    });
-  },
-  // 重置密码
-  handleResetPassword(evt) {
-    const {
-      item
-    } = evt.currentTarget.dataset
-    wx.showModal({
-      title: '重置密码',
-      content: '确定要重置密码吗？此操作不可撤销！',
-      confirmText: '确定',
-      cancelText: '取消',
-      success(res) {
-        if (res.confirm) {
-          const pagems = {
-            [u_resetMyCompanyPassword.userId]: item.userId
-          }
-          byPost(`${getApp().data.k1swUrl}${u_resetMyCompanyPassword.URL}`, pagems, (response) => {
-            showToast(response.data.msg)
-          }, (error) => {
-            hideLoading();
-          });
-        }
-      },
-    });
-  },
-  onLoad(options) {
 
+  onLoad(options) {
+    this.setData({
+      g_comParam: '',
+      g_page: 1,
+      g_items: [],
+      type: options?.type
+    }, () => {
+      this.getOrderList();
+    })
   },
   onReady() { },
   onShow() {
     this.initialiImageBaseConversion()
-    this.setData({
-      g_comParam: '',
-      g_page: 1,
-      g_items: []
-    }, () => {
-      this.getOrderList();
-    })
+
   },
 
 })

@@ -48,19 +48,33 @@ const u_myCompanyList = {
   name: 'name',
   page: 'page'
 }
+// 手工及扫码新建客户报备
+const u_customerList = {
+  URL: fin3plusUrl + "notifyCustomerApi/customerList",
+  customerName: 'customerName',
+  page: 'page'
+}
+// 删除客户报备
+const u_delCustomer = {
+  URL: fin3plusUrl + "notifyCustomerApi/delCustomer",
+}
 // 新增扫码客户
 const u_addOrUpateMyCompany = {
   URL: fin3plusUrl + "companyapi/addOrUpateMyCompany",
 }
+// 手工新建客户
+const u_addOrUpdateCustomer = {
+  URL: fin3plusUrl + "notifyCustomerApi/addOrUpdateCustomer",
+}
 // 重置密码
 const u_resetMyCompanyPassword = {
   URL: fin3plusUrl + "companyapi/resetMyCompanyPassword",
-  userId:'userId'
+  userId: 'userId'
 }
 // 确认客户资料
 const u_comfirmMyCompany = {
   URL: fin3plusUrl + "companyapi/comfirmMyCompany",
-  companyId:'companyId'
+  companyId: 'companyId'
 }
 // 生成个人二维码
 const u_getInviteCodeImg = {
@@ -71,6 +85,9 @@ const u_getSharelinkTitleImg = {
 }
 
 module.exports = {
+  u_delCustomer,
+  u_addOrUpdateCustomer,
+  u_customerList,
   u_getSharelinkTitleImg,
   u_getInviteCodeImg,
   u_comfirmMyCompany,

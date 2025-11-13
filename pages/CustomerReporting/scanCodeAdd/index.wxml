@@ -4,62 +4,25 @@
   <custom-header title="新增客户" />
   <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; height: {{c_screen_height-(c_statusBarHeight + c_navBarHeight +2)}}px;">
     <view class="card-info">
-      <!-- 客户角色 -->
+      <!-- 客户名称x -->
       <view class="card-info-item">
-        <label>角色选择</label>
+        <label>客户名称</label>
         <view class="card-info-item-input">
-          <checkbox-group data-item="businessTypes" bindchange="handleCheckboxChange" style="display: flex;">
-            <label wx:for="{{items}}" wx:key="index">
-              <view>
-                <checkbox value="{{item.value}}" checked="{{item.checked}}" style="transform: scale(0.5);" />
-              </view>
-              <view>{{item.name}}</view>
-            </label>
-          </checkbox-group>
-        </view>
-      </view>
-      <!-- 企业名称x -->
-      <view class="card-info-item">
-        <label>企业名称</label>
-        <view class="card-info-item-input">
-          <input placeholder="请输入企业名称" value="{{params.name}}" data-item="name" bindinput="handleBindinput" />
+          <input placeholder="请输入客户名称" value="{{params.customername}}" data-item="customername" bindinput="handleBindinput" />
         </view>
       </view>
       <!-- 联系人 -->
       <view class="card-info-item">
         <label>联系人</label>
         <view class="card-info-item-input">
-          <input placeholder="请输入联系人" value="{{params.chargename}}" data-item="chargename" bindinput="handleBindinput" />
+          <input placeholder="请输入联系人" value="{{params.linkperson}}" data-item="linkperson" bindinput="handleBindinput" />
         </view>
       </view>
       <!-- 联系电话 -->
       <view class="card-info-item">
         <label>联系电话</label>
         <view class="card-info-item-input">
-          <input type="number" placeholder="请输入联系电话" value="{{params.chargemobile}}" data-item="chargemobile" bindinput="handleBindinput" />
-        </view>
-      </view>
-      <!-- 所在省 -->
-      <view class="card-info-item">
-        <label>所在省</label>
-        <view class="card-info-item-input">
-          <picker value="{{provincesIndex}}" data-item="provinces" bindchange="handleProvincesPicker" range="{{provinces}}" range-key="name">
-            <view class="picker">
-              {{provincesIndex!=null?provinces[provincesIndex]['name']:'请选择省份'}}
-            </view>
-          </picker>
-
-        </view>
-      </view>
-      <!-- 所在市 -->
-      <view class="card-info-item">
-        <label>所在市</label>
-        <view class="card-info-item-input">
-          <picker value="{{cityIndex}}" data-item="citys" bindchange="handleCityPicker" range="{{citys}}" range-key="name" disabled="{{provincesIndex==null}}">
-            <view class="picker">
-              {{provincesIndex == null?'请先选择省份':(cityIndex!=null?citys[cityIndex]['name']:'请选择城市')}}
-            </view>
-          </picker>
+          <input type="number" placeholder="请输入联系电话" value="{{params.linkmobile}}" data-item="linkmobile" bindinput="handleBindinput" />
         </view>
       </view>
       <!-- 备注 -->

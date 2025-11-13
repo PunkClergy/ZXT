@@ -159,7 +159,8 @@
     "pages/index/index",
     "pages/ChannelAgreement/index",
     "pages/CustomerReporting/index",
-    "pages/Communicate/index"
+    "pages/Communicate/index",
+    "pages/CustomerReporting/scanCodeAdd/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
