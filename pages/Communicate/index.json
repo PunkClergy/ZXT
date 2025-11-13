@@ -1,6 +1,9 @@
 {
+  "navigationBarTitleText": "客户资料",
   "usingComponents": {
     "custom-header": "/components/CustomHeader/index"
   },
-  "navigationStyle": "custom"
+  "navigationStyle": "custom",
+  "disableScroll": true
 }
+
