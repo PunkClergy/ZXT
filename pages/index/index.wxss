@@ -1,107 +1,78 @@
-/* 基础样式 */
-page {
-  width: 100%;
-  height: 100%;
-  background-color: #f5f5f5;
+/* 隐藏滚动条，但保留滚动功能 */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
 }
 
+/* 容器样式：设置页面整体布局，占满整个视口高度，使用flex垂直排列 */
 .container {
   width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+  align-items: center;
+  height: 100vh;
 }
 
-/* 自定义头部样式 */
+/* 自定义头部样式：固定在顶部，占满宽度，使用flex布局居中对齐内容 */
 .custom-header {
   width: 100%;
-  /* background: linear-gradient(90deg, #2c3e50, #3498db); */
   position: fixed;
   top: 0;
   left: 0;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.2);
   z-index: 100;
   box-sizing: border-box;
-}
-
-.header-content {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 30rpx;
-  box-sizing: border-box;
-  /* 关键：确保内容与胶囊按钮垂直居中对齐 */
   display: flex;
   align-items: center;
 }
 
-.header-left {
+/* 头部外层容器样式：flex布局，水平居中对齐，元素间间距10rpx */
+.custom-header-outer-layer {
   display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.logo {
-  height: 70%; /* 相对于头部内容高度的70%，确保与胶囊按钮高度协调 */
-  width: auto;
-  border-radius: 10rpx;
-  margin-right: 15rpx;
-}
-
-.company-name {
-  font-size: 36rpx;
-  color: #ffffff;
-  font-weight: bold;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  /* 关键：与胶囊按钮保持相同的右侧距离 */
-
-}
-
-.login-btn {
-  height: 70%; /* 与胶囊按钮高度保持一致 */
-  min-width: 140rpx;
-  line-height: normal; /* 重置行高，使用padding垂直居中 */
-  padding: 0 20rpx;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #3498db;
-  border-radius: 35rpx;
-  font-size: 28rpx;
-  display: flex;
-  align-items: center;
   justify-content: center;
-}
-
-.user-info {
-  display: flex;
   align-items: center;
-  height: 100%;
+  gap: 10rpx;
 }
 
-.avatar {
-  height: 70%; /* 与胶囊按钮高度保持一致 */
-  width: auto;
-  border-radius: 50%;
-  border: 2rpx solid rgba(255, 255, 255, 0.8);
-  margin-right: 15rpx;
+/* 头部外层容器图片样式：设置固定宽高 */
+.custom-header-outer-layer-image {
+  width: 45rpx;
+  height: 49rpx;
 }
 
-.user-name {
-  color: #ffffff;
+/* 头部标题样式：粗体，字体大小36rpx，颜色深灰 */
+.custom-header-outer-layer-title {
+  font-weight: bold;
+  font-size: 36rpx;
+  color: #333333;
+}
+
+/* 头部用户名容器样式：flex水平排列，对齐项目中心，间距5rpx */
+.custom-header-outer-layer-user_name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5rpx;
+}
+
+/* 用户名文本样式：中等粗细，字体大小28rpx，颜色深灰 */
+.custom-header-outer-layer-user_name text {
+  font-weight: 500;
   font-size: 28rpx;
-  max-width: 200rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: #333333;
 }
 
-/* 内容区域样式 */
+/* 用户名旁图片样式：设置固定宽高 */
+.custom-header-outer-layer-user_name image {
+  width: 26rpx;
+  height: 26rpx;
+}
+
+/* 内容区域样式：占满宽度，绝对定位，允许垂直滚动 */
 .content {
   width: 100%;
   position: absolute;
@@ -109,71 +80,82 @@ page {
   box-sizing: border-box;
 }
 
-/* 轮播图样式 */
+/* 轮播图容器样式：占满宽度，左右内边距10rpx */
 .swiper-container {
   width: 100%;
-  background-color: #fff;
-  padding: 20rpx;
+  padding: 0 10rpx;
   box-sizing: border-box;
 }
 
+/* 轮播图图片样式：占满宽度，高度自适应，圆角20rpx */
 .banner-img {
   width: 100%;
   height: auto;
   border-radius: 20rpx;
 }
 
-/* 公告样式 */
+/* 公告容器样式：宽度98%，高度80rpx，浅蓝背景，flex居中对齐，上下外边距30rpx，圆角20rpx */
 .notice {
-  width: 100%;
+  width: 98%;
   height: 80rpx;
-  background-color: #fff;
-  margin: 10rpx 0;
-  padding: 0 30rpx;
+  background-color: #EFF1FC;
   display: flex;
+  align-items: center;
+  margin: 30rpx auto;
+  border-radius: 20rpx;
+}
+
+/* 公告外层容器样式：flex水平排列，两端对齐，宽度95%，居中显示 */
+.notice-outer-layer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 95%;
+  margin: auto;
+}
+
+/* 公告左侧内容样式：flex水平排列，居中对齐，元素间距20rpx */
+.notice-outer-layer-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20rpx;
+}
+
+/* 公告右侧内容样式：flex水平排列，对齐项目中心 */
+.notice-outer-layer-right {
+  display: flex;
+  flex-direction: row;
   align-items: center;
 }
 
+/* 公告图标样式：固定宽高28rpx */
 .notice-icon {
-  width: 40rpx;
-  height: 40rpx;
-  margin-right: 20rpx;
+  width: 28rpx;
+  height: 28rpx;
 }
 
+/* 公告文本样式：粗体，字体大小28rpx，颜色深灰 */
 .notice-content {
-  flex: 1;
-  height: 60rpx;
-  overflow: hidden;
-}
-
-.notice-content text {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 60rpx;
-}
-
-/* 专区入口样式 */
-.section-title {
-  font-size: 32rpx;
   font-weight: bold;
-  color: #333;
-  padding: 20rpx 30rpx;
-  background-color: #fff;
-  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: #504F4F;
 }
 
+/* 专区入口容器样式：占满宽度，flex-wrap换行，内边距0 10rpx */
 .special-zone {
   width: 100%;
-  background-color: #fff;
   display: flex;
   flex-wrap: wrap;
-  padding: 0 15rpx 20rpx;
   box-sizing: border-box;
+  padding: 0 10rpx;
 }
 
+/* 专区项样式：宽度48%，左右外边距1%，flex垂直排列，底部外边距20rpx */
 .zone-item {
-  width: 50%;
-  padding: 0 15rpx;
+  width: 48%;
+  margin: 0 1%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -181,34 +163,81 @@ page {
   box-sizing: border-box;
 }
 
-.zone-img {
+/* 专区项外层容器样式：占满宽度，高度180rpx，圆角32rpx，flex居中对齐，元素间距20rpx，内边距0 20rpx */
+.zone-out {
   width: 100%;
-  height: 240rpx;
-  border-radius: 15rpx;
+  height: 180rpx;
+  border-radius: 32rpx;
   margin-bottom: 10rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20rpx;
+  box-sizing: border-box;
+  padding: 0 20rpx;
 }
 
+/* 专区图标样式：固定宽高，保持原有比例，不压缩 */
+.zone-img {
+  width: 55rpx;
+  height: 41rpx;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* 专区名称样式：粗体，字体大小32rpx，颜色深灰，超出显示省略号 */
 .zone-name {
+  font-weight: bold;
   font-size: 28rpx;
-  color: #333;
+  color: #333333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* 全宽轮播图样式 */
+/* 全宽轮播图容器样式：占满宽度，白色背景，内边距0 20rpx */
 .full-width-swiper {
   width: 100%;
   background-color: #fff;
-  padding: 20rpx;
-  margin-top: 10rpx;
+  padding: 0 20rpx;
+  /* margin-top: 10rpx; */
   box-sizing: border-box;
 }
 
+/* 全宽轮播图标题容器样式：flex水平排列，对齐项目中心，间距20rpx，底部外边距20rpx */
+.full-width-use {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 全宽轮播图标题旁图标样式：固定宽高，渐变背景，阴影效果，圆角6rpx，透明度0.8 */
+.full-width-use image {
+  width: 13rpx;
+  height: 34rpx;
+  background: linear-gradient(-45deg, #8C94FD, #B5D6FF, #2964B8, #8FB6F6);
+  box-shadow: 0rpx 5rpx 5rpx 0rpx rgba(178, 195, 221, 0.5);
+  border-radius: 6rpx;
+  opacity: 0.8;
+}
+
+/* 全宽轮播图标题文本样式：粗体，字体大小32rpx，颜色深灰 */
+.full-width-use text {
+  font-weight: bold;
+  font-size: 32rpx;
+  color: #333333;
+}
+
+/* 全宽轮播图图片样式：占满宽度，固定高度200rpx，圆角20rpx */
 .full-banner-img {
   width: 100%;
   height: 200rpx;
   border-radius: 20rpx;
 }
 
-/* 海报样式 */
+/* 海报容器样式：占满宽度，白色背景，内边距20rpx，顶部外边距10rpx */
 .poster {
   width: 100%;
   background-color: #fff;
@@ -217,13 +246,14 @@ page {
   box-sizing: border-box;
 }
 
+/* 海报图片样式：占满宽度，高度自适应，圆角20rpx */
 .poster-img {
   width: 100%;
   height: auto;
   border-radius: 20rpx;
 }
 
-/* 瀑布流动态内容样式 */
+/* 瀑布流内容容器样式：占满宽度，flex-wrap换行，内边距10rpx 15rpx 0，浅灰背景 */
 .dynamic-content {
   width: 100%;
   display: flex;
@@ -233,6 +263,7 @@ page {
   background-color: #f5f5f5;
 }
 
+/* 瀑布流项样式：宽度50%，内边距10rpx 15rpx，白色背景，圆角10rpx，底部外边距10rpx */
 .waterfall-item {
   width: 50%;
   padding: 10rpx 15rpx;
@@ -242,12 +273,14 @@ page {
   margin-bottom: 10rpx;
 }
 
+/* 瀑布流图片样式：占满宽度，高度自适应，圆角5rpx */
 .waterfall-img {
   width: 100%;
   height: auto;
   border-radius: 5rpx;
 }
 
+/* 瀑布流描述文本样式：字体大小26rpx，颜色深灰，内边距10rpx 0，最多显示2行，超出隐藏 */
 .waterfall-desc {
   font-size: 26rpx;
   color: #333;
@@ -258,7 +291,7 @@ page {
   overflow: hidden;
 }
 
-/* 加载提示样式 */
+/* 加载提示样式：占满宽度，高度80rpx，flex居中对齐，浅灰背景 */
 .loading {
   width: 100%;
   height: 80rpx;
@@ -268,12 +301,13 @@ page {
   background-color: #f5f5f5;
 }
 
+/* 加载提示文本样式：字体大小28rpx，颜色浅灰 */
 .loading text {
   font-size: 28rpx;
   color: #999;
 }
 
-/* 没有更多数据提示 */
+/* 没有更多数据提示样式：占满宽度，高度80rpx，flex居中对齐，浅灰背景 */
 .no-more {
   width: 100%;
   height: 80rpx;
@@ -283,12 +317,13 @@ page {
   background-color: #f5f5f5;
 }
 
+/* 没有更多数据文本样式：字体大小28rpx，颜色浅灰 */
 .no-more text {
   font-size: 28rpx;
   color: #999;
 }
 
-/* 底部tabar样式 */
+/* 底部tabbar样式：占满宽度，白色背景，flex平均分布，固定在底部，阴影效果，z-index100 */
 .tabbar {
   width: 100%;
   background-color: #fff;
@@ -303,6 +338,7 @@ page {
   box-sizing: border-box;
 }
 
+/* tab项样式：flex垂直排列，居中对齐，宽度25% */
 .tab-item {
   display: flex;
   flex-direction: column;
@@ -311,17 +347,184 @@ page {
   width: 25%;
 }
 
+/* tab图标样式：固定宽高50rpx，底部外边距10rpx */
 .tab-icon {
   width: 50rpx;
   height: 50rpx;
   margin-bottom: 10rpx;
 }
 
+/* tab文本样式：字体大小24rpx，颜色浅灰 */
 .tab-item text {
   font-size: 24rpx;
   color: #999;
 }
 
+/* 激活状态的tab文本样式：颜色改为蓝色 */
 .tab-item.active text {
   color: #3498db;
+}
+
+
+/* 优惠券弹窗部分样式 */
+/* 遮罩层容器 */
+.mask-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+/* 空白区域关闭层 */
+.mask-close {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* 优惠券及按钮容器 */
+.coupon-wrapper {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  /* 确保在关闭层上方 */
+}
+
+/* 图片授权按钮（仅包裹图片） */
+.image-auth-btn {
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  margin: 0;
+}
+
+/* 优惠券图片样式 */
+.coupon-image {
+  width: 100%;
+  border-radius: 16rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.3);
+}
+
+/* 已有账号按钮样式（不触发授权） */
+.existing-account-btn {
+  margin-top: 20rpx;
+  padding: 10rpx 20rpx;
+  background-color: transparent;
+  color: #cccccc;
+  font-size: 24rpx;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 4rpx;
+  z-index: 3;
+  /* 确保点击优先级 */
+}
+
+/* 按钮交互效果 */
+.btn_tapcolor {
+  opacity: 0.9;
+}
+
+.existing-account-btn:hover {
+  color: #ffffff;
+}
+
+/* 点击咨询入群样式 */
+
+.float-button {
+  position: fixed;
+  right: 20rpx;
+  top: 75%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: all 0.2s ease;
+}
+
+.float-button image {
+  width: 111rpx;
+  height: 123rpx;
+}
+
+.float-button:active {
+  transform: translateY(-50%) scale(0.9);
+  background-color: #3a8ee6;
+  box-shadow: 0 2rpx 8rpx rgba(64, 158, 255, 0.2);
+}
+
+.qr-group-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 遮罩层样式 */
+.qr-group-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 关闭按钮 */
+.qr-group-close {
+  position: absolute;
+  top: 12vh;
+  right: 30rpx;
+  color: white;
+  font-size: 60rpx;
+  width: 80rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* 预览内容区 */
+.qr-group-preview-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30rpx;
+}
+
+.qr-group-preview-img {
+  max-width: 90%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 12rpx;
+}
+
+.qr-group-preview-desc {
+  color: white;
+  font-size: 24rpx;
+  text-align: center;
+  padding: 0 40rpx;
+  line-height: 1.5;
 }

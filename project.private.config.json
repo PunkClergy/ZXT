@@ -43,7 +43,7 @@
         },
         {
           "name": "desk",
-          "pathName": "pages/desk/desk",
+          "pathName": "pages/index/index",
           "query": "",
           "launchMode": "default",
           "scene": null
