@@ -36,16 +36,16 @@ Page({
 
     // 专区入口数据（网络图片）
     zoneList: [
-      { name: '私家车钥匙服务', bgcolor: '#EFF1FC', icon: 'privateCar.png' },
-      { name: '租车钥匙服务', bgcolor: '#FAF6E9', icon: 'carRental.png' },
-      { name: '网约车钥匙服务', bgcolor: '#FCEFF3', icon: 'onlineCarHailing.png' },
-      { name: '企业钥匙服务', bgcolor: '#EAF8F7', icon: 'enterpriseVehicles.png' },
-      { name: '停运补偿服务', bgcolor: '#EFF1FC', icon: 'suspensionGuarantee.png' },
-      { name: '物流钥匙服务', bgcolor: '#FCEFF3', icon: 'insideSales.png' },
-      { name: '渠道合作中心', bgcolor: '#FAF6E9', icon: 'channelCooperation.png' },
-      { name: '风控钥匙服务', bgcolor: '#EAF8F7', icon: 'installationServices.png' },
-      { name: 'K7安装服务', bgcolor: '#EAF8F7', icon: 'installationServices.png' },
-      { name: '内部销售专区', bgcolor: '#FCEFF3', icon: 'insideSales.png' },
+      { id: 1, name: '私家车钥匙服务', bgcolor: '#EFF1FC', icon: 'privateCar.png' },
+      { id: 2, name: '租车钥匙服务', bgcolor: '#FAF6E9', icon: 'carRental.png' },
+      { id: 3, name: '网约车钥匙服务', bgcolor: '#FCEFF3', icon: 'onlineCarHailing.png' },
+      { id: 4, name: '企业钥匙服务', bgcolor: '#EAF8F7', icon: 'enterpriseVehicles.png' },
+      { id: 5, name: '停运补偿服务', bgcolor: '#EFF1FC', icon: 'suspensionGuarantee.png' },
+      { id: 6, name: '物流钥匙服务', bgcolor: '#FCEFF3', icon: 'insideSales.png' },
+      { id: 7, name: '渠道合作中心', bgcolor: '#FAF6E9', icon: 'channelCooperation.png' },
+      { id: 8, name: '风控钥匙服务', bgcolor: '#EAF8F7', icon: 'installationServices.png' },
+      { id: 0, name: 'K7安装服务', bgcolor: '#EAF8F7', icon: 'installationServices.png' },
+      { id: 10, name: '内部销售专区', bgcolor: '#FCEFF3', icon: 'insideSales.png' },
     ],
 
     // 全宽轮播图数据（网络图片）
@@ -294,6 +294,15 @@ Page({
     console.log(this.data.tabList[index]?.path)
     wx.switchTab({
       url: this.data.tabList[index]?.path,
+    })
+  },
+  // 点击专区跳转逻辑
+  handleGetMenuList(evt) {
+    console.log(evt)
+    const menuId = evt?.id ?? evt?.currentTarget?.dataset?.info?.id;
+    getApp().data.funAreaId = menuId
+    wx.navigateTo({
+      url: '/pages/ZoneHome/index',
     })
   }
 })

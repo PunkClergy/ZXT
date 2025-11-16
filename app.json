@@ -3,8 +3,7 @@
     "custom": false,
     "color": "#8a8a8a",
     "selectedColor": "#ff4e00",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/desk/desk",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
@@ -160,7 +159,8 @@
     "pages/ChannelAgreement/index",
     "pages/CustomerReporting/index",
     "pages/Communicate/index",
-    "pages/CustomerReporting/scanCodeAdd/index"
+    "pages/CustomerReporting/scanCodeAdd/index",
+    "pages/ZoneHome/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

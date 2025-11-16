@@ -35,7 +35,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10rpx;
+  gap: 25rpx;
 }
 
 /* 头部外层容器图片样式：设置固定宽高 */
@@ -94,55 +94,6 @@
   border-radius: 20rpx;
 }
 
-/* 公告容器样式：宽度98%，高度80rpx，浅蓝背景，flex居中对齐，上下外边距30rpx，圆角20rpx */
-.notice {
-  width: 98%;
-  height: 80rpx;
-  background-color: #EFF1FC;
-  display: flex;
-  align-items: center;
-  margin: 30rpx auto;
-  border-radius: 20rpx;
-}
-
-/* 公告外层容器样式：flex水平排列，两端对齐，宽度95%，居中显示 */
-.notice-outer-layer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 95%;
-  margin: auto;
-}
-
-/* 公告左侧内容样式：flex水平排列，居中对齐，元素间距20rpx */
-.notice-outer-layer-left {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 20rpx;
-}
-
-/* 公告右侧内容样式：flex水平排列，对齐项目中心 */
-.notice-outer-layer-right {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-/* 公告图标样式：固定宽高28rpx */
-.notice-icon {
-  width: 28rpx;
-  height: 28rpx;
-}
-
-/* 公告文本样式：粗体，字体大小28rpx，颜色深灰 */
-.notice-content {
-  font-weight: bold;
-  font-size: 28rpx;
-  color: #504F4F;
-}
-
 /* 专区入口容器样式：占满宽度，flex-wrap换行，内边距0 10rpx */
 .special-zone {
   width: 100%;
@@ -150,16 +101,17 @@
   flex-wrap: wrap;
   box-sizing: border-box;
   padding: 0 10rpx;
+  margin-top: 20rpx;
+  /* justify-content: space-between; */
 }
 
 /* 专区项样式：宽度48%，左右外边距1%，flex垂直排列，底部外边距20rpx */
 .zone-item {
-  width: 48%;
-  margin: 0 1%;
+  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20rpx;
+  margin-bottom: 10rpx;
   box-sizing: border-box;
 }
 
@@ -170,6 +122,7 @@
   border-radius: 32rpx;
   margin-bottom: 10rpx;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20rpx;
@@ -185,10 +138,25 @@
   flex-shrink: 0;
 }
 
+.zone-text-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 /* 专区名称样式：粗体，字体大小32rpx，颜色深灰，超出显示省略号 */
 .zone-name {
   font-weight: bold;
-  font-size: 28rpx;
+  font-size: 20rpx;
+  color: #333333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.zone-desc {
+  font-size: 18rpx;
   color: #333333;
   white-space: nowrap;
   overflow: hidden;
@@ -199,7 +167,7 @@
 .full-width-swiper {
   width: 100%;
   background-color: #fff;
-  padding: 0 20rpx;
+  padding: 20rpx;
   /* margin-top: 10rpx; */
   box-sizing: border-box;
 }
@@ -234,22 +202,6 @@
 .full-banner-img {
   width: 100%;
   height: 200rpx;
-  border-radius: 20rpx;
-}
-
-/* 海报容器样式：占满宽度，白色背景，内边距20rpx，顶部外边距10rpx */
-.poster {
-  width: 100%;
-  background-color: #fff;
-  padding: 20rpx;
-  margin-top: 10rpx;
-  box-sizing: border-box;
-}
-
-/* 海报图片样式：占满宽度，高度自适应，圆角20rpx */
-.poster-img {
-  width: 100%;
-  height: auto;
   border-radius: 20rpx;
 }
 

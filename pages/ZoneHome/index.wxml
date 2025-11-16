@@ -4,8 +4,8 @@
   <!-- 自定义头部区域：包含系统状态栏高度适配，使用custom-header样式 -->
   <view class="custom-header" style="padding-top: {{height_from_head}}px;padding-left: {{capsule_distance_to_the_right}}px; height: {{head_height}}px;">
     <view class="custom-header-outer-layer">
-      <image class="custom-header-outer-layer-image" src="/assets/images/home/logo.png"></image>
-      <view class="custom-header-outer-layer-title">智信通Wiselink</view>
+      <image class="custom-header-outer-layer-image" src="/assets/images/home/left.png"></image>
+      <view class="custom-header-outer-layer-title">私家车钥匙服务</view>
       <view class="custom-header-outer-layer-user_name">
         <block wx:if="{{account}}">
           <text>{{account}}</text>
@@ -30,25 +30,16 @@
       </swiper>
     </view>
 
-    <!-- 第二块：公告模块区域 -->
-    <view class="notice">
-      <view class="notice-outer-layer">
-        <view class="notice-outer-layer-left">
-          <image class="notice-icon" src="https://k1sw.wiselink.net.cn/img/app2.0/notice.png" />
-          <text class="notice-content">您有未完成的续费订单，点击链接即可完成续费～</text>
-        </view>
-        <view class="notice-outer-layer-right">
-          <image class="notice-icon" src="/assets/images/home/right_1.png" />
-        </view>
-      </view>
-    </view>
 
-    <!-- 第三块：专区入口区域（一行两列布局） -->
+    <!-- 第三块：专区入口区域（一行三列布局） -->
     <view class="special-zone">
-      <view class="zone-item" wx:for="{{zoneList}}" wx:key="index">
+      <view class="zone-item" wx:for="{{zoneList}}" wx:key="index" style="margin-right: {{index == 2||index==5?'0rpx':'5%'}};">
         <view class="zone-out" style="background-color: {{item.bgcolor}};" data-info="{{item}}" bindtap="handleGetMenuList">
           <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/app2.0/desk/' + item.icon}}" />
-          <view class="zone-name">{{item.name}}</view>
+          <view class="zone-text-area">
+            <view class="zone-name">{{item.name}}</view>
+            <view class="zone-desc">一键共享家人畅驾</view>
+          </view>
         </view>
       </view>
     </view>
@@ -59,16 +50,7 @@
         <image src="/assets/images/index/useGuideIcon.png" />
         <text>使用指南</text>
       </view>
-      <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="4000" duration="500" style="height: 160rpx;">
-        <swiper-item wx:for="{{fullBannerList}}" wx:key="index">
-          <image src="{{'https://k1sw.wiselink.net.cn/img/app2.0/desk/PCUG.png'}}" class="full-banner-img" mode="widthFix"></image>
-        </swiper-item>
-      </swiper>
-    </view>
-
-    <!-- 第五块：全宽海报区域 -->
-    <view class="poster">
-      <image src="{{posterImg}}" class="poster-img" mode="widthFix"></image>
+      <image src="{{'https://k1sw.wiselink.net.cn/img/app2.0/desk/PCUG.png'}}" class="full-banner-img" mode="widthFix"></image>
     </view>
   </scroll-view>
 
