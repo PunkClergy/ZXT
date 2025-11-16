@@ -1,76 +1,100 @@
-<view class="container" style="height: {{c_screen_height}}px;">
-  <custom-header title="手机汽车钥匙" />
-  <!-- 车辆信息卡片 -->
-  <view class="vehicle-card"  style="margin-top: {{c_navBarHeight + c_statusBarHeight}}px;">
-    <!-- 车牌与提示信息 -->
-    <view class="license-plate-section">
-      <view class="license-plate-container">
-        <text class="license-plate" wx:if="{{bluetoothData.platenumber}}">{{bluetoothData.platenumber}}</text>
-        <text class="license-plate bind-vehicle" bindtap="handleBindVechi" wx:else>请绑定车辆</text>
-        <view class="manual-tip" bindtap="handleJumpSc" wx:if="{{!netWork}}">
-          <icon type="info" size="14" color="#999"></icon>
-          安装使用手册
+<view class="container" style="height: {{c_screen_height-80-80}}px;">
+  <!-- 自定义头部区域：包含系统状态栏高度适配，使用custom-header样式 -->
+  <view class="custom-header" style="padding-top: {{height_from_head}}px;padding-left: {{capsule_distance_to_the_right}}px; height: {{head_height}}px;">
+    <view class="custom-header-outer-layer">
+      <image class="custom-header-outer-layer-image" src="/assets/images/home/left.png" bindtap="handleBackHome"></image>
+      <view class="custom-header-outer-layer-title">私家车</view>
+      <view class="custom-header-outer-layer-user_name">
+        <block wx:if="{{account}}">
+          <text>{{account}}</text>
+        </block>
+        <block wx:else>
+          <text bindtap="handleOnExistingAccountTap">请登录</text>
+          <image bindtap="handleOnExistingAccountTap" src="/assets/images/home/right_1.png" />
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="content" scroll-y="true" style="top: {{90}}px; bottom: {{tabBarHeight}}px;" bindscrolltolower="onReachBottom">
+    <!-- 车辆信息卡片 -->
+    <view class="vehicle-card">
+      <!-- 车牌与提示信息 -->
+      <view class="license-plate-section">
+        <view class="license-plate-container">
+          <text class="license-plate" wx:if="{{bluetoothData.platenumber}}">{{bluetoothData.platenumber}}</text>
+          <text class="license-plate bind-vehicle" bindtap="handleBindVechi" wx:else>请绑定车辆</text>
+          <view class="manual-tip" bindtap="handleJumpSc" wx:if="{{!netWork}}">
+            <icon type="info" size="14" color="#999"></icon>
+            安装使用手册
+          </view>
+        </view>
+        <view class="connection-tip" bindtap="handleSelectJump" wx:if="{{!netWork}}">
+          详细设置
         </view>
       </view>
-      <view class="connection-tip" bindtap="handleSelectJump" wx:if="{{!netWork}}">
-        详细设置
+
+      <!-- 车辆图片 -->
+      <image class="vehicle-image" src="https://k3a.wiselink.net.cn/img/app/blue/privateCar.png" mode="aspectFit"></image>
+
+      <!-- 电量与蓝牙状态行 -->
+      <view class="status-row" style="position: relative;">
+        <view class="battery-status" bindtap="handleVoltage">
+          <view class="tips_voltage" wx:if="{{voltage_state}}" style=" top: -80%;right: -50%;">设备剩余电量</view>
+          <image src="https://k3a.wiselink.net.cn/img/app/blue/battery_{{voltage_image}}.png" class="battery-icon" />
+          <text style="font-size: 28rpx;" wx:if="{{parsedData.electric}}">{{parsedData.electric||100}}%</text>
+          <text wx:else>--</text>
+        </view>
+
+        <view class="tips_bluetooth" wx:if="{{blue_tooth_state}}">{{connectionState=='已连接'?'可开关锁':'设备不可用'}}</view>
+        <view class="bluetooth-status {{connectionState=='已连接' ? 'connected' : 'disconnected'}}" bindtap="handleBlueToothState">
+          <icon wx:if="{{connectionState == '已连接'}}" type="success" size="16" color="#2d8cf0"></icon>
+          <view wx:else class="loading-icon"></view>
+          <text>{{connectionState=='已连接' ? '蓝牙已连接' : '蓝牙已断开'}}</text>
+        </view>
       </view>
-    </view>
 
-    <!-- 车辆图片 -->
-    <image class="vehicle-image" src="https://k3a.wiselink.net.cn/img/app/blue/privateCar.png" mode="aspectFit"></image>
+      <!-- 模式选择器 -->
 
-    <!-- 电量与蓝牙状态行 -->
-    <view class="status-row" style="position: relative;">
-      <view class="battery-status" bindtap="handleVoltage">
-        <view class="tips_voltage" wx:if="{{voltage_state}}" style=" top: -80%;right: -50%;">设备剩余电量</view>
-        <image src="https://k3a.wiselink.net.cn/img/app/blue/battery_{{voltage_image}}.png" class="battery-icon" />
-        <text style="font-size: 28rpx;" wx:if="{{parsedData.electric}}">{{parsedData.electric||100}}%</text>
-        <text wx:else>--</text>
-      </view>
-      
-      <view class="tips_bluetooth" wx:if="{{blue_tooth_state}}">{{connectionState=='已连接'?'可开关锁':'设备不可用'}}</view>
-      <view class="bluetooth-status {{connectionState=='已连接' ? 'connected' : 'disconnected'}}" bindtap="handleBlueToothState">
-        <icon wx:if="{{connectionState == '已连接'}}" type="success" size="16" color="#2d8cf0"></icon>
-        <view wx:else class="loading-icon"></view>
-        <text>{{connectionState=='已连接' ? '蓝牙已连接' : '蓝牙已断开'}}</text>
-      </view>
-    </view>
-
-    <!-- 模式选择器 -->
-
-    <view class="mode-selector" wx:if="{{!netWork}}">
-      <!-- 感应模式开关 -->
-      <view class="GY-sensor-mode-wrapper" bindtap="toggleSensorMode">
-        <view class="GY-sensor-mode {{parsedData.induction=='感应模式'&&connectionState=='已连接' ? 'on' : 'off'}}">
-          <view class="GY-ripple {{parsedData.induction=='感应模式'&&connectionState=='已连接' ? 'active' : ''}}"></view>
-          <view class="GY-icon"></view>
-          <view class="GY-label" style="color:{{parsedData.induction=='感应模式'&&connectionState=='已连接' ? '#fff' : '#333'}};">
-            <text>{{parsedData.induction=='感应模式'&&connectionState=='已连接' ? '感应模式已开启' : '感应模式已关闭'}}</text>
-            <image src="{{parsedData.induction=='感应模式'&&connectionState=='已连接'?'https://k3a.wiselink.net.cn/img/app/blue/arrow.png':'https://k3a.wiselink.net.cn/img/app/blue/arrow_01.png'}}" style="width: 37rpx;height: 37rpx;" />
+      <view class="mode-selector" wx:if="{{!netWork}}">
+        <!-- 感应模式开关 -->
+        <view class="GY-sensor-mode-wrapper" bindtap="toggleSensorMode">
+          <view class="GY-sensor-mode {{parsedData.induction=='感应模式'&&connectionState=='已连接' ? 'on' : 'off'}}">
+            <view class="GY-ripple {{parsedData.induction=='感应模式'&&connectionState=='已连接' ? 'active' : ''}}"></view>
+            <view class="GY-icon"></view>
+            <view class="GY-label" style="color:{{parsedData.induction=='感应模式'&&connectionState=='已连接' ? '#fff' : '#333'}};">
+              <text>{{parsedData.induction=='感应模式'&&connectionState=='已连接' ? '感应模式已开启' : '感应模式已关闭'}}</text>
+              <image src="{{parsedData.induction=='感应模式'&&connectionState=='已连接'?'https://k3a.wiselink.net.cn/img/app/blue/arrow.png':'https://k3a.wiselink.net.cn/img/app/blue/arrow_01.png'}}" style="width: 37rpx;height: 37rpx;" />
+            </view>
           </view>
         </view>
       </view>
+      <view class="GY-grant" wx:else>授权使用时间:{{bluetoothData.startDate}}--{{bluetoothData.endDate}}</view>
     </view>
-    <view class="GY-grant" wx:else>授权使用时间:{{bluetoothData.startDate}}--{{bluetoothData.endDate}}</view>
-  </view>
 
-  <!-- 控制功能区 - 每行3个大按钮 -->
-  <view class="control-section">
-    <view class="control-title">
-      <view class="title-bold">手动操作</view>
-      <view class="more-functions" bindtap="handleToConfigure">
-        <text>更多钥匙功能</text>
-        <image src="/assets/images/home/right_1.png" />
-      </view>
-    </view>
-    <view class="control-grid">
-      <view class="control-item" wx:for="{{controlItems}}" wx:key="index" bindtap="{{item.evt}}" data-id="{{item.id}}" wx:if="{{item.enabled}}">
-        <view class="control-icon">
-          <image src="{{item.id === 1 || item.id === 2 ? (item.id === 1 ? parsedData.lock : !parsedData.lock) ? item.ative : item.icon : item.icon}}" class="control-icon-image"></image>
+    <!-- 控制功能区 - 每行3个大按钮 -->
+    <view class="control-section">
+      <view class="control-title">
+        <view class="title-bold">手动操作</view>
+        <view class="more-functions" bindtap="handleToConfigure">
+          <text>更多钥匙功能</text>
+          <image src="/assets/images/home/right_1.png" />
         </view>
-        <text class="control-name">{{item.name}}</text>
+      </view>
+      <view class="control-grid">
+        <view class="control-item" wx:for="{{controlItems}}" wx:key="index" bindtap="{{item.evt}}" data-id="{{item.id}}" wx:if="{{item.enabled}}">
+          <view class="control-icon">
+            <image src="{{item.id === 1 || item.id === 2 ? (item.id === 1 ? parsedData.lock : !parsedData.lock) ? item.ative : item.icon : item.icon}}" class="control-icon-image"></image>
+          </view>
+          <text class="control-name">{{item.name}}</text>
+        </view>
       </view>
     </view>
+  </scroll-view>
+</view>
+<view class="tabbar" style="height: {{tabBarHeight}}px;">
+  <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
+    <image src="{{item.icon}}" class="tab-icon" mode="widthFix"></image>
+    <text>{{item.name}}</text>
   </view>
 </view>

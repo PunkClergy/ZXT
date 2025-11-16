@@ -156,7 +156,8 @@
     "pages/Communicate/index",
     "pages/CustomerReporting/scanCodeAdd/index",
     "pages/ZoneHome/index",
-    "pages/myPersonalCenter/index"
+    "pages/myPersonalCenter/index",
+    "pages/zoneCenter/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

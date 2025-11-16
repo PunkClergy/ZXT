@@ -77,6 +77,29 @@ Page({
     manual_state: false,//点击手动模式文字（现已作废）
     logs: [],//报文日志
     deviceInfo: {},//设备信息
+
+    // 底部tabbar高度
+    tabBarHeight: 80,
+    tabList: [
+      { icon: 'https://picsum.photos/50/50?random=50', name: '私家车', path: '/pages/ZoneHome/index' },
+      { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/privateCar/index' },
+      { icon: 'https://picsum.photos/50/50?random=53', name: '个人中心', path: '/pages/zoneCenter/index' }
+    ],
+    // 当前选中的底部tabbar索引
+    currentTab: 1,
+  },
+  // 获取系统头部各区域高度
+  initSystemInfo() {
+    const { statusBarHeight: s } = wx.getWindowInfo()
+    const m = wx.getMenuButtonBoundingClientRect()
+    if (!m) return
+    const n = m.height + (m.top - s) * 2
+    const c = wx.getWindowInfo().screenWidth - m.right
+    this.setData({
+      height_from_head: s,
+      head_height: s + n,
+      capsule_distance_to_the_right: c
+    })
   },
   // 切换感应模式
   toggleSensorMode() {
@@ -176,6 +199,7 @@ Page({
     this.initialiImageBaseConversion() // 图片转换
     this.handleStart()//开始执行链接蓝牙
     this.startConnectionStatusPolling()//启动连接状态轮询
+    this.initSystemInfo()
   },
   /**
    * 生命周期函数 - 页面隐藏
@@ -191,6 +215,20 @@ Page({
     })
     clearInterval(that.data.pageInterval);
     wx.setKeepScreenOn({ keepScreenOn: false })
+  },
+  // 获取当前登录状态
+  initLoginStatus() {
+    wx.getStorage({
+      key: 'userKey', // 替换为你的缓存键值
+      success: res => {
+        this.setData({
+          account: res?.data?.companyName || res?.data?.username
+        })
+      },
+      fail(err) {
+        console.error("获取失败", err); // 失败时的错误信息
+      }
+    });
   },
   // 蓝牙连接处理
   handleStart() {
@@ -798,6 +836,28 @@ Page({
         }), {});
         _this.setData(dataToUpdate);
       });
+  },
+  // 切换底部导航
+  handleSwitchTabNavigation(evt) {
+    const idx = evt?.currentTarget?.dataset?.index;
+    const targetUrl = this.data.tabList[idx]?.path;
+    if (!targetUrl) return;
+    const currentPage = getCurrentPages().slice(-1)[0];
+    const currentPath = currentPage.route;
+    const targetPurePath = targetUrl.split('?')[0];
+    if (`/${currentPath}` !== targetPurePath) {
+      wx.navigateTo({ url: targetUrl });
+    }
+  },
+  // 返回上一页面
+  handleBackHome() {
+    wx.navigateBack({
+      delta: 1
+    })
+  },
+  onReady() {
+    // 获取登录状态
+    this.initLoginStatus()
   },
   // 初始化获取缓存内容
   initToConfigureCache() {

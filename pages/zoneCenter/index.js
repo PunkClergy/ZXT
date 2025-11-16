@@ -22,26 +22,20 @@ Page({
     // 底部tabbar高度
     tabBarHeight: 80,
     // 当前选中的底部tabbar索引
-    currentTab: 0,
+    currentTab: 2,
     // 原始链接
     c_link: 'https://k1sw.wiselink.net.cn/',
-    // 头部轮播图数据
-    g_banner_image: [],
-    // 头部轮播图动态高度
-    s_banner_height: '',
     // 咨询入群弹窗状态
     join_the_group_modal: false,
-
-    // 专区入口数据（网络图片）
-    zoneList: [
-      { id: 1, name: '钥匙分享', bgcolor: '#EFF1FC', icon: 'privateCar.png' },
-    ],
     // 底部tab数据（网络图片）
     tabList: [
       { icon: 'https://picsum.photos/50/50?random=50', name: '私家车', path: '/pages/ZoneHome/index' },
       { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/privateCar/index' },
       { icon: 'https://picsum.photos/50/50?random=53', name: '个人中心', path: '/pages/zoneCenter/index' }
     ],
+    contentList: [
+      { icon: 'https://picsum.photos/50/50?random=50', name: '车辆清单', path: '' },
+    ]
 
 
   },
@@ -58,36 +52,8 @@ Page({
       capsule_distance_to_the_right: c
     })
   },
-  // 转换背景图base64
-  initialiImageBaseConversion() {
-    const [o, l] = [this, [{ path: "/assets/images/index/bg.png", key: "s_background_picture_of_the_front_page" }]];
-    (new class {
-      constructor(t) {
-        this.t = t;
-        this.p = wx.getFileSystemManager();
-        this.run();
-      }
-      run() {
-        Promise.all(this.t.map((i, _, a) => new Promise((r, j) => this.p.readFile({
-          filePath: i.path,
-          encoding: 'base64',
-          success: (d) => r({ [i.key]: `data:image/png;base64,${d.data}` })
-        })))).then((s) => this.t[0] && o.setData(s.reduce((_, c) => ({ ..._, ...c }), {})));
-      }
-    }(l));
-  },
-  // 获取头部banner资源
-  initialGetBanner() {
-    const [$$, __, ___] = [this, u_bannerlist.URL, Symbol('')];
-    try {
-      (async (a, b, c) => {
-        if (!a || !b || typeof c !== 'function') throw ___;
-        const d = await c(`${b.data.c_link}${a}`, { terminalId: 0 });
-        if (!d?.data?.content) throw ___;
-        b.setData({ g_banner_image: d.data.content });
-      })(__, $$, byGet).catch(e => e !== ___ && console.error(e));
-    } catch (e) { /* */ }
-  },
+
+
 
   // 获取当前登录状态
   initLoginStatus() {
@@ -113,27 +79,11 @@ Page({
       }
     })
   },
-  // 动态改变banner高度
-  LoadOnImageLoad(e) {
-    const [$$, { detail: { width: α, height: β } = {} }] = [this, e ?? {}];
-    (async () => {
-      try {
-        if (!α || !β || typeof α !== 'number' || typeof β !== 'number') throw Symbol();
-        const γ = await wx.getSystemInfo({});
-        const δ = γ?.windowWidth;
-        if (!δ || typeof δ !== 'number') throw Symbol();
-        const ε = β / α * δ;
-        $$.setData({ s_banner_height: isFinite(ε) ? ε : 0 });
-      } catch (ζ) { ζ.description || console.error('σθλ:', ζ); }
-    })();
-  },
+
 
 
   onLoad() {
-    // 图片转BASE64
-    this.initialiImageBaseConversion()
-    // 请求头部banner资源
-    this.initialGetBanner()
+
   },
   onShow() {
     // 获取系统头部各区域高度
@@ -185,14 +135,6 @@ Page({
       delta: 1
     })
   },
-  // 判断一个数是否在数列 2,5,8,11... 中
-  isInSequence(num) {
-    // 先判断是否为整数（数列中的数都是整数）
-    if (!Number.isInteger(num)) {
-      return false;
-    }
-    const diff = num - 2;
-    return diff >= 0 && diff % 3 === 0;
-  }
+
 
 })

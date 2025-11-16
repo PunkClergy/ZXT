@@ -123,10 +123,15 @@ Page({
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
-    const index = evt?.currentTarget?.dataset?.index
-    wx.navigateTo({
-      url: this.data.tabList[index]?.path,
-    })
+    const idx = evt?.currentTarget?.dataset?.index;
+    const targetUrl = this.data.tabList[idx]?.path;
+    if (!targetUrl) return;
+    const currentPage = getCurrentPages().slice(-1)[0];
+    const currentPath = currentPage.route;
+    const targetPurePath = targetUrl.split('?')[0];
+    if (`/${currentPath}` !== targetPurePath) {
+      wx.navigateTo({ url: targetUrl });
+    }
   },
   // 返回上一页面
   handleBackHome() {
