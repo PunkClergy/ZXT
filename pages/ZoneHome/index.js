@@ -180,15 +180,17 @@ Page({
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
-    const idx = evt?.currentTarget?.dataset?.index;
-    const targetUrl = this.data.tabList[idx]?.path;
+    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    if (idx === null) return;
+    const { tabList = [] } = this.data;
+    const { pagePath: targetUrl } = tabList[idx] ?? {};
     if (!targetUrl) return;
-    const currentPage = getCurrentPages().slice(-1)[0];
-    const currentPath = currentPage.route;
+    const [currentPage] = getCurrentPages().slice(-1);
+    const { route: currentPath } = currentPage ?? {};
+    if (!currentPath) return;
     const targetPurePath = targetUrl.split('?')[0];
-    if (`/${currentPath}` !== targetPurePath) {
-      wx.navigateTo({ url: targetUrl });
-    }
+    console.log(currentPath, targetPurePath);
+    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
   // 返回上一页面
   handleBackHome() {
