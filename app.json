@@ -3,7 +3,8 @@
     "custom": false,
     "color": "#8a8a8a",
     "selectedColor": "#ff4e00",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/desk/desk",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
@@ -14,12 +15,6 @@
         "iconPath": "/assets/images/index/sys@2x.png",
         "selectedIconPath": "/assets/images/index/sys_s@2x.png",
         "text": "分享朋友"
-      },
-      {
-        "pagePath": "pages/orderList/orderList",
-        "iconPath": "/assets/images/index/work@2x.png",
-        "selectedIconPath": "/assets/images/index/work_s@2x.png",
-        "text": "一键下单"
       },
       {
         "pagePath": "pages/Shops/index",
@@ -160,7 +155,8 @@
     "pages/CustomerReporting/index",
     "pages/Communicate/index",
     "pages/CustomerReporting/scanCodeAdd/index",
-    "pages/ZoneHome/index"
+    "pages/ZoneHome/index",
+    "pages/myPersonalCenter/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

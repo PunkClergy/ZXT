@@ -79,7 +79,7 @@ Page({
     tabList: [
       { icon: 'https://picsum.photos/50/50?random=50', name: '首页', path: '/pages/index/index' },
       { icon: 'https://picsum.photos/50/50?random=51', name: '采购下单', path: '/pages/orderList/orderList' },
-      { icon: 'https://picsum.photos/50/50?random=53', name: '我的', path: '' }
+      { icon: 'https://picsum.photos/50/50?random=53', name: '我的', path: '/pages/myPersonalCenter/index' }
     ],
     // 底部tabbar高度
     tabBarHeight: 80,

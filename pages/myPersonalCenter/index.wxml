@@ -1,0 +1,83 @@
+<!-- 页面根容器：设置整体背景图，使用container样式控制布局 -->
+<view class="container">
+
+  <!-- 自定义头部区域：包含系统状态栏高度适配，使用custom-header样式 -->
+  <view class="custom-header" style="padding-top: {{height_from_head}}px;padding-left: {{capsule_distance_to_the_right}}px; height: {{head_height}}px;">
+    <view class="custom-header-outer-layer">
+      <image class="custom-header-outer-layer-image" src="/assets/images/home/left.png" bindtap="handleBackHome"></image>
+      <view class="custom-header-outer-layer-title">我的</view>
+      <view class="custom-header-outer-layer-user_name">
+        <block wx:if="{{account}}">
+          <text>{{account}}</text>
+        </block>
+        <block wx:else>
+          <text bindtap="handleOnExistingAccountTap">请登录</text>
+          <image bindtap="handleOnExistingAccountTap" src="/assets/images/home/right_1.png" />
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- 中间滚动内容区：使用scroll-view实现垂直滚动，设置顶部和底部偏移量 -->
+  <scroll-view class="content" scroll-y="true" style="top: {{90}}px; bottom: {{tabBarHeight}}px;" bindscrolltolower="onReachBottom">
+<!-- myContentList.wxml -->
+<view class="my-content-list-container">
+  <view class="my-content-list-inner">
+    <view 
+      wx:for="{{contentList}}" 
+      wx:key="item.id" 
+      class="my-content-list-item {{index === contentList.length - 1 ? 'my-content-list-item_last' : ''}}"
+    >
+      <view class="my-content-list-item__left">
+        <image 
+          src="{{item.icon}}" 
+          class="my-content-list-item__icon" 
+          mode="widthFix" 
+        />
+        <text class="my-content-list-item__text">{{item.name}}</text>
+      </view>
+      <image 
+        src="/assets/images/home/right_1.png" 
+        class="my-content-list-item__arrow" 
+        mode="widthFix" 
+      />
+    </view>
+  </view>
+</view>
+  </scroll-view>
+
+  <!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
+  <view class="tabbar" style="height: {{tabBarHeight}}px;">
+    <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
+      <image src="{{item.icon}}" class="tab-icon" mode="widthFix"></image>
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 弹窗代码 -->
+<!-- 优惠券图片容器（点击图片触发授权） -->
+<view class="mask-container" wx:if="{{coupon_modal}}">
+  <view class="coupon-wrapper">
+    <button class="image-auth-btn" open-type="getPhoneNumber" hover-class="btn_tapcolor" bindgetphonenumber="handleOnGetPhoneNumber">
+      <image src="https://k3a.wiselink.net.cn/img/app/coupon50.png" mode="widthFix" class="coupon-image"></image>
+    </button>
+    <button class="existing-account-btn" bindtap="handleOnExistingAccountTap">
+      已有账号？点击登录
+    </button>
+  </view>
+</view>
+<!-- 点击咨询入群 -->
+<view class="float-button" bindtap="handleShowContact">
+  <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png" />
+</view>
+<view class="qr-group-container" wx:if="{{join_the_group_modal}}">
+  <view class="qr-group-mask" bindtap="handleQRClose">
+    <!-- 关闭按钮 -->
+    <view class="qr-group-close" bindtap="handleQRClose">×</view>
+    <view class="qr-group-preview-content">
+      <image catchtap="handleQRShowImageMask" class="qr-group-preview-img" src="{{personal_qr_code}}" mode="widthFix"></image>
+      <text class="qr-group-preview-desc">请点击、长按官方群二维码加入交流群，获取体验权限！</text>
+    </view>
+  </view>
+</view>
