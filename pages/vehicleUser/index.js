@@ -16,7 +16,16 @@ Page({
     totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     sn_specific_value: null,
     sn_state: false, //显示地图状态
-    
+    tabList: [
+      { icon: 'https://picsum.photos/50/50?random=50', name: '私家车', path: '/pages/ZoneHome/index' },
+      { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/vehicleUser/index' },
+      { icon: 'https://picsum.photos/50/50?random=53', name: '个人中心', path: '/pages/zoneCenter/index' }
+    ],
+    // 底部tabbar高度
+    tabBarHeight: 80,
+    // 当前选中的底部tabbar索引
+    currentTab: 1,
+
   },
   // 转换背景图base64
   initialiImageBaseConversion() {

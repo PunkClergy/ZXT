@@ -135,8 +135,8 @@ Page({
   },
   // 返回上一页面
   handleBackHome() {
-    wx.navigateBack({
-      delta: 1
+    wx.navigateTo({
+      url: '/pages/index/index',
     })
   },
 

@@ -39,7 +39,7 @@ Page({
     // 底部tab数据（网络图片）
     tabList: [
       { icon: 'https://picsum.photos/50/50?random=50', name: '私家车', path: '/pages/ZoneHome/index' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/privateCar/index' },
+      { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/vehicleUser/index' },
       { icon: 'https://picsum.photos/50/50?random=53', name: '个人中心', path: '/pages/zoneCenter/index' }
     ],
 
@@ -181,8 +181,8 @@ Page({
   },
   // 返回上一页面
   handleBackHome() {
-    wx.navigateBack({
-      delta: 1
+    wx.navigateTo({
+      url: '/pages/index/index',
     })
   },
   // 判断一个数是否在数列 2,5,8,11... 中
