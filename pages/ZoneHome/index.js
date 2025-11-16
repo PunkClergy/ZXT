@@ -175,6 +175,12 @@ Page({
       url: this.data.tabList[index]?.path,
     })
   },
+  // 返回上一页面
+  handleBackHome() {
+    wx.navigateBack({
+      delta: 1
+    })
+  },
   // 判断一个数是否在数列 2,5,8,11... 中
   isInSequence(num) {
     // 先判断是否为整数（数列中的数都是整数）

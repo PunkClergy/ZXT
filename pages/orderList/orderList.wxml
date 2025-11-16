@@ -1,6 +1,6 @@
-<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+<view class="container" style="height: {{c_screen_height}}px;">
   <custom-header title="采购下单" />
-  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight + 10 +60+4)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
+  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight + 10 +80)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 切换部分 -->
     <view class="record-tabs" bindtap="handleSwitchTab">
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">采购订单</view>
@@ -8,7 +8,8 @@
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
-      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50 +60+4)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50 +80)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
         <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
           <view class="content-item" data-item="{{item}}">
             <view class="content-item-head">
@@ -97,7 +98,7 @@
       </scroll-view>
     </block>
     <block wx:if="{{c_activeTab == 2}}">
-      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50 +60+4)}}px;">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50 +80)}}px;">
         <view class="card-info">
           <!-- 行业 -->
           <view class="card-info-item">
@@ -229,7 +230,7 @@
           <view class="card-info-item" wx:if="{{g_sending_keys_index == 2}}">
             <label>邀请码<text>*</text></label>
             <view class="card-info-item-input">
-              <input  placeholder="请输入邀请码" value="{{inviteCode}}" data-item="inviteCode" bindinput="handleInviteCodeBindinput" />
+              <input placeholder="请输入邀请码" value="{{inviteCode}}" data-item="inviteCode" bindinput="handleInviteCodeBindinput" />
             </view>
           </view>
           <!-- 客户收货地址 -->
@@ -304,4 +305,9 @@
     </form>
   </view>
 </block>
-<custom-tab-bar selectedtext='采购下单' wx:if="{{!c_select_address}}"/>
+<view class="tabbar" style="height: {{tabBarHeight}}px;">
+  <view class="tabbar-tab-item {{currentTab === index ? 'tabbar-active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
+    <image src="{{item.icon}}" class="tabbar-tab-icon" mode="widthFix"></image>
+    <text>{{item.name}}</text>
+  </view>
+</view>

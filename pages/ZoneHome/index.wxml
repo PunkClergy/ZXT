@@ -4,7 +4,7 @@
   <!-- 自定义头部区域：包含系统状态栏高度适配，使用custom-header样式 -->
   <view class="custom-header" style="padding-top: {{height_from_head}}px;padding-left: {{capsule_distance_to_the_right}}px; height: {{head_height}}px;">
     <view class="custom-header-outer-layer">
-      <image class="custom-header-outer-layer-image" src="/assets/images/home/left.png"></image>
+      <image class="custom-header-outer-layer-image" src="/assets/images/home/left.png" bindtap="handleBackHome"></image>
       <view class="custom-header-outer-layer-title">私家车钥匙服务</view>
       <view class="custom-header-outer-layer-user_name">
         <block wx:if="{{account}}">

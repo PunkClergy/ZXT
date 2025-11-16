@@ -19,7 +19,7 @@ const {
 } = require('../../utils/request/data_info')
 const {
   byGet,
-  byPost, byPostJson,isLogin
+  byPost, byPostJson, isLogin
 } = require('../../utils/request/http')
 
 Page({
@@ -76,6 +76,22 @@ Page({
     region: [],//地址 当前选择地区
     bak: '',//备注
     c_link: 'https://k1sw.wiselink.net.cn/', //域名
+    tabList: [
+      { icon: 'https://picsum.photos/50/50?random=50', name: '首页', path: '/pages/index/index' },
+      { icon: 'https://picsum.photos/50/50?random=51', name: '采购下单', path: '/pages/orderList/orderList' },
+      { icon: 'https://picsum.photos/50/50?random=53', name: '我的', path: '' }
+    ],
+    // 底部tabbar高度
+    tabBarHeight: 80,
+    currentTab: 1
+  },
+  // 切换底部导航
+  handleSwitchTabNavigation(evt) {
+    const index = evt?.currentTarget?.dataset?.index
+    console.log(this.data.tabList[index]?.path)
+    wx.navigateTo({
+      url: this.data.tabList[index]?.path,
+    })
   },
   // 选择区间日期
   bindDateChange(e) {
@@ -780,6 +796,7 @@ Page({
     );
   },
   onLoad(options) {
+    wx.hideTabBar()
     if (getApp()?.data?.userInfo?.token) {
       this.getOrderList()
     }
