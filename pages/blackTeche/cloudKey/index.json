@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "电子钥匙",
-  "usingComponents": {
-    "custom-header":"/components/CustomHeader/index"
-  },
-  "navigationStyle": "custom",
-  "disableScroll": true
-}
