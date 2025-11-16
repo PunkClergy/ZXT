@@ -20,37 +20,26 @@
 
   <!-- 中间滚动内容区：使用scroll-view实现垂直滚动，设置顶部和底部偏移量 -->
   <scroll-view class="content" scroll-y="true" style="top: {{90}}px; bottom: {{tabBarHeight}}px;" bindscrolltolower="onReachBottom">
-<!-- myContentList.wxml -->
-<view class="my-content-list-container">
-  <view class="my-content-list-inner">
-    <view 
-      wx:for="{{contentList}}" 
-      wx:key="item.id" 
-      class="my-content-list-item {{index === contentList.length - 1 ? 'my-content-list-item_last' : ''}}"
-    >
-      <view class="my-content-list-item__left">
-        <image 
-          src="{{item.icon}}" 
-          class="my-content-list-item__icon" 
-          mode="widthFix" 
-        />
-        <text class="my-content-list-item__text">{{item.name}}</text>
+    <!-- myContentList.wxml -->
+    <view class="my-content-list-container">
+      <view class="my-content-list-inner">
+        <view wx:for="{{contentList}}" wx:key="index" class="my-content-list-item {{index === contentList.length - 1 ? 'my-content-list-item_last' : ''}}">
+          <view class="my-content-list-item__left">
+            <image src="{{item.icon}}" class="my-content-list-item__icon" mode="widthFix" />
+            <text class="my-content-list-item__text">{{item.name}}</text>
+          </view>
+          <image src="/assets/images/home/right_1.png" class="my-content-list-item__arrow" mode="widthFix" />
+        </view>
       </view>
-      <image 
-        src="/assets/images/home/right_1.png" 
-        class="my-content-list-item__arrow" 
-        mode="widthFix" 
-      />
     </view>
-  </view>
-</view>
   </scroll-view>
 
   <!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
   <view class="tabbar" style="height: {{tabBarHeight}}px;">
     <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
-      <image src="{{item.icon}}" class="tab-icon" mode="widthFix"></image>
-      <text>{{item.name}}</text>
+      <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
+      <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />
+      <text>{{item.text}}</text>
     </view>
   </view>
 </view>

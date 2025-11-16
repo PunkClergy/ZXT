@@ -1,5 +1,21 @@
 <view class="container" style="height: {{c_screen_height}}px;">
-  <custom-header title="采购下单" />
+  <!-- <custom-header title="采购下单" /> -->
+  <!-- 自定义头部区域：包含系统状态栏高度适配，使用custom-header样式 -->
+  <view class="custom-header" style="padding-top: {{height_from_head}}px;padding-left: {{capsule_distance_to_the_right}}px; height: {{head_height}}px;">
+    <view class="custom-header-outer-layer">
+      <image class="custom-header-outer-layer-image" src="/assets/images/index/home.png" bindtap="handleBackHome"></image>
+      <view class="custom-header-outer-layer-title">采购下单</view>
+      <view class="custom-header-outer-layer-user_name">
+        <block wx:if="{{account}}">
+          <text>{{account}}</text>
+        </block>
+        <block wx:else>
+          <text bindtap="handleOnExistingAccountTap">请登录</text>
+          <image bindtap="handleOnExistingAccountTap" src="/assets/images/home/right_1.png" />
+        </block>
+      </view>
+    </view>
+  </view>
   <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight + 10 +80)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 切换部分 -->
     <view class="record-tabs" bindtap="handleSwitchTab">
@@ -116,18 +132,7 @@
               </view>
             </block>
           </view>
-          <!-- 功能 -->
-          <!-- <view class="card-info-item">
-            <label>功能<text>*</text></label>
-            <view class="function-tags">
-              <block wx:for="{{g_core_functions}}" wx:key="index">
-                <label>类型{{index+1}}:</label>
-                <view class="tag" data-item="{{item}}" bindtap="handleFunction" style="background-color: {{item.state?'#e4edfd ':''}};border: {{item.state?'1px solid rgba(23, 114, 246, 0.5)':'1rpx solid  #f1f1f1'}};">
-                  {{item.name}}
-                </view>
-              </block>
-            </view>
-          </view> -->
+
           <!-- 设备类型 -->
           <view class="card-info-item">
             <label style="min-width: 20%;">设备类型<text>*</text></label>
@@ -307,7 +312,8 @@
 </block>
 <view class="tabbar" style="height: {{tabBarHeight}}px;">
   <view class="tabbar-tab-item {{currentTab === index ? 'tabbar-active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
-    <image src="{{item.icon}}" class="tabbar-tab-icon" mode="widthFix"></image>
-    <text>{{item.name}}</text>
+    <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tabbar-tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
+    <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tabbar-tab-icon" mode="widthFix" wx:else />
+    <text>{{item.text}}</text>
   </view>
 </view>

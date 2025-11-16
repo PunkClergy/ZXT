@@ -1,6 +1,7 @@
 .container {
   height: 100vh;
   padding: 10rpx 4rpx;
+  background-color: #F3F9FD;
 }
 
 .record-container {
@@ -684,4 +685,58 @@ picker {
 /* 激活状态的tab文本样式：颜色改为蓝色 */
 .tabbar-tab-item.tabbar-active text {
   color: #3498db;
+}
+
+/* 自定义头部样式：固定在顶部，占满宽度，使用flex布局居中对齐内容 */
+.custom-header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+/* 头部外层容器样式：flex布局，水平居中对齐，元素间间距10rpx */
+.custom-header-outer-layer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25rpx;
+}
+
+/* 头部外层容器图片样式：设置固定宽高 */
+.custom-header-outer-layer-image {
+  width: 45rpx;
+  height: 49rpx;
+}
+
+/* 头部标题样式：粗体，字体大小36rpx，颜色深灰 */
+.custom-header-outer-layer-title {
+  font-weight: bold;
+  font-size: 36rpx;
+  color: #333333;
+}
+
+/* 头部用户名容器样式：flex水平排列，对齐项目中心，间距5rpx */
+.custom-header-outer-layer-user_name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5rpx;
+}
+
+/* 用户名文本样式：中等粗细，字体大小28rpx，颜色深灰 */
+.custom-header-outer-layer-user_name text {
+  font-weight: 500;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+/* 用户名旁图片样式：设置固定宽高 */
+.custom-header-outer-layer-user_name image {
+  width: 26rpx;
+  height: 26rpx;
 }

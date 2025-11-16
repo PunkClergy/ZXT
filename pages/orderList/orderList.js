@@ -8,6 +8,9 @@ const {
   showToast
 } = require('../../utils/Inspect/tips')
 const {
+  u_navlist20,
+} = require('../../utils/request/home')
+const {
   u_buyDevice,
   u_buyRecord,
   u_getIndustry,
@@ -85,17 +88,43 @@ Page({
     tabBarHeight: 80,
     currentTab: 1
   },
+  // 获取系统头部各区域高度
+  initSystemInfo() {
+    const { statusBarHeight: s } = wx.getWindowInfo()
+    const m = wx.getMenuButtonBoundingClientRect()
+    if (!m) return
+    const n = m.height + (m.top - s) * 2
+    const c = wx.getWindowInfo().screenWidth - m.right
+    this.setData({
+      height_from_head: s,
+      head_height: s + n,
+      capsule_distance_to_the_right: c
+    })
+  },
+  // 获取底部导航数据
+  initBottomDirectory() {
+    byGet(this.data.c_link + u_navlist20.URL, { menuId: 1 }).then(response => {
+      console.log(response)
+      if (response.statusCode == 200) {
+        this.setData({
+          tabList: response.data.content
+        })
+      }
+    })
+  },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
-    const idx = evt?.currentTarget?.dataset?.index;
-    const targetUrl = this.data.tabList[idx]?.path;
+    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    if (idx === null) return;
+    const { tabList = [] } = this.data;
+    const { pagePath: targetUrl } = tabList[idx] ?? {};
     if (!targetUrl) return;
-    const currentPage = getCurrentPages().slice(-1)[0];
-    const currentPath = currentPage.route;
+    const [currentPage] = getCurrentPages().slice(-1);
+    const { route: currentPath } = currentPage ?? {};
+    if (!currentPath) return;
     const targetPurePath = targetUrl.split('?')[0];
-    if (`/${currentPath}` !== targetPurePath) {
-      wx.navigateTo({ url: targetUrl });
-    }
+    console.log(currentPath, targetPurePath);
+    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
   // 选择区间日期
   bindDateChange(e) {
@@ -799,14 +828,39 @@ Page({
       }
     );
   },
+  // 返回上一页面
+  handleBackHome() {
+    wx.navigateTo({
+      url: '/pages/index/index',
+    })
+  },
+  // 获取当前登录状态
+  initLoginStatus() {
+    wx.getStorage({
+      key: 'userKey', // 替换为你的缓存键值
+      success: res => {
+        this.setData({
+          account: res?.data?.companyName || res?.data?.username
+        })
+      },
+      fail(err) {
+        console.error("获取失败", err); // 失败时的错误信息
+      }
+    });
+  },
+  onReady() {
+    // 获取登录状态
+    this.initLoginStatus()
+  },
   onLoad(options) {
     wx.hideTabBar()
+    // 获取底部导航数据
+    this.initBottomDirectory()
     if (getApp()?.data?.userInfo?.token) {
       this.getOrderList()
     }
   },
 
-  onReady() { },
 
   onShow() {
     this.initialiImageBaseConversion()
@@ -814,5 +868,6 @@ Page({
     // this.initialgetIntroduction()
     this.initialgetType()
     this.initialDateTime()
+    this.initSystemInfo()
   },
 })

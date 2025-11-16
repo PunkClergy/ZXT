@@ -5,7 +5,7 @@
   <view class="custom-header" style="padding-top: {{height_from_head}}px;padding-left: {{capsule_distance_to_the_right}}px; height: {{head_height}}px;">
     <view class="custom-header-outer-layer">
       <image class="custom-header-outer-layer-image" src="/assets/images/index/home.png" bindtap="handleBackHome"></image>
-      <view class="custom-header-outer-layer-title">私家车钥匙服务</view>
+      <view class="custom-header-outer-layer-title">{{title_name}}</view>
       <view class="custom-header-outer-layer-user_name">
         <block wx:if="{{account}}">
           <text>{{account}}</text>
@@ -57,8 +57,10 @@
   <!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
   <view class="tabbar" style="height: {{tabBarHeight}}px;">
     <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
-      <image src="{{item.icon}}" class="tab-icon" mode="widthFix"></image>
-      <text>{{item.name}}</text>
+      <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
+      <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />
+
+      <text>{{item.text}}</text>
     </view>
   </view>
 </view>

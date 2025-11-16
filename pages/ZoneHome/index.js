@@ -1,16 +1,7 @@
 const {
   u_bannerlist,
-  u_midMenulist,
-  u_menulist,
-  u_rightMenulist,
-  u_termialList,
-  u_logo,
-  u_getUserinfo,
-  u_updateUserName,
   u_getQrcodeImg,
-  u_getNotHaveMidMenulist,
-  u_applyMenus,
-  u_forceLogin
+  u_navlist20
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -31,6 +22,8 @@ Page({
     s_banner_height: '',
     // 咨询入群弹窗状态
     join_the_group_modal: false,
+    // 头部标题
+    title_name: '',
 
     // 专区入口数据（网络图片）
     zoneList: [
@@ -39,7 +32,7 @@ Page({
     // 底部tab数据（网络图片）
     tabList: [
       { icon: 'https://picsum.photos/50/50?random=50', name: '私家车', path: '/pages/ZoneHome/index' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/vehicleUser/index' },
+      { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/privateCar/index' },
       { icon: 'https://picsum.photos/50/50?random=53', name: '个人中心', path: '/pages/zoneCenter/index' }
     ],
 
@@ -88,7 +81,6 @@ Page({
       })(__, $$, byGet).catch(e => e !== ___ && console.error(e));
     } catch (e) { /* */ }
   },
-
   // 获取当前登录状态
   initLoginStatus() {
     wx.getStorage({
@@ -113,6 +105,16 @@ Page({
       }
     })
   },
+  // 获取底部导航数据
+  initBottomDirectory(evt) {
+    byGet(this.data.c_link + u_navlist20.URL, { menuId: evt }).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          tabList: response.data.content
+        })
+      }
+    })
+  },
   // 动态改变banner高度
   LoadOnImageLoad(e) {
     const [$$, { detail: { width: α, height: β } = {} }] = [this, e ?? {}];
@@ -129,11 +131,20 @@ Page({
   },
 
 
-  onLoad() {
+  onLoad(options) {
     // 图片转BASE64
     this.initialiImageBaseConversion()
     // 请求头部banner资源
     this.initialGetBanner()
+    // 请求导航数据
+    if (options?.menuId) {
+      this.initBottomDirectory(options?.menuId)
+    }
+    if (options?.name) {
+      this.setData({
+        title_name: options?.name
+      })
+    }
   },
   onShow() {
     // 获取系统头部各区域高度

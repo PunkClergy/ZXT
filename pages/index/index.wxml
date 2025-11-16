@@ -47,7 +47,7 @@
     <view class="special-zone">
       <view class="zone-item" wx:for="{{zoneList}}" wx:key="index">
         <view class="zone-out" style="background-color: {{item.bgcolor}};" data-info="{{item}}" bindtap="handleGetMenuList">
-          <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/app2.0/desk/' + item.icon}}" />
+          <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + item.icon}}" />
           <view class="zone-name">{{item.name}}</view>
         </view>
       </view>
@@ -75,8 +75,9 @@
   <!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
   <view class="tabbar" style="height: {{tabBarHeight}}px;">
     <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
-      <image src="{{item.icon}}" class="tab-icon" mode="widthFix"></image>
-      <text>{{item.name}}</text>
+      <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
+      <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />
+      <text>{{item.text}}</text>
     </view>
   </view>
 </view>

@@ -1,16 +1,9 @@
 const {
   u_bannerlist,
-  u_midMenulist,
-  u_menulist,
-  u_rightMenulist,
-  u_termialList,
-  u_logo,
-  u_getUserinfo,
-  u_updateUserName,
   u_getQrcodeImg,
-  u_getNotHaveMidMenulist,
-  u_applyMenus,
-  u_forceLogin
+  u_forceLogin,
+  u_getHomeArea,
+  u_navlist20
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -33,20 +26,11 @@ Page({
     coupon_modal: false,
     // 咨询入群弹窗状态
     join_the_group_modal: false,
-
     // 专区入口数据（网络图片）
-    zoneList: [
-      { id: 1, name: '私家车钥匙服务', bgcolor: '#EFF1FC', icon: 'privateCar.png' },
-      { id: 2, name: '租车钥匙服务', bgcolor: '#FAF6E9', icon: 'carRental.png' },
-      { id: 3, name: '网约车钥匙服务', bgcolor: '#FCEFF3', icon: 'onlineCarHailing.png' },
-      { id: 4, name: '企业钥匙服务', bgcolor: '#EAF8F7', icon: 'enterpriseVehicles.png' },
-      { id: 5, name: '停运补偿服务', bgcolor: '#EFF1FC', icon: 'suspensionGuarantee.png' },
-      { id: 6, name: '物流钥匙服务', bgcolor: '#FCEFF3', icon: 'insideSales.png' },
-      { id: 7, name: '渠道合作中心', bgcolor: '#FAF6E9', icon: 'channelCooperation.png' },
-      { id: 8, name: '风控钥匙服务', bgcolor: '#EAF8F7', icon: 'installationServices.png' },
-      { id: 0, name: 'K7安装服务', bgcolor: '#EAF8F7', icon: 'installationServices.png' },
-      { id: 10, name: '内部销售专区', bgcolor: '#FCEFF3', icon: 'insideSales.png' },
-    ],
+    zoneList: [],
+    // 底部tab数据（网络图片）
+    tabList: [],
+
 
     // 全宽轮播图数据（网络图片）
     fullBannerList: [
@@ -56,13 +40,6 @@ Page({
 
     // 海报图片（网络图片）
     posterImg: 'https://picsum.photos/750/400?random=40',
-
-    // 底部tab数据（网络图片）
-    tabList: [
-      { icon: 'https://picsum.photos/50/50?random=50', name: '首页', path: '/pages/index/index' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '采购下单', path: '/pages/orderList/orderList' },
-      { icon: 'https://picsum.photos/50/50?random=53', name: '我的', path: '/pages/myPersonalCenter/index' }
-    ],
 
 
   },
@@ -143,6 +120,27 @@ Page({
       }
     })
   },
+  // 获取专区目录
+  initZoneInfo() {
+    byGet(this.data.c_link + u_getHomeArea.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          zoneList: response.data.content
+        })
+      }
+    })
+  },
+  // 获取底部导航数据
+  initBottomDirectory() {
+    byGet(this.data.c_link + u_navlist20.URL, { menuId: 1 }).then(response => {
+      console.log(response)
+      if (response.statusCode == 200) {
+        this.setData({
+          tabList: response.data.content
+        })
+      }
+    })
+  },
   // 动态改变banner高度
   LoadOnImageLoad(e) {
     const [$$, { detail: { width: α, height: β } = {} }] = [this, e ?? {}];
@@ -158,12 +156,15 @@ Page({
     })();
   },
 
-
   onLoad() {
     // 图片转BASE64
     this.initialiImageBaseConversion()
     // 请求头部banner资源
     this.initialGetBanner()
+    // 请求专区目录数据
+    this.initZoneInfo()
+    // 请求导航数据
+    this.initBottomDirectory()
   },
   onShow() {
     // 获取系统头部各区域高度
@@ -290,23 +291,34 @@ Page({
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
-    const idx = evt?.currentTarget?.dataset?.index;
-    const targetUrl = this.data.tabList[idx]?.path;
+    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    if (idx === null) return;
+    const { tabList = [] } = this.data;
+    const { pagePath: targetUrl } = tabList[idx] ?? {};
     if (!targetUrl) return;
-    const currentPage = getCurrentPages().slice(-1)[0];
-    const currentPath = currentPage.route;
+    const [currentPage] = getCurrentPages().slice(-1);
+    const { route: currentPath } = currentPage ?? {};
+    if (!currentPath) return;
     const targetPurePath = targetUrl.split('?')[0];
-    if (`/${currentPath}` !== targetPurePath) {
-      wx.navigateTo({ url: targetUrl });
-    }
+    console.log(currentPath, targetPurePath);
+    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
   // 点击专区跳转逻辑
-  handleGetMenuList(evt) {
-    console.log(evt)
+  handleGetMenuList(evt) {  
     const menuId = evt?.id ?? evt?.currentTarget?.dataset?.info?.id;
+    const path = evt?.path ?? evt?.currentTarget?.dataset?.info?.path;
+    const name = evt?.name ?? evt?.currentTarget?.dataset?.info?.name
     getApp().data.funAreaId = menuId
-    wx.navigateTo({
-      url: '/pages/ZoneHome/index',
-    })
+    const hasDesk = path.includes('desk') || path.includes('/desk');
+    if (hasDesk) {
+      wx.switchTab({
+        url: path,
+      })
+    } else {
+      wx.navigateTo({
+        url: `${path}?menuId=${menuId}&name=${name}`,
+      })
+    }
+
   }
 })

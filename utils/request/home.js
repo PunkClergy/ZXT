@@ -34,6 +34,14 @@ const u_logo = {
 const u_getQrcodeImg = {
   URL:'deskapi/getQrcodeImg',
 }
+// 首页专区
+const u_getHomeArea = {
+  URL:'deskapi/homeArea',
+}
+// 底部导航目录
+const u_navlist20 = {
+  URL:'deskapi/navlist20',
+}
 // 获取未选择的专区
 const u_getNotHaveMidMenulist = {
   URL:'deskapi/getNotHaveMidMenulist',
@@ -65,6 +73,8 @@ const u_applyMenus ={
   URL:"accountapi/applyMenus",
 }
 module.exports = {
+  u_navlist20,
+  u_getHomeArea,
   u_forceLogin,
   u_applyMenus,
   u_setBtype,
