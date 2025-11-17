@@ -1,16 +1,6 @@
 const {
-  u_bannerlist,
-  u_midMenulist,
-  u_menulist,
-  u_rightMenulist,
-  u_termialList,
-  u_logo,
-  u_getUserinfo,
-  u_updateUserName,
   u_getQrcodeImg,
-  u_getNotHaveMidMenulist,
-  u_applyMenus,
-  u_forceLogin
+  u_navlist20
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -28,11 +18,7 @@ Page({
     // 咨询入群弹窗状态
     join_the_group_modal: false,
     // 底部tab数据（网络图片）
-    tabList: [
-      { icon: 'https://picsum.photos/50/50?random=50', name: '私家车', path: '/pages/ZoneHome/index' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/privateCar/index' },
-      { icon: 'https://picsum.photos/50/50?random=53', name: '个人中心', path: '/pages/zoneCenter/index' }
-    ],
+    tabList: [],
     contentList: [
       { icon: 'https://picsum.photos/50/50?random=50', name: '车辆清单', path: '' },
     ]
@@ -52,8 +38,6 @@ Page({
       capsule_distance_to_the_right: c
     })
   },
-
-
 
   // 获取当前登录状态
   initLoginStatus() {
@@ -79,11 +63,20 @@ Page({
       }
     })
   },
-
+  // 获取底部导航数据
+  initBottomDirectory() {
+    byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          tabList: response.data.content
+        })
+      }
+    })
+  },
 
 
   onLoad() {
-
+    this.initBottomDirectory()
   },
   onShow() {
     // 获取系统头部各区域高度
@@ -118,16 +111,19 @@ Page({
     });
   },
   // 切换底部导航
+  // 切换底部导航
   handleSwitchTabNavigation(evt) {
-    const idx = evt?.currentTarget?.dataset?.index;
-    const targetUrl = this.data.tabList[idx]?.path;
+    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    if (idx === null) return;
+    const { tabList = [] } = this.data;
+    const { pagePath: targetUrl } = tabList[idx] ?? {};
     if (!targetUrl) return;
-    const currentPage = getCurrentPages().slice(-1)[0];
-    const currentPath = currentPage.route;
+    const [currentPage] = getCurrentPages().slice(-1);
+    const { route: currentPath } = currentPage ?? {};
+    if (!currentPath) return;
     const targetPurePath = targetUrl.split('?')[0];
-    if (`/${currentPath}` !== targetPurePath) {
-      wx.navigateTo({ url: targetUrl });
-    }
+    console.log(currentPath, targetPurePath);
+    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
   // 返回上一页面
   handleBackHome() {

@@ -103,7 +103,7 @@ Page({
   },
   // 获取底部导航数据
   initBottomDirectory() {
-    byGet(this.data.c_link + u_navlist20.URL, { menuId: 1 }).then(response => {
+    byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
       console.log(response)
       if (response.statusCode == 200) {
         this.setData({
@@ -854,6 +854,7 @@ Page({
   },
   onLoad(options) {
     wx.hideTabBar()
+    getApp().data.funAreaId = '';
     // 获取底部导航数据
     this.initBottomDirectory()
     if (getApp()?.data?.userInfo?.token) {

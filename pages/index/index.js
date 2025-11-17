@@ -132,7 +132,7 @@ Page({
   },
   // 获取底部导航数据
   initBottomDirectory() {
-    byGet(this.data.c_link + u_navlist20.URL, { menuId: 1 }).then(response => {
+    byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
       console.log(response)
       if (response.statusCode == 200) {
         this.setData({
@@ -157,14 +157,17 @@ Page({
   },
 
   onLoad() {
-    // 图片转BASE64
-    this.initialiImageBaseConversion()
-    // 请求头部banner资源
-    this.initialGetBanner()
-    // 请求专区目录数据
-    this.initZoneInfo()
-    // 请求导航数据
-    this.initBottomDirectory()
+    getApp().data.funAreaId = '';
+    (() => {
+      // 图片转BASE64
+      this.initialiImageBaseConversion();
+      // 请求头部banner资源
+      this.initialGetBanner();
+      // 请求专区目录数据
+      this.initZoneInfo();
+      // 请求导航数据
+      this.initBottomDirectory();
+    })();
   },
   onShow() {
     // 获取系统头部各区域高度
@@ -304,7 +307,7 @@ Page({
     currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
   // 点击专区跳转逻辑
-  handleGetMenuList(evt) {  
+  handleGetMenuList(evt) {
     const menuId = evt?.id ?? evt?.currentTarget?.dataset?.info?.id;
     const path = evt?.path ?? evt?.currentTarget?.dataset?.info?.path;
     const name = evt?.name ?? evt?.currentTarget?.dataset?.info?.name

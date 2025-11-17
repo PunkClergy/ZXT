@@ -24,7 +24,6 @@ Page({
       { icon: 'https://picsum.photos/50/50?random=51', name: '分享朋友', path: '' },
       { icon: 'https://picsum.photos/50/50?random=53', name: '增设登录账号', path: '' },
       { icon: 'https://picsum.photos/50/50?random=51', name: '退出登录', path: '' },
-
     ]
 
 
@@ -68,7 +67,7 @@ Page({
   },
   // 获取底部导航数据
   initBottomDirectory() {
-    byGet(this.data.c_link + u_navlist20.URL, { menuId: 1 }).then(response => {
+    byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
       console.log(response)
       if (response.statusCode == 200) {
         this.setData({
@@ -81,6 +80,7 @@ Page({
 
 
   onLoad() {
+    getApp().data.funAreaId = '';
     // 请求底部导航数据
     this.initBottomDirectory()
   },

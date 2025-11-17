@@ -106,8 +106,8 @@ Page({
     })
   },
   // 获取底部导航数据
-  initBottomDirectory(evt) {
-    byGet(this.data.c_link + u_navlist20.URL, { menuId: evt }).then(response => {
+  initBottomDirectory() {
+    byGet(this.data.c_link + u_navlist20.URL, { }).then(response => {
       if (response.statusCode == 200) {
         this.setData({
           tabList: response.data.content
@@ -137,9 +137,7 @@ Page({
     // 请求头部banner资源
     this.initialGetBanner()
     // 请求导航数据
-    if (options?.menuId) {
-      this.initBottomDirectory(options?.menuId)
-    }
+    this.initBottomDirectory()
     if (options?.name) {
       this.setData({
         title_name: options?.name
