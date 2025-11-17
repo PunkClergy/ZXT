@@ -34,6 +34,14 @@ const u_logo = {
 const u_getQrcodeImg = {
   URL: 'deskapi/getQrcodeImg',
 }
+// 获取海报数据
+const u_getposter = {
+  URL: 'deskapi/',
+}
+// 获取公告数据
+const u_getnotice = {
+  URL: 'deskapi/',
+}
 // 首页专区
 const u_getHomeArea = {
   URL: 'deskapi/homeArea',
@@ -81,6 +89,8 @@ const u_booklist = {
   URL: "deskapi/booklist",
 }
 module.exports = {
+  u_getnotice,
+  u_getposter,
   u_mylist,
   u_booklist,
   u_navlist20,

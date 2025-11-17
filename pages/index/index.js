@@ -4,7 +4,9 @@ const {
   u_forceLogin,
   u_getHomeArea,
   u_navlist20,
-  u_booklist
+  u_booklist,
+  u_getposter,
+  u_getnotice
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -32,15 +34,13 @@ Page({
     // 底部tab数据（网络图片）
     tabList: [],
     // 使用指南数据
-    fullBannerList: [
-      'https://picsum.photos/750/200?random=30',
-      'https://picsum.photos/750/200?random=31'
-    ],
+    fullBannerList: [],
     // 使用指南处轮播高度
     s_use_height: '',
-
-    // 海报图片（网络图片）
+    // 海报图片
     posterImg: 'https://picsum.photos/750/400?random=40',
+    // 公告数据
+    notice_data: '新版偷偷上线！体验更丝滑，速来体验～'
 
 
   },
@@ -151,6 +151,26 @@ Page({
       }
     })
   },
+  // 获取海报和广告位
+  initPoster() {
+    byGet(this.data.c_link + u_getposter.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          posterImg: response.data.content.img
+        })
+      }
+    })
+  },
+  // 获取公告数据
+  initNotice() {
+    byGet(this.data.c_link + u_getnotice.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          notice_data: response.data.content.img
+        })
+      }
+    })
+  },
   // 动态改变轮播图高度
   LoadOnUseGuideImageLoad(e) {
     const [self, { currentTarget: { dataset: { flag: mark } = {} } = {} }] = [this, e ?? {}];
@@ -180,6 +200,10 @@ Page({
       this.initZoneInfo();
       // 请求导航数据
       this.initBottomDirectory();
+      // 请求海报数据
+      this.initPoster()
+      // 获取公告数据
+      this.initNotice()
     })();
   },
   onShow() {
