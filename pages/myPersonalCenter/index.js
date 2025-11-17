@@ -1,6 +1,7 @@
 const {
   u_getQrcodeImg,
   u_navlist20,
+  u_updateUserName
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -19,9 +20,16 @@ Page({
     join_the_group_modal: false,
     // 底部tab数据（网络图片）
     tabList: [],
+    // 增设账号弹窗
+    create_an_account_modal: false,
+    // 增设密码踢脚线信息
+    account_info: {
+    },
+    // 增设密码提交后错误信息
+    account_errorMsg: '',
     contentList: [
-      { icon: 'https://picsum.photos/50/50?random=50', name: '我的专属客服', path: '' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '分享朋友', path: '' },
+      { icon: 'https://picsum.photos/50/50?random=50', name: '我的专属客服', path: 'pages/groupQrCode/index' },
+      { icon: 'https://picsum.photos/50/50?random=51', name: '分享朋友', path: 'pages/redShare/index' },
       { icon: 'https://picsum.photos/50/50?random=53', name: '增设登录账号', path: '' },
       { icon: 'https://picsum.photos/50/50?random=51', name: '退出登录', path: '' },
     ]
@@ -77,8 +85,6 @@ Page({
     })
   },
 
-
-
   onLoad() {
     getApp().data.funAreaId = '';
     // 请求底部导航数据
@@ -94,7 +100,6 @@ Page({
     // 获取入群二维码
     this.initQrCode()
   },
-
 
 
   // 点击“咨询” 显示入群二维码
@@ -135,6 +140,107 @@ Page({
     wx.navigateTo({
       url: '/pages/index/index',
     })
+  },
+  // 点击工具执行
+  handleFunExe(evt) {
+    const info = evt?.currentTarget?.dataset?.info
+    if (info?.path) {
+      wx.navigateTo({
+        url: `/${info?.path}`,
+      })
+    }
+    if (info?.name == '增设登录账号') {
+      const account_info = this.data.account_info
+      account_info.mobie = getApp()?.data?.userInfo?.mobile
+      this.setData({
+        create_an_account_modal: true,
+        account_info
+      })
+    }
+    if (info.name == '退出登录') {
+      wx.showModal({
+        title: '提示',
+        content: '确定要退出吗？',
+        showCancel: true,
+        cancelText: '取消',
+        confirmText: '确定',
+        success(res) {
+          if (res.confirm) {
+            getApp().data.userInfo = '';
+            try {
+              wx.clearStorageSync();
+            } catch (e) {
+              wx.clearStorage();
+            }
+            wx.redirectTo({
+              url: '/pages/index/index',
+            })
+          }
+        }
+      });
+      return
+    }
+  },
+  // 关闭增设登录弹窗
+  handleHideAnAccountModal() {
+    this.setData({
+      create_an_account_modal: false,
+    })
+  },
+  // 增设密码输入回调
+  handleInputCallback(evt) {
+    const flag = evt?.currentTarget?.dataset?.flag
+    const value = evt?.detail?.value
+    const account_info = this.data.account_info
+    account_info[flag] = value
+    this.setData({
+      account_info
+    })
+  },
+  // 增设登录账号密码提交
+  handleSubmitAnAccount() {
+    const { newUserName, newPassword, confirmPassword } = this.data.account_info
+    console.log(this.data.account_info)
+    if (newUserName.length < 6) {
+      this.setData({
+        account_errorMsg: '账号长度不能小于6位'
+      })
+      return
+    }
+
+    if (confirmPassword.length < 6) {
+      this.setData({
+        account_errorMsg: '密码长度不能小于6位'
+      })
+      return
+    }
+    if (newPassword != confirmPassword) {
+      this.setData({
+        account_errorMsg: '密码两次输入不一致'
+      })
+      return
+    }
+    const params = {
+      [u_updateUserName.newUserName]: newUserName,
+      [u_updateUserName.newPassword]: confirmPassword,
+      [u_updateUserName.userId]: getApp().data.userInfo.id
+    }
+    byPost(getApp().data.k1swUrl + u_updateUserName.URL, params, (res) => {
+      const data = res.data;
+      if (data.code == 1000) {
+        showToast('修改成功')
+        this.setData({
+          create_an_account_modal: false,
+          account_info: {},
+          account_errorMsg: ''
+        })
+      } else {
+        this.setData({
+          account_errorMsg: data?.msg
+        })
+      }
+    });
+
   },
 
 

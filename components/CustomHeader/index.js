@@ -100,7 +100,7 @@ Component({
         return
       }
       wx.reLaunch({
-        url: '/pages/desk/desk'
+        url: '/pages/index/index'
       })
     }
   }

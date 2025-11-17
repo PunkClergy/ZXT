@@ -3,30 +3,17 @@
     "custom": false,
     "color": "#8a8a8a",
     "selectedColor": "#ff4e00",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/desk/desk",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
         "text": "首页"
       },
       {
-        "pagePath": "pages/redShare/index",
-        "iconPath": "/assets/images/index/sys@2x.png",
-        "selectedIconPath": "/assets/images/index/sys_s@2x.png",
-        "text": "分享朋友"
-      },
-      {
         "pagePath": "pages/Shops/index",
         "iconPath": "/assets/images/index/work@2x.png",
         "selectedIconPath": "/assets/images/index/work_s@2x.png",
         "text": "店铺"
-      },
-      {
-        "pagePath": "pages/groupQrCode/index",
-        "iconPath": "/assets/images/index/setUp@2x.png",
-        "selectedIconPath": "/assets/images/index/setUp_s@2x.png",
-        "text": "个人中心"
       }
     ]
   },

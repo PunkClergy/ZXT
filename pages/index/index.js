@@ -3,7 +3,8 @@ const {
   u_getQrcodeImg,
   u_forceLogin,
   u_getHomeArea,
-  u_navlist20
+  u_navlist20,
+  u_booklist
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -30,13 +31,13 @@ Page({
     zoneList: [],
     // 底部tab数据（网络图片）
     tabList: [],
-
-
-    // 全宽轮播图数据（网络图片）
+    // 使用指南数据
     fullBannerList: [
       'https://picsum.photos/750/200?random=30',
       'https://picsum.photos/750/200?random=31'
     ],
+    // 使用指南处轮播高度
+    s_use_height: '',
 
     // 海报图片（网络图片）
     posterImg: 'https://picsum.photos/750/400?random=40',
@@ -133,7 +134,6 @@ Page({
   // 获取底部导航数据
   initBottomDirectory() {
     byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
-      console.log(response)
       if (response.statusCode == 200) {
         this.setData({
           tabList: response.data.content
@@ -141,20 +141,33 @@ Page({
       }
     })
   },
-  // 动态改变banner高度
-  LoadOnImageLoad(e) {
-    const [$$, { detail: { width: α, height: β } = {} }] = [this, e ?? {}];
+  // 获取使用指南
+  initBookList() {
+    byGet(this.data.c_link + u_booklist.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          fullBannerList: response.data.content
+        })
+      }
+    })
+  },
+  // 动态改变轮播图高度
+  LoadOnUseGuideImageLoad(e) {
+    const [self, { currentTarget: { dataset: { flag: mark } = {} } = {} }] = [this, e ?? {}];
     (async () => {
       try {
-        if (!α || !β || typeof α !== 'number' || typeof β !== 'number') throw Symbol();
-        const γ = await wx.getSystemInfo({});
-        const δ = γ?.windowWidth;
-        if (!δ || typeof δ !== 'number') throw Symbol();
-        const ε = β / α * δ;
-        $$.setData({ s_banner_height: isFinite(ε) ? ε : 0 });
-      } catch (ζ) { ζ.description || console.error('σθλ:', ζ); }
+        const { detail: { width: w, height: h } = {} } = e ?? {};
+        if (!w || !h || typeof w !== 'number' || typeof h !== 'number') throw Symbol();
+        const { windowWidth: winW } = await wx.getSystemInfo({});
+        if (!winW || typeof winW !== 'number') throw Symbol();
+        const ratioH = h / w * winW;
+        const validH = isFinite(ratioH) ? ratioH : 0;
+        mark === 'use' && self.setData({ s_use_height: validH });
+        mark === 'banner' && self.setData({ s_banner_height: validH });
+      } catch (err) { err.description || console.error('imgLoadErr:', err); }
     })();
   },
+
 
   onLoad() {
     getApp().data.funAreaId = '';
@@ -172,16 +185,15 @@ Page({
   onShow() {
     // 获取系统头部各区域高度
     this.initSystemInfo()
-  },
-  onReady() {
     // 获取是否要显示优惠券弹窗
     this.initforceLogin()
     // 获取登录状态
     this.initLoginStatus()
     // 获取入群二维码
     this.initQrCode()
+    // 获取使用指南
+    this.initBookList()
   },
-
 
   // 已有账号，跳转常规登录页面
   handleOnExistingAccountTap() {
@@ -323,5 +335,12 @@ Page({
       })
     }
 
+  },
+  // 点击使用指南跳转
+  handleUseJump(evt) {
+    const info = evt?.currentTarget?.dataset?.info
+    wx.navigateTo({
+      url: `/${info?.bookPath}`,
+    })
   }
 })

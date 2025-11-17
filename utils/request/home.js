@@ -6,73 +6,77 @@ const u_bannerlist = {
 const u_midMenulist = {
   URL: fin3plusUrl + 'deskapi/midMenulist',
 }
-const u_industryList ={
+const u_industryList = {
   URL: fin3plusUrl + 'promotionalApi/industryList',
 }
 const u_menulist = {
   URL: fin3plusUrl + 'deskapi/menulist',
   menuId: 'menuId',
-  isDir:'isDir'
+  isDir: 'isDir'
 }
-const u_rightMenulist ={
-  URL:'deskapi/rightMenulist',
-  menuId:'menuId',
-  terminalId:'terminalId',
-  isDir:'isDir'
+const u_rightMenulist = {
+  URL: 'deskapi/rightMenulist',
+  menuId: 'menuId',
+  terminalId: 'terminalId',
+  isDir: 'isDir'
 }
 const u_navlist = {
-  URL:'deskapi/navlist',
+  URL: 'deskapi/navlist',
 }
 const u_termialList = {
-  URL:'deskapi/termialList',
+  URL: 'deskapi/termialList',
 }
 // 获取Logo
 const u_logo = {
-  URL:'deskapi/logo',
+  URL: 'deskapi/logo',
 }
 // 获取群二维码
 const u_getQrcodeImg = {
-  URL:'deskapi/getQrcodeImg',
+  URL: 'deskapi/getQrcodeImg',
 }
 // 首页专区
 const u_getHomeArea = {
-  URL:'deskapi/homeArea',
+  URL: 'deskapi/homeArea',
 }
 // 底部导航目录
 const u_navlist20 = {
-  URL:'deskapi/navlist20',
+  URL: 'deskapi/navlist20',
 }
 // 获取未选择的专区
 const u_getNotHaveMidMenulist = {
-  URL:'deskapi/getNotHaveMidMenulist',
+  URL: 'deskapi/getNotHaveMidMenulist',
 }
 const u_forceLogin = {
-  URL:'deskapi/forceLogin',
+  URL: 'deskapi/forceLogin',
 }
 // 获取最新的token
 const u_getUserinfo = {
-  URL:'deskapi/getUserInfo',
+  URL: 'deskapi/getUserInfo',
 }
 // 修改用户名
 const u_updateUserName = {
   URL: "accountapi/setUsernameAndPassword",
   newUserName: 'newUserName',
-  newPassword:'newPassword',
+  newPassword: 'newPassword',
   userId: 'userId'
 }
 // 密码
 const u_updatePassword = {
-  URL:"api/updatePassword",
+  URL: "api/updatePassword",
   newPassword: 'newPassword',
   userId: 'userId'
 }
-const u_setBtype ={
-  URL:"accountapi/setBtype",
+const u_setBtype = {
+  URL: "accountapi/setBtype",
 }
-const u_applyMenus ={
-  URL:"accountapi/applyMenus",
+const u_applyMenus = {
+  URL: "accountapi/applyMenus",
+}
+const u_booklist = {
+  URL: "deskapi/booklist",
 }
 module.exports = {
+  u_booklist,
   u_navlist20,
   u_getHomeArea,
   u_forceLogin,

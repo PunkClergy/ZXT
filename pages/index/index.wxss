@@ -155,7 +155,7 @@
 /* 专区项样式：宽度48%，左右外边距1%，flex垂直排列，底部外边距20rpx */
 .zone-item {
   width: 48%;
-  margin: 0 1%;
+  /* margin: 0 1%; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -197,6 +197,7 @@
 
 /* 全宽轮播图容器样式：占满宽度，白色背景，内边距0 20rpx */
 .full-width-swiper {
+  margin-top: 10rpx;
   width: 100%;
   background-color: #fff;
   padding: 0 20rpx;
@@ -241,7 +242,7 @@
 .poster {
   width: 100%;
   background-color: #fff;
-  padding: 20rpx;
+  padding: 0 20rpx;
   margin-top: 10rpx;
   box-sizing: border-box;
 }

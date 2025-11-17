@@ -335,3 +335,174 @@
   padding: 0 40rpx;
   line-height: 1.5;
 }
+
+/* 增设账号登录弹窗 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4rpx);
+  z-index: 1000;
+  opacity: 0;
+  animation: maskFadeIn 0.3s forwards;
+}
+
+@keyframes maskFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* 弹窗容器 */
+.modal-container {
+  position: fixed;
+  top: 25%;
+  left: 2%;
+  width: 96%;
+  background-color: #fff;
+  border-radius: 24rpx;
+  z-index: 1001;
+  overflow: hidden;
+  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.2);
+}
+
+/* 弹窗头部 */
+.modal-header {
+  padding: 36rpx 30rpx;
+  background: linear-gradient(88deg, #1576dc, #1b64b1);
+  position: relative;
+}
+
+.modal-title {
+  color: #fff;
+  font-size: 36rpx;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.header-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 20%),
+    radial-gradient(circle at 90% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 30%);
+}
+
+/* 弹窗内容区 */
+.modal-content {
+  padding: 40rpx 30rpx;
+}
+
+/* 输入组 */
+.input-group {
+  gap: 24rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 输入项 */
+.input-item {
+  display: flex;
+  align-items: center;
+  padding: 0 20rpx;
+  height: 90rpx;
+  background-color: #f7f9fc;
+  border-radius: 16rpx;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.input-item:focus-within {
+  border-color: #1576dc;
+  box-shadow: 0 0 0 4rpx rgba(21, 118, 220, 0.1);
+}
+
+.input-icon {
+  width: 50rpx;
+  text-align: center;
+}
+
+.input-field {
+  flex: 1;
+  height: 100%;
+  padding: 0 10rpx;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.input-field::placeholder {
+  color: #a0a6b1;
+  font-size: 26rpx;
+}
+
+/* 错误提示 */
+.error-tip {
+  display: flex;
+  align-items: center;
+  margin-top: 20rpx;
+  padding: 12rpx 20rpx;
+  background-color: rgba(255, 77, 79, 0.1);
+  border-radius: 8rpx;
+  color: #ff4d4f;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.error-icon {
+  margin-right: 10rpx;
+}
+
+/* 弹窗底部 */
+.modal-footer {
+  display: flex;
+  padding: 20rpx 30rpx 30rpx;
+  gap: 20rpx;
+}
+
+.footer-btn {
+  flex: 1;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn {
+  background-color: #f2f3f5;
+  color: #606266;
+}
+
+.cancel-btn:hover {
+  background-color: #e5e6eb;
+}
+
+.confirm-btn {
+  background: linear-gradient(88deg, #1576dc, #1b64b1);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(21, 118, 220, 0.2);
+}
+
+.confirm-btn:hover {
+  box-shadow: 0 6rpx 16rpx rgba(21, 118, 220, 0.3);
+  transform: translateY(-2rpx);
+}
+
+.btn-icon {
+  margin-left: 8rpx;
+}

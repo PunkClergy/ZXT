@@ -24,7 +24,8 @@ Page({
     join_the_group_modal: false,
     // 头部标题
     title_name: '',
-
+    // 距离头部
+    height_from_head: '',
     // 专区入口数据（网络图片）
     zoneList: [
       { id: 1, name: '钥匙分享', bgcolor: '#EFF1FC', icon: 'privateCar.png' },
@@ -44,6 +45,7 @@ Page({
     const m = wx.getMenuButtonBoundingClientRect()
     if (!m) return
     const n = m.height + (m.top - s) * 2
+    console.log(s)
     const c = wx.getWindowInfo().screenWidth - m.right
     this.setData({
       height_from_head: s,
@@ -107,7 +109,7 @@ Page({
   },
   // 获取底部导航数据
   initBottomDirectory() {
-    byGet(this.data.c_link + u_navlist20.URL, { }).then(response => {
+    byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
       if (response.statusCode == 200) {
         this.setData({
           tabList: response.data.content

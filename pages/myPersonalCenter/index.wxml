@@ -20,10 +20,9 @@
 
   <!-- 中间滚动内容区：使用scroll-view实现垂直滚动，设置顶部和底部偏移量 -->
   <scroll-view class="content" scroll-y="true" style="top: {{90}}px; bottom: {{tabBarHeight}}px;" bindscrolltolower="onReachBottom">
-    <!-- myContentList.wxml -->
     <view class="my-content-list-container">
       <view class="my-content-list-inner">
-        <view wx:for="{{contentList}}" wx:key="index" class="my-content-list-item {{index === contentList.length - 1 ? 'my-content-list-item_last' : ''}}">
+        <view wx:for="{{contentList}}" wx:key="index" data-info="{{item}}" class="my-content-list-item {{index === contentList.length - 1 ? 'my-content-list-item_last' : ''}}" bindtap="handleFunExe">
           <view class="my-content-list-item__left">
             <image src="{{item.icon}}" class="my-content-list-item__icon" mode="widthFix" />
             <text class="my-content-list-item__text">{{item.name}}</text>
@@ -68,5 +67,54 @@
       <image catchtap="handleQRShowImageMask" class="qr-group-preview-img" src="{{personal_qr_code}}" mode="widthFix"></image>
       <text class="qr-group-preview-desc">请点击、长按官方群二维码加入交流群，获取体验权限！</text>
     </view>
+  </view>
+</view>
+<!-- 点击增设账号登录 -->
+<!-- 弹窗组件 -->
+<view class="modal-mask" bindtap="handleHideAnAccountModal" wx:if="{{create_an_account_modal}}"></view>
+<view class="modal-container" animation="{{modalAnim}}" wx:if="{{create_an_account_modal}}">
+  <!-- 标题栏带渐变背景 -->
+  <view class="modal-header">
+    <view class="modal-title">增设账号登录</view>
+    <view class="header-decoration"></view>
+  </view>
+
+  <view class="modal-content">
+    <!-- 输入框组 -->
+    <view class="input-group">
+      <!-- 手机号输入 -->
+      <view class="input-item">
+        <input type="number" placeholder="请输入手机号" value="{{account_info.mobie}}" class="input-field" disabled />
+      </view>
+
+      <!-- 账号输入 -->
+      <view class="input-item">
+        <input type="text" placeholder="请输入账号" value="{{account_info.newUserName}}" data-flag="newUserName" bindinput="handleInputCallback" class="input-field" />
+      </view>
+
+      <!-- 密码输入 -->
+      <view class="input-item">
+        <input type="password" placeholder="请输入密码" value="{{account_info.newPassword}}" data-flag="newPassword" bindinput="handleInputCallback" class="input-field" />
+      </view>
+
+      <!-- 再次输入密码 -->
+      <view class="input-item">
+        <input type="password" placeholder="请再次输入密码" value="{{account_info.confirmPassword}}" data-flag="confirmPassword" bindinput="handleInputCallback" class="input-field" />
+      </view>
+    </view>
+
+    <!-- 错误提示 -->
+    <view class="error-tip" wx:if="{{account_errorMsg}}">
+      <van-icon name="warning-o" color="#ff4d4f" size="20" class="error-icon" />
+      {{account_errorMsg}}
+    </view>
+  </view>
+
+  <view class="modal-footer">
+    <button bindtap="handleHideAnAccountModal" class="footer-btn cancel-btn">取消</button>
+    <button bindtap="handleSubmitAnAccount" class="footer-btn confirm-btn">
+      确认提交
+      <van-icon name="arrow-right" size="18" class="btn-icon" />
+    </button>
   </view>
 </view>

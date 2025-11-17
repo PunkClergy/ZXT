@@ -25,7 +25,7 @@
     <view class="swiper-container">
       <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="3000" duration="500" style="height: {{s_banner_height}}px;">
         <swiper-item wx:for="{{g_banner_image}}" wx:key="index">
-          <image src="{{c_link}}/img/{{item.img}}" class="banner-img" mode="widthFix" bindload="LoadOnImageLoad" />
+          <image src="{{c_link}}/img/{{item.img}}" class="banner-img" mode="widthFix" data-flag='banner' bindload="LoadOnUseGuideImageLoad" />
         </swiper-item>
       </swiper>
     </view>
@@ -35,7 +35,7 @@
       <view class="notice-outer-layer">
         <view class="notice-outer-layer-left">
           <image class="notice-icon" src="https://k1sw.wiselink.net.cn/img/app2.0/notice.png" />
-          <text class="notice-content">您有未完成的续费订单，点击链接即可完成续费～</text>
+          <text class="notice-content">新版偷偷上线！体验更丝滑，速来体验～</text>
         </view>
         <view class="notice-outer-layer-right">
           <image class="notice-icon" src="/assets/images/home/right_1.png" />
@@ -45,7 +45,7 @@
 
     <!-- 第三块：专区入口区域（一行两列布局） -->
     <view class="special-zone">
-      <view class="zone-item" wx:for="{{zoneList}}" wx:key="index">
+      <view class="zone-item" wx:for="{{zoneList}}" wx:key="index" style="margin: {{ index % 2 === 0 ? '0 2% 0 0' : '0 0 0 2%' }}">
         <view class="zone-out" style="background-color: {{item.bgcolor}};" data-info="{{item}}" bindtap="handleGetMenuList">
           <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + item.icon}}" />
           <view class="zone-name">{{item.name}}</view>
@@ -59,9 +59,9 @@
         <image src="/assets/images/index/useGuideIcon.png" />
         <text>使用指南</text>
       </view>
-      <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="4000" duration="500" style="height: 160rpx;">
-        <swiper-item wx:for="{{fullBannerList}}" wx:key="index">
-          <image src="{{'https://k1sw.wiselink.net.cn/img/app2.0/desk/PCUG.png'}}" class="full-banner-img" mode="widthFix"></image>
+      <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="4000" duration="500" style="height: {{s_use_height}}px;">
+        <swiper-item wx:for="{{fullBannerList}}" wx:key="index" data-info="{{item}}" bindtap="handleUseJump">
+          <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.imgpath}}" class="full-banner-img" data-flag='use' bindload="LoadOnUseGuideImageLoad" mode="widthFix"></image>
         </swiper-item>
       </swiper>
     </view>
