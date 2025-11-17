@@ -42,6 +42,11 @@ const u_getHomeArea = {
 const u_navlist20 = {
   URL: 'deskapi/navlist20',
 }
+// 总首页-我的  &专区页-个人中心
+const u_mylist = {
+  URL: 'deskapi/mylist',
+}
+
 // 获取未选择的专区
 const u_getNotHaveMidMenulist = {
   URL: 'deskapi/getNotHaveMidMenulist',
@@ -76,6 +81,7 @@ const u_booklist = {
   URL: "deskapi/booklist",
 }
 module.exports = {
+  u_mylist,
   u_booklist,
   u_navlist20,
   u_getHomeArea,

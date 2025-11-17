@@ -1,7 +1,8 @@
 const {
   u_getQrcodeImg,
   u_navlist20,
-  u_updateUserName
+  u_updateUserName,
+  u_mylist
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -27,11 +28,8 @@ Page({
     },
     // 增设密码提交后错误信息
     account_errorMsg: '',
+    // 目录功能区
     contentList: [
-      { icon: 'https://picsum.photos/50/50?random=50', name: '我的专属客服', path: 'pages/groupQrCode/index' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '分享朋友', path: 'pages/redShare/index' },
-      { icon: 'https://picsum.photos/50/50?random=53', name: '增设登录账号', path: '' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '退出登录', path: '' },
     ]
 
 
@@ -76,10 +74,20 @@ Page({
   // 获取底部导航数据
   initBottomDirectory() {
     byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
-      console.log(response)
       if (response.statusCode == 200) {
         this.setData({
           tabList: response.data.content
+        })
+      }
+    })
+  },
+  // 获取目录结构数据
+  initDirectoryStructure() {
+    byGet(this.data.c_link + u_mylist.URL, {}).then(response => {
+      console.log(response)
+      if (response.statusCode == 200) {
+        this.setData({
+          contentList: response.data.content
         })
       }
     })
@@ -89,6 +97,8 @@ Page({
     getApp().data.funAreaId = '';
     // 请求底部导航数据
     this.initBottomDirectory()
+    // 获取目录结构数据
+    this.initDirectoryStructure()
   },
   onShow() {
     // 获取系统头部各区域高度
@@ -143,43 +153,43 @@ Page({
   },
   // 点击工具执行
   handleFunExe(evt) {
-    const info = evt?.currentTarget?.dataset?.info
-    if (info?.path) {
-      wx.navigateTo({
-        url: `/${info?.path}`,
-      })
-    }
-    if (info?.name == '增设登录账号') {
-      const account_info = this.data.account_info
-      account_info.mobie = getApp()?.data?.userInfo?.mobile
-      this.setData({
-        create_an_account_modal: true,
-        account_info
-      })
-    }
-    if (info.name == '退出登录') {
+    const info = evt?.currentTarget?.dataset?.info;
+    if (!info || !info.pagePath) return;
+    const { pagePath } = info;
+    if (pagePath == '退出登录') {
       wx.showModal({
         title: '提示',
         content: '确定要退出吗？',
         showCancel: true,
         cancelText: '取消',
         confirmText: '确定',
-        success(res) {
+        success: (res) => {
           if (res.confirm) {
-            getApp().data.userInfo = '';
+            const app = getApp();
+            if (app?.data) app.data.userInfo = ''; // 安全修改全局数据
             try {
               wx.clearStorageSync();
             } catch (e) {
-              wx.clearStorage();
+              console.error('清除存储失败', e);
             }
-            wx.redirectTo({
-              url: '/pages/index/index',
-            })
+            wx.redirectTo({ url: '/pages/index/index' });
           }
         }
       });
+      return;
+    }
+    if (pagePath === '增设登录账号') {
+      const accountInfo = { ...this.data.account_info };
+      accountInfo.mobile = getApp()?.data?.userInfo?.mobile || '';
+      this.setData({
+        create_an_account_modal: true,
+        account_info: accountInfo
+      });
       return
     }
+    wx.navigateTo({
+      url: `/${pagePath}`,
+    });
   },
   // 关闭增设登录弹窗
   handleHideAnAccountModal() {

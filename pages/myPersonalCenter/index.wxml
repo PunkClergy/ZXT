@@ -24,8 +24,8 @@
       <view class="my-content-list-inner">
         <view wx:for="{{contentList}}" wx:key="index" data-info="{{item}}" class="my-content-list-item {{index === contentList.length - 1 ? 'my-content-list-item_last' : ''}}" bindtap="handleFunExe">
           <view class="my-content-list-item__left">
-            <image src="{{item.icon}}" class="my-content-list-item__icon" mode="widthFix" />
-            <text class="my-content-list-item__text">{{item.name}}</text>
+            <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="my-content-list-item__icon" mode="widthFix" />
+            <text class="my-content-list-item__text">{{item.text}}</text>
           </view>
           <image src="/assets/images/home/right_1.png" class="my-content-list-item__arrow" mode="widthFix" />
         </view>
@@ -84,7 +84,7 @@
     <view class="input-group">
       <!-- 手机号输入 -->
       <view class="input-item">
-        <input type="number" placeholder="请输入手机号" value="{{account_info.mobie}}" class="input-field" disabled />
+        <input type="number" placeholder="请输入手机号" value="{{account_info.mobile}}" class="input-field" disabled />
       </view>
 
       <!-- 账号输入 -->
