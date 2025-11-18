@@ -36,7 +36,7 @@ const u_getQrcodeImg = {
 }
 // 获取海报数据
 const u_getposter = {
-  URL: 'deskapi/',
+  URL: 'deskapi/posterList',
 }
 // 获取公告数据
 const u_getnotice = {

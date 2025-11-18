@@ -41,8 +41,6 @@ Page({
     posterImg: 'https://picsum.photos/750/400?random=40',
     // 公告数据
     notice_data: '新版偷偷上线！体验更丝滑，速来体验～'
-
-
   },
   // 获取系统头部各区域高度
   initSystemInfo() {
@@ -204,6 +202,7 @@ Page({
       this.initPoster()
       // 获取公告数据
       this.initNotice()
+      
     })();
   },
   onShow() {
