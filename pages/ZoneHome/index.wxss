@@ -149,7 +149,7 @@
 /* 专区名称样式：粗体，字体大小32rpx，颜色深灰，超出显示省略号 */
 .zone-name {
   font-weight: bold;
-  font-size: 20rpx;
+  font-size: 24rpx;
   color: #333333;
   white-space: nowrap;
   overflow: hidden;
@@ -157,7 +157,7 @@
 }
 
 .zone-desc {
-  font-size: 18rpx;
+  font-size: 20rpx;
   color: #333333;
   white-space: nowrap;
   overflow: hidden;

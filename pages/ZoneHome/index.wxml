@@ -32,7 +32,7 @@
 
     <!-- 第三块：专区入口区域（一行三列布局） -->
     <view class="special-zone">
-      <view class="zone-item" wx:for="{{zoneList}}" wx:key="index" style="margin-right: {{index == 2||index==5||index==8?'0rpx':'5%'}};">
+      <view class="zone-item" wx:for="{{zoneList}}" wx:key="index" style="margin-right: {{index == 2||index==5||index==8||index ==11?'0rpx':'5%'}};">
         <view class="zone-out" style="background-color: {{item.bgcolor}};" data-info="{{item}}" bindtap="handleGetMenuList">
           <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + item.icon}}" />
           <view class="zone-text-area">
