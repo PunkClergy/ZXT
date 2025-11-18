@@ -3,6 +3,11 @@ const u_bannerlist = {
   URL: fin3plusUrl + 'deskapi/bannerlist',
   terminalId: 'terminalId',
 }
+const u_bannerlist20 = {
+  URL: fin3plusUrl + 'deskapi/bannerlist20',
+  terminalId: 'terminalId',
+}
+
 const u_midMenulist = {
   URL: fin3plusUrl + 'deskapi/midMenulist',
 }
@@ -89,6 +94,7 @@ const u_booklist = {
   URL: "deskapi/booklist",
 }
 module.exports = {
+  u_bannerlist20,
   u_getnotice,
   u_getposter,
   u_mylist,

@@ -68,7 +68,7 @@
 
     <!-- 第五块：全宽海报区域 -->
     <view class="poster">
-      <image src="{{posterImg}}" class="poster-img" mode="widthFix"></image>
+      <image src="{{'https://k1sw.wiselink.net.cn/img/' + posterImg.img}}" class="poster-img" mode="widthFix"></image>
     </view>
   </scroll-view>
 

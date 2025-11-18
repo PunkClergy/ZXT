@@ -1,5 +1,5 @@
 const {
-  u_bannerlist,
+  u_bannerlist20,
   u_getQrcodeImg,
   u_forceLogin,
   u_getHomeArea,
@@ -75,7 +75,7 @@ Page({
   },
   // 获取头部banner资源
   initialGetBanner() {
-    const [$$, __, ___] = [this, u_bannerlist.URL, Symbol('')];
+    const [$$, __, ___] = [this, u_bannerlist20.URL, Symbol('')];
     try {
       (async (a, b, c) => {
         if (!a || !b || typeof c !== 'function') throw ___;
@@ -152,9 +152,10 @@ Page({
   // 获取海报和广告位
   initPoster() {
     byGet(this.data.c_link + u_getposter.URL, {}).then(response => {
+      console.log(response)
       if (response.statusCode == 200) {
         this.setData({
-          posterImg: response.data.content.img
+          posterImg: response.data.content[0]
         })
       }
     })
