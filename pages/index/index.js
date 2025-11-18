@@ -166,7 +166,7 @@ Page({
     byGet(this.data.c_link + u_getnotice.URL, {}).then(response => {
       if (response.statusCode == 200) {
         this.setData({
-          notice_data: response.data.content.img
+          notice_data: response.data.content[0]
         })
       }
     })
@@ -367,5 +367,14 @@ Page({
     wx.navigateTo({
       url: `/${info?.bookPath}`,
     })
+  },
+  // 点击公告执行跳转
+  handleNotice(evt) {
+    const info = evt?.currentTarget?.dataset?.info
+    if (info?.path) {
+      wx.navigateTo({
+        url: `/${info?.path}`,
+      })
+    }
   }
 })

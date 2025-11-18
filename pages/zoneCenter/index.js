@@ -143,6 +143,14 @@ Page({
       url: '/pages/index/index',
     })
   },
-
-
+  // 点击工具执行
+  handleFunExe(evt) {
+    console.log(evt)
+    const info = evt?.currentTarget?.dataset?.info;
+    if (!info || !info.pagePath) return;
+    const { pagePath } = info;
+    wx.navigateTo({
+      url: `/${pagePath}`,
+    });
+  },
 })

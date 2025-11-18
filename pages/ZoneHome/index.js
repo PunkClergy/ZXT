@@ -231,18 +231,15 @@ Page({
   },
   //  跳转功能页面
   handleGetMenuList(evt) {
-    console.log(evt, '[[]]')
     const path = evt?.path ?? evt?.currentTarget?.dataset?.info?.path;
     const hasDesk = path.includes('desk') || path.includes('/desk');
-  
     if (hasDesk) {
       wx.switchTab({
         url: path,
       })
     } else {
-      console.log(path)
       wx.navigateTo({
-        url: '/pages/desk/desk',
+        url: `/${path}`,
       })
     }
 

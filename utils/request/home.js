@@ -40,7 +40,7 @@ const u_getposter = {
 }
 // 获取公告数据
 const u_getnotice = {
-  URL: 'deskapi/',
+  URL: 'deskapi/noticeList',
 }
 // 首页专区
 const u_getHomeArea = {

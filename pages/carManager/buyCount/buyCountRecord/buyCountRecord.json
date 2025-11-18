@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "购买次数记录",
-  "usingComponents": {
-    "mp-searchbar": "weui-miniprogram/searchbar/searchbar"
-  }
-}
