@@ -1,0 +1,343 @@
+.container {
+  height: 100vh;
+  padding: 10rpx 4rpx;
+}
+
+.record-container {
+  width: 96%;
+  margin: auto;
+  position: relative;
+  border-radius: 12rpx;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.record-tabs {
+  display: flex;
+  height: 50px;
+}
+
+.record-tabs-item {
+  border-radius: 12rpx;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  touch-action: pan-x;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 28rpx;
+  color: #010101;
+}
+
+.record-tabs-1 {
+  display: flex;
+  padding: 10rpx;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tabs-1-title {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.tabs-1-title text {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.tabs-1-title image {
+  width: 42rpx;
+  height: 46rpx;
+}
+/* 内容项 */
+.content-item {
+  margin: 15rpx;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-item-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 10rpx;
+}
+
+.head-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.left-category {
+  display: flex;
+  align-items: center;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.left-category image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.left-brand {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #1b64b1;
+  background: #eef7ff;
+  border-radius: 5rpx;
+  padding: 0 15rpx;
+}
+
+.left-model {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.head-right {
+  display: flex;
+  flex-direction: row;
+  gap: 10rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-state {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+}
+
+.right-special-state {
+  border-radius: 8rpx;
+  border: 1px solid #dd0b2d;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 20rpx;
+  color: #dd0b2d;
+  padding: 0 15rpx;
+}
+
+.content-item-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 10rpx;
+  gap: 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item {
+  flex: 0 0 48%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  transition: all 0.3s;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.long-info-item {
+  flex-basis: 100% !important;
+  /* 长内容时占满整行 */
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 0 20rpx;
+  height: 30px;
+}
+
+.card-head image {
+  width: 40rpx;
+  height: 30rpx;
+}
+
+.card-head text {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.card-info {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.card-info-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 20rpx;
+}
+
+.card-info-item label {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 26rpx;
+  color: #333333;
+  display: flex;
+  gap: 6rpx;
+  align-items: flex-start;
+}
+
+.card-info-item label text {
+  color: red;
+}
+
+.picker {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 26rpx;
+  color: #333333;
+  display: flex;
+  align-items: center;
+}
+
+.picker image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.card-info input {
+  text-align: right;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 26rpx;
+  color: #333333;
+}
+.viewText {
+  text-align: right;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.card-info-item-tabs {
+}
+
+.card-info-item-tabs-btn {
+  display: flex;
+  gap: 10rpx;
+  justify-content: flex-end;
+}
+
+.card-info-item-tabs-btn text {
+  border-radius: 7rpx;
+  border: 1px solid #7b7c7c;
+  font-family: PingFang SC;
+  font-weight: 500;
+  padding: 6rpx 20rpx;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+.tabs-footer {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 22rpx;
+  color: #7b7c7c;
+  display: flex;
+}
+
+.card-info-item-tips {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.tabs-active {
+  background: #1b64b1;
+  border-radius: 7rpx;
+  color: #ffffff !important;
+}
+
+.card-footer {
+  height: 50px;
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #ffffff;
+}
+
+.card-footer view {
+  width: 40%;
+  background-color: #2196f3;
+  padding: 10rpx;
+  background: linear-gradient(88deg, #1576dc, #1b64b1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
+}
+.card-upload {
+  font-size: 26rpx;
+  color: #7b7c7c;
+  border: 1rpx solid #f0f0f0;
+  padding: 0rpx 20rpx;
+  border-radius: 8rpx;
+}
+.modal-form-region {
+  display: flex;
+  gap: 10rpx;
+}
+.form-item-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4rpx;
+  padding: 4rpx 2rpx 4rpx 10rpx;
+  gap: 20rpx;
+}
+
+.form-item-text text {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 28rpx;
+  color: #7b7c7c;
+}
+.card-footer {
+  position: absolute;
+  text-align: center;
+  bottom: 120rpx;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #ffffff;
+}
+
+.card-footer view {
+  width: 40%;
+  background-color: #2196f3;
+  padding: 10rpx;
+  background: linear-gradient(88deg, #1576dc, #1b64b1);
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
+  border-radius: 36rpx;
+}
