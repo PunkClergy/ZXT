@@ -185,6 +185,31 @@ Page({
       } catch (err) { err.description || console.error('imgLoadErr:', err); }
     })();
   },
+  // 判断参数是否为APPID
+  isMiniProgramAppid(appid) {
+    if (typeof appid !== 'string') {
+      return false;
+    }
+    const appidReg = /^wx[0-9a-zA-Z]{16}$/;
+    return appidReg.test(appid);
+  },
+  // 跳转其他小程序
+  navigateToOtherMiniProgram(targetAppId, path = '', extraData = {}) {
+    if (!wx.navigateToMiniProgram) {
+      wx.showToast({
+        title: '当前微信版本过低，无法支持跳转',
+        icon: 'none',
+        duration: 2000
+      });
+      return false;
+    }
+    wx.navigateToMiniProgram({
+      appId: targetAppId,
+      path: path,
+      extraData: extraData,
+      envVersion: 'release',
+    });
+  },
 
 
   onLoad() {
@@ -202,7 +227,7 @@ Page({
       this.initPoster()
       // 获取公告数据
       this.initNotice()
-      
+
     })();
   },
   onShow() {
@@ -343,22 +368,33 @@ Page({
   },
   // 点击专区跳转逻辑
   handleGetMenuList(evt) {
-    const menuId = evt?.id ?? evt?.currentTarget?.dataset?.info?.id;
-    const path = evt?.path ?? evt?.currentTarget?.dataset?.info?.path;
-    const name = evt?.name ?? evt?.currentTarget?.dataset?.info?.name
-    const bgcolor = evt?.bgcolor ?? evt?.currentTarget?.dataset?.info?.bgcolor
-    getApp().data.funAreaId = menuId
-    const hasDesk = path.includes('desk') || path.includes('/desk');
-    if (hasDesk) {
-      wx.switchTab({
-        url: path,
-      })
+    const eventInfo = evt || {};
+    const datasetInfo = eventInfo.currentTarget?.dataset?.info || {};
+    const menuId = eventInfo.id ?? datasetInfo.id;
+    const path = eventInfo.path ?? datasetInfo.path;
+    const name = eventInfo.name ?? datasetInfo.name;
+    const bgcolor = eventInfo.bgcolor ?? datasetInfo.bgcolor;
+    const bak = eventInfo.bak ?? datasetInfo.bak;
+    const miniProgramConfig = {
+      'wxae69a35f76d6116b': { needToken: true },
+      'wx0b285e519897bd7a': { needToken: false }
+    };
+    if (this.isMiniProgramAppid(path) && miniProgramConfig[path]) {
+      const { needToken } = miniProgramConfig[path];
+      const extraData = needToken ? { token: getApp()?.data?.userInfo?.token } : {};
+      this.navigateToOtherMiniProgram(path, bak, extraData);
+      return;
+    }
+    getApp().data.funAreaId = menuId;
+    const isDeskPath = path.includes('desk');
+
+    if (isDeskPath) {
+      wx.switchTab({ url: path });
     } else {
       wx.navigateTo({
-        url: `${path}?bgcolor=${bgcolor}&name=${name}`,
-      })
+        url: `${path}?bgcolor=${bgcolor}&name=${name}`
+      });
     }
-
   },
   // 点击使用指南跳转
   handleUseJump(evt) {
