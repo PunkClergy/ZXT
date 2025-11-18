@@ -1,5 +1,5 @@
 <!-- 页面根容器：设置整体背景图，使用container样式控制布局 -->
-<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');">
+<view class="container" style="background-color:{{bgcolor}};">
 
   <!-- 自定义头部区域：包含系统状态栏高度适配，使用custom-header样式 -->
   <view class="custom-header" style="padding-top: {{height_from_head}}px;padding-left: {{capsule_distance_to_the_right}}px; height: {{head_height}}px;">
@@ -35,7 +35,7 @@
     <view class="special-zone">
       <view class="zone-item" wx:for="{{zoneList}}" wx:key="index" style="margin-right: {{index == 2||index==5?'0rpx':'5%'}};">
         <view class="zone-out" style="background-color: {{item.bgcolor}};" data-info="{{item}}" bindtap="handleGetMenuList">
-          <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/app2.0/desk/' + item.icon}}" />
+          <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + item.icon}}" />
           <view class="zone-text-area">
             <view class="zone-name">{{item.name}}</view>
             <view class="zone-desc">一键共享家人畅驾</view>
@@ -50,12 +50,16 @@
         <image src="/assets/images/index/useGuideIcon.png" />
         <text>使用指南</text>
       </view>
-      <image src="{{'https://k1sw.wiselink.net.cn/img/app2.0/desk/PCUG.png'}}" class="full-banner-img" mode="widthFix"></image>
+      <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="4000" duration="500" style="height: {{s_use_height}}px;">
+        <swiper-item wx:for="{{fullBannerList}}" wx:key="index" data-info="{{item}}" bindtap="handleUseJump">
+          <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.imgpath}}" class="full-banner-img" data-flag='use' bindload="LoadOnUseGuideImageLoad" mode="widthFix"></image>
+        </swiper-item>
+      </swiper>
     </view>
   </scroll-view>
 
   <!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
-  <view class="tabbar" style="height: {{tabBarHeight}}px;">
+  <view class="tabbar" style="height: {{tabBarHeight}}px;background-color: {{bgcolor}};">
     <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
       <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
       <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />

@@ -24,7 +24,7 @@
       <view class="my-content-list-inner">
         <view wx:for="{{contentList}}" wx:key="item.id" class="my-content-list-item {{index === contentList.length - 1 ? 'my-content-list-item_last' : ''}}">
           <view class="my-content-list-item__left">
-            <text class="my-content-list-item__text">{{item.name}}</text>
+            <text class="my-content-list-item__text">{{item.text}}</text>
           </view>
           <image src="/assets/images/home/right_1.png" class="my-content-list-item__arrow" mode="widthFix" />
         </view>

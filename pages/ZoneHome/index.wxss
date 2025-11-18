@@ -128,12 +128,13 @@
   gap: 20rpx;
   box-sizing: border-box;
   padding: 0 20rpx;
+  border: 1rpx solid #f1f1f1;
 }
 
 /* 专区图标样式：固定宽高，保持原有比例，不压缩 */
 .zone-img {
-  width: 55rpx;
-  height: 41rpx;
+  width: 50rpx;
+  height: 50rpx;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -166,7 +167,7 @@
 /* 全宽轮播图容器样式：占满宽度，白色背景，内边距0 20rpx */
 .full-width-swiper {
   width: 100%;
-  background-color: #fff;
+  /* background-color: #fff; */
   padding: 20rpx;
   /* margin-top: 10rpx; */
   box-sizing: border-box;

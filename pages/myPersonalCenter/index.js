@@ -147,7 +147,7 @@ Page({
   },
   // 返回上一页面
   handleBackHome() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/index/index',
     })
   },

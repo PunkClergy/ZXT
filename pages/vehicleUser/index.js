@@ -2,6 +2,12 @@ const {
   _handleWindowInfo,
   _handleDeviceInfo
 } = require('../../utils/public').default
+const {
+  u_navlist20
+} = require('../../utils/request/home')
+const {
+  byGet
+} = require('../../utils/request/http')
 Page({
   data: {
     s_background_picture_of_the_front_page: '', // 背景图片
@@ -16,15 +22,13 @@ Page({
     totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     sn_specific_value: null,
     sn_state: false, //显示地图状态
-    tabList: [
-      { icon: 'https://picsum.photos/50/50?random=50', name: '私家车', path: '/pages/ZoneHome/index' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/vehicleUser/index' },
-      { icon: 'https://picsum.photos/50/50?random=53', name: '个人中心', path: '/pages/zoneCenter/index' }
-    ],
+    tabList: [],
     // 底部tabbar高度
     tabBarHeight: 80,
     // 当前选中的底部tabbar索引
     currentTab: 1,
+    // 原始链接
+    c_link: 'https://k1sw.wiselink.net.cn/',
 
   },
   // 转换背景图base64
@@ -81,8 +85,34 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
-
+  // 获取底部导航数据
+  initBottomDirectory() {
+    byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
+      console.log(response,'2222www')
+      if (response.statusCode == 200) {
+        this.setData({
+          tabList: response.data.content
+        })
+      }
+    })
+  },
+  // 切换底部导航
+  handleSwitchTabNavigation(evt) {
+    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    if (idx === null) return;
+    const { tabList = [] } = this.data;
+    const { pagePath: targetUrl } = tabList[idx] ?? {};
+    if (!targetUrl) return;
+    const [currentPage] = getCurrentPages().slice(-1);
+    const { route: currentPath } = currentPage ?? {};
+    if (!currentPath) return;
+    const targetPurePath = targetUrl.split('?')[0];
+    console.log(currentPath, targetPurePath);
+    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
+  },
   onLoad: function (options) {
+    // 请求底部导航数据
+    this.initBottomDirectory()
     if (options?.scene || options?.query) {
       if ((options?.scene || options?.query).startsWith('blue_')) {
         console.log(options)

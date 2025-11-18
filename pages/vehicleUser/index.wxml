@@ -4,8 +4,8 @@
   <!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
   <view class="tabbar" style="height: {{tabBarHeight}}px;">
     <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
-      <image src="{{item.icon}}" class="tab-icon" mode="widthFix"></image>
-      <text>{{item.name}}</text>
+      <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix"></image>
+      <text>{{item.text}}</text>
     </view>
   </view>
 </view>

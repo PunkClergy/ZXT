@@ -1,7 +1,9 @@
 const {
   u_bannerlist,
   u_getQrcodeImg,
-  u_navlist20
+  u_navlist20,
+  u_getHomeArea,
+  u_booklist
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -22,8 +24,12 @@ Page({
     s_banner_height: '',
     // 咨询入群弹窗状态
     join_the_group_modal: false,
+    // 使用指南数据
+    fullBannerList: [],
     // 头部标题
     title_name: '',
+    // 主题颜色
+    bgcolor: '#fff',
     // 距离头部
     height_from_head: '',
     // 专区入口数据（网络图片）
@@ -31,11 +37,7 @@ Page({
       { id: 1, name: '钥匙分享', bgcolor: '#EFF1FC', icon: 'privateCar.png' },
     ],
     // 底部tab数据（网络图片）
-    tabList: [
-      { icon: 'https://picsum.photos/50/50?random=50', name: '私家车', path: '/pages/ZoneHome/index' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '控车', path: '/pages/privateCar/index' },
-      { icon: 'https://picsum.photos/50/50?random=53', name: '个人中心', path: '/pages/zoneCenter/index' }
-    ],
+    tabList: [],
 
 
   },
@@ -117,6 +119,26 @@ Page({
       }
     })
   },
+  // 获取专区目录
+  initZoneInfo() {
+    byGet(this.data.c_link + u_getHomeArea.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          zoneList: response.data.content
+        })
+      }
+    })
+  },
+  // 获取使用指南
+  initBookList() {
+    byGet(this.data.c_link + u_booklist.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          fullBannerList: response.data.content
+        })
+      }
+    })
+  },
   // 动态改变banner高度
   LoadOnImageLoad(e) {
     const [$$, { detail: { width: α, height: β } = {} }] = [this, e ?? {}];
@@ -140,9 +162,18 @@ Page({
     this.initialGetBanner()
     // 请求导航数据
     this.initBottomDirectory()
+    // 功能区入口
+    this.initZoneInfo()
+    // 获取使用指南
+    this.initBookList()
     if (options?.name) {
       this.setData({
         title_name: options?.name
+      })
+    }
+    if (options?.bgcolor) {
+      this.setData({
+        bgcolor: options?.bgcolor
       })
     }
   },
@@ -194,18 +225,27 @@ Page({
   },
   // 返回上一页面
   handleBackHome() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/index/index',
     })
   },
-  // 判断一个数是否在数列 2,5,8,11... 中
-  isInSequence(num) {
-    // 先判断是否为整数（数列中的数都是整数）
-    if (!Number.isInteger(num)) {
-      return false;
+  //  跳转功能页面
+  handleGetMenuList(evt) {
+    console.log(evt, '[[]]')
+    const path = evt?.path ?? evt?.currentTarget?.dataset?.info?.path;
+    const hasDesk = path.includes('desk') || path.includes('/desk');
+  
+    if (hasDesk) {
+      wx.switchTab({
+        url: path,
+      })
+    } else {
+      console.log(path)
+      wx.navigateTo({
+        url: '/pages/desk/desk',
+      })
     }
-    const diff = num - 2;
-    return diff >= 0 && diff % 3 === 0;
-  }
+
+  },
 
 })

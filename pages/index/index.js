@@ -347,6 +347,7 @@ Page({
     const menuId = evt?.id ?? evt?.currentTarget?.dataset?.info?.id;
     const path = evt?.path ?? evt?.currentTarget?.dataset?.info?.path;
     const name = evt?.name ?? evt?.currentTarget?.dataset?.info?.name
+    const bgcolor = evt?.bgcolor ?? evt?.currentTarget?.dataset?.info?.bgcolor
     getApp().data.funAreaId = menuId
     const hasDesk = path.includes('desk') || path.includes('/desk');
     if (hasDesk) {
@@ -355,7 +356,7 @@ Page({
       })
     } else {
       wx.navigateTo({
-        url: `${path}?menuId=${menuId}&name=${name}`,
+        url: `${path}?bgcolor=${bgcolor}&name=${name}`,
       })
     }
 

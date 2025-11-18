@@ -1,6 +1,7 @@
 const {
   u_getQrcodeImg,
-  u_navlist20
+  u_navlist20,
+  u_mylist
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -19,9 +20,7 @@ Page({
     join_the_group_modal: false,
     // 底部tab数据（网络图片）
     tabList: [],
-    contentList: [
-      { icon: 'https://picsum.photos/50/50?random=50', name: '车辆清单', path: '' },
-    ]
+    contentList: []
 
 
   },
@@ -73,10 +72,23 @@ Page({
       }
     })
   },
+  // 获取目录结构数据
+  initDirectoryStructure() {
+    byGet(this.data.c_link + u_mylist.URL, {}).then(response => {
+      console.log(response)
+      if (response.statusCode == 200) {
+        this.setData({
+          contentList: response.data.content
+        })
+      }
+    })
+  },
 
 
   onLoad() {
     this.initBottomDirectory()
+    // 获取目录结构数据
+    this.initDirectoryStructure()
   },
   onShow() {
     // 获取系统头部各区域高度
@@ -127,7 +139,7 @@ Page({
   },
   // 返回上一页面
   handleBackHome() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/index/index',
     })
   },
