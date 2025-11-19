@@ -57,7 +57,6 @@
     "pages/system/balance/payRecord/payRecord",
     "pages/stationDispatch/stationDispatch",
     "pages/agreementWebView/agreementWebView",
-    "pages/selfServicePickUpAndReturn/selfServicePickUpAndReturn",
     "pages/rentKeySend/rentKeySend",
     "pages/rentKeySend/sending/sending",
     "pages/carManager/buyOilDevice/balance/index",
@@ -125,7 +124,7 @@
     "pages/listOfPrivateCars/engineering/index",
     "pages/listOfPrivateCars/list/index",
     "pages/listOfPrivateCars/pdf/index",
-    "pages/selfServiceSettings/index",
+
     "pages/videoMaterials/index",
     "pages/netCarurgent/index",
     "pages/orderList/details/details",
