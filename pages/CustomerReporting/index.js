@@ -129,7 +129,6 @@ Page({
     const param = {
       [u_customerList.customerName]: this.data.g_comParam,
       [u_customerList.page]: this.data.g_page,
-      type: this.data.type
     };
     byGet(getApp().data.k1swUrl + u_customerList.URL, param).then(response => {
       hideLoading()
@@ -190,7 +189,6 @@ Page({
       g_comParam: '',
       g_page: 1,
       g_items: [],
-      type: options?.type
     }, () => {
       this.getOrderList();
     })
