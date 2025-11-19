@@ -381,8 +381,8 @@ map {
 }
 
 .control_button-image {
-  width: 40rpx;
-  height: 40rpx;
+  width: 60rpx;
+  height: 50rpx;
 }
 
 .control_label {

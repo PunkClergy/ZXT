@@ -139,21 +139,22 @@ Page({
       }
     })
   },
-  // 动态改变banner高度
-  LoadOnImageLoad(e) {
-    const [$$, { detail: { width: α, height: β } = {} }] = [this, e ?? {}];
+  // 动态改变轮播图高度
+  LoadOnUseGuideImageLoad(e) {
+    const [self, { currentTarget: { dataset: { flag: mark } = {} } = {} }] = [this, e ?? {}];
     (async () => {
       try {
-        if (!α || !β || typeof α !== 'number' || typeof β !== 'number') throw Symbol();
-        const γ = await wx.getSystemInfo({});
-        const δ = γ?.windowWidth;
-        if (!δ || typeof δ !== 'number') throw Symbol();
-        const ε = β / α * δ;
-        $$.setData({ s_banner_height: isFinite(ε) ? ε : 0 });
-      } catch (ζ) { ζ.description || console.error('σθλ:', ζ); }
+        const { detail: { width: w, height: h } = {} } = e ?? {};
+        if (!w || !h || typeof w !== 'number' || typeof h !== 'number') throw Symbol();
+        const { windowWidth: winW } = await wx.getSystemInfo({});
+        if (!winW || typeof winW !== 'number') throw Symbol();
+        const ratioH = h / w * winW;
+        const validH = isFinite(ratioH) ? ratioH : 0;
+        mark === 'use' && self.setData({ s_use_height: validH });
+        mark === 'banner' && self.setData({ s_banner_height: validH });
+      } catch (err) { err.description || console.error('imgLoadErr:', err); }
     })();
   },
-
 
   onLoad(options) {
     // 图片转BASE64

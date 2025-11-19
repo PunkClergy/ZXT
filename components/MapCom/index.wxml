@@ -117,10 +117,6 @@
 <view class="control-panel" style="display: flex;flex-direction: row;align-items: flex-end">
   <!-- 归还车辆 -->
   <view class="control_item" wx:if="{{source=='desk'}}">
-    <view class="control_tooltip" style="width: 150rpx;" wx:if="{{qu_num == 1}}">
-      <text>点击归还车辆</text>
-    </view>
-    <image data-num="1" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="3" bindtap="handleReturningVehicles">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_return.png" class="control_button-image" />
     </view>
@@ -128,10 +124,6 @@
   </view>
 
   <view class="control_item">
-    <view class="control_tooltip" wx:if="{{qu_num == 2}}">
-      <text>点击可执行"车门解锁"操作</text>
-    </view>
-    <image data-num="2" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="3" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_unlock.png" class="control_button-image" />
     </view>
@@ -139,10 +131,6 @@
   </view>
 
   <view class="control_item">
-    <view class="control_tooltip" wx:if="{{qu_num == 3}}">
-      <text>点击可执行"车门关锁"操作</text>
-    </view>
-    <image data-num="3" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="1" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_lock.png" class="control_button-image" />
     </view>
@@ -150,10 +138,6 @@
   </view>
   <!-- 寻车 -->
   <view class="control_item">
-    <view class="control_tooltip" wx:if="{{qu_num == 4}}">
-      <text>点击可执行"寻车"操作</text>
-    </view>
-    <image data-num="4" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="5" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_lookFor.png" class="control_button-image" />
     </view>
@@ -161,10 +145,6 @@
   </view>
   <!-- 查看照片 -->
   <view class="control_item" wx:if="{{source=='desk'}}">
-    <view class="control_tooltip-photo" wx:if="{{qu_num == 5}}">
-      <text>点击可查看车辆照片</text>
-    </view>
-    <image data-num="5" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="3" bindtap="handleViewPhotos">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
     </view>
@@ -172,23 +152,15 @@
   </view>
   <!-- 风控拦截 -->
   <view class="control_item" wx:if="{{source!='desk'}}">
-    <view class="control_tooltip-photo" style="width: 520rpx;right: -80rpx;" wx:if="{{qu_num == 6}}">
-      <text>点击可启用风控拦截-(注:ZC-Y28不支持该功能)</text>
-    </view>
-    <image data-num="6" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="8" bindtap="handleFooterBtn">
-      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
+      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_intercept.png" class="control_button-image" />
     </view>
     <text class="control_label">风控拦截</text>
   </view>
   <!-- 取消拦截 -->
   <view class="control_item" wx:if="{{source!='desk'}}">
-    <view class="control_tooltip-photo" style="width: 520rpx;right: -20rpx;" wx:if="{{qu_num == 7}}">
-      <text>点击可取消风控拦截-(注:ZC-Y28不支持该功能)</text>
-    </view>
-    <image data-num="7" bindtap="handleQuestionMark" src="/assets/images/q1.png" class="control_question-mark" />
     <view class="control_button" id="6" bindtap="handleFooterBtn">
-      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
+      <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_recovery.png" class="control_button-image" />
     </view>
     <text class="control_label">取消拦截</text>
   </view>
