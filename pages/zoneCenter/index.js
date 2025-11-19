@@ -67,7 +67,8 @@ Page({
     byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
       if (response.statusCode == 200) {
         this.setData({
-          tabList: response.data.content
+          tabList: response.data.content,
+          currentTab: (response?.data?.content)?.length - 1
         })
       }
     })
