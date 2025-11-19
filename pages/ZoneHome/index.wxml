@@ -44,7 +44,7 @@
     </view>
 
     <!-- 第四块：全宽图片轮播区域 -->
-    <view class="full-width-swiper">
+    <view class="full-width-swiper" wx:if="{{fullBannerList.length>0}}">
       <view class="full-width-use">
         <image src="/assets/images/index/useGuideIcon.png" />
         <text>使用指南</text>
