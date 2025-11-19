@@ -29,9 +29,9 @@ Page({
     coupon_modal: false,
     // 咨询入群弹窗状态
     join_the_group_modal: false,
-    // 专区入口数据（网络图片）
+    // 专区入口数据
     zoneList: [],
-    // 底部tab数据（网络图片）
+    // 底部tab数据
     tabList: [],
     // 使用指南数据
     fullBannerList: [],
@@ -40,7 +40,9 @@ Page({
     // 海报图片
     posterImg: 'https://picsum.photos/750/400?random=40',
     // 公告数据
-    notice_data: '新版偷偷上线！体验更丝滑，速来体验～'
+    notice_data: '新版偷偷上线！体验更丝滑，速来体验～',
+    // 短信进入携带参数
+    options: {}
   },
   // 获取系统头部各区域高度
   initSystemInfo() {
@@ -120,14 +122,12 @@ Page({
     })
   },
   // 获取专区目录
-  initZoneInfo() {
-    byGet(this.data.c_link + u_getHomeArea.URL, {}).then(response => {
-      if (response.statusCode == 200) {
-        this.setData({
-          zoneList: response.data.content
-        })
-      }
-    })
+  async initZoneInfo() {
+    const { statusCode, data: { content } = {} } = await byGet(`${this.data.c_link}${u_getHomeArea.URL}`, {});
+    if (statusCode !== 200 || !content) return;
+    await new Promise(resolve => this.setData({ zoneList: content }, resolve));
+    const { options } = this.data;
+    (Object.prototype.toString.call(options) === '[object Object]' && Object.keys(options).length) && this.initjumpToCar();
   },
   // 获取底部导航数据
   initBottomDirectory() {
@@ -211,9 +211,55 @@ Page({
       envVersion: 'release',
     });
   },
+  // 保存OnLoad携带来的所有参数
+  initSaveParameters(options) {
+    this.setData({
+      options: options || {}
+    });
+  },
+  // 用车人进入
+  initjumpToCar() {
+    const { options = {}, zoneList } = this.data;
+    const { scene, query } = options;
+    const sceneParam = scene ?? query;
+    if (!sceneParam || typeof sceneParam !== 'string') return;
+    (() => {
+      const [result] = sceneParam.split('_');
+      const setGlobal = (id) => {
+        getApp().data.funAreaId = id;
+        wx.setStorageSync('scene', sceneParam);
+      };
+      const handlers = {
+        blue: () => {
+          const getId = (zList) => {
+            if (!Array.isArray(zList)) return 0;
+            const target = zList.find(item => item?.name?.includes('私家车'));
+            return target?.id ?? 0;
+          };
+          setGlobal(getId(zoneList));
+          wx.navigateTo({
+            url: `/pages/privateCar/index?scene=${encodeURIComponent(sceneParam)}`
+          });
+        },
+        default: () => {
+          setGlobal(result);
+          this.setData({
+            sn_state: true,
+            sn_specific_value: sceneParam
+          }, () => {
+            wx.setStorageSync('scene', sceneParam);
+            if (sceneParam.length > 6) {
+              wx.navigateTo({ url: '/pages/vehicleUser/index' });
+            }
+          });
+        }
+      };
+      const handler = handlers[result] ?? handlers.default;
+      typeof handler === 'function' && handler();
+    })();
+  },
 
-
-  onLoad() {
+  onLoad(options) {
     getApp().data.funAreaId = '';
     (() => {
       // 图片转BASE64
@@ -228,7 +274,8 @@ Page({
       this.initPoster()
       // 获取公告数据
       this.initNotice()
-
+      // 用车人短信进入
+      this.initSaveParameters(options)
     })();
   },
   onShow() {
