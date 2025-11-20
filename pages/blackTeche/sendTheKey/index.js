@@ -3,6 +3,9 @@ const {
   _handleDeviceInfo
 } = require('../../../utils/public').default
 const {
+  u_navlist20
+} = require('../../../utils/request/home')
+const {
   showLoading,
   hideLoading,
   showToast
@@ -62,7 +65,38 @@ Page({
     copied: false,
     controlcode: '',
     c_edit_key_show_momal: false,
-    g_edit_info: {}
+    g_edit_info: {},
+    // 底部tabbar高度
+    tabBarHeight: 80,
+    // 当前选中的底部tabbar索引
+    currentTab: 0,
+    // 底部tab数据（网络图片）
+    tabList: [],
+    // 原始链接
+    c_link: 'https://k1sw.wiselink.net.cn/',
+  },
+  initBottomDirectory() {
+    byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          tabList: response.data.content
+        })
+      }
+    })
+  },
+  // 切换底部导航
+  handleSwitchTabNavigation(evt) {
+    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    if (idx === null) return;
+    const { tabList = [] } = this.data;
+    const { pagePath: targetUrl } = tabList[idx] ?? {};
+    if (!targetUrl) return;
+    const [currentPage] = getCurrentPages().slice(-1);
+    const { route: currentPath } = currentPage ?? {};
+    if (!currentPath) return;
+    const targetPurePath = targetUrl.split('?')[0];
+    console.log(currentPath, targetPurePath);
+    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
   // 获取当前年月日 时分
   handleCurrentDate() {
@@ -305,7 +339,7 @@ Page({
       return;
     }
     const g_images = [info.img1, info.img2, info.img3, info.img4, info.img5]
-      .filter(img => img != null && img !== ''); 
+      .filter(img => img != null && img !== '');
     if (g_images.length < 1) {
       showToast('无可查看照片');
       return;
@@ -490,6 +524,8 @@ Page({
     console.log(requestParams)
   },
   onLoad(options) {
+    // 请求导航数据
+    this.initBottomDirectory()
     this.getOrderList()
     this.getKeySendingList()
   },

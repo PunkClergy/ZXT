@@ -2,6 +2,12 @@ const {
   _handleWindowInfo,
   _handleDeviceInfo
 } = require('../../utils/public').default
+const {
+  u_navlist20
+} = require('../../utils/request/home')
+const {
+  byGet
+} = require('../../utils/request/http')
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0, //屏幕高度
@@ -10,6 +16,38 @@ Page({
     navBarHeight: _handleDeviceInfo.platform == 'ios' ? 49 : 44, // 导航栏高度，默认值
     deviceIDC: "",  // 默认设备ID
     orgKey: [0x33, 0x69, 0x45, 0x22, 0x83, 0x78],  // 原始密钥
+    // 底部tabbar高度
+    tabBarHeight: 80,
+    // 当前选中的底部tabbar索引
+    currentTab: 2,
+    // 底部tab数据（网络图片）
+    tabList: [],
+    // 原始链接
+    c_link: 'https://k1sw.wiselink.net.cn/',
+  },
+  // 获取底部导航数据
+  initBottomDirectory() {
+    byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          tabList: response.data.content
+        })
+      }
+    })
+  },
+  // 切换底部导航
+  handleSwitchTabNavigation(evt) {
+    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    if (idx === null) return;
+    const { tabList = [] } = this.data;
+    const { pagePath: targetUrl } = tabList[idx] ?? {};
+    if (!targetUrl) return;
+    const [currentPage] = getCurrentPages().slice(-1);
+    const { route: currentPath } = currentPage ?? {};
+    if (!currentPath) return;
+    const targetPurePath = targetUrl.split('?')[0];
+    console.log(currentPath, targetPurePath);
+    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
   // 全屏背景图
   initialiImageBaseConversion() {
@@ -42,6 +80,8 @@ Page({
       });
   },
   onLoad: function (options) {
+    // 请求导航数据
+    this.initBottomDirectory()
     this.setData({
       deviceIDC: `${options?.sn}`,
       orgKey: options?.bluetoothKey
