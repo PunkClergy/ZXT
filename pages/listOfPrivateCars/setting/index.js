@@ -6,7 +6,9 @@ const {
 const appUtil = require('../../../utils/app-util.js');          // 应用工具
 const bleKeyManager = require('../../../utils/BleKeyFun-utils.js');  // 蓝牙钥匙功能工具
 const byteUtil = require('../../../utils/byte-util.js');        // 字节工具
-
+const {
+  u_carList
+} = require('../../../utils/request/car')
 // 控制项常量数组
 const CONTROL_ITEMS = [
   { id: 3, name: '尾箱', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/box_off.png', evt: 'handleOpenTrunk' },
@@ -92,24 +94,62 @@ Page({
     keyInstructions: _INSTRUCTIONS,//指令集合
     instruction_type: 0,//是否展开开始设置
     key_out_put: _OUTPUT,//输出方式集合
+    singleRange: [],
+    show_set_up: false,
+    singleValue: 0,
   },
+  initBluetoothDefault() {
+    this.setData({
+      singleRange: [
+        { id: 1, name: '默认', unlock: '50', lock: '60' },
+        { id: 2, name: '华为折叠屏', unlock: '60', lock: '90' },
+        { id: 3, name: '华为鸿蒙系统', unlock: '60', lock: '90' },
+        { id: 4, name: '华为常规机型', unlock: '60', lock: '90' }
+      ],
+      show_set_up: true
+    })
+    return
+    byGet(getApp().data.k1swUrl + u_carList.URL, {}).then(response => {
+      if (response.statusCode == 200) {
 
+
+      }
+    })
+  },
+  // 选择器值改变时触发
+  onSingleChange(e) {
+    const index = e.detail.value;
+    this.setData({ singleValue: index });
+    const selectedItem = this.data.singleRange[index];
+    const unlock = Number(selectedItem?.unlock)
+    const lock = Number(selectedItem?.lock)
+    this.btnCmdSend(0x11, 1, unlock?.toString(16));   // 开锁值
+    this.btnCmdSend(0x11, 0, lock?.toString(16));//关锁值
+  },
   // 页面加载生命周期
   onLoad(options) {
-    const sign = options?.sign || '';  // 从参数获取sign值
-    if (options?.sign === '1' || options?.sign == '3' || options?.sign == '5') {      // 如果sign为1则处理请求
-      this.setData({
-        deviceIDC: options?.deviceIDC,  // 默认设备ID
-        orgKey: this.keyToHexArray(options?.orgKey)
-      }, () => {
-        this.handleRequest(options);
-      })
-    }
-    // 设置页面数据
-    this.setData({
-      sign,  // 设置sign值
-      headerTitle: this.getHeaderTitle(sign)  // 设置标题
-    });
+    wx.getStorage({
+      key: 'bluetoothData',
+      success: response => {
+        const evt_res = response?.data
+        // 需要参数
+        const sign = options?.sign || '';  // 从参数获取sign值
+        if (options?.sign === '1' || options?.sign == '3' || options?.sign == '5') {      // 如果sign为1则处理请求
+          this.setData({
+            deviceIDC: evt_res?.sn,  // 默认设备ID
+            orgKey: this.keyToHexArray(evt_res?.bluetoothKey)
+          }, () => {
+            this.handleRequest(options);
+          })
+        }
+        // 设置页面数据
+        this.setData({
+          sign,  // 设置sign值
+          headerTitle: this.getHeaderTitle(sign)  // 设置标题
+        });
+      },
+      fail: () => { }
+    })
 
   },
 
@@ -117,6 +157,7 @@ Page({
   onShow() {
     this.initialiImageBaseConversion();  // 初始化图片转换
     this.initToConfigureCache()
+    this.initBluetoothDefault()
   },
 
   // 页面卸载生命周期
@@ -138,7 +179,6 @@ Page({
 
   // 是否开启距离校准
   handleDistance() {
-    console.log(this.data?.parsedData)
     if (this.data?.parsedData?.unlock > 0) {
       this.setData({
         distance: true
@@ -483,6 +523,15 @@ Page({
     })
   },
 
+  findTargetIndex(arr, unlock, lock) {
+    for (let i = 0; i < arr.length; i++) {
+      const item = arr[i];
+      if (item.unlock == unlock && item.lock == lock) {
+        return i;
+      }
+    }
+    return 0;
+  },
   /**
   * 数据解析按钮处理
   * @param {string} hexData 16进制数据字符串
@@ -490,19 +539,23 @@ Page({
   parseData: function (hexData) {
     const parsedResult = this.parseHexDataObject(hexData);
     if (parsedResult) {
-      const currentData = this.data.parsedData || {};
+      const currentData = this?.data?.parsedData || {};
       const isEqual = JSON.stringify(parsedResult) === JSON.stringify(currentData);
       if (!isEqual) {
-        this.setData({ parsedData: parsedResult });
+        this.setData({ parsedData: parsedResult }, () => {
+          this.setData({
+            singleValue: this.findTargetIndex(this.data.singleRange, this?.data?.parsedData?.unlock, this?.data?.parsedData?.lock)
+          })
+        });
       }
     }
   },
 
   /**
- * 解析16进制车辆状态数据
- * @param {string} hexString 30字符的16进制字符串
- * @returns {Array|null} 解析结果数组，格式为[{key: string, value: any}]
- */
+  * 解析16进制车辆状态数据
+  * @param {string} hexString 30字符的16进制字符串
+  * @returns {Array|null} 解析结果数组，格式为[{key: string, value: any}]
+  */
   parseHexDataObject: function (hexString) {
     // 验证数据长度
     if (hexString.length !== 30) {

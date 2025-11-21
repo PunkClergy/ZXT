@@ -82,6 +82,7 @@ Page({
   onLoad: function (options) {
     // 请求导航数据
     this.initBottomDirectory()
+    // 先请求缓存 再执行列表
     this.setData({
       deviceIDC: `${options?.sn}`,
       orgKey: options?.bluetoothKey

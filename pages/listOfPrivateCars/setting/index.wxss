@@ -274,3 +274,9 @@ radio-group {
   text-align: center;
   line-height: 1.5;
 }
+.picker-content{
+  display: flex;
+  flex-direction: row;
+  font-size: 26rpx;
+  align-items: center;
+}

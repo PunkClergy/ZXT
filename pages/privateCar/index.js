@@ -311,21 +311,30 @@ Page({
           console.log('处理缓存参数:', res.data);
           fetchBluetoothData(res.data);
         },
-        // 3. 缓存也不存在时处理车辆列表数据
         fail: () => {
-          console.log('缓存不存在，处理车辆列表数据');
-          const param = { [u_carList.page]: 1 };
-          byGet('https://k1sw.wiselink.net.cn/' + u_carList.URL, param)
-            .then(response => {
-              if (response.statusCode === 200 && response?.data?.content?.[0]) {
-                const firstCar = response.data.content[0];
-                wx.setStorageSync('bluetoothData', firstCar);
-                handleData(firstCar);
-              }
-            })
-            .catch(err => {
-              console.error('获取车辆列表失败:', err);
-            });
+          wx.getStorage({
+            key: 'bluetoothData',
+            success: evt_response => {
+              handleData(evt_response.data);
+            },
+            // 3. 缓存也不存在时处理车辆列表数据
+            fail: () => {
+              console.log('缓存不存在，处理车辆列表数据');
+              const param = { [u_carList.page]: 1 };
+              byGet('https://k1sw.wiselink.net.cn/' + u_carList.URL, param)
+                .then(response => {
+                  if (response.statusCode === 200 && response?.data?.content?.[0]) {
+                    const firstCar = response.data.content[0];
+                    wx.setStorageSync('bluetoothData', firstCar);
+                    handleData(firstCar);
+                  }
+                })
+                .catch(err => {
+                  console.error('获取车辆列表失败:', err);
+                });
+            }
+          })
+
         }
       });
     }
