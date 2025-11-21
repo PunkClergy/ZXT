@@ -19,7 +19,7 @@ Page({
     // 底部tabbar高度
     tabBarHeight: 80,
     // 当前选中的底部tabbar索引
-    currentTab: 2,
+    currentTab: 3,
     // 底部tab数据（网络图片）
     tabList: [],
     // 原始链接
