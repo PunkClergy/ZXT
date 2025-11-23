@@ -7,8 +7,14 @@ const appUtil = require('../../../utils/app-util.js');          // 应用工具
 const bleKeyManager = require('../../../utils/BleKeyFun-utils.js');  // 蓝牙钥匙功能工具
 const byteUtil = require('../../../utils/byte-util.js');        // 字节工具
 const {
+  u_navlist20
+} = require('../../../utils/request/home')
+const {
   u_carList
 } = require('../../../utils/request/car')
+const {
+  byGet
+} = require('../../../utils/request/http')
 // 控制项常量数组
 const CONTROL_ITEMS = [
   { id: 3, name: '尾箱', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/box_off.png', evt: 'handleOpenTrunk' },
@@ -87,16 +93,50 @@ Page({
     deviceIDC: "",  // 默认设备ID
     orgKey: [], // 原始密钥
     Radiochecked: 0,//手动和感应模式切换
-    distance: false,//显示自动校准模块
+    distance: true,//显示自动校准模块
     bigRadius: 60,      // 大圈默认半径（45-90）
     smallRadius: 40,     // 小圈默认半径（40-85）
     signalCache: [],//信号值集合
     keyInstructions: _INSTRUCTIONS,//指令集合
     instruction_type: 0,//是否展开开始设置
     key_out_put: _OUTPUT,//输出方式集合
-    singleRange: [],
+    singleRange: [],//手机型号
     show_set_up: false,
-    singleValue: 0,
+    singleValue: 0,//当前选择手机型号
+
+    singlesensitivity: [],//设置灵敏度
+    sitivityValue: 0,//当前选择灵敏度档位
+    // 底部tabbar高度
+    tabBarHeight: 80,
+    // 当前选中的底部tabbar索引
+    currentTab: 2,
+    // 底部tab数据（网络图片）
+    tabList: [],
+    // 原始链接
+    c_link: 'https://k1sw.wiselink.net.cn/',
+  },
+  // 切换底部导航
+  handleSwitchTabNavigation(evt) {
+    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    if (idx === null) return;
+    const { tabList = [] } = this.data;
+    const { pagePath: targetUrl } = tabList[idx] ?? {};
+    if (!targetUrl) return;
+    const [currentPage] = getCurrentPages().slice(-1);
+    const { route: currentPath } = currentPage ?? {};
+    if (!currentPath) return;
+    const targetPurePath = targetUrl.split('?')[0];
+    console.log(currentPath, targetPurePath);
+    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
+  },
+  initBottomDirectory() {
+    byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          tabList: response.data.content
+        })
+      }
+    })
   },
   initBluetoothDefault() {
     this.setData({
@@ -104,7 +144,12 @@ Page({
         { id: 1, name: '默认', unlock: '50', lock: '60' },
         { id: 2, name: '华为折叠屏', unlock: '60', lock: '90' },
         { id: 3, name: '华为鸿蒙系统', unlock: '60', lock: '90' },
-        { id: 4, name: '华为常规机型', unlock: '60', lock: '90' }
+        { id: 4, name: '其他', unlock: '60', lock: '90' }
+      ],
+      singlesensitivity: [
+        { id: 1, name: '低', unlock: '50', lock: '60' },
+        { id: 2, name: '中', unlock: '60', lock: '90' },
+        { id: 3, name: '高', unlock: '60', lock: '90' },
       ],
       show_set_up: true
     })
@@ -126,8 +171,15 @@ Page({
     this.btnCmdSend(0x11, 1, unlock?.toString(16));   // 开锁值
     this.btnCmdSend(0x11, 0, lock?.toString(16));//关锁值
   },
+
+  onSitivityChange(e) {
+    const index = e.detail.value;
+    this.setData({ sitivityValue: index });
+  },
   // 页面加载生命周期
   onLoad(options) {
+    // 请求导航数据
+    this.initBottomDirectory()
     wx.getStorage({
       key: 'bluetoothData',
       success: response => {
@@ -179,16 +231,16 @@ Page({
 
   // 是否开启距离校准
   handleDistance() {
-    if (this.data?.parsedData?.unlock > 0) {
+    // if (this.data?.parsedData?.unlock > 0) {
       this.setData({
         distance: true
       })
-    } else {
-      wx.showModal({
-        title: '提示',
-        content: '请先执行蓝牙配对',
-      })
-    }
+    // } else {
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '请先执行蓝牙配对',
+    //   })
+    // }
   },
 
   // 更新大圈半径

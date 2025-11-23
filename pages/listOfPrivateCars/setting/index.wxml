@@ -3,16 +3,44 @@
   <!-- 设置项列表 -->
   <scroll-view class="settings-list" scroll-y style="margin-top: {{navBarHeight + statusBarHeight}}px;">
     <!-- 感应设置 -->
-    <block wx:if="{{sign == 1&&!distance}}">
+    <block wx:if="{{sign == 1}}">
       <view style="font-size: 24rpx;display: flex;justify-content: center;flex-direction: column;align-items: center;padding: 20rpx;gap: 20rpx;">
         <text>*请检查蓝牙是否连接，是否已经站在车辆旁。连接蓝牙后才可进行配对。</text>
         <view bindtap="btnPair" style="background-color: #fff;padding: 15rpx 100rpx; font-size: 26rpx;border-radius: 10rpx;">蓝牙配对</view>
         <text>发起系统蓝牙与车载设备进行配对，将会弹出配对请求对话框，请点击【配对】。如果在手机系统蓝牙取消了配对，感应将会失效，需重新点击【蓝牙配对】进行配对</text>
       </view>
       <view class="settings-group">
-        <view class="settings-item" wx:if="{{show_set_up}}">
+        <!-- 选择手机型号设定开关锁值 -->
+        <view class="settings-item">
           <view class="item-left">
-            <text class="item-text">感应设置</text>
+            <text class="item-text">感应开关锁配置</text>
+            <text class="item-tips">请根据您的手机型号设置设备与手机的感应功能</text>
+          </view>
+          <picker style="min-width: 30%;display: flex;justify-content: flex-end;" mode="selector" range="{{singleRange}}" range-key="name" value="{{singleValue}}" bindchange="onSingleChange">
+            <view class="picker-content">
+              <text> {{singleRange[singleValue].name}}</text>
+              <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+            </view>
+          </picker>
+        </view>
+        <!-- 选择手机型号+灵敏度 -->
+        <view class="settings-item" wx:if="{{singleRange[singleValue].name != '其他'}}">
+          <view class="item-left">
+            <text class="item-text">开锁灵敏度</text>
+            <text class="item-tips">开锁感应灵敏度越高开锁/关锁距离越远；越低开锁可能延迟，关锁距离更近
+            </text>
+          </view>
+          <picker style="min-width: 15%;display: flex;justify-content: flex-end;" mode="selector" range="{{singlesensitivity}}" range-key="name" value="{{sitivityValue}}" bindchange="onSitivityChange">
+            <view class="picker-content">
+              <text> {{singlesensitivity[sitivityValue].name}}</text>
+              <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
+            </view>
+          </picker>
+        </view>
+        <!-- 自定义开关锁距离 -->
+        <view class="settings-item" wx:if="{{singleRange[singleValue].name == '其他'}}">
+          <view class="item-left">
+            <text class="item-text">自定义感应设置</text>
             <text class="item-tips">数值为信号档位，不代表实际距离 </text>
           </view>
           <view style="display: flex;flex-direction: row;align-items: center;font-size: 26rpx;" bindtap="handleDistance">
@@ -20,23 +48,6 @@
             <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
           </view>
         </view>
-        <view class="settings-item">
-          <view class="item-left">
-            <text class="item-text">感应开关锁配置</text>
-          </view>
-          <picker mode="selector" range="{{singleRange}}" range-key="name" value="{{singleValue}}" bindchange="onSingleChange">
-            <view class="picker-content">
-              <text> {{singleRange[singleValue].name}} 开锁{{singleRange[singleValue].unlock}},关锁{{singleRange[singleValue].lock}}</text>
-              <image class="item-arrow" src="/assets/images/home/right_1.png"></image>
-            </view>
-          </picker>
-        </view>
-        <!-- <view class="settings-item">
-          <view class="item-left">
-            <text class="item-text">锁车自动升窗</text>
-          </view>
-          <switch checked="{{parsedData.autoCloseWin}}" bindchange="handleAutoCloseTheWindow" color="#07C160" />
-        </view> -->
         <view class="settings-item">
           <view class="item-left">
             <text class="item-text">感应模式</text>
@@ -153,4 +164,13 @@
       </view>
     </block>
   </scroll-view>
+</view>
+
+<!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
+<view class="tabbar" style="height: {{tabBarHeight}}px;">
+  <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
+    <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
+    <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />
+    <text>{{item.text}}</text>
+  </view>
 </view>
