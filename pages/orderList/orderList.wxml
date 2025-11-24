@@ -21,6 +21,8 @@
     <view class="record-tabs" bindtap="handleSwitchTab">
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">采购订单</view>
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">新增订单</view>
+      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_2:s_background_tabs_active_2}}');">续费充值</view>
+
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
@@ -259,6 +261,50 @@
           <view bindtap="handleSubmit">确认提交</view>
         </view>
       </scroll-view>
+    </block>
+    <block wx:if="{{c_activeTab == 3}}">
+      <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight  + 50 + 60 +10)}}px;">
+        <view style="margin: 10rpx auto;padding: 5rpx;">
+          <!-- 表格标题行 -->
+          <view style="display: flex; border-bottom: 1px solid #e0e0e0; padding: 12rpx 0; background-color: #f5f5f5;">
+            <view style="flex: 2; text-align: center; font-weight: bold;font-size: 26rpx;">产品名称</view>
+            <view style="flex: 3; text-align: center; font-weight: bold;font-size: 26rpx;">消费项目</view>
+            <view style="flex: 1; text-align: center; font-weight: bold;font-size: 26rpx;">价格</view>
+            <view style="flex: 1; text-align: center; font-weight: bold;font-size: 26rpx;">
+              <checkbox checked="{{allChecked}}" bindtap="toggleAll" style="margin-left: 6rpx; transform: scale(0.8) " />
+            </view>
+          </view>
+
+          <!-- 表格数据行 -->
+          <view wx:for="{{tableData}}" wx:key="index" style="display: flex; border-bottom: 1px solid #eee; padding: 20rpx 0; align-items: center; background-color: {{index % 2 === 0 ? '#fff' : '#fafafa'}}">
+            <!-- 产品名称 -->
+            <view style="flex: 2; padding: 0 10rpx; text-align: center;font-size: 26rpx;">{{item.product}}</view>
+
+            <!-- 消费项目 -->
+            <view style="flex: 3; padding: 0 10rpx; text-align: center; color: #666;font-size: 26rpx;">{{item.item}}</view>
+
+            <!-- 价格 -->
+            <view style="flex: 1; padding: 0 10rpx; text-align: center; color: #e64340; font-weight: bold;font-size: 26rpx;">
+              ￥{{item.price}}
+            </view>
+
+            <!-- 复选框 -->
+            <view style="flex: 1; display: flex; justify-content: center;">
+              <checkbox data-value="{{index}}" checked="{{item.checked}}" bindtap="toggleCheck" style="transform: scale(0.8);" />
+            </view>
+          </view>
+
+          <!-- 底部操作栏 -->
+          <view style="width: 96%; background: #fff; padding: 10rpx; display: flex; justify-content: flex-end; align-items: center;margin-top: 20rpx;">
+            <view style="display: flex;align-items: center;gap: 20rpx;font-size: 28rpx;">
+              <text>已选：{{selectedCount}}项</text>
+              <text>总价: ￥{{priceTotal}}</text>
+              <text bindtap="submit" style="background: #07c160;color: #fff;font-size: 26rpx;padding: 5rpx 20rpx;border-radius: 10rpx;">支付</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
     </block>
   </view>
 </view>
