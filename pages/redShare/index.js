@@ -149,7 +149,7 @@ Page({
   onShareAppMessage() {
     return {
       title: this.data.share_title,
-      path: '/pages/desk/desk?scene=' + this.data.scene,
+      path: '/pages/index/index?scene=' + this.data.scene,
       // imageUrl: this.data.share_img
     }
   }
