@@ -29,7 +29,7 @@
       <view class="card-info-item">
         <label>地址</label>
         <view class="card-info-item-input">
-          <input placeholder="请输入备注" value="{{params.address}}" data-item="address" bindinput="handleBindinput" />
+          <input placeholder="请输入地址" value="{{params.address}}" data-item="address" bindinput="handleBindinput" />
         </view>
       </view>
     </view>

@@ -1,6 +1,6 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
   <!-- 自定义头部 -->
-  <custom-header title="{{type == 1?'手工报备客户':'扫码报备客户'}}" />
+  <custom-header title="信息沟通" />
   <!-- 搜索框 -->
   <view class="search-container" style="height:{{c_searchBarHeight+40}}px;margin-top: {{c_totalNavHeight}}px;">
     <view class="search-box">
