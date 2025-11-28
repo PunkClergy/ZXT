@@ -1,103 +1,94 @@
-<view class="container" style="height: {{c_screen_height-80-80}}px;">
-  <!-- 自定义头部区域：包含系统状态栏高度适配，使用custom-header样式 -->
-  <view class="custom-header" style="padding-top: {{height_from_head}}px;padding-left: {{capsule_distance_to_the_right}}px; height: {{head_height}}px;">
-    <view class="custom-header-outer-layer">
-      <image class="custom-header-outer-layer-image" src="/assets/images/index/home.png" bindtap="handleBackHome"></image>
-      <view class="custom-header-outer-layer-title">私家车</view>
-      <view class="custom-header-outer-layer-user_name">
-        <block wx:if="{{account}}">
-          <text>{{account}}</text>
-        </block>
-        <block wx:else>
-          <text bindtap="handleOnExistingAccountTap">请登录</text>
-          <image bindtap="handleOnExistingAccountTap" src="/assets/images/home/right_1.png" />
-        </block>
-      </view>
-    </view>
-  </view>
-
-  <scroll-view class="content" scroll-y="true" style="top: {{90}}px; bottom: {{tabBarHeight}}px;" bindscrolltolower="onReachBottom">
-    <!-- 车辆信息卡片 -->
-    <view class="vehicle-card">
-      <!-- 车牌与提示信息 -->
-      <view class="license-plate-section">
-        <view class="license-plate-container">
-          <text class="license-plate" wx:if="{{bluetoothData.platenumber}}">{{bluetoothData.platenumber}}</text>
-          <text class="license-plate bind-vehicle" bindtap="handleBindVechi" wx:else>请绑定车辆</text>
-          <view class="manual-tip" bindtap="handleJumpSc" wx:if="{{!netWork}}">
-            <icon type="info" size="14" color="#999"></icon>
-            安装使用手册
-          </view>
-        </view>
-        <view class="connection-tip" bindtap="handleSelectJump" wx:if="{{!netWork}}">
-          详细设置
-        </view>
-      </view>
-
-      <!-- 车辆图片 -->
-      <image class="vehicle-image" src="https://k3a.wiselink.net.cn/img/app/blue/privateCar.png" mode="aspectFit"></image>
-
-      <!-- 电量与蓝牙状态行 -->
-      <view class="status-row" style="position: relative;">
-        <view class="battery-status" bindtap="handleVoltage">
-          <view class="tips_voltage" wx:if="{{voltage_state}}" style=" top: -80%;right: -50%;">设备剩余电量</view>
-          <image src="https://k3a.wiselink.net.cn/img/app/blue/battery_{{voltage_image}}.png" class="battery-icon" />
-          <text style="font-size: 28rpx;" wx:if="{{parsedData.electric}}">{{parsedData.electric||100}}%</text>
-          <text wx:else>--</text>
-        </view>
-
-        <view class="tips_bluetooth" wx:if="{{blue_tooth_state}}">{{connectionState=='已连接'?'可开关锁':'设备不可用'}}</view>
-        <view class="bluetooth-status {{connectionState=='已连接' ? 'connected' : 'disconnected'}}" bindtap="handleBlueToothState">
-          <icon wx:if="{{connectionState == '已连接'}}" type="success" size="16" color="#2d8cf0"></icon>
-          <view wx:else class="loading-icon"></view>
-          <text>{{connectionState=='已连接' ? '蓝牙已连接' : '蓝牙已断开'}}</text>
-        </view>
-      </view>
-
-      <!-- 模式选择器 -->
-
-      <view class="mode-selector" wx:if="{{!netWork}}">
-        <!-- 感应模式开关 -->
-        <view class="GY-sensor-mode-wrapper" bindtap="toggleSensorMode">
-          <view class="GY-sensor-mode {{parsedData.induction=='感应模式'&&connectionState=='已连接' ? 'on' : 'off'}}">
-            <view class="GY-ripple {{parsedData.induction=='感应模式'&&connectionState=='已连接' ? 'active' : ''}}"></view>
-            <view class="GY-icon"></view>
-            <view class="GY-label" style="color:{{parsedData.induction=='感应模式'&&connectionState=='已连接' ? '#fff' : '#333'}};">
-              <text>{{parsedData.induction=='感应模式'&&connectionState=='已连接' ? '感应模式已开启' : '感应模式已关闭'}}</text>
-              <image src="{{parsedData.induction=='感应模式'&&connectionState=='已连接'?'https://k3a.wiselink.net.cn/img/app/blue/arrow.png':'https://k3a.wiselink.net.cn/img/app/blue/arrow_01.png'}}" style="width: 37rpx;height: 37rpx;" />
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="GY-grant" wx:else>授权使用时间:{{bluetoothData.startDate}}--{{bluetoothData.endDate}}</view>
-    </view>
-
-    <!-- 控制功能区 - 每行3个大按钮 -->
-    <view class="control-section">
-      <view class="control-title">
-        <view class="title-bold">手动操作</view>
-        <view class="more-functions" bindtap="handleToConfigure">
-          <text>更多钥匙功能</text>
-          <image src="/assets/images/home/right_1.png" />
-        </view>
-      </view>
-      <view class="control-grid">
-        <view class="control-item" wx:for="{{controlItems}}" wx:key="index" bindtap="{{item.evt}}" data-id="{{item.id}}" wx:if="{{item.enabled}}">
-          <view class="control-icon">
-            <image src="{{item.id === 1 || item.id === 2 ? (item.id === 1 ? parsedData.lock : !parsedData.lock) ? item.ative : item.icon : item.icon}}" class="control-icon-image"></image>
-          </view>
-          <text class="control-name">{{item.name}}</text>
-        </view>
-      </view>
-    </view>
-  </scroll-view>
+<!-- 自定义头部区域：使用custom-header样式 -->
+<view class="custom-header" style="padding-top: {{g_height_from_head}}px;padding-left: {{g_capsule_distance_to_the_right}}px; height: {{g_head_height}}px;">
+  1
 </view>
-<!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
-<view class="tabbar" style="height: {{tabBarHeight}}px;">
-  <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
-    <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
-    <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />
 
-    <text>{{item.text}}</text>
+<!-- 核心区域：使用container样式 -->
+<view class="container" style="height: {{g_screenTotalHeight - g_tabBarHeight - g_head_height}}px; top: {{g_head_height}}px;">
+  <view class="top-fixed" style="height: {{topHeight}}px;">
+    <view class="top-fixed-basics">
+      <view class="top-fixed-basics-plate">
+        <view class="top-fixed-basics-plate-text">京PV5J83</view>
+        <view class="top-fixed-basics-plate-btn">
+          <view class="top-fixed-basics-plate-btn-install">
+            <view class="top-fixed-basics-plate-btn-install-iconfont">
+              <icon type="warn" size="14" color="#909090"></icon>
+            </view>
+            <view class="top-fixed-basics-plate-btn-install-tip">安装说明</view>
+          </view>
+          <view class="top-fixed-basics-plate-btn-more">
+            <text>更多设置</text>
+          </view>
+        </view>
+      </view>
+      <view class="top-fixed-signal">
+        <view class="top-fixed-signal-layar">
+          <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/battery-01.png" style="width: 46rpx;height: 25rpx;" />
+          <text>当前电量：<text class="top-fixed-signal-text">{{30}}%</text></text>
+        </view>
+        <view class="top-fixed-signal-layar">
+          <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/bluetooth@2x.png" style="width: 30rpx;height: 33rpx;" />
+          <text>蓝牙状态：<text class="top-fixed-signal-text">{{30}}%</text></text>
+        </view>
+        <view class="top-fixed-signal-layar">
+          <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/pair@2x.png" style="width: 33rpx;height: 23rpx;" />
+          <text>蓝牙配对：<text class="top-fixed-signal-text">{{30}}%</text></text>
+        </view>
+      </view>
+    </view>
   </view>
+  <view class="middle-scroll">
+    <view class="middle-title">
+      <text>感应开关锁</text>
+      <switch checked="{{true}}" color="#1B64B1" style="transform: scale(0.8)" />
+    </view>
+    <view class="middle-concrete-content">
+      <view class="middle-concrete-content-debugging">
+        <view class="middle-concrete-content-debugging-title">开锁信号敏感值DIY</view>
+        <view class="middle-concrete-content-debugging-control">222</view>
+        <view class="middle-concrete-content-debugging-tip">拖动圆环，根据您与车辆的距离设定开锁感应范围。携带手机进入范围时，车辆将自动开锁。</view>
+      </view>
+      <view class="middle-concrete-content-debugging">
+        <view class="middle-concrete-content-debugging-title">关锁锁信号敏感值DIY</view>
+        <view class="middle-concrete-content-debugging-control">222</view>
+        <view class="middle-concrete-content-debugging-tip">拖动圆环，根据您与车辆的距离设定关锁感应范围。携带手机离开范围时，车辆将自动关锁。</view>
+      </view>
+      <view class="middle-concrete-content-debugging">
+        <view class="middle-concrete-content-debugging-title">特殊情况DIY（启动时车辆频繁开关锁）</view>
+        <view class="middle-concrete-content-debugging-control">222</view>
+        <view class="middle-concrete-content-debugging-tip">如车辆启动时频繁开锁关锁, 请拖动圆环远离车辆。调试本项会同步调整关锁灵敏度。</view>
+      </view>
+    </view>
+  </view>
+  <view class="bottom-fixed" style="height: {{bottomHeight}}px;">
+    <view class="bottom-fixed-identification">
+      <text class="bottom-fixed-identification-title">我的手机汽车钥匙功能</text>
+      <text class="bottom-fixed-identification-more">更多钥匙功能 ></text>
+    </view>
+    <swiper class="bottom-fixed-swiper" indicator-dots="{{true}}">
+      <swiper-item class="bottom-fixed-swiper-item">
+        <view class="bottom-fixed-swiper-item-control">
+          <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/unlock@2x.png" style="width: 29rpx;height: 36rpx;" />
+          <text>开锁</text>
+        </view>
+        <view class="bottom-fixed-swiper-item-control">
+          <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/lock@2x.png" style="width: 30rpx;height: 35rpx;" />
+          <text>关锁</text>
+        </view>
+        <view class="bottom-fixed-swiper-item-control">
+          <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/tail_box@2x.png" style="width: 30rpx;height: 35rpx;" />
+          <text>尾箱</text>
+        </view>
+        <view class="bottom-fixed-swiper-item-control">
+          <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/seek_car@2x.png" style="width: 33rpx;height: 36rpx;" />
+          <text>寻车</text>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+</view>
+
+<!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
+<view class="tabbar" style="height: {{g_tabBarHeight}}px;">
+  1
 </view>

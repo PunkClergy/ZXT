@@ -1,385 +1,11 @@
-/* 基础样式 */
 page {
-  /* background: linear-gradient(to bottom, #2d8cf0, #ffffff); */
-  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
-  min-height: 100vh;
-}
-
-.container {
-  padding: 20rpx;
-  padding-top: 40rpx;
-  display: flex;
-  flex-direction: column;
+  margin: auto;
+  background: linear-gradient(to bottom left, #dbe2e8, #fff 100%);
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-   background: linear-gradient(to bottom, #2d8cf0, #ffffff);
+  font-family: PingFang SC;
 }
 
-/* 车辆卡片 */
-.vehicle-card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-
-/* 车牌与提示信息 */
-.license-plate-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30rpx;
-}
-
-/* 车牌和提示的水平布局容器 */
-.license-plate-container {
-  display: flex;
-  gap: 10rpx;
-  align-items: center;
-}
-
-/* "安装使用手册" 提示框样式 */
-.manual-tip {
-  font-size: 24rpx;
-  border: 1px solid #ddd;
-  padding: 0 4rpx;
-  border-radius: 8rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5rpx;
-}
-
-/* "详细设置" 提示样式 */
-.connection-tip {
-  font-size: 26rpx;
-}
-
-.license-plate {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.connection-tip {
-  display: flex;
-  align-items: center;
-  background: #2d8cf0;
-  padding: 8rpx 20rpx;
-  border-radius: 10rpx;
-  color: #fff;
-  font-size: 26rpx;
-  border: 1rpx solid #eee;
-}
-
-.connection-tip icon {
-  margin-right: 8rpx;
-}
-
-/* 车辆图片 */
-.vehicle-image {
-  width: 100%;
-  height: 320rpx;
-  border-radius: 12rpx;
-  margin-bottom: 30rpx;
-  background: linear-gradient(to bottom, #bad7f5, #ffffff);
-}
-
-/* 状态行 */
-.status-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30rpx;
-}
-
-.battery-status,
-.bluetooth-status {
-  display: flex;
-  align-items: center;
-  padding: 10rpx 20rpx;
-  border-radius: 20rpx;
-}
-
-.battery-status {
-  display: flex;
-  align-items: center;
-  background: rgba(45, 140, 240, 0.1);
-  color: #2d8cf0;
-  position: relative;
-}
-
-.bluetooth-status.connected {
-  display: flex;
-  gap: 10rpx;
-  background: rgba(45, 140, 240, 0.1);
-  color: #2d8cf0;
-  font-size: 28rpx;
-}
-
-.bluetooth-status.disconnected {
-  display: flex;
-  gap: 10rpx;
-  background: #f5f5f5;
-  color: rgb(71, 68, 68);
-  font-size: 28rpx;
-  position: relative;
-}
-
-/* 模式选择器 */
-.mode-selector {
-  display: flex;
-  margin-bottom: 30rpx;
-  position: relative;
-}
-
-
-/* 控制功能区 - 每行3个大按钮 */
-.control-section {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 0rpx 30rpx 10rpx 30rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
-  display: flex;
-  gap: 40rpx;
-  flex-direction: column;
-}
-
-.control-title {
-  border-bottom: 1px solid #f0f0f0;
-  height: 100rpx;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  font-size: 30rpx;
-}
-
-.control-title .title-bold {
-  font-weight: bold;
-  color: #333;
-}
-
-.control-title .more-functions {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  font-size: 28rpx;
-  /* 注意：rpx是微信小程序特有的单位，确保在其他环境中使用合适的单位 */
-}
-
-.control-title .more-functions image {
-  width: 40rpx;
-  height: 30rpx;
-}
-
-.control-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.control-item {
-  width: 30%;
-  /* 每行3个按钮 */
-  margin-bottom: 30rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.control-icon {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  background: #f5f5f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 15rpx;
-}
-
-.control-name {
-  font-size: 28rpx;
-  color: #333;
-  text-align: center;
-}
-
-.control-icon-image {
-  width: 40rpx;
-  height: 40rpx;
-}
-
-.battery-icon {
-  width: 36rpx;
-  height: 36rpx;
-}
-
-.tips_voltage {
-  position: absolute;
-  top: -80%;
-  right: -50%;
-  background: rgba(66, 66, 66, 0.7);
-  border-radius: 10rpx;
-  color: #fff;
-  padding: 5rpx 20rpx;
-  font-size: 26rpx;
-}
-
-.tips_bluetooth {
-  position: absolute;
-  top: -80%;
-  right: 10%;
-  /* background: #000; */
-  background: rgba(66, 66, 66, 0.7);
-  border-radius: 10rpx;
-  color: #fff;
-  padding: 5rpx 20rpx;
-  font-size: 26rpx;
-}
-
-.GY-sensor-mode-wrapper {
-  width: 100%;
-  transition: transform 0.1s ease;
-}
-
-.GY-sensor-mode-wrapper:active {
-  transform: scale(0.98);
-}
-
-.GY-sensor-mode {
-  height: 60px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.GY-sensor-mode.off {
-  background-color: #f0f0f0;
-  color: #999;
-}
-
-.GY-sensor-mode.on {
-  background-color: #2d8cf0;
-  color: #40b87c;
-  box-shadow: 0 6px 16px rgba(64, 184, 124, 0.3);
-}
-
-
-.GY-ripple {
-  position: absolute;
-  width: 100%;
-  border-radius: 30%;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  opacity: 0;
-  animation: none;
-}
-
-/* 图标设计 */
-.GY-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: currentColor;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.GY-icon::before {
-  content: '';
-  width: 25rpx;
-  height: 25rpx;
-  border-radius: 50%;
-  background-color: #fff;
-}
-
-.GY-label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8rpx;
-  font-size: 30rpx;
-  font-weight: 500;
-  margin-left: 8px;
-}
-
-.GY-grant {
-  font-size: 24rpx;
-}
-
-.loading-icon {
-  width: 16px;
-  height: 16px;
-  border: 2px solid #ddd;
-  border-top: 2px solid #2d8cf0;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-
-/* 底部tabbar样式：占满宽度，白色背景，flex平均分布，固定在底部，阴影效果，z-index100 */
-.tabbar {
-  width: 100%;
-  background-color: #fff;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.1);
-  z-index: 100;
-  box-sizing: border-box;
-}
-
-/* tab项样式：flex垂直排列，居中对齐，宽度25% */
-.tab-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 25%;
-}
-
-/* tab图标样式：固定宽高50rpx，底部外边距10rpx */
-.tab-icon {
-  width: 50rpx;
-  height: 50rpx;
-  margin-bottom: 10rpx;
-}
-
-/* tab文本样式：字体大小24rpx，颜色浅灰 */
-.tab-item text {
-  font-size: 24rpx;
-  color: #999;
-}
-
-/* 激活状态的tab文本样式：颜色改为蓝色 */
-.tab-item.active text {
-  color: #3498db;
-}
-
+/* ========== 1. 头部区域样式 ========== */
 /* 自定义头部样式：固定在顶部，占满宽度，使用flex布局居中对齐内容 */
 .custom-header {
   width: 100%;
@@ -392,51 +18,254 @@ page {
   align-items: center;
 }
 
-/* 头部外层容器样式：flex布局，水平居中对齐，元素间间距10rpx */
-.custom-header-outer-layer {
+
+
+/* ========== 2. 核心内容区域样式 ========== */
+/* 核心内容区域样式：上中下三部分全屏占满 */
+.container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 25rpx;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+  gap: 20rpx;
+  padding: 20rpx;
 }
 
-/* 头部外层容器图片样式：设置固定宽高 */
-.custom-header-outer-layer-image {
-  width: 45rpx;
-  height: 49rpx;
+/* 头部内容区 */
+.top-fixed {
+  flex-shrink: 0;
+  text-align: center;
 }
 
-/* 头部标题样式：粗体，字体大小36rpx，颜色深灰 */
-.custom-header-outer-layer-title {
-  font-weight: bold;
-  font-size: 36rpx;
-  color: #333333;
+.top-fixed-basics {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
 }
 
-/* 头部用户名容器样式：flex水平排列，对齐项目中心，间距5rpx */
-.custom-header-outer-layer-user_name {
+.top-fixed-basics-plate {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 5rpx;
 }
 
-/* 用户名文本样式：中等粗细，字体大小28rpx，颜色深灰 */
-.custom-header-outer-layer-user_name text {
+.top-fixed-basics-plate-text {
+  font-weight: bold;
+  font-size: 44rpx;
+  color: #222222;
+}
+
+.top-fixed-basics-plate-btn {
+  display: flex;
+  flex-direction: row;
+  gap: 20rpx;
+  align-items: center;
+}
+
+.top-fixed-basics-plate-btn-install {
+  border-radius: 12rpx;
+  border: 1px solid #909090;
+  display: flex;
+  flex-direction: row;
+  gap: 10rpx;
+  padding: 4rpx 10rpx;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-fixed-basics-plate-btn-install-iconfont {
+  display: flex;
+  align-items: center;
+}
+
+.top-fixed-basics-plate-btn-install-tip {
   font-weight: 500;
-  font-size: 28rpx;
+  font-size: 24rpx;
+  color: #777777;
+}
+
+.top-fixed-basics-plate-btn-more {
+  background: linear-gradient(0deg, #F7F8F8, #DDE1E8, #F7F8F8);
+  box-shadow: 0rpx 1rpx 33rpx 0rpx rgba(166, 173, 186, 0.38);
+  border-radius: 13rpx;
+  border: 1px solid #FFFFFF;
+  padding: 5rpx 20rpx;
+  display: flex;
+  align-items: center;
+}
+
+.top-fixed-basics-plate-btn-more text {
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #222222;
+}
+
+.top-fixed-signal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 15rpx;
+}
+
+.top-fixed-signal-layar {
+  background: #FAFAFA;
+  border-radius: 13rpx;
+  border: 1px solid #E1E5EA;
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.top-fixed-signal-layar text {
+  font-size: 23rpx;
   color: #333333;
 }
 
-/* 用户名旁图片样式：设置固定宽高 */
-.custom-header-outer-layer-user_name image {
-  width: 26rpx;
-  height: 26rpx;
+.top-fixed-signal-text {
+  font-weight: bold;
+  font-size: 23rpx;
+  color: #222222;
 }
-/* 内容区域样式：占满宽度，绝对定位，允许垂直滚动 */
-.content {
-  width: 100%;
-  position: absolute;
+
+/* 中部区域 */
+.middle-scroll {
+  flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #FFFFFF;
+  border-radius: 13rpx;
+  padding: 20rpx;
+}
+
+.middle-title {
+  border-bottom: 1rpx solid rgba(210, 211, 212, 0.2);
+  font-weight: bold;
+  font-size: 27rpx;
+  color: #232426;
+  padding-bottom: 20rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.middle-concrete-content {
+  margin-top: 40rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.middle-concrete-content-debugging {
+  background: #FAFAFA;
+  border-radius: 13rpx;
+  border: 1px solid #E1E5EA;
+  padding: 10rpx 30rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.middle-concrete-content-debugging-title {
+
+  font-weight: bold;
+  font-size: 23rpx;
+  color: #BA2B2B;
+}
+
+.middle-concrete-content-debugging-control {
+  height: 120rpx;
+  background-color: brown;
+}
+
+.middle-concrete-content-debugging-tip {
+  font-weight: 500;
+  font-size: 18rpx;
+  color: #5B5959;
+}
+
+/* 下部区域 */
+.bottom-fixed {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 10rpx 30rpx 0rpx 30rpx;
+  background: #FFFFFF;
+  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(177, 177, 177, 0.31);
+  border-radius: 13rpx;
+  gap: 10rpx;
+}
+
+.bottom-fixed-identification {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.bottom-fixed-identification-title {
+
+  font-weight: bold;
+  font-size: 27rpx;
+  color: #232426;
+}
+
+.bottom-fixed-identification-more {
+  font-weight: 500;
+  font-size: 21rpx;
+  color: #5B5959;
+}
+
+.bottom-fixed-swiper {
+  height: 90%;
+}
+
+.bottom-fixed-swiper-item {
+  display: flex;
+  flex-direction: row;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 20rpx;
+
+}
+
+.bottom-fixed-swiper-item-control {
+  padding: 20rpx;
+  height: 40rpx;
+  width: 25%;
+  display: flex;
+  flex-direction: row;
+  gap: 10rpx;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(0deg, #F7F8F8, #DDE1E8, #F7F8F8);
+  border-radius: 19rpx;
+  border: 1px solid #E1E5EA;
+}
+
+.bottom-fixed-swiper-item-control text {
+  font-weight: bold;
+  font-size: 21rpx;
+  color: #1A2028;
+}
+
+
+/* ========== 3. 底部 Tabbar 区域样式 ========== */
+/* 底部tabbar样式：占满宽度，白色背景，flex平均分布，固定在底部，阴影效果，z-index100 */
+.tabbar {
+  width: 100%;
+  background-color: blue;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.1);
+  z-index: 100;
   box-sizing: border-box;
 }
