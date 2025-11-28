@@ -450,6 +450,7 @@ function onBluetoothDeviceFound() {
       console.log(devices);
       deviceId = devices.devices[0].deviceId;
       saveBLEDeviceInfo(gIdc);
+      onBLEConnectionStateChange();
       //监听连接状态
       // onBLEConnectionStateChange(function (connectState) {
       //   //设置连接状态
