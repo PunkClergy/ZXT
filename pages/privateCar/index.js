@@ -6,7 +6,15 @@ Page({
     g_head_height: '',//自定义导航高度
     g_capsule_distance_to_the_right: '',//胶囊按钮右侧边缘的距离
     topHeight: '',          // 核心内容区域上部固定高度（可自定义）
-    bottomHeight: 90        // 核心内容区域下部固定高度（可自定义）
+    bottomHeight: 90,       // 核心内容区域下部固定高度（可自定义）
+
+    // 核心数值
+    unlockRange: 50,   // 开锁范围（0-100）
+    myPosition: 60,    // 人物位置
+
+    // 样式变量
+    unlockThumbStyle: '',//开锁范围位置
+    myPositionStyle: '',//我的位置
   },
 
 
@@ -26,6 +34,10 @@ Page({
   onLoad: function (options) {
     // 获取屏幕数据
     this.initScreenAndSystemInfo()
+
+    // 初始化样式
+    this.updateSliderStyles();
+    this.updateMyPositionStyles();
   },
   onShow: function () {
   },
@@ -34,6 +46,50 @@ Page({
   onUnload: function () {
   },
   onReady() {
+  },
+  // 更新滑块和填充层样式（核心）
+  updateSliderStyles() {
+    const val = this.data.unlockRange;
+    this.setData({
+      // 滑块位置：与填充层宽度同步
+      unlockThumbStyle: `left: ${val - 6}%;`
+    });
+  },
+
+  // 更新人物位置样式
+  updateMyPositionStyles() {
+    this.setData({
+      myPositionStyle: `left: 30%;`
+    });
+  },
+
+  // 获取轨道尺寸（用于计算滑动位置）
+  getTrackInfo(trackId) {
+    return new Promise((resolve) => {
+      const query = wx.createSelectorQuery().in(this);
+      query.select(`#${trackId}`).boundingClientRect();
+      query.exec((res) => {
+        resolve(res?.[0] ? { width: res[0].width, left: res[0].left } : null);
+      });
+    });
+  },
+
+  // 滑块拖动事件
+  async onUnlockSlide(e) {
+    const trackInfo = await this.getTrackInfo('unlockTrack');
+    if (!trackInfo) return;
+    // 计算触摸点相对轨道的百分比
+    const touchX = e.touches[0].clientX;
+    const relativeX = touchX - trackInfo.left;
+    let val = Math.round((relativeX / trackInfo.width) * 100);
+
+    // 限制范围 0-100
+    val = Math.max(0, Math.min(100, val));
+
+    // 更新数值并刷新样式
+    this.setData({ unlockRange: val }, () => {
+      this.updateSliderStyles();
+    });
   },
 
 });

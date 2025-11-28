@@ -50,7 +50,24 @@
       </view>
       <view class="middle-concrete-content-debugging">
         <view class="middle-concrete-content-debugging-title">关锁锁信号敏感值DIY</view>
-        <view class="middle-concrete-content-debugging-control">222</view>
+        <view class="middle-concrete-content-debugging-slider-track" id="unlockTrack">
+          <view class="middle-concrete-content-debugging-slider-fill" style="width: {{unlockRange+'%'}}"></view>
+          <view class="middle-concrete-content-debugging-car-icon">
+            <view style="display: flex;flex-direction: column;align-items: center;gap: 15rpx;">
+              <image src="/assets/images/home/car_icon.png" style="width: 60rpx;height: 47rpx;"></image>
+              <text style="font-weight: bold;font-size: 20rpx;color: #333333;">开锁范围: {{unlockRange}}</text>
+            </view>
+          </view>
+          <view class="middle-concrete-content-debugging-slider-thumb" style="{{unlockThumbStyle}}" bindtouchmove="onUnlockSlide">
+            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" style="width: 31rpx;height: 33rpx;" />
+          </view>
+          <view class="middle-concrete-content-debugging-person-icon" style="{{myPositionStyle}}">
+            <view style="display: flex;flex-direction: column;align-items: center;gap: 15rpx;">
+              <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/my_place.png" style="width: 42rpx;height: 47rpx;"></image>
+              <text style="font-weight: bold;font-size: 20rpx;color: #333333;">我的位置: {{myPosition}}</text>
+            </view>
+          </view>
+        </view>
         <view class="middle-concrete-content-debugging-tip">拖动圆环，根据您与车辆的距离设定关锁感应范围。携带手机离开范围时，车辆将自动关锁。</view>
       </view>
       <view class="middle-concrete-content-debugging">

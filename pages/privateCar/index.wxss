@@ -172,16 +172,86 @@ page {
 }
 
 .middle-concrete-content-debugging-title {
-
   font-weight: bold;
   font-size: 23rpx;
   color: #BA2B2B;
 }
 
-.middle-concrete-content-debugging-control {
-  height: 120rpx;
-  background-color: brown;
+.middle-concrete-content-debugging-slider-track {
+  height: 60px;
+  border-radius: 15px;
+  position: relative;
+  margin-bottom: 12px;
+  background-color: #f3f4f6;
+  overflow: hidden;
 }
+
+.middle-concrete-content-debugging-slider-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #95D5FE;
+  transition: width 0.1s ease;
+  z-index: 1;
+  border-bottom-right-radius: 35rpx;
+  border-top-right-radius: 35rpx;
+  border-right: 6rpx solid #2DA2EC;
+}
+
+.middle-concrete-content-debugging-slider-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.middle-concrete-content-debugging-car-icon {
+  width: 30%;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #3b82f6;
+  font-size: 20px;
+  z-index: 2;
+  position: relative;
+}
+
+.middle-concrete-content-debugging-person-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  z-index: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .middle-concrete-content-debugging-tip {
   font-weight: 500;
