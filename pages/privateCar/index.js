@@ -113,19 +113,6 @@ Page({
       }
     })
   },
-  // 获取系统头部各区域高度
-  initSystemInfo() {
-    const { statusBarHeight: s } = wx.getWindowInfo()
-    const m = wx.getMenuButtonBoundingClientRect()
-    if (!m) return
-    const n = m.height + (m.top - s) * 2
-    const c = wx.getWindowInfo().screenWidth - m.right
-    this.setData({
-      height_from_head: s,
-      head_height: s + n,
-      capsule_distance_to_the_right: c
-    })
-  },
   // 切换感应模式
   toggleSensorMode() {
     if (!isLogin()) {
@@ -218,16 +205,10 @@ Page({
       g_screenTotalHeight: screenHeight,//屏幕总高度
     });
   },
-  /**
-   * 生命周期函数 - 页面加载
-   * @param {Object} options 页面参数
-   */
+
   onLoad: function (options) {
     // 获取屏幕数据
     this.initScreenAndSystemInfo()
-    // 初始化样式
-    this.updateSliderStyles();
-    this.updateMyPositionStyles();
 
     this.initBottomDirectory()
     this.initToConfigureCache()//获取缓存内容
@@ -240,14 +221,10 @@ Page({
   * 生命周期函数 - 页面显示
   */
   onShow: function () {
-    this.initialiImageBaseConversion() // 图片转换
     this.handleStart()//开始执行链接蓝牙
     this.startConnectionStatusPolling()//启动连接状态轮询
-    this.initSystemInfo()
   },
-  /**
-   * 生命周期函数 - 页面隐藏
-   */
+
   onHide: function () {
     const that = this
     setTimeout(() => bleKeyManager.releaseBle(), 1500);
@@ -356,23 +333,14 @@ Page({
       });
     }
   },
-  /**
-   * 生命周期函数 - 页面卸载
-   */
+
   onUnload: function () {
     const that = this
     setTimeout(() => bleKeyManager.releaseBle(), 500);
     clearInterval(that.data.pageInterval);
     wx.setKeepScreenOn({ keepScreenOn: false });
-
   },
 
-  /**
-   * 认证加密算法
-   * @param {Array} passwordSource 原始密码(6字节数组)
-   * @param {Array} random 随机数(6字节数组)
-   * @returns {Array} 加密后的密码(8字节数组)
-   */
   auth_encrypt: function (passwordSource, random) {
     var passwordEncrypt = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
     for (var i = 0; i < 6; i++) {
@@ -420,27 +388,8 @@ Page({
       });
     }
   },
-  // 点击蓝牙出现tips
-  handleBlueToothState() {
-    const _this = this;
-    _this.setData({ blue_tooth_state: true }, () => {
-      setTimeout(() => {
-        _this.setData({
-          blue_tooth_state: false
-        });
-      }, 3000); // 3000 是 setTimeout 的延迟时间
-    });
-  },
-  handleVoltage() {
-    const _this = this;
-    _this.setData({ voltage_state: true }, () => {
-      setTimeout(() => {
-        _this.setData({
-          voltage_state: false
-        });
-      }, 3000); // 3000 是 setTimeout 的延迟时间
-    });
-  },
+
+
   // 调整安装手册
   handleJumpSc() {
     if (!isLogin()) {
@@ -453,9 +402,8 @@ Page({
       url: '/pages/listOfPrivateCars/pdf/index?flag=1',
     })
   },
-  /**
-* 处理蓝牙连接状态：检查设备是否已连接，决定执行连接或重连逻辑
-*/
+
+  //  处理蓝牙连接状态：检查设备是否已连接，决定执行连接或重连逻辑
   handleBule() {
     bleKeyManager.isDeviceConnected(this.data.deviceIDC, (status, param) => {
       if (status) {
@@ -528,11 +476,7 @@ Page({
     });
   },
 
-  /**
-   * 发送控制命令
-   * @param {number} type 命令类型
-   * @param {Array} data 命令数据
-   */
+  // 发送控制命令
   btnCmdSend: function (type, data) {
     const that = this
     const defaultData = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
@@ -761,7 +705,6 @@ Page({
   },
 
 
-
   // 上传报文 
   handleLoggerapi(evt) {
     const MAX_LOGS_BEFORE_UPLOAD = 10;
@@ -827,7 +770,11 @@ Page({
   parseData: function (hexData) {
     const parsedResult = this.parseHexDataObject(hexData);
     if (parsedResult) {
-      this.setData({ parsedData: parsedResult });
+      this.setData({ parsedData: parsedResult }, () => {
+        // 初始化样式
+        this.updateSliderStyles();
+        this.updateMyPositionStyles();
+      });
     }
   },
 
@@ -955,39 +902,8 @@ Page({
     bleKeyManager.connectedDevice();
   },
 
-  /**
-   * 图片转base64格式
-   */
-  initialiImageBaseConversion() {
-    const _this = this;
-    const imageMap = [{
-      path: '/assets/images/home/car-bg.png',
-      key: 's_background_picture_of_the_front_page'
-    }];
 
-    // 创建转换Promise数组
-    const promises = imageMap.map(item =>
-      new Promise((resolve, reject) => {
-        wx.getFileSystemManager().readFile({
-          filePath: item.path,
-          encoding: 'base64',
-          success: (res) => {
-            resolve({ [item.key]: `data:image/png;base64,${res.data}` });
-          }
-        });
-      })
-    );
 
-    // 执行所有转换
-    Promise.all(promises)
-      .then(results => {
-        const dataToUpdate = results.reduce((acc, curr) => ({
-          ...acc,
-          ...curr
-        }), {});
-        _this.setData(dataToUpdate);
-      });
-  },
   // 返回上一页面
   handleBackHome() {
     wx.redirectTo({
