@@ -18,6 +18,56 @@ page {
   align-items: center;
 }
 
+/* 头部外层容器样式：flex布局，水平居中对齐，元素间间距10rpx */
+.custom-header-outer-layer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25rpx;
+}
+
+/* 头部外层容器图片样式：设置固定宽高 */
+.custom-header-outer-layer-image {
+  width: 45rpx;
+  height: 49rpx;
+}
+
+/* 头部标题样式：粗体，字体大小36rpx，颜色深灰 */
+.custom-header-outer-layer-title {
+  font-weight: bold;
+  font-size: 36rpx;
+  color: #333333;
+}
+
+/* 头部用户名容器样式：flex水平排列，对齐项目中心，间距5rpx */
+.custom-header-outer-layer-user_name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5rpx;
+}
+
+/* 用户名文本样式：中等粗细，字体大小28rpx，颜色深灰 */
+.custom-header-outer-layer-user_name text {
+  font-weight: 500;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+/* 用户名旁图片样式：设置固定宽高 */
+.custom-header-outer-layer-user_name image {
+  width: 26rpx;
+  height: 26rpx;
+}
+
+/* 内容区域样式：占满宽度，绝对定位，允许垂直滚动 */
+.content {
+  width: 100%;
+  position: absolute;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
 
 
 /* ========== 2. 核心内容区域样式 ========== */
@@ -182,8 +232,19 @@ page {
   border-radius: 15px;
   position: relative;
   margin-bottom: 12px;
-  background-color: #f3f4f6;
   overflow: hidden;
+}
+
+.tarck-unlock {
+  background-color: #f3f4f6;
+}
+
+.tarck-lock {
+  background-color: #CD80E9;
+}
+
+.tarck-special {
+  background-color: #E9808C;
 }
 
 .middle-concrete-content-debugging-slider-fill {
@@ -191,12 +252,26 @@ page {
   top: 0;
   left: 0;
   height: 100%;
-  background-color: #95D5FE;
   transition: width 0.1s ease;
   z-index: 1;
   border-bottom-right-radius: 35rpx;
   border-top-right-radius: 35rpx;
+
+}
+
+.fill-unlock {
+  background-color: #95D5FE;
   border-right: 6rpx solid #2DA2EC;
+}
+
+.fill-lock {
+  background-color: #F0EEEE;
+  border-right: 6rpx solid #7D16A3;
+}
+
+.fill-special {
+  background-color: #F0EEEE;
+  border-right: 6rpx solid #E53146;
 }
 
 .middle-concrete-content-debugging-slider-thumb {
@@ -231,27 +306,6 @@ page {
   color: #6b7280;
   z-index: 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .middle-concrete-content-debugging-tip {
   font-weight: 500;
@@ -325,10 +379,9 @@ page {
 
 
 /* ========== 3. 底部 Tabbar 区域样式 ========== */
-/* 底部tabbar样式：占满宽度，白色背景，flex平均分布，固定在底部，阴影效果，z-index100 */
 .tabbar {
   width: 100%;
-  background-color: blue;
+  background-color: #fff;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -338,4 +391,27 @@ page {
   box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.1);
   z-index: 100;
   box-sizing: border-box;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+}
+
+.tab-icon {
+  width: 50rpx;
+  height: 50rpx;
+  margin-bottom: 10rpx;
+}
+
+.tab-item text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.tab-item.active text {
+  color: #3498db;
 }
