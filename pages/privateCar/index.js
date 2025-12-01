@@ -1,8 +1,4 @@
 const {
-  _handleWindowInfo,
-  _handleDeviceInfo
-} = require('../../utils/public').default
-const {
   u_navlist20
 } = require('../../utils/request/home')
 const {
@@ -22,11 +18,8 @@ const {
   u_getCarBluetoothKeyByCode
 } = require('../../utils/request/order')
 
-// 页面定义
+
 Page({
-  /**
-   * 页面初始数据
-   */
   data: {
     g_screenTotalHeight: '',//屏幕总高度
     g_tabBarHeight: 80,    // 底部tabbar高度
@@ -36,12 +29,12 @@ Page({
     topHeight: '',          // 核心内容区域上部固定高度（可自定义）
     bottomHeight: 90,       // 核心内容区域下部固定高度（可自定义）
 
-    // 核心数值
+    // 开锁 关锁 特殊情况数值
     unlockRange: 50,   // 开锁范围（0-100）
+    lockRange: 60,   // 关锁范围（0-100）
     myPosition: 60,    // 人物位置
-
-    // 样式变量
-    unlockThumbStyle: '',//开锁范围位置
+    unlockThumbStyle: '44%',//开锁范围位置
+    lockThumbStyle: '54%',//关锁范围位置
     myPositionStyle: '',//我的位置
 
 
@@ -49,7 +42,6 @@ Page({
     dc: '',                                      // 设备标识
     data: '',                                    // 输入数据
     msg: '',                                     // 消息日志
-    consolemsg: '',                              // 控制台消息
     deviceIDC: "932505100228",          // 默认设备ID
     orgKey: [0x33, 0x47, 0x01, 0x82, 0x34, 0x33], // 原始密钥
     isOwner: false,                              // 所有者标识
@@ -59,7 +51,6 @@ Page({
 
     // 数据解析相关
     scrollTo: "hiddenview",                      // 滚动位置1
-    scrollTo2: "hiddenview2",                    // 滚动位置2
     parseLen: 0,                                 // 解析数据长度
     parsedData: {},                              // 解析后的数据
     voltage_image: '100',                        //剩余电池电量显示图片
@@ -68,26 +59,23 @@ Page({
     pageInterval: 0,                              // 状态检查定时器
     netWork: false,
     controlItems: [
-      { id: 1, name: '开锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
-      { id: 2, name: '关锁', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/lock_off.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
-      { id: 3, name: '尾箱', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/box_off.png', evt: 'handleOpenTrunk' },
-      { id: 4, name: '寻车', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleFindCar' },
-      { id: 5, name: '升窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handlRaiseTheWindow' },
-      { id: 6, name: '降窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleLowerTheWindow' },
+      { id: 1, name: '开锁', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/unlock@2x.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
+      { id: 2, name: '关锁', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/lock@2x.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
+      { id: 3, name: '尾箱', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/tail_box@2x.png', evt: 'handleOpenTrunk' },
+      { id: 4, name: '寻车', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/seek_car@2x.png', evt: 'handleFindCar' },
+      // { id: 5, name: '升窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handlRaiseTheWindow' },
+      // { id: 6, name: '降窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleLowerTheWindow' },
     ],
-    blue_tooth_state: false,//点击蓝牙已连接
-    voltage_state: false,//点击电池电量处
+
     logs: [],//报文日志
     deviceInfo: {},//设备信息
-
     // 底部tabbar高度
     tabBarHeight: 80,
-    tabList: [
-    ],
-    // 原始链接
-    c_link: 'https://k1sw.wiselink.net.cn/',
+    tabList: [],
     // 当前选中的底部tabbar索引
     currentTab: 1,
+    // 原始链接
+    c_link: 'https://k1sw.wiselink.net.cn/',
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
@@ -113,57 +101,57 @@ Page({
       }
     })
   },
-  // 切换感应模式
-  toggleSensorMode() {
-    if (!isLogin()) {
-      wx.navigateTo({
-        url: '/pages/system/managerLoginView/loginView',
-      });
-      return
-    }
-    const induction = this.data.parsedData.induction;
-    const isManualInduction = !induction || induction === '手动模式';
-    if (this.data?.bluetoothData?.platenumber) {
-      if ((!isManualInduction)) {
-        // 此时为感应模式，可直接切换手动模式
-        wx.showModal({
-          title: '提示',
-          content: '确认关闭感应模式?',
-          complete: (res) => {
-            if (res.confirm) {
-              this.btnCmdSend(0x3a, [0x00]);
-            }
-          }
-        })
-        return
-      } if (this.data.parsedData.induction != '感应模式') {
-        wx.showModal({
-          title: '提示',
-          content: '请到开通设定-功能设置处完善设置',
-          complete: (res) => {
-            if (res.confirm) {
-              wx.redirectTo({
-                url: '/pages/listOfPrivateCars/list/index?tabs=3'
-              })
-            }
-          }
-        })
+  // 配对按钮点击处理
+  btnPair() {
+    const that = this;
+    const deviceInfo = wx.getDeviceInfo();  // 获取设备信息
+    if (that.data.connectionState == '已连接') {
+      // 判断Android系统
+      if (deviceInfo.system.toLowerCase().includes('android')) {
+        // 发送配对命令
+        that.btnCmdSend(0x22, [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        setTimeout(() => {
+          bleKeyManager.makePair();  // 执行配对
+        }, 200);
+      } else {
+        // iOS系统处理流程
+        that.btnCmdSend(0x22, [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        setTimeout(() => {
+          that.btnCmdSend(0x22, [0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+          setTimeout(() => {
+            that.btnEndConnect();  // 结束连接
+            const pairInteval = setInterval(() => {
+              if (!bleKeyManager.getBLEConnectionState()) {  // 检查连接状态
+                clearInterval(pairInteval);  // 清除定时器
+                setTimeout(() => {
+                  that.btnStartConnect();  // 重新开始连
+                }, 500);
+              }
+            }, 500);
+            setTimeout(() => {
+              clearInterval(pairInteval);  // 超时清除定时器
+            }, 3000);
+          }, 200);
+        }, 200);
       }
     } else {
-      wx.showModal({
-        title: '提示',
-        content: '请先开通设定再到开通设定-功能设置处完善设置',
-        confirmText: '立即开通',
-        success: (res) => {
-          if (res.confirm) {
-            wx.redirectTo({
-              url: '/pages/listOfPrivateCars/list/index'
-            });
-          }
-        }
-      });
+      wx.showToast({
+        title: '请等待蓝牙初始化',
+        icon: 'none'
+      })
     }
-
+  },
+  // 切换感应模式
+  handleToggleSensorMode(e) {
+    const { parsedData = {} } = this.data || {};
+    const { inductionMode: oldFlag = false, pairStatus = '未配对' } = parsedData;
+    const newFlag = e?.detail?.value ?? false;
+    if (!oldFlag && pairStatus === '未配对') {
+      this.btnPair();
+      return;
+    }
+    const cmdValue = newFlag ? 0x01 : 0x00;
+    this.btnCmdSend(0x3a, [cmdValue]);
   },
   // 获取设备信息
   handleSystemInfo() {
@@ -205,38 +193,6 @@ Page({
       g_screenTotalHeight: screenHeight,//屏幕总高度
     });
   },
-
-  onLoad: function (options) {
-    // 获取屏幕数据
-    this.initScreenAndSystemInfo()
-
-    this.initBottomDirectory()
-    this.initToConfigureCache()//获取缓存内容
-    this.handleSystemInfo()
-    this.setData({
-      options: options
-    })
-  },
-  /**
-  * 生命周期函数 - 页面显示
-  */
-  onShow: function () {
-    this.handleStart()//开始执行链接蓝牙
-    this.startConnectionStatusPolling()//启动连接状态轮询
-  },
-
-  onHide: function () {
-    const that = this
-    setTimeout(() => bleKeyManager.releaseBle(), 1500);
-    this.setData({
-      connectionState: "未连接",                   // 连接状态
-      connectionID: "",                            // 连接ID
-      connectionDisplay: "未连接",                 // 连接显示文本
-      parsedData: {}
-    })
-    clearInterval(that.data.pageInterval);
-    wx.setKeepScreenOn({ keepScreenOn: false })
-  },
   // 获取当前登录状态
   initLoginStatus() {
     wx.getStorage({
@@ -250,6 +206,39 @@ Page({
         console.error("获取失败", err); // 失败时的错误信息
       }
     });
+  },
+  onLoad: function (options) {
+    // 获取屏幕数据
+    this.initScreenAndSystemInfo()
+    this.initBottomDirectory()
+    this.initToConfigureCache()//获取缓存内容
+    this.handleSystemInfo()
+    this.setData({
+      options: options
+    })
+  },
+  onShow: function () {
+    this.handleStart()//开始执行链接蓝牙
+    this.startConnectionStatusPolling()//启动连接状态轮询
+  },
+  onHide: function () {
+    const that = this
+    setTimeout(() => bleKeyManager.releaseBle(), 1500);
+    this.setData({
+      connectionState: "未连接",                   // 连接状态
+      connectionID: "",                            // 连接ID
+      connectionDisplay: "未连接",                 // 连接显示文本
+      parsedData: {}
+    })
+    clearInterval(that.data.pageInterval);
+    wx.setKeepScreenOn({ keepScreenOn: false })
+  },
+
+  onUnload: function () {
+    const that = this
+    setTimeout(() => bleKeyManager.releaseBle(), 500);
+    clearInterval(that.data.pageInterval);
+    wx.setKeepScreenOn({ keepScreenOn: false });
   },
   // 蓝牙连接处理
   handleStart() {
@@ -334,14 +323,7 @@ Page({
     }
   },
 
-  onUnload: function () {
-    const that = this
-    setTimeout(() => bleKeyManager.releaseBle(), 500);
-    clearInterval(that.data.pageInterval);
-    wx.setKeepScreenOn({ keepScreenOn: false });
-  },
-
-  auth_encrypt: function (passwordSource, random) {
+  auth_encrypt(passwordSource, random) {
     var passwordEncrypt = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
     for (var i = 0; i < 6; i++) {
       passwordEncrypt[i] = passwordSource[i] ^ random[i] ^ 0xFF;
@@ -389,7 +371,6 @@ Page({
     }
   },
 
-
   // 调整安装手册
   handleJumpSc() {
     if (!isLogin()) {
@@ -403,7 +384,7 @@ Page({
     })
   },
 
-  //  处理蓝牙连接状态：检查设备是否已连接，决定执行连接或重连逻辑
+  // 处理蓝牙连接状态：检查设备是否已连接，决定执行连接或重连逻辑
   handleBule() {
     bleKeyManager.isDeviceConnected(this.data.deviceIDC, (status, param) => {
       if (status) {
@@ -477,7 +458,7 @@ Page({
   },
 
   // 发送控制命令
-  btnCmdSend: function (type, data) {
+  btnCmdSend: function (type, data, sign) {
     const that = this
     const defaultData = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
     switch (type) {
@@ -497,11 +478,26 @@ Page({
       case 0x07: // 
         that.PackAndSend07(type, 8, data);
         break;
+      case 0x11: //开锁信号值
+        this.PackAndSendspecial(type, 6, data, sign); // 发送6字节数据
+        break;
       case 0x3a: // 设置 手动或感应模式
         const flameoutData = data; // 第一个字节为0x01，后面补11个0x00
         this.PackAndSend3a(type, 12, flameoutData); // 发送12字节数据
         break;
     }
+  },
+
+  PackAndSendspecial(type, dataLength, data, sign) {
+    const packet = [
+      0x24,                     // Header
+      0x11, 0x08,               // Type and length
+      parseInt(sign, 16) || 0,   // Sign value (fallback to 0)
+      data ? 0x01 : 0x00,        // Data flag
+      ...Array(6).fill(0x00),    // Padding
+      0x24                      // Footer
+    ];
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
 
   /**
@@ -532,17 +528,14 @@ Page({
     console.log(packet)
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
-  /**
-   * 数组转ArrayBuffer
-   * @param {Array} array 原始数组
-   * @param {number} elementSize 元素大小(默认1字节)
-   * @returns {ArrayBuffer} 转换后的缓冲区
-   */
+
+  // 数组转ArrayBuffer
   arrayToArrayBuffer: function (array, elementSize = 1) {
     const typedArray = new Uint8Array(array.length * elementSize);
     array.forEach((value, index) => typedArray[index * elementSize] = value);
     return typedArray.buffer;
   },
+  // 处理密钥
   handleTransformation(number) {
     if (!number) return
     const numStr = number.toString();
@@ -581,12 +574,8 @@ Page({
     return index !== -1 ? values[index] : '1';
   },
 
-  /**
-  * 解析蓝牙十六进制数据为完整的参数对象
-  * @param {string} hexString 完整的帧数据（如：241008250928000000000000000024）
-  * @returns {object|null} 解析后的参数对象，解析失败返回null
-  */
-  parseHexDataObject: function (hexString) {
+  //  解析蓝牙十六进制数据为完整的参数对象
+  parseHexDataObject(hexString) {
     if (!hexString || hexString.length !== 30) {
       console.error('数据长度不正确，需为24（仅数据体）或32（完整帧）字符');
       return null;
@@ -601,7 +590,6 @@ Page({
     for (let i = 0; i < dataBodyHex.length; i += 2) {
       bytes.push(parseInt(dataBodyHex.substr(i, 2), 16));
     }
-    console.log('字节数组:', bytes);
 
     const result = {};
     result.inductionEnable = bytes[0] === 1;
@@ -763,10 +751,7 @@ Page({
       });
     }
   },
-  /**
-   * 数据解析按钮处理
-   * @param {string} hexData 16进制数据字符串
-   */
+  //  数据解析按钮处理
   parseData: function (hexData) {
     const parsedResult = this.parseHexDataObject(hexData);
     if (parsedResult) {
@@ -778,9 +763,8 @@ Page({
     }
   },
 
-  /**
-   * 初始化蓝牙连接
-   */
+  // 初始化蓝牙连接
+
   btnStartConnect: function () {
     const that = this
     if (that.data.connectionID == "") {
@@ -793,11 +777,8 @@ Page({
       appUtil.showModal('已连接蓝牙', false, function (confirm) { });
   },
 
-  /**
-   * 修剪16进制数据
-   * @param {string} hexString 原始16进制字符串
-   * @returns {string} 修剪后的有效数据部分
-   */
+
+  // 修剪16进制数据
   trimHexData: function (hexString) {
     if (typeof hexString !== 'string' || !/^[0-9a-fA-F]+$/.test(hexString)) {
       throw new Error('无效的16进制字符串');
@@ -805,10 +786,8 @@ Page({
     return hexString.slice(4, -2);  // 去除头尾固定字符
   },
 
-  /**
-   * 断开蓝牙连接
-   */
-  btnEndConnect: function () {
+  // 断开蓝牙连接
+  btnEndConnect() {
     bleKeyManager.releaseBle();
   },
 
@@ -942,17 +921,22 @@ Page({
   },
   // 更新滑块和填充层样式（核心）
   updateSliderStyles() {
-    const val = this.data.unlockRange;
+    const val = this.data.parsedData;
+    const { inductionUnlockSignal, inductionLockSignal } = val
     this.setData({
-      // 滑块位置：与填充层宽度同步
-      unlockThumbStyle: `left: ${val - 6}%;`
+      unlockThumbStyle: `left: ${(inductionUnlockSignal || 50 - 6)}%;`,
+      lockThumbStyle: `left: ${(inductionLockSignal || 60 - 6)}%;`,
+      unlockRange: inductionUnlockSignal || 50,
+      lockRange: inductionLockSignal || 60,
     });
   },
 
   // 更新人物位置样式
   updateMyPositionStyles() {
+    const val = this.data.parsedData;
+    const { signalValue } = val
     this.setData({
-      myPositionStyle: `left: 80%;`
+      myPositionStyle: `left: ${signalValue}%;`
     });
   },
 
@@ -968,20 +952,34 @@ Page({
   },
 
   // 滑块拖动事件
-  async onUnlockSlide(e) {
-    const trackInfo = await this.getTrackInfo('unlockTrack');
-    if (!trackInfo) return;
-    // 计算触摸点相对轨道的百分比
-    const touchX = e.touches[0].clientX;
+  async onlockSlide(e) {
+    // 先判断是否配对
+    const { parsedData = {} } = this.data || {};
+    const { pairStatus = '未配对' } = parsedData;
+    if (pairStatus == '未配对') {
+      this.btnPair();
+      return;
+    }
+    const target = e?.currentTarget;
+    const touch = e?.touches?.[0];
+    if (!target || !touch) return;
+    const trackId = target.dataset?.id;
+    if (!['lockTrack', 'unlockTrack'].includes(trackId)) return;
+    const trackTypeMap = {
+      lockTrack: 'lockTrack',
+      unlockTrack: 'unlockTrack'
+    };
+    const trackInfo = await this.getTrackInfo(trackTypeMap[trackId]);
+    if (!trackInfo?.left || !trackInfo?.width) return;
+    const touchX = touch.clientX;
     const relativeX = touchX - trackInfo.left;
-    let val = Math.round((relativeX / trackInfo.width) * 100);
-
-    // 限制范围 0-100
-    val = Math.max(0, Math.min(100, val));
-
-    // 更新数值并刷新样式
-    this.setData({ unlockRange: val }, () => {
-      this.updateSliderStyles();
-    });
+    const progress = Math.max(0, Math.min(100, Math.round((relativeX / trackInfo.width) * 100)));
+    const cmdParamMap = {
+      lockTrack: 0,
+      unlockTrack: 1
+    };
+    const cmdParam = cmdParamMap[trackId];
+    const hexProgress = progress.toString(16).padStart(2, '0');
+    this.btnCmdSend(0x11, cmdParam, hexProgress);
   },
 });
