@@ -108,8 +108,8 @@ Page({
     // 定时器相关
     pageInterval: 0,                              // 状态检查定时器
     netWork: false,
-    controlItems: CONTROL_ITEMS,
-
+    controlItems: CONTROL_ITEMS,//控制按钮
+    controlItemspanel: [],//控制按钮面板
     logs: [],//报文日志
     deviceInfo: {},//设备信息
     // 底部tabbar高度
@@ -966,7 +966,11 @@ Page({
         });
         const result = Array.from(uniqueMap.values());
         console.log('合并并优先保留 enabled=false 的结果：', result);
-        this.setData({ controlItems: result });
+        this.setData({ controlItems: result }, () => {
+          this.setData({
+            controlItemspanel: this.splitArray(result, 4)
+          })
+        });
       }
     });
   },
@@ -1150,10 +1154,12 @@ Page({
     ];
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
   },
+  // 先过滤enabled:false的项，再按每个子数组最多n项拆分
   splitArray(arr, n = 4) {
+    const filteredArr = arr.filter(item => item.enabled);
     const result = [];
-    for (let i = 0; i < arr.length; i += n) {
-      result.push(arr.slice(i, i + n));
+    for (let i = 0; i < filteredArr.length; i += n) {
+      result.push(filteredArr.slice(i, i + n));
     }
     return result;
   },
@@ -1172,7 +1178,11 @@ Page({
       i === index ? { ...item, enabled: Boolean(value) } : item
     );
     // 更新视图和缓存
-    this.setData({ controlItems: updatedItems });
+    this.setData({ controlItems: updatedItems }, () => {
+      this.setData({
+        controlItemspanel: this.splitArray(updatedItems, 4)
+      })
+    });
     console.log(updatedItems)
     wx.setStorage({ key: 'controlItems', data: updatedItems });
   },
