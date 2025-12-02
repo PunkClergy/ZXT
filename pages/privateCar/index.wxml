@@ -140,8 +140,7 @@
     <swiper class="bottom-fixed-swiper" indicator-dots="{{true}}">
       <swiper-item class="bottom-fixed-swiper-item" wx:for="{{controlItemspanel}}" wx:key="swiperIndex">
         <!-- 内层循环遍历每个子数组的控制项 -->
-        <view class="bottom-fixed-swiper-item-control" wx:for="{{item}}" wx:for-item="control" wx:for-index="controlIndex" wx:key="control.id" bindtap="{{control.evt}}" data-id="{{control.id}}" wx:if="{{control.enabled}}">
-
+        <view class="bottom-fixed-swiper-item-control" wx:for="{{item}}" wx:for-item="control" wx:for-index="controlIndex" wx:key="index" bindtap="{{control.evt}}" data-id="{{control.id}}" wx:if="{{control.enabled}}">
           <image src="{{ (control.id === 1 || control.id === 2) ? ((control.id === 1 ? parsedData.lock : !parsedData.lock) ? control.ative : control.icon) : control.icon }}" style="width: 29rpx; height: 36rpx;" />
           <text>{{control.name}}</text>
         </view>

@@ -1,3 +1,4 @@
+import { getInstructions, getOutputConfig, getControlItems,getParseHexDataObject } from 'z-utility';
 const {
   u_navlist20
 } = require('../../utils/request/home')
@@ -18,47 +19,6 @@ const {
   u_getCarBluetoothKeyByCode
 } = require('../../utils/request/order')
 
-// 指令集合
-const _INSTRUCTIONS = [
-  { id: 1, name: '开锁功能指令配置', useType: '', useTypeId: '', },
-  { id: 2, name: '关锁功能指令配置', useType: '', useTypeId: '', },
-  { id: 3, name: '寻车功能指令配置', useType: '', useTypeId: '', },
-  { id: 4, name: '尾箱功能指令配置', useType: '', useTypeId: '', },
-  { id: 7, name: '升窗功能指令配置', useType: '', useTypeId: '', },
-  { id: 8, name: '降窗功能指令配置', useType: '', useTypeId: '', },
-];
-// 输出方式
-const _OUTPUT = [
-  // 开锁
-  [{ id: 1, name: '短按开锁键' },//输出次数1 输出时间500ms 输出间隔0
-  { id: 2, name: '短按两次开锁键' },//输出次数2 输出时间500ms 输出间隔500ms
-  ],
-  // 关锁
-  [{ id: 1, name: '短按关锁键' },//输出次数1 输出时间500ms 输出间隔0
-  ],
-  // 寻车
-  [{ id: 1, name: '短按寻车键' },//寻车键：输出次数1 输出时间500ms 输出间隔0; 关锁键:输出次数3 输出时间500 输出间隔1000ms
-  { id: 2, name: '短按关锁键' },
-  ],
-  // 尾箱
-  [{ id: 1, name: '短按两次尾箱键' },//输出次数2 输出时间500ms 输出间隔1000ms
-  { id: 2, name: '长按三秒尾箱键' },//输出次数1 输出时间3000ms 输出间隔0
-  ],
-  // 升窗
-  [{ id: 1, name: '长按7秒关锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
-  ],
-  // 降窗
-  [{ id: 1, name: '长按7秒开锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
-]]
-// 控制项常量数组
-const CONTROL_ITEMS = [
-  { id: 1, name: '开锁', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/unlock@2x.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
-  { id: 2, name: '关锁', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/lock@2x.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
-  { id: 3, name: '尾箱', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/tail_box@2x.png', evt: 'handleOpenTrunk' },
-  { id: 4, name: '寻车', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/seek_car@2x.png', evt: 'handleFindCar' },
-  { id: 5, name: '升窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handlRaiseTheWindow' },
-  { id: 6, name: '降窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleLowerTheWindow' },
-];
 Page({
   data: {
     g_screenTotalHeight: '',//屏幕总高度
@@ -93,12 +53,12 @@ Page({
     scrollTo: "hiddenview",                      // 滚动位置1
     parseLen: 0,                                 // 解析数据长度
     parsedData: {},                              // 解析后的数据
-    voltage_image: '100',                        //剩余电池电量显示图片
+
 
     // 定时器相关
     pageInterval: 0,                              // 状态检查定时器
     netWork: false,
-    controlItems: CONTROL_ITEMS,//控制按钮
+    controlItems: getControlItems(),//控制按钮
     controlItemspanel: [],//控制按钮面板
     logs: [],//报文日志
     deviceInfo: {},//设备信息
@@ -115,8 +75,8 @@ Page({
     key_settings: false,
     // 更多功能标志
     all_settings: false,
-    keyInstructions: _INSTRUCTIONS,//指令集合
-    key_out_put: _OUTPUT,//输出方式集合
+    keyInstructions: getInstructions(),//指令集合
+    key_out_put: getOutputConfig(),//输出方式集合
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
@@ -588,152 +548,7 @@ Page({
     }
     return bytes
   },
-  // 转换电池剩余电量
-  initVoltage(dy) {
-    const thresholds = [4.0, 3.9, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.1];
-    const scores = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];
-    const index = thresholds.findIndex(threshold => dy >= threshold);
-    return index !== -1 ? scores[index] : 0;
-  },
-  // 剩余电量显示图片
-  getBatteryImage(voltage) {
-    const levels = [
-      { min: 75, value: '100' },
-      { min: 50, value: '75' },
-      { min: 25, value: '50' },
-      { min: 10, value: '25' }
-    ];
-    const level = levels.find(item => voltage > item.min) || { value: '0' };
-    this.setData({ voltage_image: level.value });
-  },
-  // 剩余电量处转换
-  getBatteryLevel(voltage) {
-    this.getBatteryImage(voltage);
-    const thresholds = [90, 80, 70, 60, 50, 40, 30, 20, 10, 5];
-    const values = ['100', '90', '80', '70', '60', '50', '40', '30', '20', '10'];
-    const index = thresholds.findIndex(threshold => voltage > threshold);
-    return index !== -1 ? values[index] : '1';
-  },
-
-  //  解析蓝牙十六进制数据为完整的参数对象
-  parseHexDataObject(hexString) {
-    if (!hexString || hexString.length !== 30) {
-      console.error('数据长度不正确，需为24（仅数据体）或32（完整帧）字符');
-      return null;
-    }
-
-    let dataBodyHex = hexString;
-    if (hexString.length === 32) {
-      dataBodyHex = hexString.substr(4, 24);
-    }
-
-    const bytes = [];
-    for (let i = 0; i < dataBodyHex.length; i += 2) {
-      bytes.push(parseInt(dataBodyHex.substr(i, 2), 16));
-    }
-
-    const result = {};
-    result.inductionEnable = bytes[0] === 1;
-    result.inductionMode = bytes[0] === 1 ? true : false; // 兼容原有induction字段
-
-    // D[1] ACC状态：0关，1开
-    result.accStatus = bytes[1] === 1;
-
-    // D[2] 锁状态：0关，1开（自动开关锁下发标记）
-    result.lock = bytes[2] === 1; // 兼容原有lock字段
-
-    // D[3] 3V断电剩余时间：0-255分钟，255=不断电/最大
-    result.powerOffRemainTime = bytes[3];
-    result.powerOffRemainTimeDesc = bytes[3] === 255 ? '不断电' : `${bytes[3]}分钟`;
-
-    // D[4] 感应检测次数：0-255
-    result.inductionCheckTimes = bytes[4];
-
-    // D[5] 自动感应模式：0=操作后失效，1=一直有效，2=操作后失效
-    result.autoInductionMode = bytes[5];
-    result.autoInductionModeDesc = {
-      0: '操作后失效',
-      1: '一直有效',
-      2: '操作后失效'
-    }[bytes[5]] || '未知模式';
-
-    // D[6] 蓝牙断开自动锁车配置：0关，1开
-    result.bleDisconnectLock = bytes[6] === 1;
-
-    // D[7] 位域解析（bit0~bit7）
-    const d7 = bytes[7];
-    result.carWashMode = (d7 & 0x01) === 1; // bit0：洗车模式 0关1开
-    result.bleBroadcastMode = (d7 >> 1) & 0x01; // bit1：蓝牙广播模式（对应0x3D）
-    result.modeType = (d7 >> 2) & 0x01; // bit2：0外置模式 1内置模式
-    result.modeTypeDesc = (d7 >> 2) & 0x01 ? '内置模式' : '外置模式';
-    result.oilCircuitStatus = (d7 >> 3) & 0x01; // bit3：油路状态 0开1关
-    result.oilCircuitStatusDesc = (d7 >> 3) & 0x01 ? '油路关' : '油路开';
-    result.lockWindowUp = (d7 >> 4) & 0x01; // bit4：锁车升窗 0不升1升
-    result.serialBroadcast = (d7 >> 5) & 0x01 ? '关' : '开'; // bit5：串口输出广播 0开1关
-    result.workMode = (d7 >> 6) & 0x01; // bit6：0正常模式 1网约车模式
-    result.workModeDesc = (d7 >> 6) & 0x01 ? '网约车模式' : '正常模式';
-    result.netCarControl = (d7 >> 7) & 0x01; // bit7：网约车模式是否可控制 0不可1可
-    result.netCarControlDesc = (d7 >> 7) & 0x01 ? '可控制' : '不可控制';
-
-    // D[8] 感应关锁信号值（原感应缓冲值，对应0x11）
-    result.inductionLockSignal = bytes[8];
-
-    // D[9] 感应门把手开关：0关1开
-    result.inductionHandle = bytes[9] === 1;
-
-    // D[10] 信号值：0-100（绝对值）
-    result.signalValue = Math.abs(bytes[10]); // 确保绝对值
-
-    // D[11] 感应开锁信号值（对应0x22）
-    result.inductionUnlockSignal = bytes[11];
-
-    // ===================== 扩展参数 D[12]~D[14]（兼容低版本） =====================
-    // D[12] 电压值：0-255（120=12.0V），低版本无该位则为undefined
-    if (bytes.length >= 13) {
-      result.voltage = (bytes[12] / 10).toFixed(1) + 'V'; // 兼容原有voltage字段
-      // 电池剩余电量计算（需补充getBatteryLevel和initVoltage方法）
-      result.electric = this.getBatteryLevel(this.initVoltage((bytes[12] / 10).toFixed(1)));
-    } else {
-      result.voltage = '未知';
-      result.electric = 0;
-    }
-
-    // D[13] 位域解析（bit0~bit5）
-    if (bytes.length >= 14) {
-      const d13 = bytes[13];
-      result.alwaysPower = (d13 & 0x01) === 1; // bit0：常供电开关 0关1开
-      result.startInductionEnable = (d13 >> 1) & 0x01 ? '失效' : '生效'; // bit1：启动状态感应 0生效1失效
-      result.remoteInductionEnable = (d13 >> 2) & 0x01; // bit2：遥控感应开关是否有效
-      result.keyWorkMode = (d13 >> 3) & 0x01; // bit3：钥匙工作模式
-      result.keyAlwaysPower = (d13 >> 4) & 0x01; // bit4：钥匙一直供电 0关1开
-      result.pairStatus = (d13 >> 5) & 0x01 ? '未配对' : '已配对'; // bit5：0已配对1未配对（兼容旧固件）
-    } else {
-      result.alwaysPower = false;
-      result.startInductionEnable = '未知';
-      result.remoteInductionEnable = false;
-      result.keyWorkMode = 0;
-      result.keyAlwaysPower = false;
-      result.pairStatus = '未知';
-    }
-
-    // D[14] 位域解析（bit0~bit2：配对连接序号0-7；bit3：预留）
-    if (bytes.length >= 15) {
-      const d14 = bytes[14];
-      result.pairConnectIndex = d14 & 0x07; // bit0~bit2（0-7）
-      result.reservedBit3 = (d14 >> 3) & 0x01; // bit3：预留
-    } else {
-      result.pairConnectIndex = 0;
-      result.reservedBit3 = 0;
-    }
-
-    // ===================== 原有兼容字段 =====================
-    result.supply = bytes[3]; // 兼容原有supply字段（D[3]断电剩余时间）
-
-    console.log('解析结果:', result);
-    return result;
-  },
-
-
+ 
   // 上传报文 
   handleLoggerapi(evt) {
     const MAX_LOGS_BEFORE_UPLOAD = 10;
@@ -753,7 +568,7 @@ Page({
       userId,
       sn: deviceIDC,
       mobileinfo: `${deviceInfo?.brand || ''} ${deviceInfo?.model || ''} ${deviceInfo?.platform || ''} ${deviceInfo?.system || ''}`,
-      content: `${evt}${JSON.stringify(this.parseHexDataObject(this.trimHexData(evt)))}`,
+      content: `${evt}${JSON.stringify(getParseHexDataObject(this.trimHexData(evt)))}`,
       logdate: fmt
     };
 
@@ -794,7 +609,7 @@ Page({
   },
   //  数据解析按钮处理
   parseData: function (hexData) {
-    const parsedResult = this.parseHexDataObject(hexData);
+    const parsedResult = getParseHexDataObject(hexData);
     if (parsedResult) {
       this.setData({ parsedData: parsedResult }, () => {
         // 初始化样式
