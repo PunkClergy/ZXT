@@ -24,8 +24,6 @@ const _INSTRUCTIONS = [
   { id: 2, name: '关锁功能指令配置', useType: '', useTypeId: '', },
   { id: 3, name: '寻车功能指令配置', useType: '', useTypeId: '', },
   { id: 4, name: '尾箱功能指令配置', useType: '', useTypeId: '', },
-  // { id: 5, name: '左中门功能指令配置', useType: '', useTypeId: '', },
-  // { id: 6, name: '右中门功能指令配置', useType: '', useTypeId: '', },
   { id: 7, name: '升窗功能指令配置', useType: '', useTypeId: '', },
   { id: 8, name: '降窗功能指令配置', useType: '', useTypeId: '', },
 ];
@@ -46,20 +44,12 @@ const _OUTPUT = [
   [{ id: 1, name: '短按两次尾箱键' },//输出次数2 输出时间500ms 输出间隔1000ms
   { id: 2, name: '长按三秒尾箱键' },//输出次数1 输出时间3000ms 输出间隔0
   ],
-  // // 左中门
-  // [{ id: 1, name: '短按左中门键' },//输出次数为1 输出时间为500ms 输出间隔0
-  // { id: 2, name: '长按3秒左中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
-  // ],
-  // // 右中门
-  // [{ id: 1, name: '短按右中门键' },//输出次数为1 输出时间为500ms 输出间隔0
-  // { id: 2, name: '长按3秒右中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
-  // ],
   // 升窗
   [{ id: 1, name: '长按7秒关锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
   ],
   // 降窗
   [{ id: 1, name: '长按7秒开锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
-  ]]
+]]
 // 控制项常量数组
 const CONTROL_ITEMS = [
   { id: 1, name: '开锁', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/unlock@2x.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
