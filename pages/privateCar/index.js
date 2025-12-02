@@ -33,9 +33,9 @@ Page({
     unlockRange: 50,   // 开锁范围（0-100）
     lockRange: 60,   // 关锁范围（0-100）
     myPosition: 60,    // 人物位置
-    unlockThumbStyle: '44%',//开锁范围位置
-    lockThumbStyle: '54%',//关锁范围位置
-    myPositionStyle: '',//我的位置
+    unlockThumbStyle: 'left: 44%',//开锁范围位置
+    lockThumbStyle: 'left: 54%',//关锁范围位置
+    myPositionStyle: 'left: 30%',//我的位置
 
 
     // 蓝牙通信相关

@@ -36,15 +36,24 @@
       <view class="top-fixed-signal">
         <view class="top-fixed-signal-layar">
           <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/battery-01.png" style="width: 46rpx;height: 25rpx;" />
-          <text>当前电量：<text class="top-fixed-signal-text">{{parsedData.electric||100}}%</text></text>
+          <view class="top-fixed-signal-layar-info">
+            <text class="top-fixed-signal-layar-title">当前电量：</text>
+            <text class="top-fixed-signal-text">{{parsedData.electric||100}}%</text>
+          </view>
         </view>
         <view class="top-fixed-signal-layar">
           <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/bluetooth@2x.png" style="width: 30rpx;height: 33rpx;" />
-          <text>蓝牙状态：<text class="top-fixed-signal-text">{{connectionState=='已连接' ? '蓝牙已连接' : '蓝牙已断开'}}</text></text>
+          <view class="top-fixed-signal-layar-info">
+            <text class="top-fixed-signal-layar-title">蓝牙状态：</text>
+            <text class="top-fixed-signal-text">{{connectionState=='已连接' ? '蓝牙已连接' : '蓝牙已断开'}}</text>
+          </view>
         </view>
         <view class="top-fixed-signal-layar">
           <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/pair@2x.png" style="width: 33rpx;height: 23rpx;" />
-          <text>蓝牙配对：<text class="top-fixed-signal-text">{{parsedData.pairStatus||'未配对'}}</text></text>
+          <view class="top-fixed-signal-layar-info">
+            <text class="top-fixed-signal-layar-title">蓝牙配对：</text>
+            <text class="top-fixed-signal-text">{{parsedData.pairStatus||'未配对'}}</text>
+          </view>
         </view>
       </view>
     </view>
@@ -60,40 +69,40 @@
         <view class="middle-concrete-content-debugging-slider-track tarck-unlock" id="unlockTrack">
           <view class="middle-concrete-content-debugging-slider-fill fill-unlock" style="width: {{unlockRange+'%'}}"></view>
           <view class="middle-concrete-content-debugging-car-icon">
-            <view style="display: flex;flex-direction: column;align-items: center;gap: 15rpx;">
-              <image src="/assets/images/home/car_icon.png" style="width: 60rpx;height: 47rpx;"></image>
-              <text style="font-weight: bold;font-size: 20rpx;color: #333333;">开锁范围: {{parsedData.inductionUnlockSignal||50}}</text>
+            <view class="middle-concrete-content-debugging-info">
+              <image class="middle-concrete-content-debugging-info-image" src="/assets/images/home/car_icon.png"></image>
+              <text class="middle-concrete-content-debugging-info-text">开锁范围: {{parsedData.inductionUnlockSignal||50}}</text>
             </view>
           </view>
           <view class="middle-concrete-content-debugging-slider-thumb" style="{{unlockThumbStyle}}" data-id="unlockTrack" bindtouchmove="onlockSlide">
-            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" style="width: 31rpx;height: 33rpx;" />
+            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" />
           </view>
           <view class="middle-concrete-content-debugging-person-icon" style="{{myPositionStyle}}">
-            <view style="display: flex;flex-direction: column;align-items: center;gap: 15rpx;">
-              <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/my_place.png" style="width: 42rpx;height: 47rpx;"></image>
-              <text style="font-weight: bold;font-size: 20rpx;color: #333333;">我的位置: {{parsedData.signalValue}}</text>
+            <view class="middle-concrete-content-debugging-person-info">
+              <image class="middle-concrete-content-debugging-person-info-image" src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/my_place.png" />
+              <text class="middle-concrete-content-debugging-info-text">我的位置: {{parsedData.signalValue||40}}</text>
             </view>
           </view>
         </view>
-        <view class="middle-concrete-content-debugging-tip">拖动圆环，根据您与车辆的距离设定关锁感应范围。携带手机离开范围时，车辆将自动关锁。</view>
+        <view class="middle-concrete-content-debugging-tip">拖动圆环，根据您与车辆的距离设定开锁感应范围。携带手机进入范围时，车辆将自动开锁。</view>
       </view>
       <view class="middle-concrete-content-debugging">
         <view class="middle-concrete-content-debugging-title">关锁锁信号敏感值DIY</view>
         <view class="middle-concrete-content-debugging-slider-track tarck-lock" id="lockTrack">
           <view class="middle-concrete-content-debugging-slider-fill fill-lock" style="width: {{lockRange+'%'}}"></view>
           <view class="middle-concrete-content-debugging-car-icon">
-            <view style="display: flex;flex-direction: column;align-items: center;gap: 15rpx;">
-              <image src="/assets/images/home/car_icon.png" style="width: 60rpx;height: 47rpx;"></image>
-              <text style="font-weight: bold;font-size: 20rpx;color: #333333;">关锁范围: {{parsedData.inductionLockSignal||60}}</text>
+            <view class="middle-concrete-content-debugging-info">
+              <image src="/assets/images/home/car_icon.png" class="middle-concrete-content-debugging-info-image" />
+              <text class="middle-concrete-content-debugging-info-text">关锁范围: {{parsedData.inductionLockSignal||60}}</text>
             </view>
           </view>
           <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
-            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" style="width: 31rpx;height: 33rpx;" />
+            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" />
           </view>
           <view class="middle-concrete-content-debugging-person-icon" style="{{myPositionStyle}}">
-            <view style="display: flex;flex-direction: column;align-items: center;gap: 15rpx;">
-              <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/my_place.png" style="width: 42rpx;height: 47rpx;"></image>
-              <text style="font-weight: bold;font-size: 20rpx;color: #333333;">我的位置: {{parsedData.signalValue}}</text>
+            <view class="middle-concrete-content-debugging-person-info">
+              <image class="middle-concrete-content-debugging-person-info-image" src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/my_place.png" />
+              <text class="middle-concrete-content-debugging-info-text">我的位置: {{parsedData.signalValue||50}}</text>
             </view>
           </view>
         </view>
@@ -104,22 +113,22 @@
         <view class="middle-concrete-content-debugging-slider-track tarck-special" id="unlockTrack">
           <view class="middle-concrete-content-debugging-slider-fill fill-special" style="width: {{lockRange+'%'}}"></view>
           <view class="middle-concrete-content-debugging-car-icon">
-            <view style="display: flex;flex-direction: column;align-items: center;gap: 15rpx;">
-              <image src="/assets/images/home/car_icon.png" style="width: 60rpx;height: 47rpx;"></image>
-              <text style="font-weight: bold;font-size: 20rpx;color: #333333;">关锁范围: {{parsedData.inductionLockSignal||60}}</text>
+            <view class="middle-concrete-content-debugging-info">
+              <image src="/assets/images/home/car_icon.png" class="middle-concrete-content-debugging-info-image"></image>
+              <text class="middle-concrete-content-debugging-info-text">关锁范围: {{parsedData.inductionLockSignal||60}}</text>
             </view>
           </view>
           <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
-            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" style="width: 31rpx;height: 33rpx;" />
+            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" />
           </view>
           <view class="middle-concrete-content-debugging-person-icon" style="{{myPositionStyle}}">
-            <view style="display: flex;flex-direction: column;align-items: center;gap: 15rpx;">
-              <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/my_place.png" style="width: 42rpx;height: 47rpx;"></image>
-              <text style="font-weight: bold;font-size: 20rpx;color: #333333;">我的位置: {{parsedData.signalValue}}</text>
+            <view class="middle-concrete-content-debugging-person-info">
+              <image class="middle-concrete-content-debugging-person-info-image" src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/my_place.png"></image>
+              <text class="middle-concrete-content-debugging-info-text">我的位置: {{parsedData.signalValue||50}}</text>
             </view>
           </view>
         </view>
-        <view class="middle-concrete-content-debugging-tip">拖动圆环，根据您与车辆的距离设定关锁感应范围。携带手机离开范围时，车辆将自动关锁。</view>
+        <view class="middle-concrete-content-debugging-tip">如车辆启动时频繁开锁关锁, 请拖动圆环远离车辆。调试本项会同步调整关锁灵敏度。</view>
       </view>
     </view>
   </view>
@@ -145,5 +154,89 @@
     <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
     <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />
     <text>{{item.text}}</text>
+  </view>
+</view>
+
+<!-- 更多功能弹出区域 -->
+<!-- components/RightFullHeightModal/RightFullHeightModal.wxml -->
+<view class="modal-container" wx:if="{{isShow}}">
+  <view class="modal-mask" bindtap="handleMaskTap"></view>
+  <view class="modal-content" style="background-color: #EEF1F4;">
+    <view class="modal-body" style="margin-top: {{g_height_from_head+g_head_height}}px;">
+      <block>
+        <view class="modal-body-outer-layer-of-card">
+          <view class="modal-body-outer-layer-of-card-layer">
+            <text class="modal-body-outer-layer-of-card-layer-title">钥匙功能设置</text>
+          </view>
+          <view class="modal-body-outer-layer-of-card-layer-info">
+            <view class="modal-body-outer-layer-of-card-layer-settings-item">
+              <view class="modal-body-outer-layer-of-card-layer-item-left">
+                <text class="modal-body-outer-layer-of-card-layer-item-text">蓝牙断开自动锁车</text>
+                <switch bindchange="handleRadioChange" color="#07C160" style="transform: scale(0.7)" />
+              </view>
+              <view class="modal-body-outer-layer-of-card-layer-item-tips">启用后，若在开锁状态下与车载蓝牙断开，设备将自动执行一次关锁</view>
+            </view>
+            <view class="modal-body-outer-layer-of-card-layer-settings-item">
+              <view class="modal-body-outer-layer-of-card-layer-item-left">
+                <text class="modal-body-outer-layer-of-card-layer-item-text">锁车自动升窗</text>
+                <switch bindchange="handleRadioChange" color="#07C160" style="transform: scale(0.7)" />
+              </view>
+              <view class="modal-body-outer-layer-of-card-layer-item-tips">启用后，按关锁按钮将执行升窗。需要提前配置升窗动作</view>
+            </view>
+          </view>
+        </view>
+
+        <view class="modal-body-outer-layer-of-card">
+          <view class="modal-body-outer-layer-of-card-layer">
+            <text class="modal-body-outer-layer-of-card-layer-title">按键功能设置</text>
+          </view>
+          <view class="modal-body-outer-layer-of-card-layer-info">
+            <view class="modal-body-outer-layer-of-card-layer-settings-item">
+              <view class="modal-body-outer-layer-of-card-layer-item-left">
+                <text class="modal-body-outer-layer-of-card-layer-item-text">开锁功能指令</text>
+                <picker data-item="{{item}}" data-index="{{index}}" bindchange="handleOutputMethod" range="{{key_out_put[index]}}" range-key="name">
+                  <view class="modal-body-outer-layer-of-card-layer-picker">
+                    <text>短按开锁</text>
+                    <image src="/assets/images/home/right_1.png" />
+                  </view>
+                </picker>
+              </view>
+            </view>
+            <view class="modal-body-outer-layer-of-card-layer-settings-item">
+              <view class="modal-body-outer-layer-of-card-layer-item-left">
+                <text class="modal-body-outer-layer-of-card-layer-item-text">开锁功能指令</text>
+                <picker data-item="{{item}}" data-index="{{index}}" bindchange="handleOutputMethod" range="{{key_out_put[index]}}" range-key="name">
+                  <view class="modal-body-outer-layer-of-card-layer-picker">
+                    <text>短按开锁</text>
+                    <image src="/assets/images/home/right_1.png" />
+                  </view>
+                </picker>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <block>
+        <view class="modal-body-outer-layer-of-card">
+          <view class="modal-body-outer-layer-of-card-layer">
+            <text class="modal-body-outer-layer-of-card-layer-title">更多按键设置</text>
+          </view>
+          <view class="modal-body-outer-layer-of-card-layer-info">
+            <view class="modal-body-outer-layer-of-card-layer-settings-item">
+              <view class="modal-body-outer-layer-of-card-layer-item-left">
+                <text class="modal-body-outer-layer-of-card-layer-item-text">尾箱</text>
+                <switch bindchange="handleRadioChange" color="#07C160" style="transform: scale(0.7)" />
+              </view>
+            </view>
+            <view class="modal-body-outer-layer-of-card-layer-settings-item">
+              <view class="modal-body-outer-layer-of-card-layer-item-left">
+                <text class="modal-body-outer-layer-of-card-layer-item-text">寻车</text>
+                <switch bindchange="handleRadioChange" color="#07C160" style="transform: scale(0.7)" />
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
   </view>
 </view>
