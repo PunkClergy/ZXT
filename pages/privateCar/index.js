@@ -18,7 +18,57 @@ const {
   u_getCarBluetoothKeyByCode
 } = require('../../utils/request/order')
 
-
+// 指令集合
+const _INSTRUCTIONS = [
+  { id: 1, name: '开锁功能指令配置', useType: '', useTypeId: '', },
+  { id: 2, name: '关锁功能指令配置', useType: '', useTypeId: '', },
+  { id: 3, name: '寻车功能指令配置', useType: '', useTypeId: '', },
+  { id: 4, name: '尾箱功能指令配置', useType: '', useTypeId: '', },
+  // { id: 5, name: '左中门功能指令配置', useType: '', useTypeId: '', },
+  // { id: 6, name: '右中门功能指令配置', useType: '', useTypeId: '', },
+  { id: 7, name: '升窗功能指令配置', useType: '', useTypeId: '', },
+  { id: 8, name: '降窗功能指令配置', useType: '', useTypeId: '', },
+];
+// 输出方式
+const _OUTPUT = [
+  // 开锁
+  [{ id: 1, name: '短按开锁键' },//输出次数1 输出时间500ms 输出间隔0
+  { id: 2, name: '短按两次开锁键' },//输出次数2 输出时间500ms 输出间隔500ms
+  ],
+  // 关锁
+  [{ id: 1, name: '短按关锁键' },//输出次数1 输出时间500ms 输出间隔0
+  ],
+  // 寻车
+  [{ id: 1, name: '短按寻车键' },//寻车键：输出次数1 输出时间500ms 输出间隔0; 关锁键:输出次数3 输出时间500 输出间隔1000ms
+  { id: 2, name: '短按关锁键' },
+  ],
+  // 尾箱
+  [{ id: 1, name: '短按两次尾箱键' },//输出次数2 输出时间500ms 输出间隔1000ms
+  { id: 2, name: '长按三秒尾箱键' },//输出次数1 输出时间3000ms 输出间隔0
+  ],
+  // // 左中门
+  // [{ id: 1, name: '短按左中门键' },//输出次数为1 输出时间为500ms 输出间隔0
+  // { id: 2, name: '长按3秒左中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
+  // ],
+  // // 右中门
+  // [{ id: 1, name: '短按右中门键' },//输出次数为1 输出时间为500ms 输出间隔0
+  // { id: 2, name: '长按3秒右中门键' },//输出次数为1 输出时间为3000ms 输出间隔0
+  // ],
+  // 升窗
+  [{ id: 1, name: '长按7秒关锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
+  ],
+  // 降窗
+  [{ id: 1, name: '长按7秒开锁键' },//输出次数为1 输出时间为7000ms 输出间隔0
+  ]]
+// 控制项常量数组
+const CONTROL_ITEMS = [
+  { id: 1, name: '开锁', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/unlock@2x.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
+  { id: 2, name: '关锁', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/lock@2x.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
+  { id: 3, name: '尾箱', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/tail_box@2x.png', evt: 'handleOpenTrunk' },
+  { id: 4, name: '寻车', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/seek_car@2x.png', evt: 'handleFindCar' },
+  { id: 5, name: '升窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handlRaiseTheWindow' },
+  { id: 6, name: '降窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleLowerTheWindow' },
+];
 Page({
   data: {
     g_screenTotalHeight: '',//屏幕总高度
@@ -58,14 +108,7 @@ Page({
     // 定时器相关
     pageInterval: 0,                              // 状态检查定时器
     netWork: false,
-    controlItems: [
-      { id: 1, name: '开锁', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/unlock@2x.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/unlock_on.png', evt: 'handleUnlock' },
-      { id: 2, name: '关锁', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/lock@2x.png', ative: 'https://k3a.wiselink.net.cn/img/app/blue/lock_on.png', evt: 'handleLock' },
-      { id: 3, name: '尾箱', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/tail_box@2x.png', evt: 'handleOpenTrunk' },
-      { id: 4, name: '寻车', enabled: true, icon: 'https://k1sw.wiselink.net.cn/img/app2.0/sjc/seek_car@2x.png', evt: 'handleFindCar' },
-      // { id: 5, name: '升窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handlRaiseTheWindow' },
-      // { id: 6, name: '降窗', enabled: true, icon: 'https://k3a.wiselink.net.cn/img/app/blue/search_off.png', evt: 'handleLowerTheWindow' },
-    ],
+    controlItems: CONTROL_ITEMS,
 
     logs: [],//报文日志
     deviceInfo: {},//设备信息
@@ -76,6 +119,14 @@ Page({
     currentTab: 1,
     // 原始链接
     c_link: 'https://k1sw.wiselink.net.cn/',
+    // 设置弹窗
+    modalisShow: false,
+    // 更多钥匙功能标志
+    key_settings: false,
+    // 更多功能标志
+    all_settings: false,
+    keyInstructions: _INSTRUCTIONS,//指令集合
+    key_out_put: _OUTPUT,//输出方式集合
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
@@ -981,5 +1032,148 @@ Page({
     const cmdParam = cmdParamMap[trackId];
     const hexProgress = progress.toString(16).padStart(2, '0');
     this.btnCmdSend(0x11, cmdParam, hexProgress);
+  },
+  // 更多设置弹窗
+  /**
+ * 处理更多设置点击事件
+ * @param {Event} evt - 点击事件对象
+ */
+  handleMoreSettings(evt) {
+    const { currentTarget = {} } = evt || {};
+    const { dataset = {} } = currentTarget;
+    const key = dataset.key;
+    this.setData({
+      modalisShow: true,
+      key_settings: key == 'key_settings',
+      all_settings: key == 'all_settings'
+    });
+  },
+  // 关闭弹出窗
+  handleMaskTap() {
+    const resetSettings = {
+      modalisShow: false,
+      key_settings: false,
+      all_settings: false
+    };
+    this.setData(resetSettings);
+  },
+  // 设置 蓝牙断开自动断开锁车
+  handleToBreakOff(e) {
+    const isEnabled = Boolean(e?.detail?.value);
+    this.btnCmdSend(0x3b, [isEnabled ? 0x01 : 0x00]);
+  },
+  // 锁车自动升窗
+  handleAutoCloseTheWindow(e) {
+    const isEnabled = Boolean(e?.detail?.value);
+    this.btnCmdSend(0x4D, [isEnabled ? 0x01 : 0x00]);
+  },
+  // 输出方式
+  handleOutputMethod(evt) {
+    const { index, item: info } = evt?.currentTarget?.dataset || {};
+    const value = evt?.detail?.value;
+
+    // 参数校验
+    if (index === undefined || !info || value === undefined) return;
+
+    // 获取选中项
+    const selectedOutput = this.data.key_out_put?.[index]?.[Number(value)];
+    if (!selectedOutput?.name) return;
+
+    // 查找需要更新的项
+    const { keyInstructions } = this.data;
+    const updateIndex = keyInstructions.findIndex(item => item?.id === info.id);
+    if (updateIndex === -1) return;
+
+    // 更新数据
+    this.setData({
+      [`keyInstructions[${updateIndex}].useType`]: selectedOutput.name,
+      [`keyInstructions[${updateIndex}].useTypeId`]: selectedOutput.id
+    }, () => {
+      const updatedItem = keyInstructions[updateIndex];
+      if (updatedItem?.useTypeId) {
+        this.handleInstructions(updatedItem)
+      }
+    });
+  },
+  // 快捷设置按键
+  handleInstructions(evt) {
+    const { id, useTypeId } = evt;
+    const sendCommand = (cmd, data) => {
+      this.PackAndSendSet(cmd, data);
+    };
+    const instructionMap = {
+      1: { // 开锁键
+        1: () => sendCommand(0x33, [0x33, 0x06, 0x01, 0x00, 0x00]), // 短按开锁键 
+        2: () => sendCommand(0x33, [0x33, 0x06, 0x02, 0x06, 0x00]) // 短按两次开锁键 
+      },
+      2: { // 关锁键
+        1: () => sendCommand(0x34, [0x34, 0x06, 0x01, 0x00, 0x00]) // 短按开锁键
+      },
+      3: { // 寻车键
+        1: () => sendCommand(0x36, [0x36, 0x06, 0x01, 0x00, 0x00]), // 短按寻车键
+        2: () => sendCommand(0x36, [0x34, 0x06, 0x03, 0x06, 0x00])  // 三按关锁键
+      },
+      4: { // 尾箱键
+        1: () => sendCommand(0x35, [0x35, 0x06, 0x02, 0x06, 0x00]), // 短按两次尾箱键
+        2: () => sendCommand(0x35, [0x35, 0x1E, 0x01, 0x00, 0x00])  // 长按3秒尾箱键
+      },
+      5: { // 左中门
+        1: () => sendCommand(0x50, [0x50, 0x06, 0x01, 0x00, 0x00]), // 短按左中门键
+        2: () => sendCommand(0x50, [0x50, 0x1E, 0x01, 0x00, 0x00])  // 长按3秒左中门键
+      },
+      6: { // 右中门
+        1: () => sendCommand(0x51, [0x51, 0x06, 0x01, 0x00, 0x00]), // 短按右中门键
+        2: () => sendCommand(0x51, [0x51, 0x1E, 0x01, 0x00, 0x00])  // 长按3秒右中门键
+      },
+      7: { // 升窗
+        1: () => sendCommand(0x52, [0x34, 0x46, 0x01, 0x00, 0x00])  // 长按7秒关锁键
+      },
+      8: { // 降窗
+        1: () => sendCommand(0x53, [0x33, 0x46, 0x01, 0x00, 0x00])  // 长按7秒开锁键
+      }
+    };
+    const idActions = instructionMap[id];
+    if (!idActions) return; // 无效 id
+    const action = idActions[useTypeId];
+    if (action) {
+      action();
+    }
+  },
+  // 处理快捷设置按键命令
+  PackAndSendSet(type, data) {
+    const packet = [
+      0x24,
+      type,
+      ...data,
+      ...Array(12 - data.length).fill(0x00),
+      0x24
+    ];
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
+  },
+  splitArray(arr, n = 4) {
+    const result = [];
+    for (let i = 0; i < arr.length; i += n) {
+      result.push(arr.slice(i, i + n));
+    }
+    return result;
+  },
+  //新增或减少配置
+  handleToggleControl(evt) {
+    const { index } = evt.currentTarget?.dataset || {};
+    const { value } = evt.detail || {};
+    const { controlItems } = this.data;
+    console.log(controlItems)
+    // 参数校验
+    if (index == null || value == null || !controlItems?.[index]) {
+      return;
+    }
+    // 更新数据（使用不可变更新）
+    const updatedItems = controlItems.map((item, i) =>
+      i === index ? { ...item, enabled: Boolean(value) } : item
+    );
+    // 更新视图和缓存
+    this.setData({ controlItems: updatedItems });
+    console.log(updatedItems)
+    wx.setStorage({ key: 'controlItems', data: updatedItems });
   },
 });

@@ -28,7 +28,7 @@
             </view>
             <view class="top-fixed-basics-plate-btn-install-tip">安装说明</view>
           </view>
-          <view class="top-fixed-basics-plate-btn-more">
+          <view class="top-fixed-basics-plate-btn-more" data-key="all_settings" bindtap="handleMoreSettings">
             <text>更多设置</text>
           </view>
         </view>
@@ -135,7 +135,7 @@
   <view class="bottom-fixed" style="height: {{bottomHeight}}px;">
     <view class="bottom-fixed-identification">
       <text class="bottom-fixed-identification-title">我的手机汽车钥匙功能</text>
-      <text class="bottom-fixed-identification-more">更多钥匙功能 ></text>
+      <text class="bottom-fixed-identification-more" data-key="key_settings" bindtap="handleMoreSettings">更多钥匙功能 ></text>
     </view>
     <swiper class="bottom-fixed-swiper" indicator-dots="{{true}}">
       <swiper-item class="bottom-fixed-swiper-item">
@@ -159,11 +159,11 @@
 
 <!-- 更多功能弹出区域 -->
 <!-- components/RightFullHeightModal/RightFullHeightModal.wxml -->
-<view class="modal-container" wx:if="{{isShow}}">
+<view class="modal-container" wx:if="{{modalisShow}}">
   <view class="modal-mask" bindtap="handleMaskTap"></view>
   <view class="modal-content" style="background-color: #EEF1F4;">
     <view class="modal-body" style="margin-top: {{g_height_from_head+g_head_height}}px;">
-      <block>
+      <block wx:if="{{all_settings}}">
         <view class="modal-body-outer-layer-of-card">
           <view class="modal-body-outer-layer-of-card-layer">
             <text class="modal-body-outer-layer-of-card-layer-title">钥匙功能设置</text>
@@ -172,14 +172,14 @@
             <view class="modal-body-outer-layer-of-card-layer-settings-item">
               <view class="modal-body-outer-layer-of-card-layer-item-left">
                 <text class="modal-body-outer-layer-of-card-layer-item-text">蓝牙断开自动锁车</text>
-                <switch bindchange="handleRadioChange" color="#07C160" style="transform: scale(0.7)" />
+                <switch checked="{{parsedData.bleDisconnectLock}}" bindchange="handleToBreakOff" color="#07C160" style="transform: scale(0.7)" />
               </view>
               <view class="modal-body-outer-layer-of-card-layer-item-tips">启用后，若在开锁状态下与车载蓝牙断开，设备将自动执行一次关锁</view>
             </view>
             <view class="modal-body-outer-layer-of-card-layer-settings-item">
               <view class="modal-body-outer-layer-of-card-layer-item-left">
                 <text class="modal-body-outer-layer-of-card-layer-item-text">锁车自动升窗</text>
-                <switch bindchange="handleRadioChange" color="#07C160" style="transform: scale(0.7)" />
+                <switch checked="{{parsedData.lockWindowUp}}" bindchange="handleAutoCloseTheWindow" color="#07C160" style="transform: scale(0.7)" />
               </view>
               <view class="modal-body-outer-layer-of-card-layer-item-tips">启用后，按关锁按钮将执行升窗。需要提前配置升窗动作</view>
             </view>
@@ -191,20 +191,9 @@
             <text class="modal-body-outer-layer-of-card-layer-title">按键功能设置</text>
           </view>
           <view class="modal-body-outer-layer-of-card-layer-info">
-            <view class="modal-body-outer-layer-of-card-layer-settings-item">
+            <view class="modal-body-outer-layer-of-card-layer-settings-item" wx:for="{{keyInstructions}}" wx:key="index">
               <view class="modal-body-outer-layer-of-card-layer-item-left">
-                <text class="modal-body-outer-layer-of-card-layer-item-text">开锁功能指令</text>
-                <picker data-item="{{item}}" data-index="{{index}}" bindchange="handleOutputMethod" range="{{key_out_put[index]}}" range-key="name">
-                  <view class="modal-body-outer-layer-of-card-layer-picker">
-                    <text>短按开锁</text>
-                    <image src="/assets/images/home/right_1.png" />
-                  </view>
-                </picker>
-              </view>
-            </view>
-            <view class="modal-body-outer-layer-of-card-layer-settings-item">
-              <view class="modal-body-outer-layer-of-card-layer-item-left">
-                <text class="modal-body-outer-layer-of-card-layer-item-text">开锁功能指令</text>
+                <text class="modal-body-outer-layer-of-card-layer-item-text">{{item.name}}</text>
                 <picker data-item="{{item}}" data-index="{{index}}" bindchange="handleOutputMethod" range="{{key_out_put[index]}}" range-key="name">
                   <view class="modal-body-outer-layer-of-card-layer-picker">
                     <text>短按开锁</text>
@@ -216,22 +205,16 @@
           </view>
         </view>
       </block>
-      <block>
+      <block wx:if="{{key_settings}}">
         <view class="modal-body-outer-layer-of-card">
           <view class="modal-body-outer-layer-of-card-layer">
             <text class="modal-body-outer-layer-of-card-layer-title">更多按键设置</text>
           </view>
           <view class="modal-body-outer-layer-of-card-layer-info">
-            <view class="modal-body-outer-layer-of-card-layer-settings-item">
+            <view class="modal-body-outer-layer-of-card-layer-settings-item" wx:for="{{controlItems}}" wx:key="index">
               <view class="modal-body-outer-layer-of-card-layer-item-left">
-                <text class="modal-body-outer-layer-of-card-layer-item-text">尾箱</text>
-                <switch bindchange="handleRadioChange" color="#07C160" style="transform: scale(0.7)" />
-              </view>
-            </view>
-            <view class="modal-body-outer-layer-of-card-layer-settings-item">
-              <view class="modal-body-outer-layer-of-card-layer-item-left">
-                <text class="modal-body-outer-layer-of-card-layer-item-text">寻车</text>
-                <switch bindchange="handleRadioChange" color="#07C160" style="transform: scale(0.7)" />
+                <text class="modal-body-outer-layer-of-card-layer-item-text">{{item.name}}</text>
+                <switch checked="{{item.enabled}}" bindchange="handleToggleControl" data-index="{{index}}" color="#07C160" style="transform: scale(0.7)" />
               </view>
             </view>
           </view>
