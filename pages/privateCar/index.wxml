@@ -197,7 +197,7 @@
                 <text class="modal-body-outer-layer-of-card-layer-item-text">{{item.name}}</text>
                 <picker data-item="{{item}}" data-index="{{index}}" bindchange="handleOutputMethod" range="{{key_out_put[index]}}" range-key="name">
                   <view class="modal-body-outer-layer-of-card-layer-picker">
-                    <text>短按开锁</text>
+                    <text>{{item.useType}}</text>
                     <image src="/assets/images/home/right_1.png" />
                   </view>
                 </picker>

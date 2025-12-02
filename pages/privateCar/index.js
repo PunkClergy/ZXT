@@ -1,4 +1,4 @@
-import { getInstructions, getOutputConfig, getControlItems,getParseHexDataObject } from 'z-utility';
+import { getInstructions, getOutputConfig, getControlItems, getParseHexDataObject } from 'z-utility';
 const {
   u_navlist20
 } = require('../../utils/request/home')
@@ -59,7 +59,7 @@ Page({
     pageInterval: 0,                              // 状态检查定时器
     netWork: false,
     controlItems: getControlItems(),//控制按钮
-    controlItemspanel: [],//控制按钮面板
+    controlItemspanel: getControlItems(),//控制按钮面板
     logs: [],//报文日志
     deviceInfo: {},//设备信息
     // 底部tabbar高度
@@ -482,13 +482,28 @@ Page({
       case 0x11: //开锁信号值
         this.PackAndSendspecial(type, 6, data, sign); // 发送6字节数据
         break;
-      case 0x3a: // 设置 手动或感应模式
+      case 0x3b: // 设置 断开蓝牙自动锁车
+      case 0x3a: // 设置 感应模式
         const flameoutData = data; // 第一个字节为0x01，后面补11个0x00
-        this.PackAndSend3a(type, 12, flameoutData); // 发送12字节数据
+        this.PackAndSend(type, 12, flameoutData); // 发送12字节数据
+        break;
+      case 0x4D: //设置锁车升窗
+        this.PackAndSendspecial04d(data); // 发送6字节数据
+        break;
+      case 0x63:
+        this.PackAndSendspecial063(data); // 发送6字节数据
         break;
     }
   },
-
+  PackAndSendspecial04d(data) {
+    const packet = [
+      0x24,
+      0x4d, 0x01,
+      data,
+      0x24
+    ];
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
+  },
   PackAndSendspecial(type, dataLength, data, sign) {
     const packet = [
       0x24,                     // Header
@@ -548,7 +563,7 @@ Page({
     }
     return bytes
   },
- 
+
   // 上传报文 
   handleLoggerapi(evt) {
     const MAX_LOGS_BEFORE_UPLOAD = 10;
