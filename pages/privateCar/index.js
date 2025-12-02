@@ -59,7 +59,7 @@ Page({
     pageInterval: 0,                              // 状态检查定时器
     netWork: false,
     controlItems: getControlItems(),//控制按钮
-    controlItemspanel: getControlItems(),//控制按钮面板
+    controlItemspanel: [],//控制按钮面板
     logs: [],//报文日志
     deviceInfo: {},//设备信息
     // 底部tabbar高度
@@ -208,6 +208,12 @@ Page({
       }
     });
   },
+  // 初始化钥匙按钮内容
+  initContro() {
+    this.setData({
+      controlItemspanel: this.splitArray(getControlItems(), 4)
+    })
+  },
   onLoad: function (options) {
     // 获取屏幕数据
     this.initScreenAndSystemInfo()
@@ -221,6 +227,8 @@ Page({
   onShow: function () {
     this.handleStart()//开始执行链接蓝牙
     this.startConnectionStatusPolling()//启动连接状态轮询
+
+
   },
   onHide: function () {
     const that = this
@@ -791,7 +799,12 @@ Page({
             controlItemspanel: this.splitArray(result, 4)
           })
         });
+      },
+      fail: (err) => {
+        this.initContro()
       }
+
+
     });
   },
   // 更新滑块和填充层样式（核心）
@@ -849,6 +862,7 @@ Page({
     const touchX = touch.clientX;
     const relativeX = touchX - trackInfo.left;
     const progress = Math.max(0, Math.min(100, Math.round((relativeX / trackInfo.width) * 100)));
+    console.log(progress, trackId, '000---')
     const cmdParamMap = {
       lockTrack: 0,
       unlockTrack: 1

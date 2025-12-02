@@ -97,7 +97,7 @@
             </view>
           </view>
           <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
-            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" />
+            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/shut@2x.png" />
           </view>
           <view class="middle-concrete-content-debugging-person-icon" style="{{myPositionStyle}}">
             <view class="middle-concrete-content-debugging-person-info">
@@ -119,7 +119,7 @@
             </view>
           </view>
           <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
-            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" />
+            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/special@2x.png" />
           </view>
           <view class="middle-concrete-content-debugging-person-icon" style="{{myPositionStyle}}">
             <view class="middle-concrete-content-debugging-person-info">
