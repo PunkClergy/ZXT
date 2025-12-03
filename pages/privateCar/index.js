@@ -1082,4 +1082,17 @@ Page({
     console.log(updatedItems)
     wx.setStorage({ key: 'controlItems', data: updatedItems });
   },
+
+    // 调整安装手册
+    handleJumpSc() {
+      if (!isLogin()) {
+        wx.navigateTo({
+          url: '/pages/system/managerLoginView/loginView',
+        });
+        return
+      }
+      wx.redirectTo({
+        url: '/pages/listOfPrivateCars/pdf/index?flag=1',
+      })
+    },
 });

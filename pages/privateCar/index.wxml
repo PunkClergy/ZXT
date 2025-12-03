@@ -26,7 +26,7 @@
             <view class="top-fixed-basics-plate-btn-install-iconfont">
               <icon type="warn" size="14" color="#909090"></icon>
             </view>
-            <view class="top-fixed-basics-plate-btn-install-tip">安装说明</view>
+            <view class="top-fixed-basics-plate-btn-install-tip" bindtap="handleJumpSc">安装说明</view>
           </view>
           <view class="top-fixed-basics-plate-btn-more" data-key="all_settings" bindtap="handleMoreSettings">
             <text>更多设置</text>
