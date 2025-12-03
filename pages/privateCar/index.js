@@ -492,8 +492,8 @@ Page({
         break;
       case 0x3b: // 设置 断开蓝牙自动锁车
       case 0x3a: // 设置 感应模式
-        const flameoutData = data; // 第一个字节为0x01，后面补11个0x00
-        this.PackAndSend(type, 12, flameoutData); // 发送12字节数据
+        const flameoutData = data// 第一个字节为0x01，后面补11个0x00
+        this.PackAndSend3a(type, 12, flameoutData); // 发送12字节数据
         break;
       case 0x4D: //设置锁车升窗
         this.PackAndSendspecial04d(data); // 发送6字节数据
@@ -919,7 +919,7 @@ Page({
       }
     };
     const toTwoHex = (num) => {
-      return num.toString(16).padStart(2, '0').toUpperCase(); 
+      return num.toString(16).padStart(2, '0').toUpperCase();
     };
 
     if (['unlockTrack', 'lockTrack'].includes(trackId)) {
