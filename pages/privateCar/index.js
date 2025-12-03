@@ -1,4 +1,4 @@
-import { getInstructions, getOutputConfig, getControlItems, getParseHexDataObject } from 'z-utility';
+import { getInstructions, getOutputConfig, getControlItems, getParseHexDataObject, getInstructionMap } from 'z-utility';
 const {
   u_navlist20
 } = require('../../utils/request/home')
@@ -1001,38 +1001,9 @@ Page({
     const sendCommand = (cmd, data) => {
       this.PackAndSendSet(cmd, data);
     };
-    const instructionMap = {
-      1: { // 开锁键
-        1: () => sendCommand(0x33, [0x33, 0x06, 0x01, 0x00, 0x00]), // 短按开锁键 
-        2: () => sendCommand(0x33, [0x33, 0x06, 0x02, 0x06, 0x00]) // 短按两次开锁键 
-      },
-      2: { // 关锁键
-        1: () => sendCommand(0x34, [0x34, 0x06, 0x01, 0x00, 0x00]) // 短按开锁键
-      },
-      3: { // 寻车键
-        1: () => sendCommand(0x36, [0x36, 0x06, 0x01, 0x00, 0x00]), // 短按寻车键
-        2: () => sendCommand(0x36, [0x34, 0x06, 0x03, 0x06, 0x00])  // 三按关锁键
-      },
-      4: { // 尾箱键
-        1: () => sendCommand(0x35, [0x35, 0x06, 0x02, 0x06, 0x00]), // 短按两次尾箱键
-        2: () => sendCommand(0x35, [0x35, 0x1E, 0x01, 0x00, 0x00])  // 长按3秒尾箱键
-      },
-      5: { // 左中门
-        1: () => sendCommand(0x50, [0x50, 0x06, 0x01, 0x00, 0x00]), // 短按左中门键
-        2: () => sendCommand(0x50, [0x50, 0x1E, 0x01, 0x00, 0x00])  // 长按3秒左中门键
-      },
-      6: { // 右中门
-        1: () => sendCommand(0x51, [0x51, 0x06, 0x01, 0x00, 0x00]), // 短按右中门键
-        2: () => sendCommand(0x51, [0x51, 0x1E, 0x01, 0x00, 0x00])  // 长按3秒右中门键
-      },
-      7: { // 升窗
-        1: () => sendCommand(0x52, [0x34, 0x46, 0x01, 0x00, 0x00])  // 长按7秒关锁键
-      },
-      8: { // 降窗
-        1: () => sendCommand(0x53, [0x33, 0x46, 0x01, 0x00, 0x00])  // 长按7秒开锁键
-      }
-    };
+    const instructionMap = getInstructionMap(sendCommand)
     const idActions = instructionMap[id];
+    console.log(idActions)
     if (!idActions) return; // 无效 id
     const action = idActions[useTypeId];
     if (action) {
@@ -1048,9 +1019,8 @@ Page({
       ...Array(12 - data.length).fill(0x00),
       0x24
     ];
-    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
-  // 先过滤enabled:false的项，再按每个子数组最多n项拆分
   splitArray(arr, n = 4) {
     const filteredArr = arr.filter(item => item.enabled);
     const result = [];
@@ -1064,35 +1034,30 @@ Page({
     const { index } = evt.currentTarget?.dataset || {};
     const { value } = evt.detail || {};
     const { controlItems } = this.data;
-    console.log(controlItems)
-    // 参数校验
     if (index == null || value == null || !controlItems?.[index]) {
       return;
     }
-    // 更新数据（使用不可变更新）
     const updatedItems = controlItems.map((item, i) =>
       i === index ? { ...item, enabled: Boolean(value) } : item
     );
-    // 更新视图和缓存
     this.setData({ controlItems: updatedItems }, () => {
       this.setData({
         controlItemspanel: this.splitArray(updatedItems, 4)
       })
     });
-    console.log(updatedItems)
     wx.setStorage({ key: 'controlItems', data: updatedItems });
   },
 
-    // 调整安装手册
-    handleJumpSc() {
-      if (!isLogin()) {
-        wx.navigateTo({
-          url: '/pages/system/managerLoginView/loginView',
-        });
-        return
-      }
-      wx.redirectTo({
-        url: '/pages/listOfPrivateCars/pdf/index?flag=1',
-      })
-    },
+  // 调整安装手册
+  handleJumpSc() {
+    if (!isLogin()) {
+      wx.navigateTo({
+        url: '/pages/system/managerLoginView/loginView',
+      });
+      return
+    }
+    wx.redirectTo({
+      url: '/pages/listOfPrivateCars/pdf/index?flag=1',
+    })
+  },
 });
