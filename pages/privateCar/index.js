@@ -813,9 +813,9 @@ Page({
     const { inductionUnlockSignal, inductionLockSignal } = val
     this.setData({
       unlockThumbStyle: `left: ${(inductionUnlockSignal || 50 - 6)}%;`,
-      lockThumbStyle: `left: ${(inductionLockSignal || 60 - 6)}%;`,
-      unlockRange: inductionUnlockSignal || 50,
-      lockRange: inductionLockSignal || 60,
+      lockThumbStyle: `left: ${(inductionLockSignal || 60 - 6) / 2}%;`,
+      unlockRange: (inductionUnlockSignal || 50),
+      lockRange: (inductionLockSignal || 60) / 2,
     });
   },
 
@@ -824,7 +824,7 @@ Page({
     const val = this.data.parsedData;
     const { signalValue } = val
     this.setData({
-      myPositionStyle: `left: ${signalValue}%;`
+      myPositionStyle: `left: ${signalValue / 2}%;`
     });
   },
 
@@ -841,35 +841,97 @@ Page({
 
   // 滑块拖动事件
   async onlockSlide(e) {
-    // 先判断是否配对
-    const { parsedData = {} } = this.data || {};
-    const { pairStatus = '未配对' } = parsedData;
-    if (pairStatus == '未配对') {
+    const { data: { parsedData = { pairStatus: '未配对' } } = {} } = this;
+    if (parsedData.pairStatus === '未配对') {
       this.btnPair();
       return;
     }
-    const target = e?.currentTarget;
-    const touch = e?.touches?.[0];
+    const { currentTarget: target, touches = [] } = e || {};
+    const touch = touches[0];
     if (!target || !touch) return;
     const trackId = target.dataset?.id;
-    if (!['lockTrack', 'unlockTrack'].includes(trackId)) return;
-    const trackTypeMap = {
-      lockTrack: 'lockTrack',
-      unlockTrack: 'unlockTrack'
-    };
-    const trackInfo = await this.getTrackInfo(trackTypeMap[trackId]);
+    const validTrackIds = new Set(['lockTrack', 'unlockTrack']);
+    if (!validTrackIds.has(trackId)) return;
+    const trackInfo = await this.getTrackInfo(trackId);
     if (!trackInfo?.left || !trackInfo?.width) return;
     const touchX = touch.clientX;
     const relativeX = touchX - trackInfo.left;
-    const progress = Math.max(0, Math.min(100, Math.round((relativeX / trackInfo.width) * 100)));
-    console.log(progress, trackId, '000---')
-    const cmdParamMap = {
-      lockTrack: 0,
-      unlockTrack: 1
+    console.log(`${trackId} - 判断滑动值`);
+    const trackConfig = {
+      lockTrack: { maxProgress: 200, cmdParam: 0 },
+      unlockTrack: { maxProgress: 100, cmdParam: 1 }
     };
-    const cmdParam = cmdParamMap[trackId];
-    const hexProgress = progress.toString(16).padStart(2, '0');
-    this.btnCmdSend(0x11, cmdParam, hexProgress);
+    const { maxProgress, cmdParam } = trackConfig[trackId];
+    const progress = Math.max(0, Math.min(maxProgress, Math.round((relativeX / trackInfo.width) * maxProgress)));
+    const THRESHOLD_CONFIG = {
+      unlock: {
+        defaultSignal: 100,
+        min: 40,
+        maxOffset: -10, // 最大阈值 = 感应信号 + 偏移量
+      },
+      lock: {
+        defaultSignal: 40,
+        max: 180,
+        minOffset: 10, // 最小阈值 = 感应信号 + 偏移量
+      },
+    };
+
+    const getParsedSignal = (context, trackType) => {
+      const { data = {} } = context;
+      const { parsedData = {} } = data;
+      const config = THRESHOLD_CONFIG[trackType];
+      const signalKey = trackType === 'unlock' ? 'inductionLockSignal' : 'inductionUnlockSignal';
+      return Number(parsedData[signalKey]) || config.defaultSignal;
+    };
+
+    const calculateValidProgress = (progress, trackType) => {
+      const config = THRESHOLD_CONFIG[trackType];
+      const signal = getParsedSignal(this, trackType);
+      const thresholds = trackType === 'unlock'
+        ? { min: config.min, max: signal + config.maxOffset }
+        : { min: signal + config.minOffset, max: config.max };
+      thresholds.min = Math.max(0, thresholds.min); // 最小不低于0
+      thresholds.max = Math.min(255, thresholds.max); // 最大不超过255（16进制两位上限）
+      if (thresholds.min > thresholds.max) thresholds.min = thresholds.max; // 避免范围倒置
+      const validProgress = Math.max(thresholds.min, Math.min(thresholds.max, progress));
+      return { validProgress, ...thresholds };
+    };
+    const showThresholdTip = (progress, thresholds, trackType) => {
+      const typeText = trackType === 'unlock' ? '开锁' : '锁定';
+      let tipText;
+
+      if (progress < thresholds.min) {
+        tipText = `${typeText}进度不能小于${thresholds.min}，已自动修正为${thresholds.min}`;
+      } else if (progress > thresholds.max) {
+        tipText = `${typeText}进度不能大于${thresholds.max}，已自动修正为${thresholds.max}`;
+      }
+
+      if (tipText) {
+        if (typeof wx?.showToast === 'function') {
+          wx.showToast({
+            title: tipText,
+            icon: 'none',
+            duration: 1500,
+          });
+        } else {
+          console.warn('[提示]', tipText); // 降级日志提示
+        }
+      }
+    };
+    const toTwoHex = (num) => {
+      return num.toString(16).padStart(2, '0').toUpperCase(); 
+    };
+
+    if (['unlockTrack', 'lockTrack'].includes(trackId)) {
+      const trackType = trackId.replace('Track', ''); // 提取类型：unlock/lock
+      const progressNum = Number(progress) || 0; // 确保进度是数字，默认0
+      const { validProgress, min, max } = calculateValidProgress(progressNum, trackType);
+      if (progressNum < min || progressNum > max) {
+        showThresholdTip(progressNum, { min, max }, trackType);
+      }
+      const hexProgress = toTwoHex(validProgress);
+      this.btnCmdSend(0x11, cmdParam, hexProgress);
+    }
   },
   // 更多设置弹窗
   /**
