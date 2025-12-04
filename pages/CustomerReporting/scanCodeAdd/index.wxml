@@ -34,7 +34,7 @@
       </view>
     </view>
     <view class="card-footer">
-      <view bindtap="handleSubmit">确认修改</view>
+      <view bindtap="handleSubmit">确认</view>
     </view>
   </view>
 </view>

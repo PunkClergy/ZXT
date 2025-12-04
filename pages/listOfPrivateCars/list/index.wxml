@@ -6,7 +6,7 @@
     <view class="record-tabs" bindtap="handleSwitchTab">
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">设备清单</view>
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">{{btnState}}设定</view>
-      <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_active_1:s_background_tabs_1}}');">功能设置</view>
+      <!-- <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 3?s_background_tabs_active_1:s_background_tabs_1}}');">功能设置</view> -->
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
@@ -38,9 +38,9 @@
             <view class="content-item-footer">
               <view class="footer-left"></view>
               <view class="footer-right" style="gap: 20rpx;">
-                <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump">
+                <!-- <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump">
                   <text>设置</text>
-                </view>
+                </view> -->
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectCar" wx:if="{{g_items.length>1}}">
                   <text>选择此车</text>
                 </view>
@@ -48,7 +48,9 @@
             </view>
           </view>
         </block>
-
+        <block wx:if="{{!g_items.length}}">
+          <view style="width: 100%;display: flex;justify-content: center;padding: 50rpx 0;color: #bbb;">暂无车辆</view>
+        </block>
       </scroll-view>
     </block>
     <block wx:if="{{c_activeTab == 2}}">

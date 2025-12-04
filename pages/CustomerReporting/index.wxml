@@ -39,6 +39,10 @@
             <label>类型 ：</label>
             <text>{{item.type==1?'手工':'扫码'}}</text>
           </view>
+          <view class="info-item {{item.createdate.length > 8 ? 'long-info-item' : ''}}">
+            <label>报备时间 ：</label>
+            <text>{{item.createdate}}</text>
+          </view>
           <view class="info-item  {{item.address.length > 8 ? 'long-info-item' : ''}}">
             <label>地址 ：</label>
             <text>{{item.address||'-'}}</text>

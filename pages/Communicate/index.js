@@ -25,7 +25,36 @@ Page({
     g_page: 1, //列表页码
     g_comParam: '', //搜索内容
   },
-
+  hadleView(evt) {
+    if (evt?.currentTarget?.dataset?.info) {
+      wx.downloadFile({
+        url: encodeURI(`https://k3a.wiselink.net.cn/img/${evt?.currentTarget?.dataset?.info}`),
+        success: (res) => {
+          const filePath = res.tempFilePath
+          wx.openDocument({
+            filePath: filePath,
+            success: (res) => {
+              console.log('打开PDF成功')
+            },
+            fail: (err) => {
+              console.error('打开PDF失败', err)
+              wx.showToast({
+                title: '打开文件失败',
+                icon: 'none'
+              })
+            }
+          })
+        },
+        fail: (err) => {
+          console.error('下载失败', err)
+          wx.showToast({
+            title: '文件下载失败',
+            icon: 'none'
+          })
+        }
+      })
+    }
+  },
   // 全屏背景
   initialiImageBaseConversion() {
     const _this = this;

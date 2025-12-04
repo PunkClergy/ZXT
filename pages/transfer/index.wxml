@@ -1,6 +1,6 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
   <!-- 自定义头部 -->
-  <custom-header title="客户报备" />
+  <custom-header title="受让客户" />
   <!-- 搜索框 -->
   <view class="search-container" style="height:{{c_searchBarHeight+40}}px;margin-top: {{c_totalNavHeight}}px;">
     <view class="search-box">
@@ -31,9 +31,9 @@
             <label>联系电话 ：</label>
             <text>{{item.linkmobile||'-'}}</text>
           </view>
-          <view class="info-item">
-            <label>类型 ：</label>
-            <text>{{item.type==1?'手工':'扫码'}}</text>
+          <view class="info-item {{item.createdate.length > 8 ? 'long-info-item' : ''}}">
+            <label>受让时间 ：</label>
+            <text>{{item.createdate}}</text>
           </view>
           <view class="info-item  {{item.address.length > 8 ? 'long-info-item' : ''}}">
             <label>地址 ：</label>

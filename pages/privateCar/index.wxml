@@ -65,7 +65,7 @@
     </view>
     <view class="middle-concrete-content">
       <view class="middle-concrete-content-debugging">
-        <view class="middle-concrete-content-debugging-title">开锁锁信号敏感值DIY</view>
+        <view class="middle-concrete-content-debugging-title">开锁信号敏感值DIY</view>
         <view class="middle-concrete-content-debugging-slider-track tarck-unlock" id="unlockTrack">
           <view class="middle-concrete-content-debugging-slider-fill fill-unlock" style="width: {{unlockRange+'%'}}"></view>
           <view class="middle-concrete-content-debugging-car-icon">
@@ -87,7 +87,7 @@
         <view class="middle-concrete-content-debugging-tip">拖动圆环，根据您与车辆的距离设定开锁感应范围。携带手机进入范围时，车辆将自动开锁。</view>
       </view>
       <view class="middle-concrete-content-debugging">
-        <view class="middle-concrete-content-debugging-title">关锁锁信号敏感值DIY</view>
+        <view class="middle-concrete-content-debugging-title">关锁信号敏感值DIY</view>
         <view class="middle-concrete-content-debugging-slider-track tarck-lock" id="lockTrack">
           <view class="middle-concrete-content-debugging-slider-fill fill-lock" style="width: {{lockRange+'%'}}"></view>
           <view class="middle-concrete-content-debugging-car-icon">
@@ -169,7 +169,7 @@
       <block wx:if="{{all_settings}}">
         <view class="modal-body-outer-layer-of-card">
           <view class="modal-body-outer-layer-of-card-layer">
-            <text class="modal-body-outer-layer-of-card-layer-title">钥匙功能设置</text>
+            <text class="modal-body-outer-layer-of-card-layer-title">功能设置</text>
           </view>
           <view class="modal-body-outer-layer-of-card-layer-info">
             <view class="modal-body-outer-layer-of-card-layer-settings-item">

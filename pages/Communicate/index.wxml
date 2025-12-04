@@ -35,7 +35,10 @@
             <label>内容 ：</label>
             <text>{{item.content||'-'}}</text>
           </view>
-
+          <view wx:if="{{item.attachment}}" class="info-item  {{item.attachment.length > 8 ? 'long-info-item' : ''}}" data-info="{{item.attachment}}" bindtap="hadleView">
+            <label>附件 ：</label>
+            <text style="color: blue;">查看附件</text>
+          </view>
         </view>
       </view>
     </block>
