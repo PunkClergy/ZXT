@@ -77,6 +77,9 @@ Page({
     all_settings: false,
     keyInstructions: getInstructions(),//指令集合
     key_out_put: getOutputConfig(),//输出方式集合
+
+    // 存储定时器ID（用于页面卸载时清除）
+    checkTimer: null
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
@@ -220,9 +223,24 @@ Page({
     this.initBottomDirectory()
     this.initToConfigureCache()//获取缓存内容
     this.handleSystemInfo()
+    // 创建定时器
+    this.initCheckTimer();
     this.setData({
       options: options
     })
+  },
+  initCheckTimer() {
+    if (this.data.checkTimer) {
+      clearInterval(this.data.checkTimer);
+    }
+    const timer = setInterval(() => {
+      console.log(this.data.pageInterval.pairStatus, this.data.connectionID, '配对')
+      if (this.data.connectionID == '') {
+        this.handleStart()
+      }
+    }, 3000);
+
+    this.setData({ checkTimer: timer });
   },
   onShow: function () {
     this.handleStart()//开始执行链接蓝牙
