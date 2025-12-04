@@ -3,7 +3,8 @@
     "custom": false,
     "color": "#8a8a8a",
     "selectedColor": "#ff4e00",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/desk/desk",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
@@ -124,7 +125,6 @@
     "pages/listOfPrivateCars/engineering/index",
     "pages/listOfPrivateCars/list/index",
     "pages/listOfPrivateCars/pdf/index",
-
     "pages/videoMaterials/index",
     "pages/netCarurgent/index",
     "pages/orderList/details/details",
@@ -133,14 +133,14 @@
     "pages/nbpg/index",
     "pages/vehicleUser/index",
     "pages/coupon/index",
-
     "pages/ChannelAgreement/index",
     "pages/CustomerReporting/index",
     "pages/Communicate/index",
     "pages/CustomerReporting/scanCodeAdd/index",
     "pages/ZoneHome/index",
     "pages/myPersonalCenter/index",
-    "pages/zoneCenter/index"
+    "pages/zoneCenter/index",
+    "pages/transfer/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

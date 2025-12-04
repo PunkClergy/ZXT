@@ -54,6 +54,14 @@ const u_customerList = {
   customerName: 'customerName',
   page: 'page'
 }
+
+// 受让客户
+const u_transferCustomerList = {
+  URL: fin3plusUrl + "notifyCustomerApi/transferCustomerList",
+  customerName: 'customerName',
+  page: 'page'
+}
+
 const u_noticeList = {
   URL: fin3plusUrl + "promotionalApi/noticeList",
   title: 'title',
@@ -90,6 +98,7 @@ const u_getSharelinkTitleImg = {
 }
 
 module.exports = {
+  u_transferCustomerList,
   u_noticeList,
   u_delCustomer,
   u_addOrUpdateCustomer,

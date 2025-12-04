@@ -1,0 +1,47 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <!-- 自定义头部 -->
+  <custom-header title="客户报备" />
+  <!-- 搜索框 -->
+  <view class="search-container" style="height:{{c_searchBarHeight+40}}px;margin-top: {{c_totalNavHeight}}px;">
+    <view class="search-box">
+      <icon type="search" size="16" class="search-icon" />
+      <input placeholder="搜索客户名称" bindblur="handleBlur" class="search-input" />
+    </view>
+    <view class="search-count">
+      <text>共有{{g_total}}个客户</text>
+    </view>
+  </view>
+  <!-- 主要内容区域 -->
+  <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight + c_searchBarHeight+40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+    <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
+      <view class="content-item" data-item="{{item}}">
+        <view class="content-item-head">
+          <view class="head-left">
+            <view class="left-category">
+              <text>客户名称:{{item.customername||'-'}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="content-item-info">
+          <view class="info-item  {{item.linkperson.length > 8 ? 'long-info-item' : ''}}">
+            <label>联系人 ：</label>
+            <text>{{item.linkperson||'-'}}</text>
+          </view>
+          <view class="info-item  {{item.linkmobile.length > 8 ? 'long-info-item' : ''}}">
+            <label>联系电话 ：</label>
+            <text>{{item.linkmobile||'-'}}</text>
+          </view>
+          <view class="info-item">
+            <label>类型 ：</label>
+            <text>{{item.type==1?'手工':'扫码'}}</text>
+          </view>
+          <view class="info-item  {{item.address.length > 8 ? 'long-info-item' : ''}}">
+            <label>地址 ：</label>
+            <text>{{item.address||'-'}}</text>
+          </view>
+
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
