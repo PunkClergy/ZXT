@@ -159,11 +159,13 @@
 </view>
 
 <!-- 更多功能弹出区域 -->
-<!-- components/RightFullHeightModal/RightFullHeightModal.wxml -->
 <view class="modal-container" wx:if="{{modalisShow}}">
   <view class="modal-mask" bindtap="handleMaskTap"></view>
   <view class="modal-content" style="background-color: #EEF1F4;">
-    <view class="modal-body" style="margin-top: {{g_height_from_head+g_head_height}}px;">
+    <view style="margin-top: {{g_height_from_head}}px;" bindtap="handleMaskTap">
+      <image src="/assets/images/close.png" style="width: 50rpx;height: 50rpx;" />
+    </view>
+    <view class="modal-body" style="margin-top: {{g_height_from_head}}px;">
       <block wx:if="{{all_settings}}">
         <view class="modal-body-outer-layer-of-card">
           <view class="modal-body-outer-layer-of-card-layer">
