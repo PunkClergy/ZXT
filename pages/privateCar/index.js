@@ -636,7 +636,7 @@ Page({
     if (parsedResult) {
       this.setData({ parsedData: parsedResult }, () => {
         // 初始化样式
-        this.updateSliderStyles();
+        // this.updateSliderStyles();
         this.updateMyPositionStyles();
       });
     }
@@ -928,6 +928,19 @@ Page({
       const { validProgress, min, max } = calculateValidProgress(progressNum, trackType);
       if (progressNum < min || progressNum > max) {
         showThresholdTip(progressNum, { min, max }, trackType);
+      }
+      console.log(trackId, trackType)
+      if (trackType == 'lock') {//关锁
+        this.setData({
+          lockThumbStyle: `left: ${(validProgress) / 2}%;`,
+          lockRange: (validProgress) / 2,
+        });
+      }
+      if (trackType == 'unlock') {
+        this.setData({
+          unlockThumbStyle: `left: ${validProgress}%;`,
+          unlockRange: (validProgress || 50),
+        });
       }
       const hexProgress = toTwoHex(validProgress);
       this.btnCmdSend(0x11, cmdParam, hexProgress);

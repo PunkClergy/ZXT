@@ -280,8 +280,8 @@ page {
 }
 
 .middle-concrete-content-debugging-slider-thumb {
-  width: 36px;
-  height: 36px;
+  width: 55px;
+  height: 40px;
   border-radius: 50%;
   position: absolute;
   top: 50%;
@@ -344,7 +344,7 @@ page {
 
 .middle-concrete-content-debugging-person-info-image {
   width: 30rpx;
-  height: 32rpx;
+  height: 32rpx; 
 }
 
 .middle-concrete-content-debugging-tip {
