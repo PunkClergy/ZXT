@@ -233,7 +233,7 @@ page {
 }
 
 .middle-concrete-content-debugging-slider-track {
-  height: 60px;
+  height: 40px;
   border-radius: 15px;
   position: relative;
   margin-bottom: 12px;
@@ -313,12 +313,12 @@ page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15rpx;
+  gap: 2rpx;
 }
 
 .middle-concrete-content-debugging-info-image {
-  width: 60rpx;
-  height: 47rpx;
+  width: 40rpx;
+  height: 30rpx;
 }
 
 .middle-concrete-content-debugging-info-text {
@@ -339,12 +339,12 @@ page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15rpx;
+  gap: 2rpx;
 }
 
 .middle-concrete-content-debugging-person-info-image {
-  width: 42rpx;
-  height: 47rpx;
+  width: 30rpx;
+  height: 32rpx;
 }
 
 .middle-concrete-content-debugging-tip {
