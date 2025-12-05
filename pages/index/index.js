@@ -425,7 +425,7 @@ Page({
     const bak = eventInfo.bak ?? datasetInfo.bak;
     const miniProgramConfig = {
       'wxae69a35f76d6116b': { needToken: true },
-      'wx0b285e519897bd7a': { needToken: false }
+      'wxf2c0e435976f0ca6': { needToken: false }
     };
     if (this.isMiniProgramAppid(path) && miniProgramConfig[path]) {
       const { needToken } = miniProgramConfig[path];
