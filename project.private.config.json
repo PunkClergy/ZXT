@@ -44,7 +44,7 @@
         {
           "name": "desk",
           "pathName": "pages/index/index",
-          "query": "scene=blue_8C56B46A9BEF4F7EA82CE45A47A4C372",
+          "query": "",
           "launchMode": "default",
           "scene": null
         }

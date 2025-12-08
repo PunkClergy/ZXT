@@ -234,7 +234,6 @@ Page({
       clearInterval(this.data.checkTimer);
     }
     const timer = setInterval(() => {
-      console.log(this.data.pageInterval.pairStatus, this.data.connectionID, '配对')
       if (this.data.connectionID == '') {
         this.handleStart()
       }
@@ -265,6 +264,7 @@ Page({
     const that = this
     setTimeout(() => bleKeyManager.releaseBle(), 500);
     clearInterval(that.data.pageInterval);
+    clearInterval(this.data.checkTimer);
     wx.setKeepScreenOn({ keepScreenOn: false });
   },
   // 蓝牙连接处理
