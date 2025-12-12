@@ -424,7 +424,7 @@ Page({
     const bgcolor = eventInfo.bgcolor ?? datasetInfo.bgcolor;
     const bak = eventInfo.bak ?? datasetInfo.bak;
     const miniProgramConfig = {
-      'wxae69a35f76d6116b': { needToken: true },
+      'wxcdd55b1d2e790195': { needToken: true },
       'wxf2c0e435976f0ca6': { needToken: false }
     };
     if (this.isMiniProgramAppid(path) && miniProgramConfig[path]) {
