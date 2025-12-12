@@ -217,16 +217,12 @@ Page({
       app.data.userInfo = userInfo;
       app.data.reflag = 1;
       console.log(response?.data)
-      if (!response?.data?.content?.btype) {
-        this.setData({
-          btypeM: true
-        })
-      } else {
+  
         // wx.navigateBack({ delta: 1 });
         wx.redirectTo({
           url: '/pages/index/index',
         })
-      }
+      
       return
     } catch (error) {
       console.error('处理流程异常:', error);
