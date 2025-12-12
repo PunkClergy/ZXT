@@ -78,8 +78,8 @@ Page({
           content: response?.data?.msg,
           confirmText: '确认',
           success: (res) => {
-            wx.switchTab({
-              url: '/pages/desk/desk'
+            wx.redirectTo({
+              url: '/pages/index/index',
             })
           }
         })

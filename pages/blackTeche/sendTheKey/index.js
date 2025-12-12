@@ -506,7 +506,7 @@ Page({
   onShareAppMessage() {
     return {
       title: `请前往${this.data.bak || '车主指定位置'}寻找车辆`,
-      path: '/pages/desk/desk?scene=' + this.data.controlcode,
+      path: '/pages/index/index?scene=' + this.data.controlcode,
     }
   }
 

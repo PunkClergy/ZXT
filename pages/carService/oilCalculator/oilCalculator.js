@@ -205,7 +205,7 @@ Page({
   },
   handleJumpHome() {
     wx.switchTab({
-      url: '/pages/desk/desk',
+      url: '/pages/index/index',
     })
   },
   initDetailsJump(evt) {

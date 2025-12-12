@@ -81,13 +81,13 @@ Component({
           success: () => { },
           fail: (err) => {
             wx.switchTab({
-              url: '/pages/desk/desk'
+              url: '/pages/index/index'
             });
           }
         });
       } else {
         wx.reLaunch({
-          url: '/pages/desk/desk'
+          url: '/pages/index/index'
         });
       }
     },

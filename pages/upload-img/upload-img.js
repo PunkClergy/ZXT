@@ -378,9 +378,10 @@ Page({
           wx.removeStorage({
             key: 'scene',
           })
-          wx.switchTab({
-            url: '/pages/desk/desk?eli='+true,
+          wx.redirectTo({
+            url: '/pages/index/index',
           })
+
           
           appUtil.showModal(data.msg, false, function() {});
         } else {

@@ -124,8 +124,8 @@ Page({
             (response) => {
               if (response.data.code == 1000) {
                 showToast(response.data.msg)
-                wx.switchTab({
-                  url: '/pages/desk/desk',
+                wx.redirectTo({
+                  url: '/pages/index/index',
                 })
               }
             },

@@ -178,8 +178,8 @@ Page({
       wx.clearStorage();
     }
 
-    wx.switchTab({
-      url: '/pages/desk/desk'
+    wx.redirectTo({
+      url: '/pages/index/index',
     })
     //  console.log("exiit");
     //   wx.navigateBack({

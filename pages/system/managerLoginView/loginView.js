@@ -136,8 +136,8 @@ Page({
         this.setData({
           btypeM: false
         }, () => {
-          wx.switchTab({
-            url: '/pages/desk/desk',
+          wx.redirectTo({
+            url: '/pages/index/index',
           })
         })
       }
@@ -223,8 +223,8 @@ Page({
         })
       } else {
         // wx.navigateBack({ delta: 1 });
-        wx.switchTab({
-          url: '/pages/desk/desk',
+        wx.redirectTo({
+          url: '/pages/index/index',
         })
       }
       return

@@ -592,8 +592,8 @@ Page({
   },
 
   handleJumpHome() {
-    wx.switchTab({
-      url: '/pages/desk/desk',
+    wx.redirectTo({
+      url: '/pages/index/index',
     })
   },
 
