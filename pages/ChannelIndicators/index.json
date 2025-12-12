@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "渠道指标",
+  "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}
+

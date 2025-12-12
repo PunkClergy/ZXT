@@ -1,0 +1,36 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+	<!-- 自定义头部 -->
+	<custom-header title="月度采购目标" />
+	<!-- 主要内容区域 -->
+	<scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight  +40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
+		<block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
+			<view class="content-item" data-item="{{item}}">
+				<view class="content-item-head">
+					<view class="head-left">
+						<view class="left-category">
+							<text>采购月份: {{item.month ||'-'}}</text>
+						</view>
+					</view>
+				</view>
+				<view class="content-item-info">
+					<view class="info-item  {{item.areaCount .length > 8 ? 'long-info-item' : ''}}">
+						<label>区域数量 ：</label>
+						<text>{{item.areaCount ||'-'}}</text>
+					</view>
+					<view class="info-item  {{item.taskCount .length > 8 ? 'long-info-item' : ''}}">
+						<label>任务数量 ：</label>
+						<text>{{item.taskCount ||'-'}}</text>
+					</view>
+					<view class="info-item {{item.purchaseCount.length > 8 ? 'long-info-item' : ''}}">
+						<label>采购数量 ：</label>
+						<text>{{item.purchaseCount ||'-'}}</text>
+					</view>
+					<view class="info-item {{item.createdate.length > 8 ? 'long-info-item' : ''}}">
+						<label>是否达标 ：</label>
+						<text>{{item.qualified }}</text>
+					</view>
+				</view>
+			</view>
+		</block>
+	</scroll-view>
+</view>

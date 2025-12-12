@@ -140,7 +140,8 @@
     "pages/ZoneHome/index",
     "pages/myPersonalCenter/index",
     "pages/zoneCenter/index",
-    "pages/transfer/index"
+    "pages/transfer/index",
+    "pages/ChannelIndicators/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

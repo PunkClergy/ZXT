@@ -54,6 +54,11 @@ const u_customerList = {
   customerName: 'customerName',
   page: 'page'
 }
+// 渠道月度考核目标
+const u_qdTaskRecord = {
+  URL: fin3plusUrl + "/deviceBuyApi/qdTaskRecord",
+  page: 'page'
+}
 
 // 受让客户
 const u_transferCustomerList = {
@@ -98,6 +103,7 @@ const u_getSharelinkTitleImg = {
 }
 
 module.exports = {
+  u_qdTaskRecord,
   u_transferCustomerList,
   u_noticeList,
   u_delCustomer,
