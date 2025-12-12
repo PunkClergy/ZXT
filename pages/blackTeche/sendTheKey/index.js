@@ -62,7 +62,14 @@ Page({
     copied: false,
     controlcode: '',
     c_edit_key_show_momal: false,
-    g_edit_info: {}
+    g_edit_info: {},
+    all_send: false
+  },
+  handleSendSubmit() {
+    this.setData({
+      c_send_key_show_momal: true,
+      all_send: true
+    })
   },
   // 获取当前年月日 时分
   handleCurrentDate() {
@@ -180,7 +187,8 @@ Page({
   handleHideSengKeyModal() {
     this.setData({
       cellData: {},
-      c_send_key_show_momal: false
+      c_send_key_show_momal: false,
+      all_send: false
     })
   },
   handleHideEditKeyModal() {
@@ -305,7 +313,7 @@ Page({
       return;
     }
     const g_images = [info.img1, info.img2, info.img3, info.img4, info.img5]
-      .filter(img => img != null && img !== ''); 
+      .filter(img => img != null && img !== '');
     if (g_images.length < 1) {
       showToast('无可查看照片');
       return;
@@ -351,7 +359,7 @@ Page({
       `${date || ''} ${time ? `${time}:00` : '00:00:00'}`.trim();
 
     const requestParams = {
-      vehId: vehId,
+      vehId: vehId || '',
       startDate: buildDateTime(startDate, startTime),
       endDate: buildDateTime(endDate, endTime),
       personName: formData.personName,

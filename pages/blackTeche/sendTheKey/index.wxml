@@ -119,7 +119,9 @@
           <view class="middle-form-item">
             <label>车牌号</label>
             <view class="modal-form-region">
-              {{cellData.platenumber}}
+              <input placeholder="请输入车牌号" name='platenumber' style="text-align: right;font-size: 28rpx;" wx:if="{{all_send}}"/>
+             <text wx:else>{{cellData.platenumber}}</text> 
+
             </view>
 
           </view>
@@ -257,3 +259,6 @@
     </form>
   </view>
 </block>
+<view class="card-footer">
+  <view bindtap="handleSendSubmit">发送钥匙</view>
+</view>
