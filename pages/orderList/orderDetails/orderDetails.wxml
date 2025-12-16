@@ -116,8 +116,8 @@
 
                 <view class="main-content-area-info-item  long-info-item">
                   <label>优惠券 ：</label>
-                  <text wx:if="{{all_data.cost}}">{{all_data.cost}}</text>
-                  <text wx:else style="color: rgba(69, 135, 253, 1);" bindtap="handleUseCoupon">{{couponText?couponText.content:'去选择'}}</text>
+                  <!-- <text wx:if="{{all_data.cost}}">{{all_data.cost}}</text> -->
+                  <text  style="color: rgba(69, 135, 253, 1);" bindtap="handleUseCoupon">{{couponText?couponText.content:'去选择'}}</text>
                 </view>
                 <!-- </block> -->
               </view>

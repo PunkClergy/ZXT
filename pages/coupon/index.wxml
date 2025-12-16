@@ -76,7 +76,7 @@
 
           <!-- 右侧状态标签 -->
           <view class="coupon-status">
-            <text class="unused-tag" wx:if="{{back}}" bindtap="handleChooseACoupon" data-item="{{item}}">选择</text>
+            <text class="unused-tag" wx:if="{{back}}" bindtap="handleChooseCoupon" data-item="{{item}}">选择</text>
             <text class="unused-tag" bindtap="handleUseCoupon" data-isused="{{item.isused}}" wx:else>{{item.isused == 1?'已使用':'去使用'}}</text>
           </view>
 

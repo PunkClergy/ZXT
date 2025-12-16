@@ -424,7 +424,7 @@ Page({
   // 去支付
   handleOneClickOrdering() {
     wx.navigateTo({
-      url: `/pages/pay/index?info=${JSON.stringify(this.data.all_data)}&coupon=${JSON.stringify(this.data.couponText)}`
+      url: `/pages/pay/index?info=${JSON.stringify(this.data.all_data)}&coupon=${JSON.stringify(this.data.couponText||{amount: 0})}`
     })
   },
   onLoad(options) {
