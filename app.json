@@ -5,7 +5,7 @@
     "selectedColor": "#ff4e00",
     "list": [
       {
-        "pagePath": "pages/desk/desk",
+        "pagePath": "pages/index/index",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
         "text": "首页"
@@ -23,7 +23,6 @@
   },
   "pages": [
     "pages/index/index",
-    "pages/desk/desk",
     "pages/watchVideos/index",
     "pages/carService/carService",
     "pages/carService/oilCalculator/oilCalculator",

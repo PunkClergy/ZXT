@@ -2,7 +2,11 @@
 <view class="custom-header" style="padding-top: {{g_height_from_head}}px;padding-left: {{g_capsule_distance_to_the_right}}px; height: {{g_head_height}}px;">
   <view class="custom-header-outer-layer">
     <image class="custom-header-outer-layer-image" src="/assets/images/index/home.png" bindtap="handleBackHome"></image>
+    <view style="max-width: 30%;">
     <view class="custom-header-outer-layer-title">私家车</view>
+    <view style="color: #bbb;font-size: 20rpx;">智信通手机汽车互联钥匙 <br/>mobile car connect key</view>
+    </view>
+   
     <view class="custom-header-outer-layer-user_name">
       <block wx:if="{{account}}">
         <text>{{account}}</text>
@@ -40,7 +44,7 @@
             <text class="top-fixed-signal-layar-title">当前电量：</text>
             <text class="top-fixed-signal-text">{{parsedData.electric||100}}%</text>
           </view>
-          <view style="color: #bbb;font-size: 20rpx;">私家车设备电量</view>
+          <view style="color: #bbb;font-size: 20rpx;">MCCK设备电量</view> 
         </view>
         <view class="top-fixed-signal-layar">
           <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/bluetooth@2x.png" style="width: 30rpx;height: 33rpx;" />
@@ -63,10 +67,13 @@
   </view>
   <view class="middle-scroll">
     <view class="middle-title">
-    	<view style="display: flex;flex-direction: column;">
-						<text>感应开关锁</text>
-						<text style="font-size: 20rpx;color: #bbb;">开启后支持感应舒适进入功能，关闭则禁用该功能。</text>
-						</view>
+      <view style="display: flex;flex-direction: column;">
+        <text>感应开关锁</text>
+        <text style="font-size: 20rpx;color: #bbb;">
+          开启：自动感应智信通MCCK蓝牙，实现开门不罚站 关门不回头，无感自动开关锁。
+          关闭：需手动操作：掏出手机 → 打开智信通小程序 → 在「我的手机汽车钥匙功能」区域→ 完成开关门操作。
+        </text>
+      </view>
       <switch bindchange="handleToggleSensorMode" checked="{{parsedData.inductionMode}}" color="#1B64B1" style="transform: scale(0.8)" />
     </view>
     <view class="middle-concrete-content">
@@ -90,7 +97,7 @@
             </view>
           </view>
         </view>
-        <view class="middle-concrete-content-debugging-tip">拖动圆环，根据您与车辆的距离设定开锁感应范围。携带手机进入范围时，车辆将自动开锁。</view>
+        <view class="middle-concrete-content-debugging-tip">初期使用或更换手机后，因不同品牌、年份手机的蓝牙敏感度差异较大，请掏出手机调试 “开锁” 图标位置，调整至满意状态后保存。</view>
       </view>
       <view class="middle-concrete-content-debugging">
         <view class="middle-concrete-content-debugging-title">关锁信号敏感值DIY</view>
@@ -112,7 +119,7 @@
             </view>
           </view>
         </view>
-        <view class="middle-concrete-content-debugging-tip">拖动圆环，根据您与车辆的距离设定关锁感应范围。携带手机离开范围时，车辆将自动关锁。</view>
+        <view class="middle-concrete-content-debugging-tip">初期使用或更换手机后，因不同品牌、年份手机的蓝牙敏感度差异较大，请掏出手机调试 “关锁” 图标位置，调整至满意状态后保存。</view>
       </view>
       <view class="middle-concrete-content-debugging">
         <view class="middle-concrete-content-debugging-title">特殊情况DIY</view>
@@ -134,7 +141,7 @@
             </view>
           </view>
         </view>
-        <view class="middle-concrete-content-debugging-tip">如车辆启动时频繁开锁关锁, 请拖动圆环远离车辆。调试本项会同步调整关锁灵敏度。</view>
+        <view class="middle-concrete-content-debugging-tip">初期使用或更换手机后，因不同品牌、年份手机的蓝牙敏感度差异较大，请掏出手机调试 “关锁” 图标位置，调整至满意状态后保存。</view>
       </view>
     </view>
   </view>
