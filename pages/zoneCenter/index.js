@@ -149,6 +149,12 @@ Page({
   },
   // 点击工具执行
   handleFunExe(evt) {
+    if(!isLogin()){
+      wx.redirectTo({
+        url: '/pages/system/managerLoginView/loginView',
+      })
+      return
+    }
     console.log(evt)
     const info = evt?.currentTarget?.dataset?.info;
     if (!info || !info.pagePath) return;

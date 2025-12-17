@@ -37,12 +37,11 @@ function byGet(url, param) {
     };
     const appInstance = getApp();
     const userInfo = appInstance.data.userInfo;
+    header['funAreaId'] = appInstance?.data?.funAreaId
     if (userInfo && !isEmpty(userInfo)) {
       header['username'] = userInfo.username;
       header['token'] = userInfo.token;
       header['timestamp'] = Date.now();
-      header['funAreaId'] = appInstance?.data?.funAreaId
-
     }
     param.version = appInstance.data.version;
     wx.request({

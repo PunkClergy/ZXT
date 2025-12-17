@@ -235,6 +235,12 @@ Page({
   },
   //  跳转功能页面
   handleGetMenuList(evt) {
+    if(!isLogin()){
+      wx.redirectTo({
+        url: '/pages/system/managerLoginView/loginView',
+      })
+      return
+    }
     const path = evt?.path ?? evt?.currentTarget?.dataset?.info?.path;
     const hasDesk = path.includes('desk') || path.includes('/desk');
     if (hasDesk) {
