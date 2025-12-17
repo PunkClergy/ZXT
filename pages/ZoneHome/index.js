@@ -41,6 +41,9 @@ Page({
 
 
   },
+  handleOnExistingAccountTap() {
+    (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
+  },
   // 获取系统头部各区域高度
   initSystemInfo() {
     const { statusBarHeight: s } = wx.getWindowInfo()

@@ -81,6 +81,9 @@ Page({
     // 存储定时器ID（用于页面卸载时清除）
     checkTimer: null
   },
+  handleOnExistingAccountTap() {
+    (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
+  },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
     const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};

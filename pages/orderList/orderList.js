@@ -223,6 +223,9 @@ Page({
     console.log(currentPath, targetPurePath);
     currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
+  handleOnExistingAccountTap() {
+    (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
+  },
   // 选择区间日期
   bindDateChange(e) {
     this.setData({ date: e.detail.value });

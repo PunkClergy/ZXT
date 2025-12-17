@@ -89,7 +89,7 @@ Page({
       console.log(1)
       // 微信支付
       const params = {
-        [urlUtil.pay.amount]: Math.abs(_this.data.orderInfo.cost || this.data.orderInfo.premium) - this.data.coupon?.amount,
+        [urlUtil.pay.amount]: (Math.abs(_this.data.orderInfo.cost || this.data.orderInfo.premium) - this.data.coupon?.amount).toFixed(2),
         [urlUtil.pay.userId]: getApp().data.userInfo.id
       };
       appUtil.showLoading("处理中...")

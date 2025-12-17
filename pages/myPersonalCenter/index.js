@@ -24,19 +24,19 @@ Page({
     // 增设账号弹窗
     create_an_account_modal: false,
     // 增设密码踢脚线信息
-    account_info: {
-    },
+    account_info: {},
     // 增设密码提交后错误信息
     account_errorMsg: '',
     // 目录功能区
-    contentList: [
-    ]
+    contentList: []
 
 
   },
   // 获取系统头部各区域高度
   initSystemInfo() {
-    const { statusBarHeight: s } = wx.getWindowInfo()
+    const {
+      statusBarHeight: s
+    } = wx.getWindowInfo()
     const m = wx.getMenuButtonBoundingClientRect()
     if (!m) return
     const n = m.height + (m.top - s) * 2
@@ -114,7 +114,9 @@ Page({
 
   // 点击“咨询” 显示入群二维码
   handleShowContact() {
-    this.setData({ join_the_group_modal: true })
+    this.setData({
+      join_the_group_modal: true
+    })
   },
   // 点击关闭咨询&群二维码
   handleQRClose() {
@@ -128,22 +130,36 @@ Page({
       sources: [{
         url: this.data.personal_qr_code, // 图片路径
         type: 'image',
-      },],
+      }, ],
     });
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
-    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    const {
+      currentTarget: {
+        dataset: {
+          index: idx = null
+        } = {}
+      } = {}
+    } = evt ?? {};
     if (idx === null) return;
-    const { tabList = [] } = this.data;
-    const { pagePath: targetUrl } = tabList[idx] ?? {};
+    const {
+      tabList = []
+    } = this.data;
+    const {
+      pagePath: targetUrl
+    } = tabList[idx] ?? {};
     if (!targetUrl) return;
     const [currentPage] = getCurrentPages().slice(-1);
-    const { route: currentPath } = currentPage ?? {};
+    const {
+      route: currentPath
+    } = currentPage ?? {};
     if (!currentPath) return;
     const targetPurePath = targetUrl.split('?')[0];
     console.log(currentPath, targetPurePath);
-    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
+    currentPath !== targetPurePath && wx.redirectTo({
+      url: `/${targetUrl}`
+    });
   },
   // 返回上一页面
   handleBackHome() {
@@ -151,11 +167,18 @@ Page({
       url: '/pages/index/index',
     })
   },
+  handleOnExistingAccountTap() {
+    (0, wx.navigateTo)({
+      url: '/pages/system/managerLoginView/loginView'
+    })
+  },
   // 点击工具执行
   handleFunExe(evt) {
     const info = evt?.currentTarget?.dataset?.info;
     if (!info || !info.pagePath) return;
-    const { pagePath } = info;
+    const {
+      pagePath
+    } = info;
     if (pagePath == '退出登录') {
       wx.showModal({
         title: '提示',
@@ -172,14 +195,18 @@ Page({
             } catch (e) {
               console.error('清除存储失败', e);
             }
-            wx.redirectTo({ url: '/pages/index/index' });
+            wx.redirectTo({
+              url: '/pages/index/index'
+            });
           }
         }
       });
       return;
     }
     if (pagePath === '增设登录账号') {
-      const accountInfo = { ...this.data.account_info };
+      const accountInfo = {
+        ...this.data.account_info
+      };
       accountInfo.mobile = getApp()?.data?.userInfo?.mobile || '';
       this.setData({
         create_an_account_modal: true,
@@ -209,7 +236,11 @@ Page({
   },
   // 增设登录账号密码提交
   handleSubmitAnAccount() {
-    const { newUserName, newPassword, confirmPassword } = this.data.account_info
+    const {
+      newUserName,
+      newPassword,
+      confirmPassword
+    } = this.data.account_info
     console.log(this.data.account_info)
     if (newUserName.length < 6) {
       this.setData({

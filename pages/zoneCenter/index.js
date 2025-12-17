@@ -73,6 +73,9 @@ Page({
       }
     })
   },
+  handleOnExistingAccountTap() {
+    (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
+  },
   // 获取目录结构数据
   initDirectoryStructure() {
     byGet(this.data.c_link + u_mylist.URL, {}).then(response => {

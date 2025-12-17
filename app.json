@@ -5,7 +5,7 @@
     "selectedColor": "#ff4e00",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/zw/index",
         "iconPath": "/assets/images/index/desk@2x.png",
         "selectedIconPath": "/assets/images/index/desk_s@2x.png",
         "text": "首页"
@@ -140,7 +140,8 @@
     "pages/myPersonalCenter/index",
     "pages/zoneCenter/index",
     "pages/transfer/index",
-    "pages/ChannelIndicators/index"
+    "pages/ChannelIndicators/index",
+    "pages/zw/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
