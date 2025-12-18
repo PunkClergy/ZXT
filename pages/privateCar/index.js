@@ -1,4 +1,10 @@
-import { getInstructions, getOutputConfig, getControlItems, getParseHexDataObject, getInstructionMap } from 'z-utility';
+import {
+  getInstructions,
+  getOutputConfig,
+  getControlItems,
+  getParseHexDataObject,
+  getInstructionMap
+} from 'z-utility';
 const {
   u_navlist20
 } = require('../../utils/request/home')
@@ -13,55 +19,55 @@ const {
   u_sendInfo,
   u_uploadLog
 } = require('../../utils/request/car')
-const bleKeyManager = require('../../utils/BleKeyFun-utils-single.js');  // 蓝牙密钥管理
-const appUtil = require('../../utils/app-util.js');               // 应用工具
+const bleKeyManager = require('../../utils/BleKeyFun-utils-single.js'); // 蓝牙密钥管理
+const appUtil = require('../../utils/app-util.js'); // 应用工具
 const {
   u_getCarBluetoothKeyByCode
 } = require('../../utils/request/order')
 
 Page({
   data: {
-    g_screenTotalHeight: '',//屏幕总高度
-    g_tabBarHeight: 80,    // 底部tabbar高度
-    g_height_from_head: '',//手机状态栏高度
-    g_head_height: '',//自定义导航高度
-    g_capsule_distance_to_the_right: '',//胶囊按钮右侧边缘的距离
-    topHeight: '',          // 核心内容区域上部固定高度（可自定义）
-    bottomHeight: 90,       // 核心内容区域下部固定高度（可自定义）
+    g_screenTotalHeight: '', //屏幕总高度
+    g_tabBarHeight: 80, // 底部tabbar高度
+    g_height_from_head: '', //手机状态栏高度
+    g_head_height: '', //自定义导航高度
+    g_capsule_distance_to_the_right: '', //胶囊按钮右侧边缘的距离
+    topHeight: '', // 核心内容区域上部固定高度（可自定义）
+    bottomHeight: 90, // 核心内容区域下部固定高度（可自定义）
 
     // 开锁 关锁 特殊情况数值
-    unlockRange: 50,   // 开锁范围（0-100）
-    lockRange: 60,   // 关锁范围（0-100）
-    myPosition: 60,    // 人物位置
-    unlockThumbStyle: 'left: 44%',//开锁范围位置
-    lockThumbStyle: 'left: 54%',//关锁范围位置
-    myPositionStyle: 'left: 30%',//我的位置
+    unlockRange: 50, // 开锁范围（0-100）
+    lockRange: 60, // 关锁范围（0-100）
+    myPosition: 60, // 人物位置
+    unlockThumbStyle: 'left: 44%', //开锁范围位置
+    lockThumbStyle: 'left: 54%', //关锁范围位置
+    myPositionStyle: 'left: 30%', //我的位置
 
 
     // 蓝牙通信相关
-    dc: '',                                      // 设备标识
-    data: '',                                    // 输入数据
-    msg: '',                                     // 消息日志
-    deviceIDC: "932505100228",          // 默认设备ID
+    dc: '', // 设备标识
+    data: '', // 输入数据
+    msg: '', // 消息日志
+    deviceIDC: "932505100228", // 默认设备ID
     orgKey: [0x33, 0x47, 0x01, 0x82, 0x34, 0x33], // 原始密钥
-    isOwner: false,                              // 所有者标识
-    connectionState: "未连接",                   // 连接状态
-    connectionID: "",                            // 连接ID
-    connectionDisplay: "未连接",                 // 连接显示文本
+    isOwner: false, // 所有者标识
+    connectionState: "未连接", // 连接状态
+    connectionID: "", // 连接ID
+    connectionDisplay: "未连接", // 连接显示文本
 
     // 数据解析相关
-    scrollTo: "hiddenview",                      // 滚动位置1
-    parseLen: 0,                                 // 解析数据长度
-    parsedData: {},                              // 解析后的数据
+    scrollTo: "hiddenview", // 滚动位置1
+    parseLen: 0, // 解析数据长度
+    parsedData: {}, // 解析后的数据
 
 
     // 定时器相关
-    pageInterval: 0,                              // 状态检查定时器
+    pageInterval: 0, // 状态检查定时器
     netWork: false,
-    controlItems: getControlItems(),//控制按钮
-    controlItemspanel: [],//控制按钮面板
-    logs: [],//报文日志
-    deviceInfo: {},//设备信息
+    controlItems: getControlItems(), //控制按钮
+    controlItemspanel: [], //控制按钮面板
+    logs: [], //报文日志
+    deviceInfo: {}, //设备信息
     // 底部tabbar高度
     tabBarHeight: 80,
     tabList: [],
@@ -75,28 +81,243 @@ Page({
     key_settings: false,
     // 更多功能标志
     all_settings: false,
-    keyInstructions: getInstructions(),//指令集合
-    key_out_put: getOutputConfig(),//输出方式集合
+    keyInstructions: getInstructions(), //指令集合
+    key_out_put: getOutputConfig(), //输出方式集合
 
     // 存储定时器ID（用于页面卸载时清除）
-    checkTimer: null
+    checkTimer: null,
+
+    // 是否设置了开锁默认值
+    unlock_sensitivity_mark: false,
+    // 开锁最小值
+    unlock_min: 30,
+    // 开锁最大值
+    unlock_max: 100,
+    // 开锁临时值
+    interimvalue: 0,
+    // 是否设置了关锁默认值
+    lock_sensitivity_mark: false,
+    // 关锁最小值
+    lock_min: 60,
+    // 开锁最大值
+    lock_max: 255,
+    // 关锁临时值
+    interimvalue: 0,
+
+
   },
+  // 获取是否设置了默认值
+  initgetCache() {
+    wx.getStorageInfo({
+      success: (res) => {
+        const unlockDefaultValue = res.keys.includes('unlock_sensitivity_mark');
+        const lockDefaultValue = res.keys.includes('lock_sensitivity_mark');
+        this.setData({
+          unlock_sensitivity_mark: unlockDefaultValue || false,
+          lock_sensitivity_mark: lockDefaultValue || false
+        })
+      }
+    });
+  },
+  // 十进制转换16进制
+  initToTwoHex(num) {
+    return num.toString(16).padStart(2, '0').toUpperCase();
+  },
+  // 设置开锁默认值弹窗
+  handleDefaultMode() {
+    const defaultUnlockSensitivity = 50;
+    const cmdSetUnlockSensitivity = 0x11;
+    const storageKeySensitivityMark = 'unlock_sensitivity_mark';
+    wx.showModal({
+      title: '温馨提示',
+      content: `确定将您的开锁敏感值默认值设定为【${defaultUnlockSensitivity}】？`,
+      confirmText: '确定',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          try {
+            const hexProgress = this.initToTwoHex(defaultUnlockSensitivity);
+            this.btnCmdSend(cmdSetUnlockSensitivity, 1, hexProgress);
+            this.setData({
+              unlock_sensitivity_mark: true
+            }, () => {
+              wx.setStorageSync(storageKeySensitivityMark, true);
+            });
+            wx.showToast({
+              title: '设置成功',
+              icon: 'none',
+              duration: 1500
+            });
+          } catch (error) {
+            console.error('设置开锁敏感值默认值失败：', error);
+          }
+        } else if (res.cancel) {
+          console.log('用户取消了敏感值默认设置');
+        }
+      }
+    });
+  },
+  // 设置关锁值默认值
+  handleLockDefaultMode() {
+    const defaultUnlockSensitivity = 60;
+    const cmdSetUnlockSensitivity = 0x11;
+    const storageKeySensitivityMark = 'lock_sensitivity_mark';
+    wx.showModal({
+      title: '温馨提示',
+      content: `确定将您的关锁敏感值默认值设定为【${defaultUnlockSensitivity}】？`,
+      confirmText: '确定',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          try {
+            const hexProgress = this.initToTwoHex(defaultUnlockSensitivity);
+            this.btnCmdSend(cmdSetUnlockSensitivity, 0, hexProgress);
+            this.setData({
+              lock_sensitivity_mark: true
+            }, () => {
+              wx.setStorageSync(storageKeySensitivityMark, true);
+            });
+            wx.showToast({
+              title: '设置成功',
+              icon: 'none',
+              duration: 1500
+            });
+          } catch (error) {
+            console.error('设置关锁敏感值默认值失败：', error);
+          }
+        } else if (res.cancel) {
+          console.log('用户取消了敏感值默认设置');
+        }
+      }
+    });
+  },
+  // 取消开锁设置个性化值
+  handlecanceModal() {
+    this.setData({
+      interimvalue: 0
+    })
+  },
+  // 取消开锁设置个性化值
+  handleLockCanceModal() {
+    this.setData({
+      lock_interimvalue: 0
+    })
+  },
+  // 点击滚动条开锁值改变
+  handleOnSliderChange(evt) {
+    this.setData({
+      interimvalue: evt?.detail?.value
+    })
+  },
+  // 滑动滚动条开锁值改变
+  handleOnSliderChanging(evt) {
+    this.setData({
+      interimvalue: evt?.detail?.value
+    })
+  },
+  // 点击滚动条关锁值改变
+  handleOnLockSliderChange(evt) {
+    this.setData({
+      lock_interimvalue: evt?.detail?.value
+    })
+  },
+  // 滑动滚动条关锁值改变
+  handleOnLockSliderChanging(evt) {
+    this.setData({
+      lock_interimvalue: evt?.detail?.value
+    })
+  },
+  // 个性化开锁设置值点击确认
+  handlePersonalizedModal() {
+    if (!this.data.unlock_sensitivity_mark) {
+      wx.showToast({
+        title: '请先设置默认值',
+        icon: 'none'
+      })
+      this.setData({
+        interimvalue: 0
+      })
+      return
+    }
+    const cmdSetUnlockSensitivity = 0x11;
+    const toastSuccess = { title: '设置成功', icon: 'none', duration: 1500 };
+    const toastFail = { title: '设置失败', icon: 'none', duration: 1500 };
+
+    try {
+      const { interimvalue } = this.data;
+      const hexProgress = this.initToTwoHex(interimvalue);
+      if (!/^[0-9A-Fa-f]{2}$/.test(hexProgress)) throw new Error('十六进制格式错误');
+      this.btnCmdSend(cmdSetUnlockSensitivity, 1, hexProgress);
+      wx.showToast(toastSuccess);
+    } catch (error) {
+      console.error('设置开锁敏感值失败：', error.message || error);
+      wx.showToast(toastFail);
+    } finally {
+      this.setData({ personalized_Mode: false, interimvalue: 0 });
+    }
+  },
+  // 个性化关锁设置点击确认
+  handleLockPersonalizedModal() {
+    if (!this.data.lock_sensitivity_mark) {
+      wx.showToast({
+        title: '请先设置关锁默认值',
+        icon: 'none'
+      })
+      this.setData({
+        lock_interimvalue: 0
+      })
+      return
+    }
+    const cmdSetUnlockSensitivity = 0x11;
+    const toastSuccess = { title: '设置成功', icon: 'none', duration: 1500 };
+    const toastFail = { title: '设置失败', icon: 'none', duration: 1500 };
+
+    try {
+      const { lock_interimvalue } = this.data;
+      const hexProgress = this.initToTwoHex(lock_interimvalue);
+      this.btnCmdSend(cmdSetUnlockSensitivity, 0, hexProgress);
+      wx.showToast(toastSuccess);
+    } catch (error) {
+      console.error('设置关锁敏感值失败：', error.message || error);
+      wx.showToast(toastFail);
+    } finally {
+      this.setData({ personalized_Mode: false, lock_interimvalue: 0 });
+    }
+  },
+
+  // 未登录跳转登录页面
   handleOnExistingAccountTap() {
-    (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
+    (0, wx.navigateTo)({
+      url: '/pages/system/managerLoginView/loginView'
+    })
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
-    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    const {
+      currentTarget: {
+        dataset: {
+          index: idx = null
+        } = {}
+      } = {}
+    } = evt ?? {};
     if (idx === null) return;
-    const { tabList = [] } = this.data;
-    const { pagePath: targetUrl } = tabList[idx] ?? {};
+    const {
+      tabList = []
+    } = this.data;
+    const {
+      pagePath: targetUrl
+    } = tabList[idx] ?? {};
     if (!targetUrl) return;
     const [currentPage] = getCurrentPages().slice(-1);
-    const { route: currentPath } = currentPage ?? {};
+    const {
+      route: currentPath
+    } = currentPage ?? {};
     if (!currentPath) return;
     const targetPurePath = targetUrl.split('?')[0];
     console.log(currentPath, targetPurePath);
-    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
+    currentPath !== targetPurePath && wx.redirectTo({
+      url: `/${targetUrl}`
+    });
   },
   // 获取底部导航数据
   initBottomDirectory() {
@@ -111,14 +332,14 @@ Page({
   // 配对按钮点击处理
   btnPair() {
     const that = this;
-    const deviceInfo = wx.getDeviceInfo();  // 获取设备信息
+    const deviceInfo = wx.getDeviceInfo(); // 获取设备信息
     if (that.data.connectionState == '已连接') {
       // 判断Android系统
       if (deviceInfo.system.toLowerCase().includes('android')) {
         // 发送配对命令
         that.btnCmdSend(0x22, [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
         setTimeout(() => {
-          bleKeyManager.makePair();  // 执行配对
+          bleKeyManager.makePair(); // 执行配对
         }, 200);
       } else {
         // iOS系统处理流程
@@ -126,17 +347,17 @@ Page({
         setTimeout(() => {
           that.btnCmdSend(0x22, [0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
           setTimeout(() => {
-            that.btnEndConnect();  // 结束连接
+            that.btnEndConnect(); // 结束连接
             const pairInteval = setInterval(() => {
-              if (!bleKeyManager.getBLEConnectionState()) {  // 检查连接状态
-                clearInterval(pairInteval);  // 清除定时器
+              if (!bleKeyManager.getBLEConnectionState()) { // 检查连接状态
+                clearInterval(pairInteval); // 清除定时器
                 setTimeout(() => {
-                  that.btnStartConnect();  // 重新开始连
+                  that.btnStartConnect(); // 重新开始连
                 }, 500);
               }
             }, 500);
             setTimeout(() => {
-              clearInterval(pairInteval);  // 超时清除定时器
+              clearInterval(pairInteval); // 超时清除定时器
             }, 3000);
           }, 200);
         }, 200);
@@ -150,8 +371,13 @@ Page({
   },
   // 切换感应模式
   handleToggleSensorMode(e) {
-    const { parsedData = {} } = this.data || {};
-    const { inductionMode: oldFlag = false, pairStatus = '未配对' } = parsedData;
+    const {
+      parsedData = {}
+    } = this.data || {};
+    const {
+      inductionMode: oldFlag = false,
+      pairStatus = '未配对'
+    } = parsedData;
     const newFlag = e?.detail?.value ?? false;
     if (!oldFlag && pairStatus === '未配对') {
       this.btnPair();
@@ -164,8 +390,28 @@ Page({
   handleSystemInfo() {
     wx.getSystemInfo({
       success: (res) => {
-        const { brand, model, system, platform, screenWidth, screenHeight, pixelRatio, statusBarHeight } = res;
-        this.setData({ deviceInfo: { brand, model, system, platform, screenWidth, screenHeight, pixelRatio, statusBarHeight } });
+        const {
+          brand,
+          model,
+          system,
+          platform,
+          screenWidth,
+          screenHeight,
+          pixelRatio,
+          statusBarHeight
+        } = res;
+        this.setData({
+          deviceInfo: {
+            brand,
+            model,
+            system,
+            platform,
+            screenWidth,
+            screenHeight,
+            pixelRatio,
+            statusBarHeight
+          }
+        });
         console.log('设备信息:', this.data.deviceInfo);
       },
       fail: console.error
@@ -189,15 +435,21 @@ Page({
   },
   // 初始化屏幕及系统头部相关信息
   initScreenAndSystemInfo() {
-    const { screenHeight = 0, statusBarHeight = 0, screenWidth = 0 } = wx.getWindowInfo() || {};
-    const { height: h = 0, top: t = 0, right: r = 0 } = wx.getMenuButtonBoundingClientRect() || {};
+    const {
+      screenHeight = 0, statusBarHeight = 0, screenWidth = 0
+    } = wx.getWindowInfo() || {};
+    const {
+      height: h = 0,
+      top: t = 0,
+      right: r = 0
+    } = wx.getMenuButtonBoundingClientRect() || {};
     if (!screenHeight || !statusBarHeight || !screenWidth || !h || !t || !r) return;
     console.log(statusBarHeight, statusBarHeight + h + (t - statusBarHeight) * 2)
     this.setData({
-      g_height_from_head: statusBarHeight,//手机状态栏高度
-      g_head_height: statusBarHeight + h + (t - statusBarHeight) * 2,//自定义导航高度
-      g_capsule_distance_to_the_right: screenWidth - r,//胶囊按钮右侧边缘的距离
-      g_screenTotalHeight: screenHeight,//屏幕总高度
+      g_height_from_head: statusBarHeight, //手机状态栏高度
+      g_head_height: statusBarHeight + h + (t - statusBarHeight) * 2, //自定义导航高度
+      g_capsule_distance_to_the_right: screenWidth - r, //胶囊按钮右侧边缘的距离
+      g_screenTotalHeight: screenHeight, //屏幕总高度
     });
   },
   // 获取当前登录状态
@@ -224,7 +476,7 @@ Page({
     // 获取屏幕数据
     this.initScreenAndSystemInfo()
     this.initBottomDirectory()
-    this.initToConfigureCache()//获取缓存内容
+    this.initToConfigureCache() //获取缓存内容
     this.handleSystemInfo()
     // 创建定时器
     this.initCheckTimer();
@@ -242,25 +494,29 @@ Page({
       }
     }, 3000);
 
-    this.setData({ checkTimer: timer });
+    this.setData({
+      checkTimer: timer
+    });
   },
   onShow: function () {
-    this.handleStart()//开始执行链接蓝牙
-    this.startConnectionStatusPolling()//启动连接状态轮询
-
+    this.handleStart() //开始执行链接蓝牙
+    this.startConnectionStatusPolling() //启动连接状态轮询
+    this.initgetCache()//获取缓存值
 
   },
   onHide: function () {
     const that = this
     setTimeout(() => bleKeyManager.releaseBle(), 1500);
     this.setData({
-      connectionState: "未连接",                   // 连接状态
-      connectionID: "",                            // 连接ID
-      connectionDisplay: "未连接",                 // 连接显示文本
+      connectionState: "未连接", // 连接状态
+      connectionID: "", // 连接ID
+      connectionDisplay: "未连接", // 连接显示文本
       parsedData: {}
     })
     clearInterval(that.data.pageInterval);
-    wx.setKeepScreenOn({ keepScreenOn: false })
+    wx.setKeepScreenOn({
+      keepScreenOn: false
+    })
   },
 
   onUnload: function () {
@@ -268,7 +524,9 @@ Page({
     setTimeout(() => bleKeyManager.releaseBle(), 500);
     clearInterval(that.data.pageInterval);
     clearInterval(this.data.checkTimer);
-    wx.setKeepScreenOn({ keepScreenOn: false });
+    wx.setKeepScreenOn({
+      keepScreenOn: false
+    });
   },
   // 蓝牙连接处理
   handleStart() {
@@ -290,7 +548,9 @@ Page({
 
     // 统一请求蓝牙数据的函数
     const fetchBluetoothData = (code) => {
-      byGet('https://k1sw.wiselink.net.cn/' + u_getCarBluetoothKeyByCode.URL, { code })
+      byGet('https://k1sw.wiselink.net.cn/' + u_getCarBluetoothKeyByCode.URL, {
+        code
+      })
         .then(response => {
           if (!response?.data?.content) return;
 
@@ -333,7 +593,9 @@ Page({
             // 3. 缓存也不存在时处理车辆列表数据
             fail: () => {
               console.log('缓存不存在，处理车辆列表数据');
-              const param = { [u_carList.page]: 1 };
+              const param = {
+                [u_carList.page]: 1
+              };
               byGet('https://k1sw.wiselink.net.cn/' + u_carList.URL, param)
                 .then(response => {
                   if (response.statusCode === 200 && response?.data?.content?.[0]) {
@@ -431,8 +693,12 @@ Page({
     if (this.data.connectionID == "") {
       bleKeyManager.connectBLEConnected(
         this.data.deviceIDC,
-        (state) => { this.bluetoothStateMonitor(state); },
-        (type, arrayData, hexData, hexTextData) => { this.bluetoothDataMonitor(type, arrayData, hexData, hexTextData); }
+        (state) => {
+          this.bluetoothStateMonitor(state);
+        },
+        (type, arrayData, hexData, hexTextData) => {
+          this.bluetoothDataMonitor(type, arrayData, hexData, hexTextData);
+        }
       );
     } else {
       appUtil.showModal('已连接蓝牙', false, (confirm) => { });
@@ -513,7 +779,7 @@ Page({
         break;
       case 0x3b: // 设置 断开蓝牙自动锁车
       case 0x3a: // 设置 感应模式
-        const flameoutData = data// 第一个字节为0x01，后面补11个0x00
+        const flameoutData = data // 第一个字节为0x01，后面补11个0x00
         this.PackAndSend3a(type, 12, flameoutData); // 发送12字节数据
         break;
       case 0x4D: //设置锁车升窗
@@ -535,12 +801,12 @@ Page({
   },
   PackAndSendspecial(type, dataLength, data, sign) {
     const packet = [
-      0x24,                     // Header
-      0x11, 0x08,               // Type and length
-      parseInt(sign, 16) || 0,   // Sign value (fallback to 0)
-      data ? 0x01 : 0x00,        // Data flag
-      ...Array(6).fill(0x00),    // Padding
-      0x24                      // Footer
+      0x24, // Header
+      0x11, 0x08, // Type and length
+      parseInt(sign, 16) || 0, // Sign value (fallback to 0)
+      data ? 0x01 : 0x00, // Data flag
+      ...Array(6).fill(0x00), // Padding
+      0x24 // Footer
     ];
     bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));
   },
@@ -559,12 +825,12 @@ Page({
   // 打包并发送数据（支持动态数据体长度）
   PackAndSend3a(type, dataLength, data, sign) {
     console.log(type, dataLength, data, sign)
-    const header = [0x24];  // 数据头
-    const end = [0x24];     // 数据尾
+    const header = [0x24]; // 数据头
+    const end = [0x24]; // 数据尾
     // 根据要求的数据长度填充数据，不足补0
     const paddedData = [...data].concat(new Array(dataLength - data.length).fill(0x00)).slice(0, dataLength);
-    const packet = dataLength == 8 ? [...header, type, dataLength, ...data, ...end] : [...header, type, ...paddedData, ...end];  // 组合数据包
-    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet));  // 发送数据
+    const packet = dataLength == 8 ? [...header, type, dataLength, ...data, ...end] : [...header, type, ...paddedData, ...end]; // 组合数据包
+    bleKeyManager.dispatcherSend2(this.arrayToArrayBuffer(packet)); // 发送数据
   },
   // 升窗降窗指令封装
   PackAndSend07: function (type, len, data) {
@@ -597,7 +863,11 @@ Page({
   handleLoggerapi(evt) {
     const MAX_LOGS_BEFORE_UPLOAD = 10;
     const UPLOAD_LOG_URL = 'https://k1sw.wiselink.net.cn/' + u_uploadLog.URL;
-    const { deviceInfo, deviceIDC, logs: currentLogs } = this.data;
+    const {
+      deviceInfo,
+      deviceIDC,
+      logs: currentLogs
+    } = this.data;
     const userId = getApp()?.data?.userInfo?.id;
     const d = new Date();
     const fmt = d.getFullYear() + '-' +
@@ -655,9 +925,13 @@ Page({
   parseData: function (hexData) {
     const parsedResult = getParseHexDataObject(hexData);
     if (parsedResult) {
-      this.setData({ parsedData: parsedResult }, () => {
-        // 初始化样式
-        // this.updateSliderStyles();
+      this.setData({
+        parsedData: parsedResult,
+        unlock_max: (Number(parsedResult?.inductionLockSignal) > 110) ? 100 : (Number(parsedResult?.inductionLockSignal) - 10),
+        lock_min: Number(parsedResult?.inductionUnlockSignal) + 10,
+        unlockRange: (parsedResult?.inductionUnlockSignal / parsedResult?.inductionLockSignal) * 100,
+        lockRange: (parsedResult?.inductionLockSignal / 255) * 100
+      }, () => {
         this.updateMyPositionStyles();
       });
     }
@@ -669,11 +943,14 @@ Page({
     const that = this
     if (that.data.connectionID == "") {
       bleKeyManager.connectBLE(that.data.deviceIDC,
-        function (state) { that.bluetoothStateMonitor(state) },
-        function (type, arrayData, hexData, hexTextData) { that.bluetoothDataMonitor(type, arrayData, hexData, hexTextData) }
+        function (state) {
+          that.bluetoothStateMonitor(state)
+        },
+        function (type, arrayData, hexData, hexTextData) {
+          that.bluetoothDataMonitor(type, arrayData, hexData, hexTextData)
+        }
       )
-    }
-    else
+    } else
       appUtil.showModal('已连接蓝牙', false, function (confirm) { });
   },
 
@@ -683,7 +960,7 @@ Page({
     if (typeof hexString !== 'string' || !/^[0-9a-fA-F]+$/.test(hexString)) {
       throw new Error('无效的16进制字符串');
     }
-    return hexString.slice(4, -2);  // 去除头尾固定字符
+    return hexString.slice(4, -2); // 去除头尾固定字符
   },
 
   // 断开蓝牙连接
@@ -692,14 +969,24 @@ Page({
   },
 
   // 快捷控制命令方法
-  handleUnlock: function () { this._sendVehicleCommand(0x03, ''); },   // 开锁命令
-  handleLock: function () { this._sendVehicleCommand(0x04, ''); },     // 锁车命令
+  handleUnlock: function () {
+    this._sendVehicleCommand(0x03, '');
+  }, // 开锁命令
+  handleLock: function () {
+    this._sendVehicleCommand(0x04, '');
+  }, // 锁车命令
   handleOpenTrunk: function () {
     this._sendVehicleCommand(0x05, '');
-  },// 尾箱命令
-  handleFindCar: function () { this._sendVehicleCommand(0x06, ''); },  // 寻车命令
-  handlRaiseTheWindow: function () { this._sendVehicleCommand(0x07, 0x03); },  // 升窗命令
-  handleLowerTheWindow: function () { this._sendVehicleCommand(0x07, 0x04); }, // 降窗命令
+  }, // 尾箱命令
+  handleFindCar: function () {
+    this._sendVehicleCommand(0x06, '');
+  }, // 寻车命令
+  handlRaiseTheWindow: function () {
+    this._sendVehicleCommand(0x07, 0x03);
+  }, // 升窗命令
+  handleLowerTheWindow: function () {
+    this._sendVehicleCommand(0x07, 0x04);
+  }, // 降窗命令
 
   // 指令公共方法
   _sendVehicleCommand: function (commandCode, code) {
@@ -772,7 +1059,7 @@ Page({
     wx.redirectTo({
       url: '/pages/listOfPrivateCars/setting/index?sign=4',
     })
-  },//跳转配置
+  }, //跳转配置
 
   /**
    * 获取已连接设备信息
@@ -815,7 +1102,9 @@ Page({
         });
         const result = Array.from(uniqueMap.values());
         console.log('合并并优先保留 enabled=false 的结果：', result);
-        this.setData({ controlItems: result }, () => {
+        this.setData({
+          controlItems: result
+        }, () => {
           this.setData({
             controlItemspanel: this.splitArray(result, 4)
           })
@@ -831,7 +1120,10 @@ Page({
   // 更新滑块和填充层样式（核心）
   updateSliderStyles() {
     const val = this.data.parsedData;
-    const { inductionUnlockSignal, inductionLockSignal } = val
+    const {
+      inductionUnlockSignal,
+      inductionLockSignal
+    } = val
     this.setData({
       unlockThumbStyle: `left: ${(inductionUnlockSignal || 50 - 6)}%;`,
       lockThumbStyle: `left: ${(inductionLockSignal || 60 - 6) / 2}%;`,
@@ -843,7 +1135,9 @@ Page({
   // 更新人物位置样式
   updateMyPositionStyles() {
     const val = this.data.parsedData;
-    const { signalValue } = val
+    const {
+      signalValue
+    } = val
     this.setData({
       myPositionStyle: `left: ${signalValue / 2}%;`
     });
@@ -855,19 +1149,31 @@ Page({
       const query = wx.createSelectorQuery().in(this);
       query.select(`#${trackId}`).boundingClientRect();
       query.exec((res) => {
-        resolve(res?.[0] ? { width: res[0].width, left: res[0].left } : null);
+        resolve(res?.[0] ? {
+          width: res[0].width,
+          left: res[0].left
+        } : null);
       });
     });
   },
 
   // 滑块拖动事件
   async onlockSlide(e) {
-    const { data: { parsedData = { pairStatus: '未配对' } } = {} } = this;
+    const {
+      data: {
+        parsedData = {
+          pairStatus: '未配对'
+        }
+      } = {}
+    } = this;
     if (parsedData.pairStatus === '未配对') {
       this.btnPair();
       return;
     }
-    const { currentTarget: target, touches = [] } = e || {};
+    const {
+      currentTarget: target,
+      touches = []
+    } = e || {};
     const touch = touches[0];
     if (!target || !touch) return;
     const trackId = target.dataset?.id;
@@ -879,10 +1185,19 @@ Page({
     const relativeX = touchX - trackInfo.left;
     console.log(`${trackId} - 判断滑动值`);
     const trackConfig = {
-      lockTrack: { maxProgress: 200, cmdParam: 0 },
-      unlockTrack: { maxProgress: 100, cmdParam: 1 }
+      lockTrack: {
+        maxProgress: 200,
+        cmdParam: 0
+      },
+      unlockTrack: {
+        maxProgress: 100,
+        cmdParam: 1
+      }
     };
-    const { maxProgress, cmdParam } = trackConfig[trackId];
+    const {
+      maxProgress,
+      cmdParam
+    } = trackConfig[trackId];
     const progress = Math.max(0, Math.min(maxProgress, Math.round((relativeX / trackInfo.width) * maxProgress)));
     const THRESHOLD_CONFIG = {
       unlock: {
@@ -898,8 +1213,12 @@ Page({
     };
 
     const getParsedSignal = (context, trackType) => {
-      const { data = {} } = context;
-      const { parsedData = {} } = data;
+      const {
+        data = {}
+      } = context;
+      const {
+        parsedData = {}
+      } = data;
       const config = THRESHOLD_CONFIG[trackType];
       const signalKey = trackType === 'unlock' ? 'inductionLockSignal' : 'inductionUnlockSignal';
       return Number(parsedData[signalKey]) || config.defaultSignal;
@@ -908,14 +1227,23 @@ Page({
     const calculateValidProgress = (progress, trackType) => {
       const config = THRESHOLD_CONFIG[trackType];
       const signal = getParsedSignal(this, trackType);
-      const thresholds = trackType === 'unlock'
-        ? { min: config.min, max: signal + config.maxOffset }
-        : { min: signal + config.minOffset, max: config.max };
+      const thresholds = trackType === 'unlock' ?
+        {
+          min: config.min,
+          max: signal + config.maxOffset
+        } :
+        {
+          min: signal + config.minOffset,
+          max: config.max
+        };
       thresholds.min = Math.max(0, thresholds.min); // 最小不低于0
       thresholds.max = Math.min(255, thresholds.max); // 最大不超过255（16进制两位上限）
       if (thresholds.min > thresholds.max) thresholds.min = thresholds.max; // 避免范围倒置
       const validProgress = Math.max(thresholds.min, Math.min(thresholds.max, progress));
-      return { validProgress, ...thresholds };
+      return {
+        validProgress,
+        ...thresholds
+      };
     };
     const showThresholdTip = (progress, thresholds, trackType) => {
       const typeText = trackType === 'unlock' ? '开锁' : '锁定';
@@ -946,12 +1274,19 @@ Page({
     if (['unlockTrack', 'lockTrack'].includes(trackId)) {
       const trackType = trackId.replace('Track', ''); // 提取类型：unlock/lock
       const progressNum = Number(progress) || 0; // 确保进度是数字，默认0
-      const { validProgress, min, max } = calculateValidProgress(progressNum, trackType);
+      const {
+        validProgress,
+        min,
+        max
+      } = calculateValidProgress(progressNum, trackType);
       if (progressNum < min || progressNum > max) {
-        showThresholdTip(progressNum, { min, max }, trackType);
+        showThresholdTip(progressNum, {
+          min,
+          max
+        }, trackType);
       }
       console.log(trackId, trackType)
-      if (trackType == 'lock') {//关锁
+      if (trackType == 'lock') { //关锁
         this.setData({
           lockThumbStyle: `left: ${(validProgress) / 2}%;`,
           lockRange: (validProgress) / 2,
@@ -964,17 +1299,22 @@ Page({
         });
       }
       const hexProgress = toTwoHex(validProgress);
+      console.log(hexProgress, validProgress, '233333')
       this.btnCmdSend(0x11, cmdParam, hexProgress);
     }
   },
   // 更多设置弹窗
   /**
- * 处理更多设置点击事件
- * @param {Event} evt - 点击事件对象
- */
+   * 处理更多设置点击事件
+   * @param {Event} evt - 点击事件对象
+   */
   handleMoreSettings(evt) {
-    const { currentTarget = {} } = evt || {};
-    const { dataset = {} } = currentTarget;
+    const {
+      currentTarget = {}
+    } = evt || {};
+    const {
+      dataset = {}
+    } = currentTarget;
     const key = dataset.key;
     this.setData({
       modalisShow: true,
@@ -1003,7 +1343,10 @@ Page({
   },
   // 输出方式
   handleOutputMethod(evt) {
-    const { index, item: info } = evt?.currentTarget?.dataset || {};
+    const {
+      index,
+      item: info
+    } = evt?.currentTarget?.dataset || {};
     const value = evt?.detail?.value;
 
     // 参数校验
@@ -1014,7 +1357,9 @@ Page({
     if (!selectedOutput?.name) return;
 
     // 查找需要更新的项
-    const { keyInstructions } = this.data;
+    const {
+      keyInstructions
+    } = this.data;
     const updateIndex = keyInstructions.findIndex(item => item?.id === info.id);
     if (updateIndex === -1) return;
 
@@ -1031,7 +1376,10 @@ Page({
   },
   // 快捷设置按键
   handleInstructions(evt) {
-    const { id, useTypeId } = evt;
+    const {
+      id,
+      useTypeId
+    } = evt;
     const sendCommand = (cmd, data) => {
       this.PackAndSendSet(cmd, data);
     };
@@ -1065,21 +1413,35 @@ Page({
   },
   //新增或减少配置
   handleToggleControl(evt) {
-    const { index } = evt.currentTarget?.dataset || {};
-    const { value } = evt.detail || {};
-    const { controlItems } = this.data;
+    const {
+      index
+    } = evt.currentTarget?.dataset || {};
+    const {
+      value
+    } = evt.detail || {};
+    const {
+      controlItems
+    } = this.data;
     if (index == null || value == null || !controlItems?.[index]) {
       return;
     }
     const updatedItems = controlItems.map((item, i) =>
-      i === index ? { ...item, enabled: Boolean(value) } : item
+      i === index ? {
+        ...item,
+        enabled: Boolean(value)
+      } : item
     );
-    this.setData({ controlItems: updatedItems }, () => {
+    this.setData({
+      controlItems: updatedItems
+    }, () => {
       this.setData({
         controlItemspanel: this.splitArray(updatedItems, 4)
       })
     });
-    wx.setStorage({ key: 'controlItems', data: updatedItems });
+    wx.setStorage({
+      key: 'controlItems',
+      data: updatedItems
+    });
   },
 
   // 调整安装手册
