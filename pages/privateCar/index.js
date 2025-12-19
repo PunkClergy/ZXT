@@ -150,7 +150,13 @@ Page({
           try {
             // 发送指令 + 更新本地状态 + 持久化存储
             this.btnCmdSend(CONST.CMD_SET_SENSITIVITY, 1, this.initToTwoHex(CONST.DEFAULT_SENSITIVITY));
-            this.setData({ unlock_sensitivity_mark: true }, () => wx.setStorageSync(CONST.STORAGE_KEY, true));
+            this.setData({ unlock_sensitivity_mark: true }, () => {
+              wx.setStorageSync(CONST.STORAGE_KEY, true)
+              if (this.data.unlock_sensitivity_mark && this.data.lock_sensitivity_mark) {
+                const cmdValue = 0x01;
+                this.btnCmdSend(0x3a, [cmdValue]);
+              }
+            });
             wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
           } catch (e) {
             console.error('设置开锁敏感值默认值失败：', e);
@@ -189,7 +195,13 @@ Page({
         if (res.confirm) {
           try {
             this.btnCmdSend(CONST.Cmd, 0, this.initToTwoHex(CONST.Sens));
-            this.setData({ lock_sensitivity_mark: true }, () => wx.setStorageSync(CONST.Key, true));
+            this.setData({ lock_sensitivity_mark: true }, () => {
+              wx.setStorageSync(CONST.Key, true)
+              if (this.data.unlock_sensitivity_mark && this.data.lock_sensitivity_mark) {
+                const cmdValue = 0x01;
+                this.btnCmdSend(0x3a, [cmdValue]);
+              }
+            });
             wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
           } catch (e) {
             console.error('设置失败：', e);
@@ -433,6 +445,26 @@ Page({
   },
   // 切换感应模式
   handleToggleSensorMode(e) {
+    if (!isLogin()) {
+      wx.navigateTo({
+        url: '/pages/system/managerLoginView/loginView',
+      })
+      return
+    }
+    if ((!this.data.unlock_sensitivity_mark) || (!this.data.lock_sensitivity_mark)) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '请先设定开关锁默认值，再开启感应模式。',
+        showCancel: false, // 显示取消按钮（默认值，可省略）
+        confirmText: '确认', // 更具引导性的确认按钮文字
+        success: (res) => {
+          this.setData({
+            sensing_state: false
+          })
+        }
+      });
+      return
+    }
     const {
       parsedData = {}
     } = this.data || {};

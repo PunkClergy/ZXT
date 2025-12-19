@@ -74,7 +74,7 @@
           没有开启：掏出手机--点开智信通wiselink小程序-点击“我的手机汽车钥匙功能”--开门关门
         </text>
       </view>
-      <switch bindchange="handleToggleSensorMode" checked="{{parsedData.inductionMode}}" color="#1B64B1" style="transform: scale(0.8)" />
+      <switch bindchange="handleToggleSensorMode" checked="{{(unlock_sensitivity_mark && lock_sensitivity_mark) ? parsedData.inductionMode:sensing_state}}" color="#1B64B1" style="transform: scale(0.8)" />
     </view>
     <view class="middle-concrete-content">
       <!-- 开锁感应DIY -->
