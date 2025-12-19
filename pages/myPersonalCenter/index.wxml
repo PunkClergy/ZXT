@@ -65,7 +65,7 @@
     <view class="qr-group-close" bindtap="handleQRClose">×</view>
     <view class="qr-group-preview-content">
       <image catchtap="handleQRShowImageMask" class="qr-group-preview-img" src="{{personal_qr_code}}" mode="widthFix"></image>
-      <text class="qr-group-preview-desc">请点击、长按官方群二维码加入交流群，获取体验权限！</text>
+      <text class="qr-group-preview-desc">请点击、长按添加官方客服，获取体验权限！</text>
     </view>
   </view>
 </view>

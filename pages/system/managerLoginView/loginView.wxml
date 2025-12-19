@@ -51,8 +51,8 @@
   <view class="info-area">
     <view class="info-card">
       <text class="product-name">智前通wiselink</text>
-      <view style="font-size: 26rpx;color: #575658;">不怕丢失，高性价比，可以"魔变"无穷把，可以分享授权使用的手机汽车电子钥匙，仅需599元起；</view>
-      <view style="font-size: 26rpx;color: #575658;">请点击、长按官方群二维码，有专属客服服务！</view>
+      <view style="font-size: 26rpx;color: #575658;">不怕丢失，高性价比，可以"魔变"无穷把，可以分享授权使用的手机汽车电子钥匙；</view>
+      <view style="font-size: 26rpx;color: #575658;">请点击、长按添加官方客服，有专属客服服务！</view>
       <view style="display: flex;justify-content: center;">
         <image src="{{init_qr_code}}" style="width: 300rpx;height: 300rpx;" bindtap="handlePreviewImage" />
       </view>

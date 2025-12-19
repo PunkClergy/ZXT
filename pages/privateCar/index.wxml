@@ -77,6 +77,7 @@
       <switch bindchange="handleToggleSensorMode" checked="{{parsedData.inductionMode}}" color="#1B64B1" style="transform: scale(0.8)" />
     </view>
     <view class="middle-concrete-content">
+      <!-- 开锁感应DIY -->
       <view class="middle-concrete-content-debugging">
         <view class="middle-concrete-content-debugging-title">开锁信号敏感值DIY</view>
         <view style="display: flex;flex-direction: row;align-items: flex-start;justify-content: space-between;">
@@ -86,7 +87,7 @@
             <view class="middle-concrete-content-debugging-car-icon">
               <view class="middle-concrete-content-debugging-info">
                 <image class="middle-concrete-content-debugging-info-image" wx:if="{{unlock_sensitivity_mark}}" src="/assets/images/home/car_icon.png"></image>
-                <text class="middle-concrete-content-debugging-info-text">开锁敏感值: {{unlock_sensitivity_mark?parsedData.inductionUnlockSignal:'请先点击设定默认值'}}</text>
+                <text class="middle-concrete-content-debugging-info-text">开锁敏感值: {{unlock_sensitivity_mark?parsedData.inductionUnlockSignal:'请先设定开关锁默认值'}}</text>
               </view>
             </view>
             <view class="middle-concrete-content-debugging-person-icon" style="{{myPositionStyle}}" wx:if="{{unlock_sensitivity_mark}}">
@@ -98,23 +99,27 @@
           </view>
           <view class="middle-concrete-content-debugging-tip-btn  default-mode" bindtap="handleDefaultMode">默认设定：50</view>
         </view>
-        <view style="font-size: 20rpx;">关锁个性化设置:{{unlock_sensitivity_mark?(interimvalue||parsedData.inductionUnlockSignal||50):30}}</view>
+        <view style="font-size: 20rpx;">开锁个性化设置:{{unlock_sensitivity_mark?(interimvalue||parsedData.inductionUnlockSignal||50):30}}</view>
         <view class="middle-concrete-content-debugging-tip">
-          <view class="de-modal-body">
+          <view class="de-modal-body" style="width:{{unlock_slide_state?'75%':'98%'}}">
             <view class="de-slider-wrap">
-              <view class="de-slider-num de-min-num">{{unlock_min}}</view>
-              <slider class="de-slider-core" min="{{unlock_min}}" max="{{unlock_max}}" step="{{1}}" value="{{unlock_sensitivity_mark?(interimvalue||parsedData.inductionUnlockSignal||50):30}}" activeColor="#ff5722" backgroundColor="#e5e5e5" block-size="24" bindchanging="handleOnSliderChanging" bindchange="handleOnSliderChange" />
-              <view class="de-slider-num de-max-num">{{unlock_max}}</view>
+              <view class="de-slider-num de-min-num">{{unlock_sensitivity_mark?unlock_min:30}}</view>
+              <slider class="de-slider-core" min="{{unlock_sensitivity_mark?unlock_min:30}}" max="{{unlock_sensitivity_mark?unlock_max:100}}" step="{{1}}" value="{{unlock_sensitivity_mark?(interimvalue||parsedData.inductionUnlockSignal||50):30}}" activeColor="#ff5722" backgroundColor="#e5e5e5" block-size="24" bindchanging="handleOnSliderChanging" bindchange="handleOnSliderChange" />
+              <view class="de-slider-num de-max-num">{{unlock_sensitivity_mark?unlock_max:100}}</view>
             </view>
           </view>
-          <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" style="border: 1px solid #bbb;background-color: #ffff;color: #000;" bindtap="handlecanceModal">
-            取消</view>
-          <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" bindtap="handlePersonalizedModal">
-            确认</view>
+          <block wx:if="{{unlock_slide_state}}">
+            <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" style="border: 1px solid #bbb;background-color: #ffff;color: #000;" bindtap="handlecanceModal">
+              取消
+            </view>
+            <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" bindtap="handlePersonalizedModal">
+              确认
+            </view>
+          </block>
         </view>
-        <view class="middle-concrete-content-debugging-tip">此处是副标题内容，待优化文案等内容。</view>
+        <view class="middle-concrete-content-debugging-tip">若开锁距离效果不佳，可滑动圆形滑块个性化调整敏感值。温馨提示：进行个性化设定前，请先点击开关锁【默认设定】。</view>
       </view>
-   
+      <!-- 关锁感应DIY -->
       <view class="middle-concrete-content-debugging">
         <view class="middle-concrete-content-debugging-title">关锁信号敏感值DIY</view>
         <view style="display: flex;flex-direction: row;align-items: flex-start;justify-content: space-between;">
@@ -124,7 +129,7 @@
             <view class="middle-concrete-content-debugging-car-icon">
               <view class="middle-concrete-content-debugging-info">
                 <image class="middle-concrete-content-debugging-info-image" wx:if="{{lock_sensitivity_mark}}" src="/assets/images/home/car_icon.png"></image>
-                <text class="middle-concrete-content-debugging-info-text">关锁敏感值: {{lock_sensitivity_mark?parsedData.inductionLockSignal:'请先点击设定默认值'}}</text>
+                <text class="middle-concrete-content-debugging-info-text">关锁敏感值: {{lock_sensitivity_mark?parsedData.inductionLockSignal:'请先设定开关锁默认值'}}</text>
               </view>
             </view>
 
@@ -140,32 +145,36 @@
         </view>
         <view style="font-size: 20rpx;">关锁个性化设置:{{lock_sensitivity_mark?(lock_interimvalue||parsedData.inductionLockSignal||50):30}}</view>
         <view class="middle-concrete-content-debugging-tip">
-          <view class="de-modal-body">
+          <view class="de-modal-body" style="width: {{lock_slide_state?'75%':'98%'}};">
             <view class="de-slider-wrap">
-              <view class="de-slider-num de-min-num">{{lock_min}}</view>
-              <slider class="de-slider-core" min="{{lock_min}}" max="{{lock_max}}" step="{{1}}" value="{{lock_sensitivity_mark?(lock_interimvalue||parsedData.inductionLockSignal||70):30}}" activeColor="#ff5722" backgroundColor="#e5e5e5" block-size="24" bindchanging="handleOnLockSliderChanging" bindchange="handleOnLockSliderChange" />
+              <view class="de-slider-num de-min-num">{{lock_sensitivity_mark?lock_min:30}}</view>
+              <slider class="de-slider-core" min="{{lock_sensitivity_mark?lock_min:30}}" max="{{lock_max}}" step="{{1}}" value="{{lock_sensitivity_mark?(lock_interimvalue||parsedData.inductionLockSignal||70):30}}" activeColor="#ff5722" backgroundColor="#e5e5e5" block-size="24" data-info="lock" bindchanging="handleOnLockSliderChanging" bindchange="handleOnLockSliderChange" />
               <view class="de-slider-num de-max-num">{{lock_max}}</view>
             </view>
           </view>
-          <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" style="border: 1px solid #bbb;background-color: #ffff;color: #000;" bindtap="handleLockCanceModal">
-            取消</view>
-          <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" bindtap="handleLockPersonalizedModal">
-            确认</view>
+          <block wx:if="{{lock_slide_state}}">
+            <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" style="border: 1px solid #bbb;background-color: #ffff;color: #000;" bindtap="handleLockCanceModal">
+              取消
+            </view>
+            <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" bindtap="handleLockPersonalizedModal">
+              确认
+            </view>
+          </block>
         </view>
-        <view class="middle-concrete-content-debugging-tip">此处是副标题内容，待优化文案等内容。</view>
+        <view class="middle-concrete-content-debugging-tip">若关锁距离效果不佳，可滑动圆形滑块个性化调整敏感值。温馨提示：进行个性化设定前，请先点击开关锁【默认设定】。</view>
       </view>
-      
+      <!-- 特殊情况DIY -->
       <view class="middle-concrete-content-debugging">
         <view class="middle-concrete-content-debugging-title">特殊情况DIY</view>
-        
+
         <view style="display: flex;flex-direction: row;align-items: flex-start;justify-content: space-between;">
-            <view class="middle-concrete-content-debugging-slider-track tarck-special" id="unlockTrack">
+          <view class="middle-concrete-content-debugging-slider-track tarck-special" id="unlockTrack" style="width: 100%;">
             <view class="middle-concrete-content-debugging-slider-fill fill-special" wx:if="{{lock_sensitivity_mark}}" style="width: {{lockRange+'%'}}"></view>
             <view class="middle-concrete-content-debugging-slider-fill fill-special" wx:else style="width: 0%"></view>
             <view class="middle-concrete-content-debugging-car-icon">
               <view class="middle-concrete-content-debugging-info">
                 <image class="middle-concrete-content-debugging-info-image" wx:if="{{lock_sensitivity_mark}}" src="/assets/images/home/car_icon.png"></image>
-                <text class="middle-concrete-content-debugging-info-text">关锁敏感值: {{lock_sensitivity_mark?parsedData.inductionLockSignal:'请先点击设定默认值'}}</text>
+                <text class="middle-concrete-content-debugging-info-text">关锁敏感值: {{lock_sensitivity_mark?parsedData.inductionLockSignal:'请先设定开关锁默认值'}}</text>
               </view>
             </view>
 
@@ -177,47 +186,29 @@
             </view>
 
           </view>
-          <view class="middle-concrete-content-debugging-tip-btn  default-mode" bindtap="handleLockDefaultMode">默认设定：60</view>
+          <!-- <view class="middle-concrete-content-debugging-tip-btn  default-mode" bindtap="handleLockDefaultMode">默认设定：60</view> -->
         </view>
-        <view style="font-size: 20rpx;">关锁个性化设置:{{lock_sensitivity_mark?(lock_interimvalue||parsedData.inductionLockSignal||50):30}}</view>
+        <view style="font-size: 20rpx;">特殊情况个性化设置:{{lock_sensitivity_mark?(lock_interimvalue||parsedData.inductionLockSignal||50):30}}</view>
         <view class="middle-concrete-content-debugging-tip">
-          <view class="de-modal-body">
+          <view class="de-modal-body" style="width:{{specific_slide_state?'75%':'98%'}}">
             <view class="de-slider-wrap">
-              <view class="de-slider-num de-min-num">{{lock_min}}</view>
-              <slider class="de-slider-core" min="{{lock_min}}" max="{{lock_max}}" step="{{1}}" value="{{lock_sensitivity_mark?(lock_interimvalue||parsedData.inductionLockSignal||70):30}}" activeColor="#ff5722" backgroundColor="#e5e5e5" block-size="24" bindchanging="handleOnLockSliderChanging" bindchange="handleOnLockSliderChange" />
+              <view class="de-slider-num de-min-num">{{lock_sensitivity_mark?lock_min:30}}</view>
+              <slider class="de-slider-core" min="{{lock_sensitivity_mark?lock_min:30}}" max="{{lock_max}}" step="{{1}}" value="{{lock_sensitivity_mark?(lock_interimvalue||parsedData.inductionLockSignal||70):30}}" activeColor="#ff5722" backgroundColor="#e5e5e5" block-size="24" data-info="specific" bindchanging="handleOnLockSliderChanging" bindchange="handleOnLockSliderChange" />
               <view class="de-slider-num de-max-num">{{lock_max}}</view>
             </view>
           </view>
-          <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" style="border: 1px solid #bbb;background-color: #ffff;color: #000;" bindtap="handleLockCanceModal">
-            取消</view>
-          <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" bindtap="handleLockPersonalizedModal">
-            确认</view>
+          <block wx:if="{{specific_slide_state}}">
+            <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" style="border: 1px solid #bbb;background-color: #ffff;color: #000;" bindtap="handleLockCanceModal">
+              取消
+            </view>
+            <view class="middle-concrete-content-debugging-tip-gxh personalized-mode" bindtap="handleLockPersonalizedModal">
+              确认
+            </view>
+          </block>
         </view>
-        <view class="middle-concrete-content-debugging-tip">此处是副标题内容，待优化文案等内容。</view>
+        <view class="middle-concrete-content-debugging-tip">特殊情况下（如在车内出现频繁开关锁现象），可个性化调整敏感值，建议适当调大数值。该数值调大后，将增加关锁感应距离。温馨提示：进行个性化设定前，请先点击开关锁【默认设定】</view>
       </view>
-      
-      <!-- <view class="middle-concrete-content-debugging">
-        <view class="middle-concrete-content-debugging-title">特殊情况DIY</view>
-        <view class="middle-concrete-content-debugging-slider-track tarck-special" id="unlockTrack">
-          <view class="middle-concrete-content-debugging-slider-fill fill-special" style="width: {{lockRange+'%'}}"></view>
-          <view class="middle-concrete-content-debugging-car-icon">
-            <view class="middle-concrete-content-debugging-info">
-              <image src="/assets/images/home/car_icon.png" class="middle-concrete-content-debugging-info-image"></image>
-              <text class="middle-concrete-content-debugging-info-text">关锁范围: {{parsedData.inductionLockSignal||60}}</text>
-            </view>
-          </view>
-          <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
-            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/special@2x.png" />
-          </view>
-          <view class="middle-concrete-content-debugging-person-icon" style="{{myPositionStyle}}">
-            <view class="middle-concrete-content-debugging-person-info">
-              <image class="middle-concrete-content-debugging-person-info-image" src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/my_place.png"></image>
-              <text class="middle-concrete-content-debugging-info-text">我的位置: {{parsedData.signalValue||50}}</text>
-            </view>
-          </view>
-        </view>
-        <view class="middle-concrete-content-debugging-tip">初期使用或更换手机后，因不同品牌、年份手机的蓝牙敏感度差异较大，请掏出手机调试 “关锁” 图标位置，调整至满意状态后保存。</view>
-      </view> -->
+
     </view>
   </view>
   <view class="bottom-fixed" style="height: {{bottomHeight}}px;">

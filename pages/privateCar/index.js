@@ -95,15 +95,20 @@ Page({
     unlock_max: 100,
     // 开锁临时值
     interimvalue: 0,
+    // 开锁个性化是否滑动
+    unlock_slide_state: false,
     // 是否设置了关锁默认值
     lock_sensitivity_mark: false,
     // 关锁最小值
     lock_min: 60,
     // 开锁最大值
-    lock_max: 255,
+    lock_max: 100,
     // 关锁临时值
     interimvalue: 0,
-
+    // 关锁个性化是否滑动
+    lock_slide_state: false,
+    // 特殊情况下个性化是否滑动
+    specific_slide_state: false,
 
   },
   // 获取是否设置了默认值
@@ -125,68 +130,70 @@ Page({
   },
   // 设置开锁默认值弹窗
   handleDefaultMode() {
-    const defaultUnlockSensitivity = 50;
-    const cmdSetUnlockSensitivity = 0x11;
-    const storageKeySensitivityMark = 'unlock_sensitivity_mark';
+    const CONST = {
+      DEFAULT_SENSITIVITY: 50,
+      CMD_SET_SENSITIVITY: 0x11,
+      STORAGE_KEY: 'unlock_sensitivity_mark',
+      LOGIN_PAGE: '/pages/system/managerLoginView/loginView'
+    };
+    if (!isLogin()) return wx.navigateTo({ url: CONST.LOGIN_PAGE });
+    if (this.data.connectionState === '未连接') {
+      return wx.showToast({ title: '请等待蓝牙连接后重试', icon: 'none' });
+    }
+    const { inductionMode: oldFlag = false, pairStatus = '未配对' } = this.data.parsedData || {};
+    if (!oldFlag && pairStatus === '未配对') return this.btnPair();
     wx.showModal({
       title: '温馨提示',
-      content: `确定将您的开锁敏感值默认值设定为【${defaultUnlockSensitivity}】？`,
-      confirmText: '确定',
-      cancelText: '取消',
+      content: `确定将您的开锁敏感值默认值设定为【${CONST.DEFAULT_SENSITIVITY}】？`,
       success: (res) => {
         if (res.confirm) {
           try {
-            const hexProgress = this.initToTwoHex(defaultUnlockSensitivity);
-            this.btnCmdSend(cmdSetUnlockSensitivity, 1, hexProgress);
-            this.setData({
-              unlock_sensitivity_mark: true
-            }, () => {
-              wx.setStorageSync(storageKeySensitivityMark, true);
-            });
-            wx.showToast({
-              title: '设置成功',
-              icon: 'none',
-              duration: 1500
-            });
-          } catch (error) {
-            console.error('设置开锁敏感值默认值失败：', error);
+            // 发送指令 + 更新本地状态 + 持久化存储
+            this.btnCmdSend(CONST.CMD_SET_SENSITIVITY, 1, this.initToTwoHex(CONST.DEFAULT_SENSITIVITY));
+            this.setData({ unlock_sensitivity_mark: true }, () => wx.setStorageSync(CONST.STORAGE_KEY, true));
+            wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
+          } catch (e) {
+            console.error('设置开锁敏感值默认值失败：', e);
           }
-        } else if (res.cancel) {
-          console.log('用户取消了敏感值默认设置');
         }
       }
     });
   },
   // 设置关锁值默认值
   handleLockDefaultMode() {
-    const defaultUnlockSensitivity = 60;
-    const cmdSetUnlockSensitivity = 0x11;
-    const storageKeySensitivityMark = 'lock_sensitivity_mark';
+    if ((this.data?.parsedData?.inductionUnlockSignal) > 60) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '关锁敏感值不得低于开锁敏感值，使用默认关锁值前，需先将开锁敏感值设为默认值。',
+        showCancel: true,
+        confirmText: '确认',
+      });
+      return
+    }
+    const CONST = {
+      Sens: 60,
+      Cmd: 0x11,
+      Key: 'lock_sensitivity_mark',
+      LoginUrl: '/pages/system/managerLoginView/loginView'
+    };
+    if (!isLogin()) return wx.navigateTo({ url: CONST.LoginUrl });
+    if (this.data.connectionState === '未连接') {
+      return wx.showToast({ title: '请等待蓝牙连接后重试', icon: 'none' });
+    }
+    const { inductionMode: oldFlag = false, pairStatus = '未配对' } = this.data.parsedData || {};
+    if (!oldFlag && pairStatus === '未配对') return this.btnPair();
     wx.showModal({
       title: '温馨提示',
-      content: `确定将您的关锁敏感值默认值设定为【${defaultUnlockSensitivity}】？`,
-      confirmText: '确定',
-      cancelText: '取消',
+      content: `确定将关锁敏感值设为【${CONST.Sens}】？`,
       success: (res) => {
         if (res.confirm) {
           try {
-            const hexProgress = this.initToTwoHex(defaultUnlockSensitivity);
-            this.btnCmdSend(cmdSetUnlockSensitivity, 0, hexProgress);
-            this.setData({
-              lock_sensitivity_mark: true
-            }, () => {
-              wx.setStorageSync(storageKeySensitivityMark, true);
-            });
-            wx.showToast({
-              title: '设置成功',
-              icon: 'none',
-              duration: 1500
-            });
-          } catch (error) {
-            console.error('设置关锁敏感值默认值失败：', error);
+            this.btnCmdSend(CONST.Cmd, 0, this.initToTwoHex(CONST.Sens));
+            this.setData({ lock_sensitivity_mark: true }, () => wx.setStorageSync(CONST.Key, true));
+            wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
+          } catch (e) {
+            console.error('设置失败：', e);
           }
-        } else if (res.cancel) {
-          console.log('用户取消了敏感值默认设置');
         }
       }
     });
@@ -194,94 +201,149 @@ Page({
   // 取消开锁设置个性化值
   handlecanceModal() {
     this.setData({
-      interimvalue: 0
+      interimvalue: 0,
+      unlock_slide_state: false
     })
   },
-  // 取消开锁设置个性化值
+  // 取消关锁设置个性化值
   handleLockCanceModal() {
     this.setData({
-      lock_interimvalue: 0
+      lock_interimvalue: 0,
+      lock_slide_state: false,
+      specific_slide_state: false
     })
   },
   // 点击滚动条开锁值改变
   handleOnSliderChange(evt) {
+    if ((!this.data.unlock_sensitivity_mark) || (!this.data.lock_sensitivity_mark)) {
+      wx.showToast({
+        title: '请先设置开关锁默认值',
+        icon: 'none'
+      })
+      return
+    }
     this.setData({
-      interimvalue: evt?.detail?.value
+      interimvalue: evt?.detail?.value,
+      unlock_slide_state: true,
     })
   },
   // 滑动滚动条开锁值改变
   handleOnSliderChanging(evt) {
+    if ((!this.data.unlock_sensitivity_mark) || (!this.data.lock_sensitivity_mark)) {
+      wx.showToast({
+        title: '请先设置开关锁默认值',
+        icon: 'none'
+      })
+      return
+    }
     this.setData({
-      interimvalue: evt?.detail?.value
+      interimvalue: evt?.detail?.value,
+      unlock_slide_state: true
     })
   },
   // 点击滚动条关锁值改变
   handleOnLockSliderChange(evt) {
-    this.setData({
-      lock_interimvalue: evt?.detail?.value
-    })
-  },
-  // 滑动滚动条关锁值改变
-  handleOnLockSliderChanging(evt) {
-    this.setData({
-      lock_interimvalue: evt?.detail?.value
-    })
-  },
-  // 个性化开锁设置值点击确认
-  handlePersonalizedModal() {
-    if (!this.data.unlock_sensitivity_mark) {
+
+    if ((!this.data.unlock_sensitivity_mark) || (!this.data.lock_sensitivity_mark)) {
       wx.showToast({
-        title: '请先设置默认值',
+        title: '请先设置开关锁默认值',
         icon: 'none'
-      })
-      this.setData({
-        interimvalue: 0
       })
       return
     }
-    const cmdSetUnlockSensitivity = 0x11;
-    const toastSuccess = { title: '设置成功', icon: 'none', duration: 1500 };
-    const toastFail = { title: '设置失败', icon: 'none', duration: 1500 };
-
+    if (evt?.currentTarget?.dataset?.info == 'lock') {
+      this.setData({
+        lock_slide_state: true,
+        lock_interimvalue: evt?.detail?.value
+      })
+    }
+    if (evt?.currentTarget?.dataset?.info == 'specific') {
+      this.setData({
+        specific_slide_state: true,
+        lock_interimvalue: evt?.detail?.value
+      })
+    }
+  },
+  // 滑动滚动条关锁值改变
+  handleOnLockSliderChanging(evt) {
+    if ((!this.data.unlock_sensitivity_mark) || (!this.data.lock_sensitivity_mark)) {
+      wx.showToast({
+        title: '请先设置开关锁默认值',
+        icon: 'none'
+      })
+      return
+    }
+    if (evt?.currentTarget?.dataset?.info == 'lock') {
+      this.setData({
+        lock_slide_state: true,
+        lock_interimvalue: evt?.detail?.value
+      })
+    }
+    if (evt?.currentTarget?.dataset?.info == 'specific') {
+      this.setData({
+        specific_slide_state: true,
+        lock_interimvalue: evt?.detail?.value
+      })
+    }
+  },
+  // 个性化开锁设置值点击确认
+  handlePersonalizedModal() {
+    const C = {
+      U: '/pages/system/managerLoginView/loginView',
+      C: 0x11,
+      T: {
+        B: '请等待蓝牙连接后重试',
+        U: '请先设置开锁默认值',
+        L: '请先设置关锁默认值',
+        S: { title: '设置成功', icon: 'none', duration: 1500 },
+        F: { title: '设置失败', icon: 'none', duration: 1500 }
+      }
+    };
+    if (!isLogin()) return wx.navigateTo({ url: C.U });
+    if (this.data.connectionState === '未连接') return wx.showToast({ title: C.T.B, icon: 'none' });
+    const { unlock_sensitivity_mark: uMark, lock_sensitivity_mark: lMark } = this.data;
+    if (!uMark || !lMark) {
+      wx.showToast({ title: !uMark ? C.T.U : C.T.L, icon: 'none' });
+      return this.setData({ interimvalue: 0, unlock_slide_state: false, });
+    }
     try {
-      const { interimvalue } = this.data;
-      const hexProgress = this.initToTwoHex(interimvalue);
-      if (!/^[0-9A-Fa-f]{2}$/.test(hexProgress)) throw new Error('十六进制格式错误');
-      this.btnCmdSend(cmdSetUnlockSensitivity, 1, hexProgress);
-      wx.showToast(toastSuccess);
-    } catch (error) {
-      console.error('设置开锁敏感值失败：', error.message || error);
-      wx.showToast(toastFail);
+      this.btnCmdSend(C.C, 1, this.initToTwoHex(this.data.interimvalue));
+      wx.showToast(C.T.S);
+    } catch (e) {
+      console.error('设置失败：', e.message || e);
+      wx.showToast(C.T.F);
     } finally {
-      this.setData({ personalized_Mode: false, interimvalue: 0 });
+      this.setData({ unlock_slide_state: false, interimvalue: 0, });
     }
   },
   // 个性化关锁设置点击确认
   handleLockPersonalizedModal() {
-    if (!this.data.lock_sensitivity_mark) {
-      wx.showToast({
-        title: '请先设置关锁默认值',
-        icon: 'none'
-      })
-      this.setData({
-        lock_interimvalue: 0
-      })
-      return
+    const C = {
+      U: '/pages/system/managerLoginView/loginView',
+      C: 0x11,
+      T: {
+        B: '请等待蓝牙连接后重试',
+        U: '请先设置开锁默认值',
+        L: '请先设置关锁默认值',
+        S: { title: '设置成功', icon: 'none', duration: 1500 },
+        F: { title: '设置失败', icon: 'none', duration: 1500 }
+      }
+    };
+    if (!isLogin()) return wx.navigateTo({ url: C.U });
+    if (this.data.connectionState === '未连接') return wx.showToast({ title: C.T.B, icon: 'none' });
+    const { unlock_sensitivity_mark: uMark, lock_sensitivity_mark: lMark } = this.data;
+    if (!uMark || !lMark) {
+      wx.showToast({ title: !uMark ? C.T.U : C.T.L, icon: 'none' });
+      return this.setData({ lock_interimvalue: 0, lock_slide_state: false, specific_slide_state: false });
     }
-    const cmdSetUnlockSensitivity = 0x11;
-    const toastSuccess = { title: '设置成功', icon: 'none', duration: 1500 };
-    const toastFail = { title: '设置失败', icon: 'none', duration: 1500 };
-
     try {
-      const { lock_interimvalue } = this.data;
-      const hexProgress = this.initToTwoHex(lock_interimvalue);
-      this.btnCmdSend(cmdSetUnlockSensitivity, 0, hexProgress);
-      wx.showToast(toastSuccess);
-    } catch (error) {
-      console.error('设置关锁敏感值失败：', error.message || error);
-      wx.showToast(toastFail);
+      this.btnCmdSend(C.C, 0, this.initToTwoHex(this.data.lock_interimvalue));
+      wx.showToast(C.T.S);
+    } catch (e) {
+      console.error('设置关锁敏感值失败：', e.message || e);
+      wx.showToast(C.T.F);
     } finally {
-      this.setData({ personalized_Mode: false, lock_interimvalue: 0 });
+      this.setData({ lock_slide_state: false, specific_slide_state: false, lock_interimvalue: 0 });
     }
   },
 
@@ -502,7 +564,7 @@ Page({
     this.handleStart() //开始执行链接蓝牙
     this.startConnectionStatusPolling() //启动连接状态轮询
     this.initgetCache()//获取缓存值
-
+    this.initLoginStatus() // 获取登录状态
   },
   onHide: function () {
     const that = this
@@ -930,7 +992,7 @@ Page({
         unlock_max: (Number(parsedResult?.inductionLockSignal) > 110) ? 100 : (Number(parsedResult?.inductionLockSignal) - 10),
         lock_min: Number(parsedResult?.inductionUnlockSignal) + 10,
         unlockRange: (parsedResult?.inductionUnlockSignal / parsedResult?.inductionLockSignal) * 100,
-        lockRange: (parsedResult?.inductionLockSignal / 255) * 100
+        lockRange: (parsedResult?.inductionLockSignal / 100) * 100
       }, () => {
         this.updateMyPositionStyles();
       });
@@ -1157,152 +1219,6 @@ Page({
     });
   },
 
-  // 滑块拖动事件
-  async onlockSlide(e) {
-    const {
-      data: {
-        parsedData = {
-          pairStatus: '未配对'
-        }
-      } = {}
-    } = this;
-    if (parsedData.pairStatus === '未配对') {
-      this.btnPair();
-      return;
-    }
-    const {
-      currentTarget: target,
-      touches = []
-    } = e || {};
-    const touch = touches[0];
-    if (!target || !touch) return;
-    const trackId = target.dataset?.id;
-    const validTrackIds = new Set(['lockTrack', 'unlockTrack']);
-    if (!validTrackIds.has(trackId)) return;
-    const trackInfo = await this.getTrackInfo(trackId);
-    if (!trackInfo?.left || !trackInfo?.width) return;
-    const touchX = touch.clientX;
-    const relativeX = touchX - trackInfo.left;
-    console.log(`${trackId} - 判断滑动值`);
-    const trackConfig = {
-      lockTrack: {
-        maxProgress: 200,
-        cmdParam: 0
-      },
-      unlockTrack: {
-        maxProgress: 100,
-        cmdParam: 1
-      }
-    };
-    const {
-      maxProgress,
-      cmdParam
-    } = trackConfig[trackId];
-    const progress = Math.max(0, Math.min(maxProgress, Math.round((relativeX / trackInfo.width) * maxProgress)));
-    const THRESHOLD_CONFIG = {
-      unlock: {
-        defaultSignal: 100,
-        min: 40,
-        maxOffset: -10, // 最大阈值 = 感应信号 + 偏移量
-      },
-      lock: {
-        defaultSignal: 40,
-        max: 180,
-        minOffset: 10, // 最小阈值 = 感应信号 + 偏移量
-      },
-    };
-
-    const getParsedSignal = (context, trackType) => {
-      const {
-        data = {}
-      } = context;
-      const {
-        parsedData = {}
-      } = data;
-      const config = THRESHOLD_CONFIG[trackType];
-      const signalKey = trackType === 'unlock' ? 'inductionLockSignal' : 'inductionUnlockSignal';
-      return Number(parsedData[signalKey]) || config.defaultSignal;
-    };
-
-    const calculateValidProgress = (progress, trackType) => {
-      const config = THRESHOLD_CONFIG[trackType];
-      const signal = getParsedSignal(this, trackType);
-      const thresholds = trackType === 'unlock' ?
-        {
-          min: config.min,
-          max: signal + config.maxOffset
-        } :
-        {
-          min: signal + config.minOffset,
-          max: config.max
-        };
-      thresholds.min = Math.max(0, thresholds.min); // 最小不低于0
-      thresholds.max = Math.min(255, thresholds.max); // 最大不超过255（16进制两位上限）
-      if (thresholds.min > thresholds.max) thresholds.min = thresholds.max; // 避免范围倒置
-      const validProgress = Math.max(thresholds.min, Math.min(thresholds.max, progress));
-      return {
-        validProgress,
-        ...thresholds
-      };
-    };
-    const showThresholdTip = (progress, thresholds, trackType) => {
-      const typeText = trackType === 'unlock' ? '开锁' : '锁定';
-      let tipText;
-
-      if (progress < thresholds.min) {
-        tipText = `${typeText}进度不能小于${thresholds.min}，已自动修正为${thresholds.min}`;
-      } else if (progress > thresholds.max) {
-        tipText = `${typeText}进度不能大于${thresholds.max}，已自动修正为${thresholds.max}`;
-      }
-
-      if (tipText) {
-        if (typeof wx?.showToast === 'function') {
-          wx.showToast({
-            title: tipText,
-            icon: 'none',
-            duration: 1500,
-          });
-        } else {
-          console.warn('[提示]', tipText); // 降级日志提示
-        }
-      }
-    };
-    const toTwoHex = (num) => {
-      return num.toString(16).padStart(2, '0').toUpperCase();
-    };
-
-    if (['unlockTrack', 'lockTrack'].includes(trackId)) {
-      const trackType = trackId.replace('Track', ''); // 提取类型：unlock/lock
-      const progressNum = Number(progress) || 0; // 确保进度是数字，默认0
-      const {
-        validProgress,
-        min,
-        max
-      } = calculateValidProgress(progressNum, trackType);
-      if (progressNum < min || progressNum > max) {
-        showThresholdTip(progressNum, {
-          min,
-          max
-        }, trackType);
-      }
-      console.log(trackId, trackType)
-      if (trackType == 'lock') { //关锁
-        this.setData({
-          lockThumbStyle: `left: ${(validProgress) / 2}%;`,
-          lockRange: (validProgress) / 2,
-        });
-      }
-      if (trackType == 'unlock') {
-        this.setData({
-          unlockThumbStyle: `left: ${validProgress}%;`,
-          unlockRange: (validProgress || 50),
-        });
-      }
-      const hexProgress = toTwoHex(validProgress);
-      console.log(hexProgress, validProgress, '233333')
-      this.btnCmdSend(0x11, cmdParam, hexProgress);
-    }
-  },
   // 更多设置弹窗
   /**
    * 处理更多设置点击事件
