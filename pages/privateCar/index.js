@@ -109,19 +109,17 @@ Page({
     lock_slide_state: false,
     // 特殊情况下个性化是否滑动
     specific_slide_state: false,
+    // 感应模式默认状态
+    sensing_state: false
 
   },
   // 获取是否设置了默认值
   initgetCache() {
     wx.getStorageInfo({
-      success: (res) => {
-        const unlockDefaultValue = res.keys.includes('unlock_sensitivity_mark');
-        const lockDefaultValue = res.keys.includes('lock_sensitivity_mark');
-        this.setData({
-          unlock_sensitivity_mark: unlockDefaultValue || false,
-          lock_sensitivity_mark: lockDefaultValue || false
-        })
-      }
+      success: res => this.setData({
+        unlock_sensitivity_mark: res.keys.includes('unlock_sensitivity_mark'),
+        lock_sensitivity_mark: res.keys.includes('lock_sensitivity_mark')
+      })
     });
   },
   // 十进制转换16进制
@@ -446,39 +444,35 @@ Page({
   // 切换感应模式
   handleToggleSensorMode(e) {
     if (!isLogin()) {
-      wx.navigateTo({
-        url: '/pages/system/managerLoginView/loginView',
-      })
-      return
+      wx.navigateTo({ url: '/pages/system/managerLoginView/loginView' });
+      return;
     }
-    if ((!this.data.unlock_sensitivity_mark) || (!this.data.lock_sensitivity_mark)) {
+    const {
+      unlock_sensitivity_mark,
+      lock_sensitivity_mark,
+      parsedData = {}
+    } = this.data;
+
+    if (!(unlock_sensitivity_mark && lock_sensitivity_mark)) {
       wx.showModal({
         title: '温馨提示',
         content: '请先设定开关锁默认值，再开启感应模式。',
-        showCancel: false, // 显示取消按钮（默认值，可省略）
-        confirmText: '确认', // 更具引导性的确认按钮文字
-        success: (res) => {
-          this.setData({
-            sensing_state: false
-          })
-        }
+        showCancel: false,
+        confirmText: '确认',
+        success: () => this.setData({ sensing_state: false })
       });
-      return
+      return;
     }
     const {
-      parsedData = {}
-    } = this.data || {};
-    const {
-      inductionMode: oldFlag = false,
+      inductionMode: oldInductionMode = false,
       pairStatus = '未配对'
     } = parsedData;
-    const newFlag = e?.detail?.value ?? false;
-    if (!oldFlag && pairStatus === '未配对') {
+    const newInductionMode = e?.detail?.value ?? false;
+    if (!oldInductionMode && pairStatus === '未配对') {
       this.btnPair();
       return;
     }
-    const cmdValue = newFlag ? 0x01 : 0x00;
-    this.btnCmdSend(0x3a, [cmdValue]);
+    this.btnCmdSend(0x3a, [newInductionMode ? 0x01 : 0x00]);
   },
   // 获取设备信息
   handleSystemInfo() {
