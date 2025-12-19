@@ -169,7 +169,7 @@ Page({
       wx.showModal({
         title: '温馨提示',
         content: '关锁敏感值不得低于开锁敏感值，使用默认关锁值前，需先将开锁敏感值设为默认值。',
-        showCancel: true,
+        showCancel: false,
         confirmText: '确认',
       });
       return
