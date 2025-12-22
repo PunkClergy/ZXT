@@ -110,23 +110,160 @@ Page({
     // 特殊情况下个性化是否滑动
     specific_slide_state: false,
     // 感应模式默认状态
-    sensing_state: false
+    sensing_state: false,
+    showGuide: true, // 页面加载即显示引导
+    // 新手引导相关
+    showGuide: true, // 页面加载即显示引导
+    guideSteps: [
+      {
+        id: 'unlockDefaultBtn', // 开锁默认设定按钮ID
+        text: '请先点击【开锁默认设定：50】完成初始配置', // 引导文字
+        radius: 20 // 按钮圆角
+      },
+      {
+        id: 'lockDefaultBtn', // 关锁默认设定按钮ID
+        text: '请点击【关锁默认设定：60】完成初始配置', // 引导文字
+        radius: 20 // 按钮圆角
+      }
+    ],
+    currentGuideStep: 0, // 当前引导步骤
+    // 高亮区域样式
+    highlightTop: 0,
+    highlightLeft: 0,
+    highlightWidth: 0,
+    highlightHeight: 0,
+    highlightRadius: 0,
+    // 引导文字位置
+    textTop: 0,
+    textLeft: 0,
+    // 引导文字
+    guideText: '',
+    showModal: false,        // 是否显示弹窗
+    modalTitle: '必读手册',        // 弹窗标题
+    modalDesc: '恭喜您已成功设置开关锁默认强度值。若开关锁效果不理想，可在「开/关信号敏感DIY的滑动模块中自定义调整；调整时可参考「我的位置」的强度信号值左右滑动（信号值越小，代表离车越近时执行开/关锁命令）', // 弹窗内容
+    canConfirm: false,       // 是否可点击确认按钮
+    confirmText: '确认(20)', // 确认按钮文字（带倒计时）
+    countdown: 20          // 倒计时秒数
 
   },
-  // 获取是否设置了默认值
-  initgetCache() {
-    wx.getStorageInfo({
-      success: res => this.setData({
-        unlock_sensitivity_mark: res.keys.includes('unlock_sensitivity_mark'),
-        lock_sensitivity_mark: res.keys.includes('lock_sensitivity_mark')
-      })
+  /**
+   * 打开弹窗并启动倒计时
+   */
+  openModal() {
+    // 关键：先清除上一次的定时器（如果存在）
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+
+    this.setData({
+      showModal: true,
+      canConfirm: false,
+      countdown: 20,
+      // 修复：直接写10，避免依赖异步的this.data
+      confirmText: `确认(20)`
     });
+
+    // 启动倒计时，将timer赋值给实例属性
+    this.timer = setInterval(() => {
+      const { countdown } = this.data;
+      let newCountdown = countdown - 1;
+      if (newCountdown < 0) newCountdown = 0;
+
+      // 修复：confirmText直接使用newCountdown，去掉+1
+      this.setData({
+        countdown: newCountdown,
+        confirmText: newCountdown > 0 ? `确认(${newCountdown})` : '确认'
+      });
+
+      if (newCountdown <= 0) {
+        clearInterval(this.timer);
+        this.timer = null; // 清空定时器引用
+        this.setData({
+          canConfirm: true
+        });
+      }
+    }, 1000);
   },
-  // 十进制转换16进制
-  initToTwoHex(num) {
-    return num.toString(16).padStart(2, '0').toUpperCase();
+
+
+  /**
+   * 点击确认按钮的事件
+   */
+  onConfirm() {
+    console.log('确认按钮被点击');
+    // 关闭弹窗
+    this.setData({
+      showModal: false
+    });
+    // 这里可添加确认后的业务逻辑
   },
-  // 设置开锁默认值弹窗
+  // 初始化引导：获取目标元素位置并设置样式
+  initGuide() {
+    const { currentGuideStep, guideSteps } = this.data;
+    const currentStep = guideSteps[currentGuideStep];
+    if (!currentStep) return;
+
+    // 获取目标元素的位置和尺寸
+    const query = wx.createSelectorQuery().in(this);
+    query.select(`#${currentStep.id}`).boundingClientRect(rect => {
+      if (rect) {
+        // 转换px到rpx（适配不同设备）
+        const systemInfo = wx.getSystemInfoSync();
+        const pxToRpx = 750 / systemInfo.windowWidth;
+
+        const top = rect.top * pxToRpx;
+        const left = rect.left * pxToRpx;
+        const width = rect.width * pxToRpx;
+        const height = rect.height * pxToRpx;
+
+        // 更新引导数据
+        this.setData({
+          highlightTop: top,
+          highlightLeft: left,
+          highlightWidth: width,
+          highlightHeight: height,
+          highlightRadius: currentStep.radius,
+          // 引导文字位置（高亮区域右侧20rpx，垂直居中）
+          textTop: top + height + 10,
+          textLeft: left - 100,
+          guideText: currentStep.text
+        });
+      }
+    }).exec();
+  },
+
+  // 高亮区域点击事件（透传到目标按钮）
+  onHighlightTap() {
+    const { currentGuideStep, guideSteps } = this.data;
+    const currentStep = guideSteps[currentGuideStep];
+    if (!currentStep) return;
+
+    // 执行对应按钮的点击事件
+    if (currentStep.id === 'unlockDefaultBtn') {
+      this.handleDefaultMode();
+    } else if (currentStep.id === 'lockDefaultBtn') {
+      this.handleLockDefaultMode();
+    }
+
+    // 切换到下一个引导步骤
+    const nextStep = currentGuideStep + 1;
+    if (nextStep < guideSteps.length) {
+      this.setData({ currentGuideStep: nextStep }, () => {
+        this.initGuide();
+      });
+    } else {
+      // 引导完成，隐藏蒙层
+      this.setData({ showGuide: false });
+      // 可选：标记引导完成，下次不再显示
+      wx.setStorageSync('guideCompleted', true);
+    }
+  },
+
+  // 蒙层点击事件（空函数，阻止穿透）
+  onMaskTap() { },
+
+  // 重写原有默认设定方法，确保引导步骤正常切换
   handleDefaultMode() {
     const CONST = {
       DEFAULT_SENSITIVITY: 50,
@@ -136,17 +273,38 @@ Page({
     };
     if (!isLogin()) return wx.navigateTo({ url: CONST.LOGIN_PAGE });
     if (this.data.connectionState === '未连接') {
-      return wx.showToast({ title: '请等待蓝牙连接后重试', icon: 'none' });
+      // return wx.showToast({ title: '请等待蓝牙连接后重试', icon: 'none' });
     }
     const { inductionMode: oldFlag = false, pairStatus = '未配对' } = this.data.parsedData || {};
     if (!oldFlag && pairStatus === '未配对') return this.btnPair();
+      try {
+        this.btnCmdSend(CONST.CMD_SET_SENSITIVITY, 1, this.initToTwoHex(CONST.DEFAULT_SENSITIVITY));
+        this.setData({ unlock_sensitivity_mark: true }, () => {
+          wx.setStorageSync(CONST.STORAGE_KEY, true)
+          if (this.data.unlock_sensitivity_mark && this.data.lock_sensitivity_mark) {
+            const cmdValue = 0x01;
+            this.btnCmdSend(0x3a, [cmdValue]);
+          }
+        });
+        wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
+
+        // 引导步骤：点击后自动切换到下一步（如果当前是第一步）
+        if (this.data.currentGuideStep === 0) {
+          this.setData({ currentGuideStep: 1 }, () => {
+            this.initGuide();
+          });
+        }
+      } catch (e) {
+        console.error('设置开锁敏感值默认值失败：', e);
+      }
+    
+    return
     wx.showModal({
       title: '温馨提示',
       content: `确定将您的开锁敏感值默认值设定为【${CONST.DEFAULT_SENSITIVITY}】？`,
       success: (res) => {
         if (res.confirm) {
           try {
-            // 发送指令 + 更新本地状态 + 持久化存储
             this.btnCmdSend(CONST.CMD_SET_SENSITIVITY, 1, this.initToTwoHex(CONST.DEFAULT_SENSITIVITY));
             this.setData({ unlock_sensitivity_mark: true }, () => {
               wx.setStorageSync(CONST.STORAGE_KEY, true)
@@ -156,6 +314,13 @@ Page({
               }
             });
             wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
+
+            // 引导步骤：点击后自动切换到下一步（如果当前是第一步）
+            if (this.data.currentGuideStep === 0) {
+              this.setData({ currentGuideStep: 1 }, () => {
+                this.initGuide();
+              });
+            }
           } catch (e) {
             console.error('设置开锁敏感值默认值失败：', e);
           }
@@ -163,8 +328,9 @@ Page({
       }
     });
   },
-  // 设置关锁值默认值
+
   handleLockDefaultMode() {
+    this.openModal();
     if ((this.data?.parsedData?.inductionUnlockSignal) > 60) {
       wx.showModal({
         title: '温馨提示',
@@ -182,10 +348,31 @@ Page({
     };
     if (!isLogin()) return wx.navigateTo({ url: CONST.LoginUrl });
     if (this.data.connectionState === '未连接') {
-      return wx.showToast({ title: '请等待蓝牙连接后重试', icon: 'none' });
+      // return wx.showToast({ title: '请等待蓝牙连接后重试', icon: 'none' });
     }
     const { inductionMode: oldFlag = false, pairStatus = '未配对' } = this.data.parsedData || {};
     if (!oldFlag && pairStatus === '未配对') return this.btnPair();
+      try {
+        this.btnCmdSend(CONST.Cmd, 0, this.initToTwoHex(CONST.Sens));
+        this.setData({ lock_sensitivity_mark: true }, () => {
+          wx.setStorageSync(CONST.Key, true)
+          if (this.data.unlock_sensitivity_mark && this.data.lock_sensitivity_mark) {
+            const cmdValue = 0x01;
+            this.btnCmdSend(0x3a, [cmdValue]);
+          }
+        });
+        wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
+
+        // 引导步骤：点击后完成引导
+        this.setData({ showGuide: false }, () => {
+          this.openModal();
+        });
+        wx.setStorageSync('guideCompleted', true);
+      } catch (e) {
+        console.error('设置失败：', e);
+      }
+    
+    return
     wx.showModal({
       title: '温馨提示',
       content: `确定将关锁敏感值设为【${CONST.Sens}】？`,
@@ -201,6 +388,12 @@ Page({
               }
             });
             wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
+
+            // 引导步骤：点击后完成引导
+            this.setData({ showGuide: false }, () => {
+              this.openModal();
+            });
+            wx.setStorageSync('guideCompleted', true);
           } catch (e) {
             console.error('设置失败：', e);
           }
@@ -208,6 +401,102 @@ Page({
       }
     });
   },
+  // 获取是否设置了默认值
+  initgetCache() {
+    wx.getStorageInfo({
+      success: res => this.setData({
+        unlock_sensitivity_mark: res.keys.includes('unlock_sensitivity_mark'),
+        lock_sensitivity_mark: res.keys.includes('lock_sensitivity_mark')
+      })
+    });
+  },
+  // 十进制转换16进制
+  initToTwoHex(num) {
+    return num.toString(16).padStart(2, '0').toUpperCase();
+  },
+  // 设置开锁默认值弹窗
+  // handleDefaultMode() {
+  //   const CONST = {
+  //     DEFAULT_SENSITIVITY: 50,
+  //     CMD_SET_SENSITIVITY: 0x11,
+  //     STORAGE_KEY: 'unlock_sensitivity_mark',
+  //     LOGIN_PAGE: '/pages/system/managerLoginView/loginView'
+  //   };
+  //   if (!isLogin()) return wx.navigateTo({ url: CONST.LOGIN_PAGE });
+  //   if (this.data.connectionState === '未连接') {
+  //     return wx.showToast({ title: '请等待蓝牙连接后重试', icon: 'none' });
+  //   }
+  //   const { inductionMode: oldFlag = false, pairStatus = '未配对' } = this.data.parsedData || {};
+  //   if (!oldFlag && pairStatus === '未配对') return this.btnPair();
+  //   wx.showModal({
+  //     title: '温馨提示',
+  //     content: `确定将您的开锁敏感值默认值设定为【${CONST.DEFAULT_SENSITIVITY}】？`,
+  //     success: (res) => {
+  //       if (res.confirm) {
+  //         try {
+  //           // 发送指令 + 更新本地状态 + 持久化存储
+  //           this.btnCmdSend(CONST.CMD_SET_SENSITIVITY, 1, this.initToTwoHex(CONST.DEFAULT_SENSITIVITY));
+  //           this.setData({ unlock_sensitivity_mark: true }, () => {
+  //             wx.setStorageSync(CONST.STORAGE_KEY, true)
+  //             if (this.data.unlock_sensitivity_mark && this.data.lock_sensitivity_mark) {
+  //               const cmdValue = 0x01;
+  //               this.btnCmdSend(0x3a, [cmdValue]);
+  //             }
+  //           });
+  //           wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
+  //         } catch (e) {
+  //           console.error('设置开锁敏感值默认值失败：', e);
+  //         }
+  //       }
+  //     }
+  //   });
+  // },
+  // 设置关锁值默认值
+  // handleLockDefaultMode() {
+  //   this.openModal();
+  //   if ((this.data?.parsedData?.inductionUnlockSignal) > 60) {
+  //     wx.showModal({
+  //       title: '温馨提示',
+  //       content: '关锁敏感值不得低于开锁敏感值，使用默认关锁值前，需先将开锁敏感值设为默认值。',
+  //       showCancel: false,
+  //       confirmText: '确认',
+  //     });
+  //     return
+  //   }
+  //   const CONST = {
+  //     Sens: 60,
+  //     Cmd: 0x11,
+  //     Key: 'lock_sensitivity_mark',
+  //     LoginUrl: '/pages/system/managerLoginView/loginView'
+  //   };
+  //   if (!isLogin()) return wx.navigateTo({ url: CONST.LoginUrl });
+  //   if (this.data.connectionState === '未连接') {
+  //     return wx.showToast({ title: '请等待蓝牙连接后重试', icon: 'none' });
+  //   }
+  //   const { inductionMode: oldFlag = false, pairStatus = '未配对' } = this.data.parsedData || {};
+  //   if (!oldFlag && pairStatus === '未配对') return this.btnPair();
+  //   wx.showModal({
+  //     title: '温馨提示',
+  //     content: `确定将关锁敏感值设为【${CONST.Sens}】？`,
+  //     success: (res) => {
+  //       if (res.confirm) {
+  //         try {
+  //           this.btnCmdSend(CONST.Cmd, 0, this.initToTwoHex(CONST.Sens));
+  //           this.setData({ lock_sensitivity_mark: true }, () => {
+  //             wx.setStorageSync(CONST.Key, true)
+  //             if (this.data.unlock_sensitivity_mark && this.data.lock_sensitivity_mark) {
+  //               const cmdValue = 0x01;
+  //               this.btnCmdSend(0x3a, [cmdValue]);
+  //             }
+  //           });
+  //           wx.showToast({ title: '设置成功', icon: 'none', duration: 1500 });
+  //         } catch (e) {
+  //           console.error('设置失败：', e);
+  //         }
+  //       }
+  //     }
+  //   });
+  // },
   // 取消开锁设置个性化值
   handlecanceModal() {
     this.setData({
@@ -435,10 +724,10 @@ Page({
         }, 200);
       }
     } else {
-      wx.showToast({
-        title: '请等待蓝牙初始化',
-        icon: 'none'
-      })
+      // wx.showToast({
+      //   title: '请等待蓝牙初始化',
+      //   icon: 'none'
+      // })
     }
   },
   // 切换感应模式
@@ -1167,6 +1456,7 @@ Page({
   onReady() {
     // 获取登录状态
     this.initLoginStatus()
+    this.initGuide();
   },
   // 初始化获取缓存内容
   initToConfigureCache() {

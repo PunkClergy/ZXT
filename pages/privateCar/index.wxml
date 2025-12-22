@@ -97,7 +97,8 @@
               </view>
             </view>
           </view>
-          <view class="middle-concrete-content-debugging-tip-btn  default-mode" bindtap="handleDefaultMode">默认设定：50</view>
+          <!-- <view class="middle-concrete-content-debugging-tip-btn  default-mode" bindtap="handleDefaultMode">默认设定：50</view> -->
+          <view class="middle-concrete-content-debugging-tip-btn  default-mode" id="unlockDefaultBtn" bindtap="handleDefaultMode">默认设定：50</view>
         </view>
         <view style="font-size: 20rpx;">开锁个性化设置:{{unlock_sensitivity_mark?(interimvalue||parsedData.inductionUnlockSignal||50):30}}</view>
         <view class="middle-concrete-content-debugging-tip">
@@ -141,7 +142,9 @@
             </view>
 
           </view>
-          <view class="middle-concrete-content-debugging-tip-btn  default-mode" bindtap="handleLockDefaultMode">默认设定：60</view>
+          <!-- <view class="middle-concrete-content-debugging-tip-btn  default-mode" bindtap="handleLockDefaultMode">默认设定：60</view> -->
+          <view class="middle-concrete-content-debugging-tip-btn  default-mode" id="lockDefaultBtn" bindtap="handleLockDefaultMode">默认设定：60</view>
+
         </view>
         <view style="font-size: 20rpx;">关锁个性化设置:{{lock_sensitivity_mark?(lock_interimvalue||parsedData.inductionLockSignal||50):30}}</view>
         <view class="middle-concrete-content-debugging-tip">
@@ -303,5 +306,53 @@
         </view>
       </block>
     </view>
+  </view>
+</view>
+
+
+<!-- 新增：新手引导蒙层（页面加载即显示） -->
+<view class="guide-mask" wx:if="{{showGuide}}" catchtap="onMaskTap">
+  <!-- 高亮区域（动态定位） -->
+  <view 
+    class="guide-highlight"
+    style="top: {{highlightTop}}rpx; left: {{highlightLeft}}rpx; border-radius: {{highlightRadius}}rpx;"
+    catchtap="onHighlightTap"
+  >
+  <view class="middle-concrete-content-debugging-tip-btn  default-mode" id="unlockDefaultBtn" bindtap="handleDefaultMode" wx:if="{{currentGuideStep==0}}">默认设定：50</view>
+  <view class="middle-concrete-content-debugging-tip-btn  default-mode" id="lockDefaultBtn" bindtap="handleLockDefaultMode" wx:if="{{currentGuideStep==1}}">默认设定：60</view>
+  </view>
+  <!-- 引导文字 -->
+  <view 
+    class="guide-text"
+    style="top: {{textTop}}rpx; left: {{textLeft}}rpx;"
+  >
+    {{guideText}}
+  </view>
+</view>
+
+<!-- 自定义弹窗遮罩 -->
+<view class="time-modal-mask" wx:if="{{showModal}}"></view>
+
+<!-- 自定义弹窗内容 -->
+<view class="time-modal-content" wx:if="{{showModal}}">
+  <!-- 弹窗标题 -->
+  <view class="time-modal-title">{{modalTitle}}</view>
+  
+  <!-- 弹窗内容 -->
+  <view class="time-modal-desc">{{modalDesc}}</view>
+  
+  <!-- 按钮区域 -->
+  <view class="time-modal-btn-group">
+    <!-- 取消按钮：隐藏或禁用（这里直接隐藏） -->
+    <button class="time-modal-cancel-btn" disabled hidden>取消</button>
+    
+    <!-- 确认按钮：根据倒计时状态禁用 -->
+    <button 
+      class="time-modal-confirm-btn" 
+      disabled="{{!canConfirm}}" 
+      bindtap="onConfirm"
+    >
+      {{confirmText}}
+    </button>
   </view>
 </view>
