@@ -81,6 +81,95 @@ Page({
     // 存储定时器ID（用于页面卸载时清除）
     checkTimer: null
   },
+  initToTwoHex(num) {
+    return num.toString(16).padStart(2, '0').toUpperCase();
+  },
+  // DIY恢复出厂设置
+  handleRestoreSettings() {
+    // 统一定义函数内的常量，避免重复声明
+    const CONST = {
+      // 敏感值配置
+      DEFAULT_UNLOCK_SENSITIVITY: 50, // 默认开锁敏感值
+      DEFAULT_LOCK_SENSITIVITY: 70,   // 默认关锁敏感值
+      CMD_SET_SENSITIVITY: 0x11,      // 设置敏感值指令码
+      // 状态与路径
+      LOGIN_PAGE: '/pages/system/managerLoginView/loginView',
+      CONNECTION_STATE_UNCONNECTED: '未连接',
+      PAIR_STATUS_UNPAIRED: '未配对',
+      // 提示文本
+      TOAST_BLUETOOTH_UNCONNECTED: '请等待蓝牙连接后重试',
+      TOAST_SET_SUCCESS: '设置成功',
+      MODAL_TITLE: '温馨提示',
+      MODAL_CONTENT: '关锁敏感值不得低于开锁敏感值，使用默认关锁值前，需先将开锁敏感值设为默认值。',
+      // 错误日志
+      ERROR_MSG_UNLOCK: '设置开锁敏感值默认值失败：',
+      ERROR_MSG_LOCK: '设置关锁敏感值默认值失败：'
+    };
+
+    wx.showModal({
+      title: '确认重置',
+      content: '是否将开关锁敏感值恢复到出厂设置？',
+      confirmText: '确认',
+      success: (res) => {
+        if (res?.confirm) {
+          const checkLogin = () => {
+            if (!isLogin()) {
+              wx.navigateTo({ url: CONST.LOGIN_PAGE });
+              return false;
+            }
+            return true;
+          };
+
+          const checkBluetooth = () => {
+            if (this.data.connectionState === CONST.CONNECTION_STATE_UNCONNECTED) {
+              wx.showToast({ title: CONST.TOAST_BLUETOOTH_UNCONNECTED, icon: 'none' });
+              return false;
+            }
+            return true;
+          };
+
+          const checkPair = (parsedData) => {
+            const { inductionMode = false, pairStatus = CONST.PAIR_STATUS_UNPAIRED } = parsedData || {};
+            if (!inductionMode && pairStatus === CONST.PAIR_STATUS_UNPAIRED) {
+              this.btnPair();
+              return false;
+            }
+            return true;
+          };
+
+          const setSensitivity = (sensitivity, type, errorMsg) => {
+            try {
+              this.btnCmdSend(CONST.CMD_SET_SENSITIVITY, type, this.initToTwoHex(sensitivity));
+              wx.showToast({ title: CONST.TOAST_SET_SUCCESS, icon: 'none', duration: 1500 });
+            } catch (e) {
+              console.error(errorMsg, e);
+            }
+          };
+
+          if (!checkLogin() || !checkBluetooth()) return;
+          const parsedData = this.data.parsedData || {};
+          if (!checkPair(parsedData)) return;
+
+          setSensitivity(CONST.DEFAULT_UNLOCK_SENSITIVITY, 1, CONST.ERROR_MSG_UNLOCK);
+          const unlockSignal = parsedData.inductionUnlockSignal;
+          if (unlockSignal > CONST.DEFAULT_LOCK_SENSITIVITY) {
+            wx.showModal({
+              title: CONST.MODAL_TITLE,
+              content: CONST.MODAL_CONTENT,
+              showCancel: false,
+              confirmText: '确认'
+            });
+            return;
+          }
+          setSensitivity(CONST.DEFAULT_LOCK_SENSITIVITY, 0, CONST.ERROR_MSG_LOCK);
+        }
+      }
+    });
+
+  },
+
+
+
   handleOnExistingAccountTap() {
     (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
   },

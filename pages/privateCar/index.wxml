@@ -76,79 +76,79 @@
       </view>
       <switch bindchange="handleToggleSensorMode" checked="{{parsedData.inductionMode}}" color="#1B64B1" style="transform: scale(0.8)" />
     </view>
-    <view style="display: flex;flex-direction: column; border: 1rpx  solid #f1f1f1;border-radius: 10rpx;justify-content: space-between;padding: 30rpx 5rpx;">
-
-      <view style="display: flex;font-size: 25rpx;justify-content: space-between;padding: 10rpx;">
-        <view>我的位置 :{{parsedData.signalValue||40}}</view>
-        <view>开锁范围:40</view>
-        <view>关锁范围:90</view>
+    <view class="signal-card">
+      <view class="signal-info-group">
+        <view class="signal-info-item">我的位置 :{{parsedData.signalValue||40}}</view>
+        <view class="signal-info-item">开锁敏感值:{{parsedData.inductionUnlockSignal||50}}</view>
+        <view class="signal-info-item">关锁敏感值:{{parsedData.inductionLockSignal||60}}</view>
       </view>
-      <!-- <view style="font-size: 22rpx;">
-        <view>【我的位置】: 手机与MCCK 设备的蓝牙信号值。数值越小，信号越强</view>
-        <view>【变化规则】: 这个数值会跟随移动设备的移动实时变动。</view>
-        <view>【开锁范围】: 当信号值低于这个数值时，车辆会自动解锁</view>
-        <view>【关锁范围】: 当信号值高于这个数值时，车辆会自动锁闭</view>
-      </view> -->
+      <view class="signal-desc-group">
+        <view class="signal-desc-item">【我的位置】: 手机与MCCK设备蓝牙信号值。数值越小信号越强</view>
+        <view class="signal-desc-item">【变化规则】: "我的位置"这个数值会跟随移动设备的移动实时变动。</view>
+        <view class="signal-desc-item">【开锁敏感值】: 当信号值低于这个数值时，车辆会自动开锁</view>
+        <view class="signal-desc-item">【关锁敏感值】: 当信号值高于这个数值时，车辆会自动关锁</view>
+      </view>
     </view>
     <view class="middle-concrete-content">
+
       <view class="middle-concrete-content-debugging">
+        <view style="display: flex;flex-direction: row;justify-content: space-between;border-bottom:1rpx solid #f1f1f1;padding: 15rpx 0rpx;">
+          <view style="font-size: 25rpx;font-weight: bold;">舒适进入个性化DIY</view>
+          <view bindtap="handleRestoreSettings" style="font-size: 20rpx;border: 1rpx solid #bbb;background-color: #3b82f6;padding: 10rpx 10rpx;border-radius: 10rpx;color: #fff;">恢复出厂设置</view>
+        </view>
+        <!-- 开锁 -->
         <view class="middle-concrete-content-debugging-title" style="display: flex;flex-direction: row;justify-content: space-between;">
-        <view>舒适进入DIY设定</view>
-        <view class="top-fixed-basics-plate-btn-install">
-            <view class="top-fixed-basics-plate-btn-install-iconfont">
-              <icon type="warn" size="14" color="#909090"></icon>
-            </view>
-            <view class="top-fixed-basics-plate-btn-install-tip" bindtap="handleJumpSc">DIY指引</view>
-          </view>
+          <view>开锁DIY</view>
         </view>
         <view class="middle-concrete-content-debugging-slider-track tarck-unlock" id="unlockTrack">
           <view class="middle-concrete-content-debugging-slider-fill fill-unlock" style="width: {{unlockRange+'%'}}"></view>
           <view class="middle-concrete-content-debugging-car-icon">
             <view class="middle-concrete-content-debugging-info">
               <image class="middle-concrete-content-debugging-info-image" src="/assets/images/home/car_icon.png"></image>
-              <text class="middle-concrete-content-debugging-info-text">开锁范围: {{parsedData.inductionUnlockSignal||50}}</text>
+              <text class="middle-concrete-content-debugging-info-text">敏感值: {{parsedData.inductionUnlockSignal||50}}</text>
             </view>
           </view>
           <view class="middle-concrete-content-debugging-slider-thumb" style="{{unlockThumbStyle}}" data-id="unlockTrack" bindtouchmove="onlockSlide">
             <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" />
           </view>
         </view>
+        <view class="middle-concrete-content-debugging-tip">
+          如开锁距离过远，则滑动"锁"图标调小数值，如开锁距离过近，则滑动"锁"图标调大数值。
+        </view>
+        <!-- 关锁 -->
+        <view style="font-weight: bold;font-size: 23rpx;color: #BA2B2B;">关锁DIY</view>
         <view class="middle-concrete-content-debugging-slider-track tarck-lock" id="lockTrack">
           <view class="middle-concrete-content-debugging-slider-fill fill-lock" style="width: {{lockRange+'%'}}"></view>
           <view class="middle-concrete-content-debugging-car-icon">
             <view class="middle-concrete-content-debugging-info">
               <image src="/assets/images/home/car_icon.png" class="middle-concrete-content-debugging-info-image" />
-              <text class="middle-concrete-content-debugging-info-text">关锁范围: {{parsedData.inductionLockSignal||60}}</text>
+              <text class="middle-concrete-content-debugging-info-text">敏感值: {{parsedData.inductionLockSignal||60}}</text>
             </view>
           </view>
           <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
             <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/shut@2x.png" />
           </view>
         </view>
+        <view class="middle-concrete-content-debugging-tip">
+          如关锁距离过远，则滑动"锁"图标调小数值，如关锁距离过近，则滑动"锁"图标调大数值。
+        </view>
+        <!-- 开车期间频繁开关锁调整DIY -->
+        <view style="font-weight: bold;font-size: 23rpx;color: #BA2B2B;">开车期间频繁开关锁调整DIY</view>
         <view class="middle-concrete-content-debugging-slider-track tarck-special" id="unlockTrack">
           <view class="middle-concrete-content-debugging-slider-fill fill-special" style="width: {{lockRange+'%'}}"></view>
           <view class="middle-concrete-content-debugging-car-icon">
             <view class="middle-concrete-content-debugging-info">
               <image src="/assets/images/home/car_icon.png" class="middle-concrete-content-debugging-info-image"></image>
-              <text class="middle-concrete-content-debugging-info-text">辅助关锁范围: {{parsedData.inductionLockSignal||60}}</text>
+              <text class="middle-concrete-content-debugging-info-text">敏感值: {{parsedData.inductionLockSignal||60}}</text>
             </view>
           </view>
           <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
             <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/special@2x.png" />
           </view>
-          <view class="middle-concrete-content-debugging-person-icon" style="{{myPositionStyle}}">
-            <view class="middle-concrete-content-debugging-person-info">
-              <image class="middle-concrete-content-debugging-person-info-image" src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/my_place.png"></image>
-              <text class="middle-concrete-content-debugging-info-text">我的位置: {{parsedData.signalValue||50}}</text>
-            </view>
-          </view>
         </view>
-        <!-- <view class="middle-concrete-content-debugging-tip">
-          若觉得开锁/关锁距离太远，请向右拖动开锁/关锁区域的 “锁” 图标；
-          若觉得开锁/关锁距离太近，请向左拖动开锁/关锁区域的 “锁” 图标；
-          行驶中若出现频繁自动开关锁的情况，请向右拖动辅助关锁区域的 “锁” 图标。
-        </view> -->
-
+        <view class="middle-concrete-content-debugging-tip">
+          如开车期间频繁开关锁，建议调大数值～调整后关锁数值会同步更新，关门敏感度会降低。
+        </view>
       </view>
     </view>
   </view>
