@@ -149,19 +149,8 @@ Page({
           if (!checkLogin() || !checkBluetooth()) return;
           const parsedData = this.data.parsedData || {};
           if (!checkPair(parsedData)) return;
-
-          setSensitivity(CONST.DEFAULT_UNLOCK_SENSITIVITY, 1, CONST.ERROR_MSG_UNLOCK);
-          const unlockSignal = parsedData.inductionUnlockSignal;
-          if (unlockSignal > CONST.DEFAULT_LOCK_SENSITIVITY) {
-            wx.showModal({
-              title: CONST.MODAL_TITLE,
-              content: CONST.MODAL_CONTENT,
-              showCancel: false,
-              confirmText: '确认'
-            });
-            return;
-          }
           setSensitivity(CONST.DEFAULT_LOCK_SENSITIVITY, 0, CONST.ERROR_MSG_LOCK);
+          setSensitivity(CONST.DEFAULT_UNLOCK_SENSITIVITY, 1, CONST.ERROR_MSG_UNLOCK);
         }
       }
     });
