@@ -158,7 +158,7 @@ Page({
   },
 
 
-
+  // 跳转登录页面
   handleOnExistingAccountTap() {
     (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
   },
