@@ -303,7 +303,7 @@ map {
 .time-frame {
   display: flex;
   position: fixed;
-  left: 50%;
+  left: 55%;
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.5);
   /* 黑色背景，50% 透明 */
@@ -315,7 +315,7 @@ map {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 60%;
+  width: 75%;
 }
 
 .control-panel {

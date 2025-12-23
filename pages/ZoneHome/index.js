@@ -3,7 +3,8 @@ const {
   u_getQrcodeImg,
   u_navlist20,
   u_getHomeArea,
-  u_booklist
+  u_booklist,
+  u_isShowInfo
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -38,6 +39,7 @@ Page({
     ],
     // 底部tab数据（网络图片）
     tabList: [],
+    isShowInfo: false
 
 
   },
@@ -158,6 +160,16 @@ Page({
       } catch (err) { err.description || console.error('imgLoadErr:', err); }
     })();
   },
+  // 获取是否显示温馨提示
+  inIsShowInfo() {
+    byGet(this.data.c_link + u_isShowInfo.URL, {}).then(response => {
+      if (response.statusCode == 200) {
+        this.setData({
+          isShowInfo: response.data.content
+        })
+      }
+    })
+  },
 
   onLoad(options) {
     // 图片转BASE64
@@ -184,6 +196,8 @@ Page({
   onShow() {
     // 获取系统头部各区域高度
     this.initSystemInfo()
+    // 获取是否显示温馨提示
+    this.inIsShowInfo()
   },
   onReady() {
     // 获取登录状态
@@ -235,7 +249,7 @@ Page({
   },
   //  跳转功能页面
   handleGetMenuList(evt) {
-    if(!isLogin()){
+    if (!isLogin()) {
       wx.redirectTo({
         url: '/pages/system/managerLoginView/loginView',
       })

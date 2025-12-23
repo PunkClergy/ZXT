@@ -31,6 +31,10 @@ const u_navlist = {
 const u_termialList = {
   URL: 'deskapi/termialList',
 }
+// 判断是否显示提示
+const u_isShowInfo = {
+  URL: '/deskapi/isShowInfo',
+}
 // 获取Logo
 const u_logo = {
   URL: 'deskapi/logo',
@@ -116,5 +120,6 @@ module.exports = {
   u_menulist,
   u_rightMenulist,
   u_termialList,
-  u_getNotHaveMidMenulist
+  u_getNotHaveMidMenulist,
+  u_isShowInfo
 }

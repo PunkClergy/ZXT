@@ -17,6 +17,7 @@
     </view>
   </view>
 
+
   <!-- 中间滚动内容区：使用scroll-view实现垂直滚动，设置顶部和底部偏移量 -->
   <scroll-view class="content" scroll-y="true" style="top: {{90}}px; bottom: {{tabBarHeight}}px;" bindscrolltolower="onReachBottom">
 
@@ -28,7 +29,14 @@
         </swiper-item>
       </swiper>
     </view>
-
+    <!-- 第二块：公告模块区域 -->
+    <view class="notice" wx:if="{{isShowInfo}}">
+      <view class="notice-outer-layer" bindtap="handleNotice">
+        <view class="notice-content">
+          温馨提示：请提醒用车人，若遇网络中断，点击页面右上角「···」并刷新当前页面，即可进入【紧急开关锁】页面；<text style="font-weight: bold;">若需长时间处于无信号覆盖区域，建议随身携带实体钥匙备用。</text>
+        </view>
+      </view>
+    </view>
 
     <!-- 第三块：专区入口区域（一行三列布局） -->
     <view class="special-zone">

@@ -411,3 +411,54 @@
   padding: 0 40rpx;
   line-height: 1.5;
 }
+
+/* 公告容器样式：宽度98%，高度80rpx，浅蓝背景，flex居中对齐，上下外边距30rpx，圆角20rpx */
+.notice {
+  width: 98%;
+  /* height: 80rpx; */
+  background-color: #EFF1FC;
+  display: flex;
+  align-items: center;
+  margin: 30rpx auto;
+  border-radius: 20rpx;
+}
+
+/* 公告外层容器样式：flex水平排列，两端对齐，宽度95%，居中显示 */
+.notice-outer-layer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 95%;
+  margin: auto;
+}
+
+/* 公告左侧内容样式：flex水平排列，居中对齐，元素间距20rpx */
+.notice-outer-layer-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20rpx;
+}
+
+/* 公告右侧内容样式：flex水平排列，对齐项目中心 */
+.notice-outer-layer-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* 公告图标样式：固定宽高28rpx */
+.notice-icon {
+  width: 28rpx;
+  height: 28rpx;
+}
+
+/* 公告文本样式：粗体，字体大小28rpx，颜色深灰 */
+.notice-content {
+  /* font-weight: bold; */
+  font-size: 22rpx;
+  color: #504F4F;
+  line-height: 35rpx;
+  padding: 15rpx 5rpx;
+}
