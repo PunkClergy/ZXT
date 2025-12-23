@@ -69,7 +69,7 @@
     <view class="middle-title">
       <view style="display: flex;flex-direction: column;">
         <text>舒适进入</text>
-        <text style="font-size: 20rpx;color: #bbb;">
+        <text style="font-size: 24rpx;color: #bbb;">
           开启：实现开门不罚站 关门不回头，无感自动开关锁。
           关闭：需手动操作： 在「我的手机汽车钥匙功能」区域-完成开关门操作。
         </text>
@@ -83,11 +83,12 @@
         <view class="signal-info-item">关锁敏感值:{{parsedData.inductionLockSignal||60}}</view>
       </view>
       <view class="signal-desc-group">
-        <view class="signal-desc-item">【我的位置】: 手机与MCCK设备蓝牙信号值。数值越小信号越强</view>
-        <view class="signal-desc-item">【变化规则】: "我的位置"这个数值会跟随移动设备的移动实时变动。</view>
-        <view class="signal-desc-item">【开锁敏感值】: 当信号值低于这个数值时，车辆会自动开锁</view>
-        <view class="signal-desc-item">【关锁敏感值】: 当信号值高于这个数值时，车辆会自动关锁</view>
+        <view class="signal-desc-item">【我的位置】: 手机与硬件设备的蓝牙信号值，数值越小信号越强</view>
+        <view class="signal-desc-item">【变化规则】: "我的位置",该数值随手机移动实时变动。</view>
+        <view class="signal-desc-item">【开锁敏感值】: 信号值低于此值，车辆感应开锁</view>
+        <view class="signal-desc-item">【关锁敏感值】: 信号值高于此值，车辆感应关锁</view>
       </view>
+      <view style="font-size: 24rpx;color: #5B5959;margin-top: 10rpx;">温馨提示：默认设置若不合预期（开关锁位置/距离），请在个下方性化 DIY 处调整开关锁值</view>
     </view>
     <view class="middle-concrete-content">
 

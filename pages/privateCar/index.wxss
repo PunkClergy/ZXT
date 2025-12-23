@@ -589,7 +589,8 @@ page {
 .signal-info-group {
   display: flex;
   justify-content: space-between;
-  font-size: 25rpx;
+  font-size: 26rpx;
+  font-weight: bold;
   padding: 10rpx 0; /* 优化：去掉横向padding，避免与容器内边距重叠 */
   margin-bottom: 20rpx; /* 与描述区增加间距 */
   border-bottom: 1rpx dashed #f5f5f5; /* 虚线分隔，视觉更柔和 */
@@ -605,7 +606,7 @@ page {
 
 /* 信号描述组：说明文字样式 */
 .signal-desc-group {
-  font-size: 22rpx;
+  font-size: 26rpx;
   line-height: 1.7; /* 增加行高，提升阅读体验 */
   color: #666666; /* 描述文字用浅灰色，区分数据层级 */
 }

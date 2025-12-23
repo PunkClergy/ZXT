@@ -57,6 +57,7 @@
   width: 42rpx;
   height: 46rpx;
 }
+
 /* 内容项 */
 .content-item {
   margin: 15rpx;
@@ -227,6 +228,7 @@
   font-size: 26rpx;
   color: #333333;
 }
+
 .viewText {
   text-align: right;
   font-family: PingFang SC;
@@ -235,8 +237,7 @@
   color: #333333;
 }
 
-.card-info-item-tabs {
-}
+.card-info-item-tabs {}
 
 .card-info-item-tabs-btn {
   display: flex;
@@ -295,6 +296,7 @@
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
 }
+
 .card-upload {
   font-size: 26rpx;
   color: #7b7c7c;
@@ -302,10 +304,12 @@
   padding: 0rpx 20rpx;
   border-radius: 8rpx;
 }
+
 .modal-form-region {
   display: flex;
   gap: 10rpx;
 }
+
 .form-item-text {
   display: flex;
   justify-content: space-between;
@@ -321,6 +325,7 @@
   font-size: 28rpx;
   color: #7b7c7c;
 }
+
 .card-footer {
   position: absolute;
   text-align: center;
@@ -342,6 +347,7 @@
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
 }
+
 .content-item-footer {
   display: flex;
   padding: 15rpx;
@@ -396,12 +402,15 @@
   font-size: 32rpx;
   color: #ffffff;
 }
+
 .record-tabs-1 {
   display: flex;
   padding: 10rpx;
   justify-content: space-between;
   align-items: center;
+  gap: 20rpx;
 }
+
 .tabs-1-title {
   display: flex;
   align-items: center;
@@ -419,14 +428,15 @@
   width: 42rpx;
   height: 46rpx;
 }
+
 /* 搜索框 */
 .search-box {
   display: flex;
   align-items: center;
   border: 1px solid #f0f0f0;
-  border-radius: 200rpx;
+  border-radius: 40rpx;
   padding: 4px 12px;
-  width: 96%;
+  width: 92%;
 }
 
 /* 搜索图标 */
@@ -471,6 +481,7 @@
   overflow-y: auto;
   /* 当内容超出高度时显示滚动条 */
 }
+
 .content-card {
   border: 1px solid #f0f0f0;
   margin: 12rpx;
@@ -541,6 +552,7 @@
   background-color: #4587fd;
   color: #fff;
 }
+
 .card-footer1 button {
   border: 1px solid #f0f0f0;
   border-radius: 8rpx;
@@ -692,4 +704,14 @@
 .form-item-text image {
   width: 30rpx;
   height: 30rpx;
+}
+
+.picker-container {
+  width: 99rpx;
+  height: 23rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 25rpx;
+  color: #333333;
+  line-height: 29rpx;
 }

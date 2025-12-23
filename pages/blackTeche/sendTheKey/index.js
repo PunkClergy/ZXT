@@ -63,7 +63,25 @@ Page({
     controlcode: '',
     c_edit_key_show_momal: false,
     g_edit_info: {},
-    all_send: false
+    all_send: false,
+    statusList: [
+      { name: '全部', id: '', },
+      { name: '使用中', id: 0 },
+      { name: '已过期', id: 1 },
+
+    ],
+    selectedIndex: 0, // 默认选中第一个
+  },
+  handleOnStatusChange(evt) {
+    this.setData({
+      his_state: this.data.statusList[Number(evt?.detail?.value)]?.id,
+      y_triggered: false,
+      y_page: 1,
+      y_items: [],
+      selectedIndex: evt?.detail?.value
+    }, () => {
+      this.getKeySendingList()
+    })
   },
   handleSendSubmit() {
     this.setData({
@@ -282,12 +300,16 @@ Page({
   },
   // 请求发送记录列表
   getKeySendingList: async function (evt) {
+    console.log(this.data)
     showLoading("加载中...");
     try {
       const app = getApp();
       const url = app.data.k1swUrl + u_rentRecord.URL;
       const params = {
-        [u_rentRecord.page]: this.data.y_page
+        [u_rentRecord.page]: this.data.y_page,
+        state: this.data.his_state,
+        comParam: this.data.comParam || ''
+
       };
       const response = await byGet(url, params);
       const resp = response.data;

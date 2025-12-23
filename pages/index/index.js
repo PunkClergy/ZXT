@@ -6,7 +6,8 @@ const {
   u_navlist20,
   u_booklist,
   u_getposter,
-  u_getnotice
+  u_getnotice,
+  u_termialList
 } = require('../../utils/request/home')
 const {
   byGet,
@@ -258,10 +259,39 @@ Page({
       typeof handler === 'function' && handler();
     })();
   },
+  // 请求不通直接进入无网模式
+  handleTermialList() {
+    const _this = this
+    byGet(_this.data.c_link + u_termialList.URL, {}).then(response => {
+
+    }).catch((err) => {
+      wx.getStorage({
+        key: 'bluetoothData',
+        success(res) {
+          wx.redirectTo({
+            url: '/pages/privateCar/indexUrgent',
+          })
+        },
+        fail(err) {
+          console.log('获取缓存失败:', err);
+          wx.getStorage({
+            key: 'networkBlue',
+            success(res) {
+              wx.redirectTo({
+                url: '/pages/netCarurgent/index',
+              })
+            }
+          });
+        }
+      });
+    })
+  },
+
 
   onLoad(options) {
     getApp().data.funAreaId = '';
     (() => {
+      this.handleTermialList()
       // 图片转BASE64
       this.initialiImageBaseConversion();
       // 请求头部banner资源
