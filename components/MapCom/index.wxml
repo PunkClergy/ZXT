@@ -2,7 +2,7 @@
   <view class="time-frame" wx:if="{{g_leaseTime}}">
     <text>租用时间:</text>
     <text>{{g_leaseTime.startDate}} 至 {{g_leaseTime.endDate}}</text>
-    <text>断网时，点右上角「···」刷新，进入紧急页面临时开关锁</text>
+    <text>无网络时，点右上角「···」刷新，进入紧急页面临时开关锁</text>
   </view>
   <view class="container-head">
     <view class="head-bg" id="-4" bindtap="handleControl">
