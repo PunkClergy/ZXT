@@ -1,3 +1,10 @@
+import {
+  _getSourceStrategyMap,
+  _validateVehicleSn,
+  _showLoadingWithFallback,
+  _getTargetMarkerSn,
+  _buildControlRequestParams
+} from 'z-utility';
 const appUtil = require('../../utils/app-util.js');
 const {
   SHOW_TYPE
@@ -454,162 +461,91 @@ Component({
       })
     },
 
-    //底部 "按钮" 操作 
+    // 底部 "按钮" 操作 //
     handleFooterBtn(evt) {
-      if (!this.data.sn) {
-        showToast('无可用车辆')
-        return
-      }
-      const showLoadingWithFallback = () => {
-        try {
-          showLoading('正在控制...');
-          return true;
-        } catch (e) {
-          console.error('加载状态异常:', e);
-          return false;
-        }
-      };
-      const handleError = (error) => {
-        console.error('控制操作失败:', error);
-        showToast(error.message || '控制请求异常');
-      };
-      const safeHideLoading = () => {
+      const _safeHideLoading = () => {
         try {
           hideLoading();
         } catch (e) {
           console.warn('隐藏加载状态失败:', e);
         }
       };
-      if (this.data.source == 'desk') {
-        console.log(this.data.source, 'desk')
-        byPost(
-          `${this.data.c_k1sw_link}${u_verifyControlcode.URL}`,
-          { code: this?.data?.sn || '' },
-          (response) => {
-            if (response?.data?.code == 1000) {
-              try {
-                if (!showLoadingWithFallback()) return;
-                const {
-                  markers = []
-                } = this.data;
-                const targetMarker = markers.find(marker =>
-                  marker?.callout?.display === 'ALWAYS'
-                );
-                const sn = targetMarker?.sn?.trim() ?? '';
-                if (!sn) {
-                  showToast('未找到有效设备标识');
-                  return safeHideLoading();
-                }
-                const controlType = Number(evt?.currentTarget?.id) || 0;
-                const requestParam = {
-                  [u_operation.sn]: sn,
-                  [u_operation.operationType]: controlType,
-                  _timestamp: Date.now()
-                };
-                // 蓝牙操作
-                if (this.data.currentSelectControlType == '-5') {
-                  this.handleExecuteBluetooth(controlType)
-                  return
-                }
-                // 网络模式
-                else if (this.data.currentSelectControlType == '-4') {
-                  byPost(
-                    `${this.data.c_k1sw_link}${u_operation.URL}`,
-                    requestParam,
-                    (response) => {
-                      safeHideLoading();
-                      try {
-                        if (!response) {
-                          throw new Error('空响应数据');
-                        }
-                        if (response.statusCode !== 200) {
-                          throw new Error(`网络异常[${response.statusCode}]`);
-                        }
-                        if (response.data?.code !== 1000) {
-                          const errorMsg = response.data?.msg || '未知业务错误';
-                          throw new Error(`[${response.data.code}]${errorMsg}`);
-                        }
-                        const successMessage = controlType === 5 ?
-                          '寻车成功，请注意附近鸣笛车辆!' :
-                          '控制成功!';
-                        showToast(successMessage);
-                      } catch (error) {
-                        handleError(error);
-                      }
-                    }
-                  );
-                }
 
-              } catch (error) {
-                handleError(error);
-                safeHideLoading();
-              }
-            } else {
-              showToast(response?.data?.msg)
-            }
-          }
-        );
+      const _handleControlError = (error) => {
+        showToast(error.message || '控制请求异常');
+      };
 
+      const _handleCoreControlLogic = (evt) => {
+        // 显示加载状态，失败则直接返回
+        if (!_showLoadingWithFallback(showLoading)) return;
 
-      } else {
         try {
-          if (!showLoadingWithFallback()) return;
-          const {
-            markers = []
-          } = this.data;
-          const targetMarker = markers.find(marker =>
-            marker?.callout?.display === 'ALWAYS'
-          );
-          const sn = targetMarker?.sn?.trim() ?? '';
+          // 获取目标设备SN
+          const sn = _getTargetMarkerSn(this.data.markers || []);
           if (!sn) {
             showToast('未找到有效设备标识');
-            return safeHideLoading();
+            _safeHideLoading();
+            return;
           }
+
+          // 获取控制类型
           const controlType = Number(evt?.currentTarget?.id) || 0;
-          const requestParam = {
-            [u_operation.sn]: sn,
-            [u_operation.operationType]: controlType,
-            _timestamp: Date.now()
-          };
-          // 蓝牙操作
-          if (this.data.currentSelectControlType == '-5') {
-            this.handleExecuteBluetooth(controlType)
-            return
+
+          // 蓝牙操作分支
+          if (this.data.currentSelectControlType === '-5') {
+            this.handleExecuteBluetooth(controlType);
+            return;
           }
-          // 网络模式
-          else if (this.data.currentSelectControlType == '-4') {
+
+          // 网络操作分支（内联原_handleNetworkModeControl逻辑）
+          if (this.data.currentSelectControlType === '-4') {
+            const requestParams = _buildControlRequestParams(controlType, sn);
             byPost(
               `${this.data.c_k1sw_link}${u_operation.URL}`,
-              requestParam,
+              requestParams,
               (response) => {
-                safeHideLoading();
+                _safeHideLoading();
                 try {
-                  if (!response) {
-                    throw new Error('空响应数据');
-                  }
-                  if (response.statusCode !== 200) {
-                    throw new Error(`网络异常[${response.statusCode}]`);
-                  }
-                  if (response.data?.code !== 1000) {
-                    const errorMsg = response.data?.msg || '未知业务错误';
-                    throw new Error(`[${response.data.code}]${errorMsg}`);
-                  }
-                  const successMessage = controlType === 5 ?
-                    '寻车成功，请注意附近鸣笛车辆!' :
-                    '控制成功!';
-                  showToast(successMessage);
+                  // 根据控制类型生成成功提示
+                  const successMsg = requestParams[u_operation.operationType] === 5
+                    ? '寻车成功，请注意附近鸣笛车辆!'
+                    : '控制成功!';
+                  showToast(successMsg);
                 } catch (error) {
-                  handleError(error);
+                  _handleControlError(error);
                 }
               }
             );
           }
-
         } catch (error) {
-          handleError(error);
-          safeHideLoading();
+          _handleControlError(error);
+          _safeHideLoading();
         }
-      }
+      };
+
+      const handleDeskSource = () => {
+        byPost(
+          `${this.data.c_k1sw_link}${u_verifyControlcode.URL}`,
+          { code: this?.data?.sn || '' },
+          (response) => {
+            if (response?.data?.code === 1000) {
+              _handleCoreControlLogic(evt);
+            } else {
+              showToast(response?.data?.msg);
+            }
+          }
+        );
+      };
+
+      const handleNormalSource = () => {
+        _handleCoreControlLogic(evt);
+      };
+
+      if (!_validateVehicleSn(this.data.sn, showToast)) return;
+      const source = this.data.source;
+      const strategyMap = _getSourceStrategyMap(handleDeskSource, handleNormalSource);
+      const strategy = strategyMap[source] || strategyMap.normal;
+      strategy?.call(this);
     },
     // 蓝牙控制车辆
     handleExecuteBluetooth(type) {
