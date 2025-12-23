@@ -52,6 +52,9 @@
             </view>
           </view>
         </block>
+        <block wx:if="{{g_items.length<1}}">
+          <view style="display: flex;justify-content: center;margin-top: 20rpx;font-size: 24rpx;">暂无数据</view>
+        </block>
       </scroll-view>
     </block>
     <block wx:if="{{c_activeTab == 2}}">
@@ -62,10 +65,10 @@
         </view>
         <!-- 配合 WXML 结构 -->
         <view class="picker-container custom-arrow-picker" style="width: 92%;font-size: 24rpx;display: flex;flex-direction: row;">
-          <text>选择状态：</text>
-          <picker mode="selector" range="{{statusList}}" range-key="name" value="{{selectedIndex}}"  bindchange="handleOnStatusChange">
-             <view class="picker-text {{selectedIndex !== null ? 'picker-active-text' : 'picker-placeholder'}}">
-              {{statusList[selectedIndex].name || '请选择状态'}}
+
+          <picker mode="selector" range="{{statusList}}" range-key="name" value="{{selectedIndex}}" bindchange="handleOnStatusChange">
+            <view class="picker-text {{selectedIndex !== null ? 'picker-active-text' : 'picker-placeholder'}}">
+              <text>选择状态：</text> {{statusList[selectedIndex].name || '请选择状态'}}
             </view>
           </picker>
         </view>

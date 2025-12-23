@@ -342,7 +342,7 @@
 .card-footer view {
   width: 40%;
   background-color: #2196f3;
-  padding: 0rpx;
+  padding: 10rpx;
   background: linear-gradient(88deg, #1576dc, #1b64b1);
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;

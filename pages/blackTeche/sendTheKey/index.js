@@ -71,6 +71,7 @@ Page({
 
     ],
     selectedIndex: 0, // 默认选中第一个
+    his_state: '',
   },
   handleOnStatusChange(evt) {
     this.setData({
@@ -307,7 +308,7 @@ Page({
       const url = app.data.k1swUrl + u_rentRecord.URL;
       const params = {
         [u_rentRecord.page]: this.data.y_page,
-        state: this.data.his_state,
+        status: this.data.his_state,
         comParam: this.data.comParam || ''
 
       };
