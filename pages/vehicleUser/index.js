@@ -36,7 +36,7 @@ Page({
     // 原始链接
     c_link: 'https://k1sw.wiselink.net.cn/',
     // 是否可点击其他项
-    ProhibitClicking: true
+    ProhibitClicking: false
 
   },
   // 转换背景图base64
@@ -127,9 +127,8 @@ Page({
           `${this.data.c_link}${u_verifyControlcode.URL}`,
           { code: this.data.sn_specific_value || '' },
           (response) => {
-            if (response?.data?.code === 1000) {
+            if (response?.data?.code == 1000) {
             } else {
-              wx.removeStorageSync('networkBlue'); // 要删除的缓存key
               this.setData({
                 ProhibitClicking: true
               })
@@ -144,6 +143,28 @@ Page({
       }
     })
 
+  },
+  // 判断是否有缓存
+  initQueryCacheAndRoles() {
+    if (isLogin()) {
+      const param = {
+        page: 1,
+      };
+      byGet(this.data.c_link + u_carList.URL, param).then(response => {
+        if (response.statusCode == 200) {
+          console.log(response?.data?.count)
+          if (response?.data?.count == 0) {
+            this.setData({
+              ProhibitClicking: false
+            })
+          } else {
+            this.setData({
+              ProhibitClicking: true
+            })
+          }
+        }
+      })
+    }
   },
   onLoad: function (options) {
     // 请求底部导航数据
@@ -179,27 +200,6 @@ Page({
     this.initQueryCacheAndRoles()
 
   },
-  // 判断是否有缓存
-  initQueryCacheAndRoles() {
-    if (isLogin()) {
-      const param = {
-        page: 1,
-      };
-      byGet(this.data.c_link + u_carList.URL, param).then(response => {
-        if (response.statusCode == 200) {
-          console.log(response?.data?.count)
-          if (response?.data?.count == 0) {
-            this.setData({
-              ProhibitClicking: false
-            })
-          } else {
-            this.setData({
-              ProhibitClicking: true
-            })
-          }
-        }
-      })
-    }
-  },
+
 
 })

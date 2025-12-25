@@ -17,7 +17,7 @@ Component({
     },
     homeTabr: {
       type: Boolean,
-      value: true
+      value: false
     }
   },
 

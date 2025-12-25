@@ -46,7 +46,7 @@ Page({
     // 公告数据
     notice_data: '新版偷偷上线！体验更丝滑，速来体验～',
     // 短信进入携带参数
-    options: {}
+    options: {},
   },
   // 获取系统头部各区域高度
   initSystemInfo() {
@@ -290,11 +290,43 @@ Page({
     })
   },
 
-
+  // 心跳检测
+  heartbeatDetection() {
+    const heartbeatUrl = 'https://k1sw.wiselink.net.cn/deskapi/homeArea'
+    return new Promise((resolve) => {
+      wx.request({
+        url: heartbeatUrl,
+        method: 'GET',
+        timeout: 3000,
+        data: {},
+        success: (res) => {
+          if (res.statusCode === 200) {
+            // 获取系统头部各区域高度
+            this.initSystemInfo()
+            // 获取是否要显示优惠券弹窗
+            this.initforceLogin()
+            // 获取登录状态
+            this.initLoginStatus()
+            // 获取入群二维码
+            this.initQrCode()
+            // 获取使用指南
+            this.initBookList()
+            // 判断是否有缓存
+            this.initQueryCacheAndRoles()
+          } else {
+            this.handleTermialList()
+          }
+        },
+        fail: (err) => {
+          this.handleTermialList()
+        }
+      });
+    });
+  },
   onLoad(options) {
     getApp().data.funAreaId = '';
     (() => {
-      this.handleTermialList()
+
       // 图片转BASE64
       this.initialiImageBaseConversion();
       // 请求头部banner资源
@@ -312,18 +344,8 @@ Page({
     })();
   },
   onShow() {
-    // 获取系统头部各区域高度
-    this.initSystemInfo()
-    // 获取是否要显示优惠券弹窗
-    this.initforceLogin()
-    // 获取登录状态
-    this.initLoginStatus()
-    // 获取入群二维码
-    this.initQrCode()
-    // 获取使用指南
-    this.initBookList()
-    // 判断是否有缓存
-    this.initQueryCacheAndRoles()
+    this.heartbeatDetection();
+
   },
   // 判断是否有缓存
   initQueryCacheAndRoles() {

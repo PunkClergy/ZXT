@@ -306,7 +306,8 @@ Component({
                   latitude: mainCar.tlatitude,
                   longitude: mainCar.tlongitude,
                   blueKey: mainCar?.blueKey,
-                  markers: [mainMarker, ...otherMarkers]
+                  markers: [mainMarker, ...otherMarkers],
+                  deviceType: mainCar?.deviceType
                 });
                 safeHideLoading();
               }
@@ -549,7 +550,7 @@ Component({
     },
     // 蓝牙控制车辆
     handleExecuteBluetooth(type) {
-      console.log(this.data.idc || `19${this.data.sn}`, this.data.blueKey, '蓝牙设备号和密钥')
+      console.log(this.data.idc || `19${this.data.sn}`, this.data.blueKey, '蓝牙设备号和密钥', this?.data?.deviceType)
       const COMMAND_MAPPING = {
         5: 5, // 远程寻车
         1: this?.data?.deviceType ? 4 : 3, // 锁门
