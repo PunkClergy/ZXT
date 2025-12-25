@@ -6,7 +6,13 @@ const {
   u_navlist20
 } = require('../../utils/request/home')
 const {
-  byGet
+  u_carList
+} = require('../../utils/request/car')
+const {
+  u_verifyControlcode
+} = require('../../utils/request/map')
+const {
+  byGet, isLogin, byPost
 } = require('../../utils/request/http')
 Page({
   data: {
@@ -29,6 +35,8 @@ Page({
     currentTab: 1,
     // 原始链接
     c_link: 'https://k1sw.wiselink.net.cn/',
+    // 是否可点击其他项
+    ProhibitClicking: true
 
   },
   // 转换背景图base64
@@ -88,7 +96,7 @@ Page({
   // 获取底部导航数据
   initBottomDirectory() {
     byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
-      console.log(response,'2222www')
+      console.log(response, '2222www')
       if (response.statusCode == 200) {
         this.setData({
           tabList: response.data.content
@@ -109,6 +117,33 @@ Page({
     const targetPurePath = targetUrl.split('?')[0];
     console.log(currentPath, targetPurePath);
     currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
+  },
+  // 判断当前控制码是否失效
+  handleDeskSource() {
+    wx.getStorage({
+      key: 'networkBlue',
+      success: (res) => {
+        byPost(
+          `${this.data.c_link}${u_verifyControlcode.URL}`,
+          { code: this.data.sn_specific_value || '' },
+          (response) => {
+            if (response?.data?.code === 1000) {
+            } else {
+              wx.removeStorageSync('networkBlue'); // 要删除的缓存key
+              this.setData({
+                ProhibitClicking: true
+              })
+            }
+          }
+        );
+      },
+      fail: () => {
+        this.setData({
+          ProhibitClicking: true
+        })
+      }
+    })
+
   },
   onLoad: function (options) {
     // 请求底部导航数据
@@ -132,6 +167,7 @@ Page({
 
   onReady: function () {
     this.initialiImageBaseConversion()
+    this.handleDeskSource()
   },
 
   onShow: function (e) {
@@ -139,7 +175,31 @@ Page({
     this.setData({
       sn_specific_value: this.data.sn_specific_value || scene
     })
-  },
+    // 判断是否有缓存
+    this.initQueryCacheAndRoles()
 
+  },
+  // 判断是否有缓存
+  initQueryCacheAndRoles() {
+    if (isLogin()) {
+      const param = {
+        page: 1,
+      };
+      byGet(this.data.c_link + u_carList.URL, param).then(response => {
+        if (response.statusCode == 200) {
+          console.log(response?.data?.count)
+          if (response?.data?.count == 0) {
+            this.setData({
+              ProhibitClicking: false
+            })
+          } else {
+            this.setData({
+              ProhibitClicking: true
+            })
+          }
+        }
+      })
+    }
+  },
 
 })

@@ -10,6 +10,9 @@ const {
   u_termialList
 } = require('../../utils/request/home')
 const {
+  u_carList
+} = require('../../utils/request/car')
+const {
   byGet,
   byPost,
   isLogin
@@ -319,8 +322,32 @@ Page({
     this.initQrCode()
     // 获取使用指南
     this.initBookList()
+    // 判断是否有缓存
+    this.initQueryCacheAndRoles()
   },
-
+  // 判断是否有缓存
+  initQueryCacheAndRoles() {
+    if (isLogin()) {
+      const param = {
+        page: 1,
+      };
+      byGet(this.data.c_link + u_carList.URL, param).then(response => {
+        if (response.statusCode == 200) {
+          console.log(response?.data?.count)
+          if (response?.data?.count == 0) {
+            wx.getStorage({
+              key: 'scene',
+              success(res) {
+                if (res?.data) {
+                  wx.redirectTo({ url: '/pages/vehicleUser/index' });
+                }
+              }
+            });
+          }
+        }
+      })
+    }
+  },
   // 已有账号，跳转常规登录页面
   handleOnExistingAccountTap() {
     (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })

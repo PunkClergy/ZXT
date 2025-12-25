@@ -5,7 +5,7 @@
       <view class="nav-btn" bindtap="handleBack" wx:if="{{!tabr}}">
         <image src="/assets/images/home/left.png" class="icon" mode="aspectFit"></image>
       </view>
-      <view class="nav-btn" bindtap="handleGoHome">
+      <view class="nav-btn" bindtap="handleGoHome" wx:if="{{homeTabr}}">
         <image src="/assets/images/index/home.png" class="icon" mode="aspectFit"></image>
       </view>
     </view>

@@ -14,6 +14,10 @@ Component({
     tabr: {
       type: Boolean,
       value: false
+    },
+    homeTabr: {
+      type: Boolean,
+      value: true
     }
   },
 
