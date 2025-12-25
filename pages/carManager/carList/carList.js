@@ -5,7 +5,8 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   u_carList,
-  u_addOrUpdateCar
+  u_addOrUpdateCar,
+  u_carapiDeleteCar
 } = require('../../../utils/request/car')
 const {
   byPost,
@@ -39,7 +40,51 @@ Page({
     carOwnerName: '智信通', //所属平台
     brakingType: 1
   },
+  bindblurSea(evt) {
+    this.setData({
+      comParam: evt.detail.value,
+      g_page: 1,
+      g_items: []
+    }, () => {
+      this.initList()
+    })
+  },
+  // 删除车辆
+  handleDelete(evt) {
+    wx.showModal({
+      title: '提示',
+      content: '确认删除？',
+      complete: (res) => {
+        if (res.confirm) {
+          const info = evt.currentTarget.dataset.item
+          const apiUrls = {
+            getCarStatus: getApp().data.k1swUrl + u_carapiDeleteCar.URL
+          };
+          const param = {
+            sn: info?.sn,
+            code: info?.code
+          }
+          byPost(apiUrls.getCarStatus, param,
+            (response) => {
+              hideLoading();
+              if (response.data.code == 1000) {
+                this.setData({
+                  c_activeTab: 1, // 默认选中的Tab索引
+                  g_page: 1, //列表页码
+                  g_items: [], //列表数据
+                })
+                showToast(response.data.msg)
+                getApp().data.reflag = 1
+                this.initList()
+              } else {
+                showToast(response.data.msg)
+              }
+            });
+        }
+      }
+    })
 
+  },
   handleChangeBlack(evt) {
     // 使用解构赋值一次性获取所有需要的数据
     const {
@@ -78,6 +123,7 @@ Page({
       url: `${this.data.g_source}?black=${this.data.g_black}&type=${this.data.type}&name=${this.data.name}&platenumbers=${this.data.g_platenumbers}&info=${JSON.stringify(this.data.info)}`,
     })
   },
+
   // 扫码按钮点击事件
   scanCode() {
     wx.scanCode({
@@ -120,25 +166,25 @@ Page({
       g_source: source,
       g_flagMulti: flagMulti,
       info: info && JSON.parse(info),
-      allParams:allParams,
-      type:type,
-      name:name
+      allParams: allParams,
+      type: type,
+      name: name
     })
   },
   handleSelectJump(evt) {
     const {
       item
     } = evt.currentTarget.dataset
-    if(this.data.allParams){
+    if (this.data.allParams) {
       wx.redirectTo({
         url: `${this.data.g_source}?datails=${JSON.stringify(item)}&allParams=${this.data.allParams}&type=${this.data.type}`
       })
-    }else{
+    } else {
       wx.redirectTo({
         url: `${this.data.g_source}?datails=${JSON.stringify(item)}`
       })
     }
-   
+
   },
   // 全屏背景图
   initialiImageBaseConversion() {
@@ -158,7 +204,7 @@ Page({
     }, {
       path: '/assets/images/home/2-2.png',
       key: 's_background_tabs_active_2'
-    }, ];
+    },];
     const promises = imageMap.map(item =>
       new Promise((resolve, reject) => {
         wx.getFileSystemManager().readFile({
@@ -186,6 +232,7 @@ Page({
   initList() {
     const param = {
       [u_carList.page]: this.data.g_page,
+      comParam: this.data?.comParam || ""
     };
     byGet(getApp().data.k1swUrl + u_carList.URL, param).then(response => {
       if (response.statusCode == 200) {
@@ -273,19 +320,19 @@ Page({
       id: this.data.id || ''
     };
     const validations = [{
-        field: 'platenumber',
-        message: '请填写车牌号'
-      },
-      {
-        field: 'sn',
-        message: '请填写设备号'
-      }
+      field: 'platenumber',
+      message: '请填写车牌号'
+    },
+    {
+      field: 'sn',
+      message: '请填写设备号'
+    }
     ];
 
     for (const {
-        field,
-        message
-      } of validations) {
+      field,
+      message
+    } of validations) {
       if (!param[field]?.trim()) {
         showToast(message);
         return;
@@ -311,7 +358,7 @@ Page({
             g_items: [], //列表数据
           })
           showToast(response.data.msg)
-          getApp().data.reflag = 1 
+          getApp().data.reflag = 1
           this.initList()
         } else {
           showToast(response.data.msg)

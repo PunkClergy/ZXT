@@ -688,3 +688,73 @@
   box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
   border-radius: 36rpx;
 }
+
+.record-tabs-1 {
+  display: flex;
+  padding: 10rpx;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.tabs-1-title {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.tabs-1-title text {
+  font-family: PingFang SC;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.tabs-1-title image {
+  width: 42rpx;
+  height: 46rpx;
+}
+
+/* 搜索框 */
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #f0f0f0;
+  border-radius: 40rpx;
+  padding: 4px 12px;
+  width: 92%;
+}
+
+/* 搜索图标 */
+.search-icon {
+  margin-right: 8px;
+  /* 图标与输入框之间留出间距 */
+}
+
+/* 输入框 */
+.search-input {
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 22rpx;
+}
+
+.count-text {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 22rpx;
+  color: #7b7c7c;
+}
+
+.tabs-1-conut {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 22rpx;
+  color: #7b7c7c;
+  padding: 10px;
+  /* border-bottom: 1px solid #f0f0f0; */
+}
