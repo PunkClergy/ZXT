@@ -120,28 +120,41 @@ Page({
   },
   // 判断当前控制码是否失效
   handleDeskSource() {
-    wx.getStorage({
-      key: 'networkBlue',
-      success: (res) => {
-        byPost(
-          `${this.data.c_link}${u_verifyControlcode.URL}`,
-          { code: this.data.sn_specific_value || '' },
-          (response) => {
-            if (response?.data?.code == 1000) {
-            } else {
-              this.setData({
-                ProhibitClicking: true
-              })
+    if (isLogin()) {
+      wx.getStorage({
+        key: 'networkBlue',
+        success: (res) => {
+          byPost(
+            `${this.data.c_link}${u_verifyControlcode.URL}`,
+            { code: this.data.sn_specific_value || '' },
+            (response) => {
+              if (response?.data?.code == 1000) {
+                if (isLogin()) {
+                  this.setData({
+                    ProhibitClicking: false
+                  })
+                }
+
+              } else {
+                this.setData({
+                  ProhibitClicking: true
+                })
+              }
             }
-          }
-        );
-      },
-      fail: () => {
-        this.setData({
-          ProhibitClicking: true
-        })
-      }
-    })
+          );
+        },
+        fail: () => {
+          this.setData({
+            ProhibitClicking: true
+          })
+        }
+      })
+    } else {
+      this.setData({
+        ProhibitClicking: false
+      })
+    }
+
 
   },
   // 判断是否有缓存
@@ -188,7 +201,7 @@ Page({
 
   onReady: function () {
     this.initialiImageBaseConversion()
-    this.handleDeskSource()
+    this.initQueryCacheAndRoles()
   },
 
   onShow: function (e) {
@@ -196,9 +209,7 @@ Page({
     this.setData({
       sn_specific_value: this.data.sn_specific_value || scene
     })
-    // 判断是否有缓存
-    this.initQueryCacheAndRoles()
-
+    this.handleDeskSource()
   },
 
 
