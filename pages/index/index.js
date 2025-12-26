@@ -265,29 +265,29 @@ Page({
   // 请求不通直接进入无网模式
   handleTermialList() {
     const _this = this
-    byGet(_this.data.c_link + u_termialList.URL, {}).then(response => {
+    // byGet(_this.data.c_link + u_termialList.URL, {}).then(response => {
 
-    }).catch((err) => {
-      wx.getStorage({
-        key: 'bluetoothData',
-        success(res) {
-          wx.redirectTo({
-            url: '/pages/privateCar/indexUrgent',
-          })
-        },
-        fail(err) {
-          console.log('获取缓存失败:', err);
-          wx.getStorage({
-            key: 'networkBlue',
-            success(res) {
-              wx.redirectTo({
-                url: '/pages/netCarurgent/index',
-              })
-            }
-          });
-        }
-      });
-    })
+    // }).catch((err) => {
+    wx.getStorage({
+      key: 'bluetoothData',
+      success(res) {
+        wx.redirectTo({
+          url: '/pages/privateCar/indexUrgent',
+        })
+      },
+      fail(err) {
+        console.log('获取缓存失败:', err);
+        wx.getStorage({
+          key: 'networkBlue',
+          success(res) {
+            wx.redirectTo({
+              url: '/pages/netCarurgent/index',
+            })
+          }
+        });
+      }
+    });
+    // })
   },
 
   // 心跳检测
