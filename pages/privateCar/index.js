@@ -229,9 +229,9 @@ Page({
   // 切换感应模式
   handleToggleSensorMode(e) {
     const { parsedData = {} } = this.data || {};
-    const { inductionMode: oldFlag = false, pairStatus = '未配对' } = parsedData;
+    const { pairStatus = '未配对' } = parsedData;
     const newFlag = e?.detail?.value ?? false;
-    if (!oldFlag && pairStatus === '未配对') {
+    if (pairStatus === '未配对') {
       this.btnPair();
       return;
     }

@@ -64,13 +64,18 @@
           <input placeholder="车牌号/设备号/使用人" class="search-input" bindblur="bindblurSea" />
         </view>
         <!-- 配合 WXML 结构 -->
-        <view class="picker-container custom-arrow-picker" style="width: 92%;font-size: 24rpx;display: flex;flex-direction: row;">
+        <view class="picker-container custom-arrow-picker" style="width: 92%;font-size: 24rpx;display: flex;flex-direction: row;gap: 20rpx;align-items: center;">
+          <view>全部状态：</view>
+          <view style="display: flex;flex-direction: row;gap: 10rpx;">
+            <view bindtap="handleOnStatusChange" data-id="0" style="display: flex;justify-content: center;align-items: center; background-color: {{his_state == 0?'#F56F48':'#7B7C7C'}};border-radius: 24rpx;color: #fff;padding: 10rpx 20rpx">使用中</view>
+            <view bindtap="handleOnStatusChange" data-id="1" style="display: flex;justify-content: center;align-items: center; background-color:  {{his_state == 1?'#F56F48':'#7B7C7C'}};border-radius: 24rpx;color: #fff;padding: 10rpx 20rpx">已过期</view>
+          </view>
 
-          <picker mode="selector" range="{{statusList}}" range-key="name" value="{{selectedIndex}}" bindchange="handleOnStatusChange">
+          <!-- <picker mode="selector" range="{{statusList}}" range-key="name" value="{{selectedIndex}}" bindchange="handleOnStatusChange">
             <view class="picker-text {{selectedIndex !== null ? 'picker-active-text' : 'picker-placeholder'}}">
               <text>选择状态：</text> {{statusList[selectedIndex].name || '请选择状态'}}
             </view>
-          </picker>
+          </picker> -->
         </view>
       </view>
       <view class="tabs-1-conut">共有{{y_total}}条记录</view>

@@ -64,18 +64,13 @@ Page({
     c_edit_key_show_momal: false,
     g_edit_info: {},
     all_send: false,
-    statusList: [
-      { name: '全部', id: '', },
-      { name: '使用中', id: 0 },
-      { name: '已过期', id: 1 },
 
-    ],
     selectedIndex: 0, // 默认选中第一个
-    his_state: '',
+    his_state: '0',
   },
   handleOnStatusChange(evt) {
     this.setData({
-      his_state: this.data.statusList[Number(evt?.detail?.value)]?.id,
+      his_state: evt?.currentTarget?.dataset?.id,
       y_triggered: false,
       y_page: 1,
       y_items: [],
