@@ -122,42 +122,34 @@ Page({
 * 处理登录态下校验控制码，动态控制按钮点击权限
 * @returns {Promise<void>} 异步操作Promise
 */
-  async handleDeskSource() {
-    const hasLogin = isLogin();
-    if (!hasLogin) {
-      this.setData({ ProhibitClicking: false });
-      return;
-    }
-    const baseUrl = this.data.c_link || '';
-    const verifyPath = u_verifyControlcode?.URL || '';
-    const verifyUrl = `${baseUrl}${verifyPath}`;
-    const requestParams = { code: this.data.sn_specific_value || '' };
-
-    try {
-      await wx.getStorage({ key: 'networkBlue' });
-      await new Promise((resolve, reject) => {
-        if (!verifyUrl) {
-          reject(new Error('校验接口URL为空，无法发起请求'));
-          return;
-        }
-
-        byPost(verifyUrl, requestParams,
-          (res) => {
-            const verifySuccess = res?.data?.code === 1000;
-            hasLogin && this.setData({ ProhibitClicking: !verifySuccess });
-            resolve(res);
-          },
-          (err) => {
-            reject(new Error(`控制码校验请求失败：${err?.msg || err}`));
+  handleDeskSource() {
+    wx.getStorage({
+      key: 'networkBlue',
+      success: (res) => {
+        byPost(
+          `${this.data.c_link}${u_verifyControlcode.URL}`,
+          { code: this.data.sn_specific_value || '' },
+          (response) => {
+            if (response?.data?.code == 1000) {
+              if (isLogin()) {
+                this.setData({
+                  ProhibitClicking: false
+                })
+              }
+            } else {
+              this.setData({
+                ProhibitClicking: true
+              })
+            }
           }
         );
-      });
-
-    } catch (error) {
-      const errorMsg = error?.message || '未知错误';
-      console.error(`处理桌面源逻辑异常：${errorMsg}`);
-      this.setData({ ProhibitClicking: true });
-    }
+      },
+      fail: () => {
+        this.setData({
+          ProhibitClicking: true
+        })
+      }
+    })
   },
   // 判断是否有缓存
   initQueryCacheAndRoles() {
