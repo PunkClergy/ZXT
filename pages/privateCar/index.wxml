@@ -65,7 +65,7 @@
       </view>
     </view>
   </view>
-  <view class="middle-scroll">
+  <view class="middle-scroll" wx:if="{{!code}}">
     <view class="middle-title">
       <view style="display: flex;flex-direction: column;">
         <text>舒适进入</text>
@@ -152,6 +152,10 @@
         </view>
       </view>
     </view>
+  </view>
+  <view wx:else class="middle-scroll" style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+    <view style="font-size: 26rpx;">授权使用时间 : {{bluetoothData.startDate}}--{{bluetoothData.endDate}}</view>
+    <image class="vehicle-image" src="https://k3a.wiselink.net.cn/img/app/blue/privateCar.png" mode="aspectFit"></image>
   </view>
   <view class="bottom-fixed" style="height: {{bottomHeight}}px;">
     <view class="bottom-fixed-identification">
