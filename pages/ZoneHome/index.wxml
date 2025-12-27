@@ -58,8 +58,8 @@
         <text>使用指南</text>
       </view>
       <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="4000" duration="500" style="height: {{s_use_height}}px;">
-        <swiper-item wx:for="{{fullBannerList}}" wx:key="index" data-info="{{item}}" bindtap="handleUseJump">
-          <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.imgpath}}" class="full-banner-img" data-flag='use' bindload="LoadOnUseGuideImageLoad" mode="widthFix"></image>
+        <swiper-item wx:for="{{fullBannerList}}" wx:key="index" data-info="{{item}}">
+          <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.imgpath}}" class="full-banner-img" data-flag='use' data-url="{{item.bookPath}}" bindtap="handlePlayVideo" bindload="LoadOnUseGuideImageLoad" mode="widthFix"></image>
         </swiper-item>
       </swiper>
     </view>
@@ -89,9 +89,11 @@
   </view>
 </view>
 <!-- 点击咨询入群 -->
-<view class="float-button" bindtap="handleShowContact">
-  <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png" />
+<view class="float-button">
+  <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png" bindtap="handleShowContact" />
+  <image src="/assets//images/400.png" style="width: 80rpx;height: 80rpx;" bindtap="handleMakePhoneCallWithConfirm"/>
 </view>
+
 <view class="qr-group-container" wx:if="{{join_the_group_modal}}">
   <view class="qr-group-mask" bindtap="handleQRClose">
     <!-- 关闭按钮 -->

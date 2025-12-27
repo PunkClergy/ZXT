@@ -1,0 +1,41 @@
+<view class="video-container">
+  <!-- 视频播放区域 -->
+  <view class="play-area">
+    <video
+      id="video-player"
+      src="{{videoUrl}}"
+      poster="{{videoPoster}}"
+      controls
+      autoplay="{{false}}"
+      loop="{{false}}"
+      show-center-play-btn="{{true}}"
+      show-play-btn="{{true}}"
+      show-fullscreen-btn="{{true}}"
+      binderror="videoError"
+      bindplay="onVideoPlay"
+      bindpause="onVideoPause"
+      class="video-player"
+    ></video>
+  </view>
+
+  <!-- 操作按钮区域 -->
+  <view class="btn-group">
+    <button 
+      class="operate-btn play-btn"
+      bindtap="togglePlay"
+    >
+      {{isPlaying ? '暂停播放' : '开始播放'}}
+    </button>
+    <button 
+      class="operate-btn download-btn"
+      bindtap="downloadVideo"
+      loading="{{isDownloading}}"
+      disabled="{{isDownloading}}"
+    >
+      下载视频到相册
+    </button>
+  </view>
+
+  <!-- 提示信息 -->
+  <view class="tip-text {{tipType}}">{{tipText}}</view>
+</view>

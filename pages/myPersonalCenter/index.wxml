@@ -56,8 +56,9 @@
   </view>
 </view>
 <!-- 点击咨询入群 -->
-<view class="float-button" bindtap="handleShowContact">
-  <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png" />
+<view class="float-button" >
+  <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png" bindtap="handleShowContact" />
+  <image src="/assets//images/400.png" style="width: 80rpx;height: 80rpx;" bindtap="handleMakePhoneCallWithConfirm"/>
 </view>
 <view class="qr-group-container" wx:if="{{join_the_group_modal}}">
   <view class="qr-group-mask" bindtap="handleQRClose">

@@ -387,6 +387,8 @@
   justify-content: center;
   z-index: 999;
   transition: all 0.2s ease;
+  flex-direction: column;
+  gap: 20rpx;
 }
 
 .float-button image {
@@ -394,11 +396,11 @@
   height: 123rpx;
 }
 
-.float-button:active {
+/* .float-button:active {
   transform: translateY(-50%) scale(0.9);
   background-color: #3a8ee6;
   box-shadow: 0 2rpx 8rpx rgba(64, 158, 255, 0.2);
-}
+} */
 
 .qr-group-container {
   width: 100%;

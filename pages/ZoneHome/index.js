@@ -39,9 +39,33 @@ Page({
     ],
     // 底部tab数据（网络图片）
     tabList: [],
-    isShowInfo: false
-
-
+    isShowInfo: false,
+    servicePhone: '400-090-5050'
+  },
+  handleMakePhoneCallWithConfirm() {
+    const { servicePhone } = this.data;
+    // 第一步：弹出确认框，告知用户要拨打的号码
+    wx.showModal({
+      title: '拨打电话',
+      content: `是否拨打客服电话：${servicePhone}`,
+      confirmText: '拨打',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          wx.makePhoneCall({
+            phoneNumber: servicePhone,
+            fail(err) {
+              if (err.errMsg !== 'makePhoneCall:fail cancel') {
+                wx.showToast({
+                  title: '拨号失败，请稍后重试',
+                  icon: 'none'
+                });
+              }
+            }
+          });
+        }
+      }
+    });
   },
   handleOnExistingAccountTap() {
     (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
@@ -159,6 +183,14 @@ Page({
         mark === 'banner' && self.setData({ s_banner_height: validH });
       } catch (err) { err.description || console.error('imgLoadErr:', err); }
     })();
+  },
+  // 跳转到视频播放页面
+  handlePlayVideo(evt) {
+    console.log(evt)
+    // const path = evt?.currentTarget?.dataset?.bookPath
+    // wx.navigateTo({
+    //   url: '/pages/video/index?video=' + path,
+    // })
   },
   // 获取是否显示温馨提示
   inIsShowInfo() {

@@ -20,9 +20,34 @@ Page({
     join_the_group_modal: false,
     // 底部tab数据（网络图片）
     tabList: [],
-    contentList: []
+    contentList: [],
 
-
+    servicePhone: '400-090-5050'
+  },
+  handleMakePhoneCallWithConfirm() {
+    const { servicePhone } = this.data;
+    // 第一步：弹出确认框，告知用户要拨打的号码
+    wx.showModal({
+      title: '拨打电话',
+      content: `是否拨打客服电话：${servicePhone}`,
+      confirmText: '拨打',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          wx.makePhoneCall({
+            phoneNumber: servicePhone,
+            fail(err) {
+              if (err.errMsg !== 'makePhoneCall:fail cancel') {
+                wx.showToast({
+                  title: '拨号失败，请稍后重试',
+                  icon: 'none'
+                });
+              }
+            }
+          });
+        }
+      }
+    });
   },
   // 获取系统头部各区域高度
   initSystemInfo() {
@@ -149,7 +174,7 @@ Page({
   },
   // 点击工具执行
   handleFunExe(evt) {
-    if(!isLogin()){
+    if (!isLogin()) {
       wx.redirectTo({
         url: '/pages/system/managerLoginView/loginView',
       })
