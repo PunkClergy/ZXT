@@ -348,26 +348,23 @@ Page({
 
   },
   // 判断是否有缓存
-  initQueryCacheAndRoles() {
+  async initQueryCacheAndRoles() {
+    const key = 'scene', code = 200, url = '/pages/vehicleUser/index';
     if (isLogin()) {
-      const param = {
-        page: 1,
-      };
-      byGet(this.data.c_link + u_carList.URL, param).then(response => {
-        if (response.statusCode == 200) {
-          console.log(response?.data?.count)
-          if (response?.data?.count == 0) {
-            wx.getStorage({
-              key: 'scene',
-              success(res) {
-                if (res?.data) {
-                  wx.redirectTo({ url: '/pages/vehicleUser/index' });
-                }
-              }
-            });
-          }
+      try {
+        const res = await byGet(this.data.c_link + u_carList.URL, { page: 1 });
+        if (res?.statusCode == code && res?.data?.count == 0) {
+          try {
+            const sceneRes = await wx.getStorage({ key });
+            sceneRes?.data && wx.redirectTo({ url });
+          } catch (e) { console.warn('读取scene缓存失败：', e); }
         }
-      })
+      } catch (e) { console.error('车辆列表请求失败：', e); }
+    } else {
+      try {
+        const sceneRes = await wx.getStorage({ key });
+        sceneRes?.data && wx.redirectTo({ url });
+      } catch (e) { console.warn('读取scene缓存失败：', e); }
     }
   },
   // 已有账号，跳转常规登录页面
