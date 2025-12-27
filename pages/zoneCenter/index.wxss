@@ -271,6 +271,23 @@
   width: 111rpx;
   height: 123rpx;
 }
+.hidden-contact-btn {
+  /* 绝对定位覆盖自定义UI */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  /* 完全透明，看不到按钮 */
+  opacity: 0;
+  /* 层级高于自定义UI，确保点击到 button */
+  z-index: 10;
+  /* 清除 button 所有默认样式 */
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
 
 /* .float-button:active {
   transform: translateY(-50%) scale(0.9);
