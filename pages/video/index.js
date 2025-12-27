@@ -4,7 +4,7 @@ Page({
    */
   data: {
     // 视频地址（请替换为你自己的有效视频链接，需配置小程序downloadFile白名单）
-    videoUrl: 'https://example.com/test-video.mp4',
+    videoUrl: 'https://k1sw.wiselink.net.cn/file/areaFile/190353租车、网约车Y28产品安装视频.mp4',
     // 视频封面（可选）
     videoPoster: 'https://k1sw.wiselink.net.cn/img/book/8/3fdf8eda-7b81-41ca-9e47-0d4c4fc90beabanner-05.png',
     // 播放状态
@@ -24,7 +24,6 @@ Page({
     this.videoContext = wx.createVideoContext('video-player', this);
     this.setData({
       tipText: '请点击按钮操作视频',
-      videoUrl:''
     });
   },
 

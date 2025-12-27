@@ -187,10 +187,11 @@ Page({
   // 跳转到视频播放页面
   handlePlayVideo(evt) {
     console.log(evt)
-    // const path = evt?.currentTarget?.dataset?.bookPath
-    // wx.navigateTo({
-    //   url: '/pages/video/index?video=' + path,
-    // })
+    return
+    const path = evt?.currentTarget?.dataset?.bookPath || 'http://vd3.bdstatic.com/mda-rmrtu3rkqkfbsh19/360p/h264/1766777930691493092/mda-rmrtu3rkqkfbsh19.mp4'
+    wx.navigateTo({
+      url: '/pages/watchVideos/index?url=' + encodeURI(path) + '&title=' + '6677',
+    })
   },
   // 获取是否显示温馨提示
   inIsShowInfo() {

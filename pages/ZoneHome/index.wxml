@@ -95,6 +95,7 @@
   <image src="/assets/images/tel400.png" style="width: 80rpx;height: 80rpx;" bindtap="handleMakePhoneCallWithConfirm" />
 </view>
 
+
 <view class="qr-group-container" wx:if="{{join_the_group_modal}}">
   <view class="qr-group-mask" bindtap="handleQRClose">
     <!-- 关闭按钮 -->
