@@ -17,7 +17,7 @@ Page({
     mp4_url: '',
     title: '',
     // 视频封面（可选）
-    videoPoster: 'https://k1sw.wiselink.net.cn/img/book/8/3fdf8eda-7b81-41ca-9e47-0d4c4fc90beabanner-05.png',
+    // videoPoster: 'https://k1sw.wiselink.net.cn/img/book/8/3fdf8eda-7b81-41ca-9e47-0d4c4fc90beabanner-05.png',
     c_link: 'https://k1sw.wiselink.net.cn/'
   },
   initialiImageBaseConversion() {
