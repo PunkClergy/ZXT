@@ -49,6 +49,36 @@ Page({
     options: {},
     servicePhone: '400-090-5050'
   },
+  // 点击banner跳转路径
+  handleJumpInfo(evt) {
+    const { item = {} } = evt?.currentTarget?.dataset || {};
+    const { fileType, path: localPath, img } = item;
+    if (!item || (fileType !== 1 && !img)) {
+      wx.showToast({ title: '暂无有效跳转信息', icon: 'none' });
+      return;
+    }
+    const IMG_BASE_URL = 'https://k3a.wiselink.net.cn/img/';
+    const targetPath = fileType === 1
+      ? localPath
+      : `${IMG_BASE_URL}${img || ''}`;
+    const navigateUrl = fileType === 1
+      ? targetPath
+      : `/pages/agreementWebView/agreementWebView?url=${encodeURIComponent(targetPath)}`;
+
+    if (!navigateUrl) {
+      wx.showToast({ title: '跳转路径无效', icon: 'none' });
+      return;
+    }
+
+    wx.navigateTo({
+      url: navigateUrl,
+      fail: (err) => {
+        console.error('页面跳转失败:', err);
+        wx.showToast({ title: '跳转失败，请重试', icon: 'none' });
+      }
+    });
+  },
+  // 400拨号
   handleMakePhoneCallWithConfirm() {
     const { servicePhone } = this.data;
     // 第一步：弹出确认框，告知用户要拨打的号码

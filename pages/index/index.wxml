@@ -25,7 +25,7 @@
     <view class="swiper-container">
       <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="3000" duration="500" style="height: {{s_banner_height}}px;">
         <swiper-item wx:for="{{g_banner_image}}" wx:key="index">
-          <image src="{{c_link}}/img/{{item.img}}" class="banner-img" mode="widthFix" data-flag='banner' bindload="LoadOnUseGuideImageLoad" />
+          <image bindtap="handleJumpInfo" src="{{c_link}}/img/{{item.img}}" data-item="{{item}}" class="banner-img" mode="widthFix" data-flag='banner' bindload="LoadOnUseGuideImageLoad" />
         </swiper-item>
       </swiper>
     </view>
