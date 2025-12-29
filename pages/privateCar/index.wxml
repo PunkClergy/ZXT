@@ -77,82 +77,103 @@
       <switch bindchange="handleToggleSensorMode" checked="{{parsedData.inductionMode}}" color="#1B64B1" style="transform: scale(0.8)" />
     </view>
     <view class="signal-card">
-      <view class="signal-info-group">
-        <view class="signal-info-item">我的位置 :{{parsedData.signalValue||40}}</view>
-        <view class="signal-info-item">开锁敏感值:{{parsedData.inductionUnlockSignal||50}}</view>
-        <view class="signal-info-item">关锁敏感值:{{parsedData.inductionLockSignal||60}}</view>
+      <view style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+        <view style="display: flex;flex-direction: row;gap: 10rpx;font-size: 26rpx;font-weight: bold;">
+          <block wx:if="{{fold_up}}">
+            <view>我的位置 :{{parsedData.signalValue||40}}</view>
+            <view>开锁敏感值:{{parsedData.inductionUnlockSignal||50}}</view>
+            <view>关锁敏感值:{{parsedData.inductionLockSignal||60}}</view>
+          </block>
+        </view>
+        <view style="display: flex;align-items: center;justify-content: center;">
+          <button bindtap="handleFoldUp" data-state="{{fold_up}}" data-type="up" type="default" size="mini">{{fold_up?'展开':'收起'}}</button>
+        </view>
       </view>
-      <view class="signal-desc-group">
-        <view class="signal-desc-item">【我的位置】: 手机与硬件设备的蓝牙信号值，数值越小信号越强</view>
-        <view class="signal-desc-item">【变化规则】: "我的位置",该数值随手机移动实时变动。</view>
-        <view class="signal-desc-item">【开锁敏感值】: 信号值低于此值，车辆感应开锁</view>
-        <view class="signal-desc-item">【关锁敏感值】: 信号值高于此值，车辆感应关锁</view>
-      </view>
-      <view style="font-size: 24rpx;color: #5B5959;margin-top: 10rpx;">温馨提示：默认设置若不合预期（开关锁位置/距离），请在个下方性化 DIY 处调整开关锁值</view>
+      <block wx:if="{{!fold_up}}">
+        <view class="signal-info-group">
+          <view class="signal-info-item">我的位置 :{{parsedData.signalValue||40}}</view>
+          <view class="signal-info-item">开锁敏感值:{{parsedData.inductionUnlockSignal||50}}</view>
+          <view class="signal-info-item">关锁敏感值:{{parsedData.inductionLockSignal||60}}</view>
+        </view>
+        <view class="signal-desc-group">
+          <view class="signal-desc-item">【我的位置】: 手机与硬件设备的蓝牙信号值，数值越小信号越强</view>
+          <view class="signal-desc-item">【变化规则】: "我的位置",该数值随手机移动实时变动。</view>
+          <view class="signal-desc-item">【开锁敏感值】: 信号值低于此值，车辆感应开锁</view>
+          <view class="signal-desc-item">【关锁敏感值】: 信号值高于此值，车辆感应关锁</view>
+        </view>
+        <view style="font-size: 24rpx;color: #5B5959;margin-top: 10rpx;">温馨提示：默认设置若不合预期（开关锁位置/距离），请在个下方性化 DIY 处调整开关锁值</view>
+      </block>
     </view>
     <view class="middle-concrete-content">
-
       <view class="middle-concrete-content-debugging">
-        <view style="display: flex;flex-direction: row;justify-content: space-between;border-bottom:1rpx solid #f1f1f1;padding: 15rpx 0rpx;">
+        <view style="display: flex;flex-direction: row;justify-content: space-between;align-items: center; border-bottom:{{fold_lower?'none':'1rpx solid #f1f1f1'}};padding: 15rpx 0rpx;">
           <view style="font-size: 25rpx;font-weight: bold;">舒适进入个性化DIY</view>
-          <view bindtap="handleRestoreSettings" style="font-size: 20rpx;border: 1rpx solid #bbb;background-color: #3b82f6;padding: 10rpx 10rpx;border-radius: 10rpx;color: #fff;">恢复出厂设置</view>
+          <view style="display: flex;align-items: center;justify-content: center;">
+            <button bindtap="handleFoldUp" data-state="{{fold_lower}}" data-type="lower" type="default" size="mini">{{fold_lower?'展开':'收起'}}</button>
+          </view>
         </view>
-        <!-- 开锁 -->
-        <view class="middle-concrete-content-debugging-title" style="display: flex;flex-direction: row;justify-content: space-between;">
-          <view>开锁DIY</view>
-        </view>
-        <view class="middle-concrete-content-debugging-slider-track tarck-unlock" id="unlockTrack">
-          <view class="middle-concrete-content-debugging-slider-fill fill-unlock" style="width: {{unlockRange+'%'}}"></view>
-          <view class="middle-concrete-content-debugging-car-icon">
-            <view class="middle-concrete-content-debugging-info">
-              <image class="middle-concrete-content-debugging-info-image" src="/assets/images/home/car_icon.png"></image>
-              <text class="middle-concrete-content-debugging-info-text">敏感值: {{parsedData.inductionUnlockSignal||50}}</text>
+        <block wx:if="{{!fold_lower}}">
+          <view style="display: flex;justify-content: flex-end; width: 100%;margin-top: 10rpx;">
+            <view bindtap="handleRestoreSettings" style="display: flex;justify-content: center;align-items: center; width: 30%;height: 40rpx; font-size: 20rpx;border: 1rpx solid #bbb;background-color: #3b82f6;padding: 10rpx 10rpx;border-radius: 10rpx;color: #fff;">恢复出厂设置</view>
+          </view>
+          <!-- 开锁 -->
+          <view class="middle-concrete-content-debugging-title" style="display: flex;flex-direction: row;justify-content: space-between;">
+            <view>开锁DIY</view>
+          </view>
+          <view class="middle-concrete-content-debugging-slider-track tarck-unlock" id="unlockTrack">
+            <view class="middle-concrete-content-debugging-slider-fill fill-unlock" style="width: {{unlockRange+'%'}}"></view>
+            <view class="middle-concrete-content-debugging-car-icon">
+              <view class="middle-concrete-content-debugging-info">
+                <image class="middle-concrete-content-debugging-info-image" src="/assets/images/home/car_icon.png"></image>
+                <text class="middle-concrete-content-debugging-info-text">敏感值: {{parsedData.inductionUnlockSignal||50}}</text>
+              </view>
+            </view>
+            <view class="middle-concrete-content-debugging-slider-thumb" style="{{unlockThumbStyle}}" data-id="unlockTrack" bindtouchmove="onlockSlide">
+              <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" />
             </view>
           </view>
-          <view class="middle-concrete-content-debugging-slider-thumb" style="{{unlockThumbStyle}}" data-id="unlockTrack" bindtouchmove="onlockSlide">
-            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/open@2x.png" />
+          <view class="middle-concrete-content-debugging-tip">
+            如开锁距离过远，则滑动"锁"图标调小数值，如开锁距离过近，则滑动"锁"图标调大数值。
           </view>
-        </view>
-        <view class="middle-concrete-content-debugging-tip">
-          如开锁距离过远，则滑动"锁"图标调小数值，如开锁距离过近，则滑动"锁"图标调大数值。
-        </view>
-        <!-- 关锁 -->
-        <view style="font-weight: bold;font-size: 23rpx;color: #BA2B2B;">关锁DIY</view>
-        <view class="middle-concrete-content-debugging-slider-track tarck-lock" id="lockTrack">
-          <view class="middle-concrete-content-debugging-slider-fill fill-lock" style="width: {{lockRange+'%'}}"></view>
-          <view class="middle-concrete-content-debugging-car-icon">
-            <view class="middle-concrete-content-debugging-info">
-              <image src="/assets/images/home/car_icon.png" class="middle-concrete-content-debugging-info-image" />
-              <text class="middle-concrete-content-debugging-info-text">敏感值: {{parsedData.inductionLockSignal||60}}</text>
+          <!-- 关锁 -->
+          <view style="font-weight: bold;font-size: 23rpx;color: #BA2B2B;">关锁DIY</view>
+          <view class="middle-concrete-content-debugging-slider-track tarck-lock" id="lockTrack">
+            <view class="middle-concrete-content-debugging-slider-fill fill-lock" style="width: {{lockRange+'%'}}"></view>
+            <view class="middle-concrete-content-debugging-car-icon">
+              <view class="middle-concrete-content-debugging-info">
+                <image src="/assets/images/home/car_icon.png" class="middle-concrete-content-debugging-info-image" />
+                <text class="middle-concrete-content-debugging-info-text">敏感值: {{parsedData.inductionLockSignal||60}}</text>
+              </view>
+            </view>
+            <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
+              <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/shut@2x.png" />
             </view>
           </view>
-          <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
-            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/shut@2x.png" />
+          <view class="middle-concrete-content-debugging-tip">
+            如关锁距离过远，则滑动"锁"图标调小数值，如关锁距离过近，则滑动"锁"图标调大数值。
           </view>
-        </view>
-        <view class="middle-concrete-content-debugging-tip">
-          如关锁距离过远，则滑动"锁"图标调小数值，如关锁距离过近，则滑动"锁"图标调大数值。
-        </view>
-        <!-- 开车期间频繁开关锁调整DIY -->
-        <view style="font-weight: bold;font-size: 23rpx;color: #BA2B2B;">开车期间频繁开关锁调整DIY</view>
-        <view class="middle-concrete-content-debugging-slider-track tarck-special" id="unlockTrack">
-          <view class="middle-concrete-content-debugging-slider-fill fill-special" style="width: {{lockRange+'%'}}"></view>
-          <view class="middle-concrete-content-debugging-car-icon">
-            <view class="middle-concrete-content-debugging-info">
-              <image src="/assets/images/home/car_icon.png" class="middle-concrete-content-debugging-info-image"></image>
-              <text class="middle-concrete-content-debugging-info-text">敏感值: {{parsedData.inductionLockSignal||60}}</text>
+          <!-- 开车期间频繁开关锁调整DIY -->
+          <view style="font-weight: bold;font-size: 23rpx;color: #BA2B2B;">开车期间频繁开关锁调整DIY</view>
+          <view class="middle-concrete-content-debugging-slider-track tarck-special" id="unlockTrack">
+            <view class="middle-concrete-content-debugging-slider-fill fill-special" style="width: {{lockRange+'%'}}"></view>
+            <view class="middle-concrete-content-debugging-car-icon">
+              <view class="middle-concrete-content-debugging-info">
+                <image src="/assets/images/home/car_icon.png" class="middle-concrete-content-debugging-info-image"></image>
+                <text class="middle-concrete-content-debugging-info-text">敏感值: {{parsedData.inductionLockSignal||60}}</text>
+              </view>
+            </view>
+            <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
+              <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/special@2x.png" />
             </view>
           </view>
-          <view class="middle-concrete-content-debugging-slider-thumb" style="{{lockThumbStyle}}" data-id="lockTrack" bindtouchmove="onlockSlide">
-            <image src="https://k1sw.wiselink.net.cn/img/app2.0/sjc/special@2x.png" />
+          <view class="middle-concrete-content-debugging-tip">
+            如开车期间频繁开关锁，建议调大数值～调整后关锁数值会同步更新，关门敏感度会降低。
           </view>
-        </view>
-        <view class="middle-concrete-content-debugging-tip">
-          如开车期间频繁开关锁，建议调大数值～调整后关锁数值会同步更新，关门敏感度会降低。
-        </view>
+        </block>
       </view>
     </view>
   </view>
+  <!-- 被分享人 -->
   <view wx:else class="middle-scroll" style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
     <view style="font-size: 26rpx;">授权使用时间 : {{bluetoothData.startDate}}--{{bluetoothData.endDate}}</view>
     <image class="vehicle-image" src="https://k3a.wiselink.net.cn/img/app/blue/privateCar.png" mode="aspectFit"></image>

@@ -79,8 +79,26 @@ Page({
     key_out_put: getOutputConfig(),//输出方式集合
 
     // 存储定时器ID（用于页面卸载时清除）
-    checkTimer: null
+    checkTimer: null,
+    fold_up: false,
+    fold_lower: false
   },
+  handleFoldUp(evt) {
+    const { type, state } = evt?.currentTarget?.dataset || {};
+    const typeToKey = {
+      up: 'fold_up',
+      lower: 'fold_lower'
+    };
+    if (type && typeToKey[type]) {
+      const newState = !state;
+      this.setData({
+        [typeToKey[type]]: newState
+      }, () => {
+        wx.setStorageSync(typeToKey[type], newState);
+      });
+    }
+  },
+  // 转十六进制
   initToTwoHex(num) {
     return num.toString(16).padStart(2, '0').toUpperCase();
   },
@@ -870,6 +888,22 @@ Page({
   onReady() {
     // 获取登录状态
     this.initLoginStatus()
+    this.handleUpLower()
+  },
+  // 页面加载时执行（如 onLoad/onShow 生命周期）
+  handleUpLower() {
+
+    try {
+      const foldUp = wx.getStorageSync('fold_up');
+      const foldLower = wx.getStorageSync('fold_lower');
+      const initData = {};
+      if (foldUp !== undefined) initData.fold_up = foldUp;
+      if (foldLower !== undefined) initData.fold_lower = foldLower;
+
+      this.setData(initData);
+    } catch (e) {
+      console.error('读取折叠状态缓存失败：', e);
+    }
   },
   // 初始化获取缓存内容
   initToConfigureCache() {
