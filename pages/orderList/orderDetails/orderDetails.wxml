@@ -90,6 +90,10 @@
                 <!-- <block wx:for="{{item.list}}" wx:for-item="module" wx:for-index="idx" wx:key="id"> -->
                 <!-- <label class="long-info-item cost-main-order">{{all_data.productname}}1</label> -->
                 <view class="main-content-area-info-item  {{all_data.deposit.length > 15 ? 'long-info-item' : ''}}">
+                  <label>数量 ：</label>
+                  <text>{{all_data.deviceCount||'-'}}</text>
+                </view>
+                <view class="main-content-area-info-item  {{all_data.deposit.length > 15 ? 'long-info-item' : ''}}">
                   <label>押金 ：</label>
                   <text>{{all_data.deposit||'-'}}</text>
                 </view>
@@ -117,7 +121,7 @@
                 <view class="main-content-area-info-item  long-info-item">
                   <label>优惠券 ：</label>
                   <!-- <text wx:if="{{all_data.cost}}">{{all_data.cost}}</text> -->
-                  <text  style="color: rgba(69, 135, 253, 1);" bindtap="handleUseCoupon">{{couponText?couponText.content:'去选择'}}</text>
+                  <text style="color: rgba(69, 135, 253, 1);" bindtap="handleUseCoupon">{{couponText?couponText.content:'去选择'}}</text>
                 </view>
                 <!-- </block> -->
               </view>
@@ -207,7 +211,7 @@
                 </view>
               </view>
               <!-- 自行邮寄 -->
-              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 3}}">
+              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 3||g_keys_type_index == 2}}">
                 <label class="long-info-item cost-main-order">寄送地址</label>
                 <view class="long-info-item mailing_address">
                   <label>智信通</label>
