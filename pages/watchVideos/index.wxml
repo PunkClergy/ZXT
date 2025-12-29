@@ -1,19 +1,15 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
 
 
-  <custom-header title="视频播放" />
-  <view  class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; gap: 20rpx;">
+  <custom-header title="{{title}}" />
+  <view class="content-container" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px; gap: 20rpx;">
     <!-- 视频播放区域 -->
     <view class="play-area">
-      <video id="myVideo" wx:if="{{mp4_url}}" src="{{mp4_url}}" binderror="videoErrorCallback" danmu-list="{{danmuList}}" enable-danmu danmu-btn show-center-play-btn='{{false}}' show-play-btn="{{true}}" controls picture-in-picture-mode="{{['push', 'pop']}}" bindenterpictureinpicture='bindVideoEnterPictureInPicture' bindleavepictureinpicture='bindVideoLeavePictureInPicture' style="width: 98%;margin: 0 auto;"></video>
-
+      <video id="video-player" wx:if="{{mp4_url}}" src="{{mp4_url}}" poster="{{videoPoster}}" controls autoplay="{{false}}" loop="{{false}}" show-center-play-btn="{{true}}" show-play-btn="{{true}}" show-fullscreen-btn="{{true}}" binderror="videoError" bindplay="onVideoPlay" bindpause="onVideoPause" class="video-player"></video>
     </view>
 
     <!-- 操作按钮区域 -->
     <view class="btn-group">
-      <button class="operate-btn play-btn" bindtap="togglePlay">
-        {{isPlaying ? '暂停播放' : '开始播放'}}
-      </button>
       <button class="operate-btn download-btn" bindtap="downloadVideo" loading="{{isDownloading}}" disabled="{{isDownloading}}">
         下载视频到相册
       </button>

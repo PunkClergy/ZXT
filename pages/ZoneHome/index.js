@@ -148,15 +148,51 @@ Page({
       }
     })
   },
+  addRandomXu(originalArray) {
+    // 遍历数组，为每个对象添加随机xu，避免修改原数组
+    return originalArray.map(item => {
+      // 生成1/2/3的随机数：Math.random()→0~1 → *3→0~3 → floor→0/1/2 → +1→1/2/3
+      const randomXu = Math.floor(Math.random() * 4) + 1;
+      // 返回新对象（合并原有属性 + 新增xu）
+      return {
+        ...item,
+        serial_number: randomXu
+      };
+    });
+  },
   // 获取专区目录
   initZoneInfo() {
     byGet(this.data.c_link + u_getHomeArea.URL, {}).then(response => {
       if (response.statusCode == 200) {
+        const newList = response.data.content //this.addRandomXu(response.data.content);
         this.setData({
-          zoneList: response.data.content
+          zoneList: newList
+        }, () => {
+          this.groupZoneByXu();
         })
       }
     })
+  },
+  // 按xu分组并排序
+  groupZoneByXu() {
+    const { zoneList } = this.data;
+    // 1. 分组
+    const groupMap = {};
+    zoneList.forEach(item => {
+      const serial_number = item.serial_number || 1; // 默认为1
+      if (!groupMap[serial_number]) {
+        groupMap[serial_number] = [];
+      }
+      groupMap[serial_number].push(item);
+    });
+    // 2. 按xu升序排列分组
+    const groupedZoneList = Object.keys(groupMap)
+      .sort((a, b) => a - b)
+      .map(serial_number => ({
+        serial_number: Number(serial_number),
+        list: groupMap[serial_number]
+      }));
+    this.setData({ groupedZoneList });
   },
   // 获取使用指南
   initBookList() {
@@ -186,12 +222,13 @@ Page({
   },
   // 跳转到视频播放页面
   handlePlayVideo(evt) {
-    console.log(evt)
-    return
-    const path = evt?.currentTarget?.dataset?.bookPath || 'http://vd3.bdstatic.com/mda-rmrtu3rkqkfbsh19/360p/h264/1766777930691493092/mda-rmrtu3rkqkfbsh19.mp4'
-    wx.navigateTo({
-      url: '/pages/watchVideos/index?url=' + encodeURI(path) + '&title=' + '6677',
-    })
+    const path = evt?.currentTarget?.dataset?.url
+    const title = evt?.currentPage?.dataset?.title || '使用指南'
+    if (path) {
+      wx.navigateTo({
+        url: '/pages/watchVideos/index?url=' + encodeURI(path) + '&title=' + title,
+      })
+    }
   },
   // 获取是否显示温馨提示
   inIsShowInfo() {

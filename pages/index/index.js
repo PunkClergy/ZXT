@@ -74,6 +74,16 @@ Page({
       }
     });
   },
+  // 跳转到视频播放页面
+  handlePlayVideo(evt) {
+    const path = evt?.currentTarget?.dataset?.url
+    const title = evt?.currentPage?.dataset?.title || '使用指南'
+    if (path) {
+      wx.navigateTo({
+        url: '/pages/watchVideos/index?url=' + encodeURI(path) + '&title=' + title,
+      })
+    }
+  },
   // 获取系统头部各区域高度
   initSystemInfo() {
     const { statusBarHeight: s } = wx.getWindowInfo()

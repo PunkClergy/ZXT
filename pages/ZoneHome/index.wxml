@@ -39,13 +39,15 @@
     </view>
 
     <!-- 第三块：专区入口区域（一行三列布局） -->
-    <view class="special-zone">
-      <view class="zone-item" wx:for="{{zoneList}}" wx:key="index" style="margin-right: {{index == 2||index==5||index==8||index ==11?'0rpx':'5%'}};">
-        <view class="zone-out" style="background-color: {{item.bgcolor}};" data-info="{{item}}" bindtap="handleGetMenuList">
-          <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + item.icon}}" />
-          <view class="zone-text-area">
-            <view class="zone-name">{{item.name}}</view>
-            <view class="zone-desc">{{item.bak}}</view>
+    <view class="special-zone-container">
+      <view class="special-zone" wx:for="{{groupedZoneList}}" wx:key="serial_number" style="--item-count: {{item.list.length}};">
+        <view class="zone-item" wx:for="{{item.list}}" wx:for-item="zoneItem" wx:key="index">
+          <view class="zone-out" style="background-color: {{zoneItem.bgcolor}};" data-info="{{zoneItem}}" bindtap="handleGetMenuList">
+            <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + zoneItem.icon}}" />
+            <view class="zone-text-area">
+              <view class="zone-name">{{zoneItem.name}}</view>
+              <view class="zone-desc">{{zoneItem.bak}}</view>
+            </view>
           </view>
         </view>
       </view>
@@ -59,7 +61,7 @@
       </view>
       <swiper indicator-dots="{{false}}" autoplay="{{true}}" interval="4000" duration="500" style="height: {{s_use_height}}px;">
         <swiper-item wx:for="{{fullBannerList}}" wx:key="index" data-info="{{item}}">
-          <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.imgpath}}" class="full-banner-img" data-flag='use' data-url="{{item.bookPath}}" bindtap="handlePlayVideo" bindload="LoadOnUseGuideImageLoad" mode="widthFix"></image>
+          <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.imgpath}}" class="full-banner-img" data-flag='use' data-url="{{item.bookPath}}" data-title="{{item.title}}" bindtap="handlePlayVideo" bindload="LoadOnUseGuideImageLoad" mode="widthFix"></image>
         </swiper-item>
       </swiper>
     </view>
@@ -70,7 +72,6 @@
     <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
       <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
       <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />
-
       <text>{{item.text}}</text>
     </view>
   </view>
@@ -90,8 +91,8 @@
 </view>
 <!-- 点击咨询入群 -->
 <view class="float-button">
-    <button open-type="contact" show-message-card="{{true}}" send-message-title="我想咨询问题" send-message-path="/pages/index/index" class="hidden-contact-btn" bindcontact="handleContact"></button>
-    <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png"  />
+  <button open-type="contact" show-message-card="{{true}}" send-message-title="我想咨询问题" send-message-path="/pages/index/index" class="hidden-contact-btn" bindcontact="handleContact"></button>
+  <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png" />
   <image src="/assets/images/tel400.png" style="width: 80rpx;height: 80rpx;" bindtap="handleMakePhoneCallWithConfirm" />
 </view>
 

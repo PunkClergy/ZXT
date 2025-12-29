@@ -94,47 +94,59 @@
   border-radius: 20rpx;
 }
 
-/* 专区入口容器样式：占满宽度，flex-wrap换行，内边距0 10rpx */
-.special-zone {
+
+/* 外层容器 */
+.special-zone-container {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
   box-sizing: border-box;
   padding: 0 10rpx;
   margin-top: 20rpx;
-  /* justify-content: space-between; */
 }
 
-/* 专区项样式：宽度48%，左右外边距1%，flex垂直排列，底部外边距20rpx */
+/* 单个xu分组容器：强制单行，项均匀分布 */
+.special-zone {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap; /* 核心：禁止折行 */
+  align-items: flex-start;
+  box-sizing: border-box;
+  margin-bottom: 20rpx; /* 分组之间的间距 */
+  /* 计算项之间的基础间距（固定5rpx） */
+  gap: 5rpx;
+}
+
+/* 专区项：动态宽度（少于3个时按3个均分，超过3个时按实际项数均分） */
 .zone-item {
-  width: 30%;
+  /* 宽度计算公式：(100% - 总间距) / 项数，最少按3个计算 */
+  width: calc((100% - (max(var(--item-count, 3), 3) - 1) * 5rpx) / max(var(--item-count, 3), 3));
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10rpx;
   box-sizing: border-box;
 }
 
-/* 专区项外层容器样式：占满宽度，高度180rpx，圆角32rpx，flex居中对齐，元素间距20rpx，内边距0 20rpx */
+/* 专区项外层容器：超过3个时缩小高度 */
 .zone-out {
   width: 100%;
-  height: 180rpx;
+  /* 基础高度180rpx，项数>3时，每多1个减30rpx，最小100rpx */
+  height: calc(180rpx - clamp(0rpx, (var(--item-count, 3) - 3) * 30rpx, 80rpx));
+  min-height: 100rpx; /* 防止高度过小 */
   border-radius: 32rpx;
   margin-bottom: 10rpx;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20rpx;
+  gap: 15rpx; /* 项数多的时候缩小内部间距 */
   box-sizing: border-box;
-  padding: 0 20rpx;
+  padding: 0 10rpx; /* 减少内边距，适配小尺寸 */
   border: 1rpx solid #f1f1f1;
 }
 
-/* 专区图标样式：固定宽高，保持原有比例，不压缩 */
+/* 图标：超过3个时缩小尺寸 */
 .zone-img {
-  width: 50rpx;
-  height: 50rpx;
+  width: calc(50rpx - clamp(0rpx, (var(--item-count, 3) - 3) * 8rpx, 20rpx));
+  height: calc(50rpx - clamp(0rpx, (var(--item-count, 3) - 3) * 8rpx, 20rpx));
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -144,24 +156,28 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%; /* 占满宽度，适配小尺寸 */
 }
 
-/* 专区名称样式：粗体，字体大小32rpx，颜色深灰，超出显示省略号 */
+/* 名称：超过3个时缩小字体 */
 .zone-name {
   font-weight: bold;
-  font-size: 24rpx;
+  font-size: calc(24rpx - clamp(0rpx, (var(--item-count, 3) - 3) * 3rpx, 8rpx));
   color: #333333;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center; /* 居中显示，适配小宽度 */
 }
 
+/* 描述：超过3个时缩小字体 */
 .zone-desc {
-  font-size: 20rpx;
+  font-size: calc(20rpx - clamp(0rpx, (var(--item-count, 3) - 3) * 3rpx, 6rpx));
   color: #333333;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
 }
 
 /* 全宽轮播图容器样式：占满宽度，白色背景，内边距0 20rpx */
