@@ -1076,7 +1076,7 @@ Page({
       this.slideTimer = setTimeout(() => {
         this.btnCmdSend(0x11, cmdParam, hexProgress);
         console.log(`滑动停止3秒后，执行发送指令：0x11, ${cmdParam}, ${hexProgress}`);
-      }, 2000); // 3000毫秒 = 3秒
+      }, 1000); // 3000毫秒 = 3秒
     }
   },
   // 更多设置弹窗

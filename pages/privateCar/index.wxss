@@ -245,11 +245,11 @@ page {
 }
 
 .tarck-lock {
-  background-color: #CD80E9;
+  background-color: #F0EEEE;
 }
 
 .tarck-special {
-  background-color: #E9808C;
+  background-color: #F0EEEE;
 }
 
 .middle-concrete-content-debugging-slider-fill {
@@ -270,12 +270,12 @@ page {
 }
 
 .fill-lock {
-  background-color: #F0EEEE;
+  background-color: #CD80E9;
   border-right: 6rpx solid #7D16A3;
 }
 
 .fill-special {
-  background-color: #F0EEEE;
+  background-color: #E9808C;
   border-right: 6rpx solid #E53146;
 }
 
@@ -344,7 +344,7 @@ page {
 
 .middle-concrete-content-debugging-person-info-image {
   width: 30rpx;
-  height: 32rpx; 
+  height: 32rpx;
 }
 
 .middle-concrete-content-debugging-tip {
@@ -573,6 +573,7 @@ page {
   width: 25rpx;
   height: 25rpx;
 }
+
 /* 信号卡片容器：核心布局样式 + 质感优化 */
 .signal-card {
   display: flex;
@@ -580,9 +581,12 @@ page {
   border: 1rpx solid #f1f1f1;
   border-radius: 10rpx;
   justify-content: space-between;
-  padding: 30rpx 15rpx; /* 优化：横向内边距从5rpx增至15rpx，避免文字贴边 */
-  background-color: #ffffff; /* 增加白色背景，提升卡片质感 */
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.03); /* 轻微阴影，增强层次感 */
+  padding: 30rpx 15rpx;
+  /* 优化：横向内边距从5rpx增至15rpx，避免文字贴边 */
+  background-color: #ffffff;
+  /* 增加白色背景，提升卡片质感 */
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.03);
+  /* 轻微阴影，增强层次感 */
 }
 
 /* 信号信息组：数据行布局 */
@@ -591,29 +595,37 @@ page {
   justify-content: space-between;
   font-size: 26rpx;
   font-weight: bold;
-  padding: 10rpx 0; /* 优化：去掉横向padding，避免与容器内边距重叠 */
-  margin-bottom: 20rpx; /* 与描述区增加间距 */
-  border-bottom: 1rpx dashed #f5f5f5; /* 虚线分隔，视觉更柔和 */
+  padding: 10rpx 0;
+  /* 优化：去掉横向padding，避免与容器内边距重叠 */
+  margin-bottom: 20rpx;
+  /* 与描述区增加间距 */
+  border-bottom: 1rpx dashed #f5f5f5;
+  /* 虚线分隔，视觉更柔和 */
   padding-bottom: 20rpx;
-  color: #333333; /* 数据文字用深灰色，突出重点 */
+  color: #333333;
+  /* 数据文字用深灰色，突出重点 */
 }
 
 /* 信号信息项：可选，用于响应式适配 */
 .signal-info-item {
   flex: 1;
-  text-align: center; /* 优化：文字居中，布局更整齐 */
+  text-align: center;
+  /* 优化：文字居中，布局更整齐 */
 }
 
 /* 信号描述组：说明文字样式 */
 .signal-desc-group {
   font-size: 26rpx;
-  line-height: 1.7; /* 增加行高，提升阅读体验 */
-  color: #666666; /* 描述文字用浅灰色，区分数据层级 */
+  line-height: 1.7;
+  /* 增加行高，提升阅读体验 */
+  color: #666666;
+  /* 描述文字用浅灰色，区分数据层级 */
 }
 
 /* 信号描述项：每行的间距控制 */
 .signal-desc-item {
-  margin-bottom: 14rpx; /* 行间距，避免文字拥挤 */
+  margin-bottom: 14rpx;
+  /* 行间距，避免文字拥挤 */
 }
 
 /* 最后一个描述项去掉下间距，避免多余空白 */
