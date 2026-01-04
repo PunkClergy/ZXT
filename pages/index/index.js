@@ -289,7 +289,7 @@ Page({
     const { options = {}, zoneList } = this.data;
     const { scene, query } = options;
     const sceneParam = scene ?? query;
-    if (!sceneParam || typeof sceneParam !== 'string') return;
+    if (!sceneParam || typeof sceneParam !== 'string' || sceneParam.length < 10) return;
     (() => {
       const [result] = sceneParam.split('_');
       const setGlobal = (id) => {
