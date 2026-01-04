@@ -33,8 +33,8 @@ Page({
     unlockRange: 50,   // 开锁范围（0-100）
     lockRange: 60,   // 关锁范围（0-100）
     myPosition: 60,    // 人物位置
-    unlockThumbStyle: 'left: 44%',//开锁范围位置
-    lockThumbStyle: 'left: 54%',//关锁范围位置
+    unlockThumbStyle: '',//开锁范围位置
+    lockThumbStyle: '',//关锁范围位置
     myPositionStyle: 'left: 30%',//我的位置
 
 
@@ -940,24 +940,14 @@ Page({
 
     });
   },
-  // 更新滑块和填充层样式（核心）
-  updateSliderStyles() {
-    const val = this.data.parsedData;
-    const { inductionUnlockSignal, inductionLockSignal } = val
-    this.setData({
-      unlockThumbStyle: `left: ${(inductionUnlockSignal || 50 - 6)}%;`,
-      lockThumbStyle: `left: ${(inductionLockSignal || 60 - 6) / 2}%;`,
-      unlockRange: (inductionUnlockSignal || 50),
-      lockRange: (inductionLockSignal || 60) / 2,
-    });
-  },
+
 
   // 更新人物位置样式
   updateMyPositionStyles() {
     const val = this.data.parsedData;
     const { signalValue } = val
     this.setData({
-      myPositionStyle: `left: ${signalValue / 2}%;`
+      myPositionStyle: `left: ${signalValue - 10}%;`
     });
   },
 
@@ -991,7 +981,7 @@ Page({
     const relativeX = touchX - trackInfo.left;
     console.log(`${trackId} - 判断滑动值`);
     const trackConfig = {
-      lockTrack: { maxProgress: 200, cmdParam: 0 },
+      lockTrack: { maxProgress: 100, cmdParam: 0 },
       unlockTrack: { maxProgress: 100, cmdParam: 1 }
     };
     const { maxProgress, cmdParam } = trackConfig[trackId];
@@ -1004,8 +994,8 @@ Page({
       },
       lock: {
         defaultSignal: 40,
-        max: 180,
-        minOffset: 10, // 最小阈值 = 感应信号 + 偏移量
+        max: 100,
+        minOffset: -10, // 最小阈值 = 感应信号 + 偏移量
       },
     };
 
@@ -1024,7 +1014,7 @@ Page({
         ? { min: config.min, max: signal + config.maxOffset }
         : { min: signal + config.minOffset, max: config.max };
       thresholds.min = Math.max(0, thresholds.min); // 最小不低于0
-      thresholds.max = Math.min(255, thresholds.max); // 最大不超过255（16进制两位上限）
+      thresholds.max = Math.min(100, thresholds.max); // 最大不超过255（16进制两位上限）
       if (thresholds.min > thresholds.max) thresholds.min = thresholds.max; // 避免范围倒置
       const validProgress = Math.max(thresholds.min, Math.min(thresholds.max, progress));
       return { validProgress, ...thresholds };
@@ -1065,13 +1055,13 @@ Page({
       console.log(trackId, trackType)
       if (trackType == 'lock') {//关锁
         this.setData({
-          lockThumbStyle: `left: ${(validProgress) / 2}%;`,
-          lockRange: (validProgress) / 2,
+          lockThumbStyle: validProgress - 10,
+          lockRange: (validProgress - 10),
         });
       }
       if (trackType == 'unlock') {
         this.setData({
-          unlockThumbStyle: `left: ${validProgress}%;`,
+          unlockThumbStyle: validProgress,
           unlockRange: (validProgress || 50),
         });
       }
