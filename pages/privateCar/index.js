@@ -364,6 +364,7 @@ Page({
     setTimeout(() => bleKeyManager.releaseBle(), 500);
     clearInterval(that.data.pageInterval);
     clearInterval(this.data.checkTimer);
+    clearTimeout(this.slideTimer);
     wx.setKeepScreenOn({ keepScreenOn: false });
   },
   // 蓝牙连接处理
@@ -964,6 +965,11 @@ Page({
 
   // 滑块拖动事件
   async onlockSlide(e) {
+    // 声明定时器变量（建议挂载到this上，避免每次函数执行重新创建）
+    if (!this.slideTimer) {
+      this.slideTimer = null;
+    }
+
     const { data: { parsedData = { pairStatus: '未配对' } } = {} } = this;
     if (parsedData.pairStatus === '未配对') {
       this.btnPair();
@@ -1055,7 +1061,7 @@ Page({
       console.log(trackId, trackType)
       if (trackType == 'lock') {//关锁
         this.setData({
-          lockThumbStyle: validProgress - 10,
+          lockThumbStyle: validProgress,
           lockRange: (validProgress - 10),
         });
       }
@@ -1066,7 +1072,11 @@ Page({
         });
       }
       const hexProgress = toTwoHex(validProgress);
-      this.btnCmdSend(0x11, cmdParam, hexProgress);
+      clearTimeout(this.slideTimer);
+      this.slideTimer = setTimeout(() => {
+        this.btnCmdSend(0x11, cmdParam, hexProgress);
+        console.log(`滑动停止3秒后，执行发送指令：0x11, ${cmdParam}, ${hexProgress}`);
+      }, 2000); // 3000毫秒 = 3秒
     }
   },
   // 更多设置弹窗
