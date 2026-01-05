@@ -382,7 +382,8 @@ Page({
       endDate: buildDateTime(endDate, endTime),
       personName: formData.personName,
       mobile: formData.mobile,
-      bak: formData.bak
+      bak: formData.bak,
+      platenumber:formData?.platenumber
     };
 
     const API_ENDPOINTS = {
