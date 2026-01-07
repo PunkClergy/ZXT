@@ -276,7 +276,12 @@ const u_getMyCoupon = {
   URL: fin3plusUrl + "accountapi/getMyCoupon",
   
 }
+const u_getUserlnfo = {
+  URL: fin3plusUrl + "deskapi/getUserInfo",
+  
+}
 module.exports = {
+  u_getUserlnfo,
   u_channelAgreementList,
   u_getMyCoupon,
   u_willingkey,
