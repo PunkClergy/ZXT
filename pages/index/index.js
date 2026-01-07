@@ -103,8 +103,9 @@ Page({
   },
   // 跳转到视频播放页面
   handlePlayVideo(evt) {
+    console.log(evt)
     const path = evt?.currentTarget?.dataset?.url
-    const title = evt?.currentPage?.dataset?.title || '使用指南'
+    const title = evt?.currentTarget?.dataset?.title || '使用指南'
     if (path) {
       wx.navigateTo({
         url: '/pages/watchVideos/index?url=' + encodeURI(path) + '&title=' + title,

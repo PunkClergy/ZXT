@@ -110,11 +110,28 @@ Page({
     });
     console.error('下载错误：', err);
   },
+  convertToChinese(str) {
+    const chineseReg = /[\u4e00-\u9fa5]/;
+    if (chineseReg.test(str)) {
+      return str;
+    }
+    let result = str;
+    try {
+      result = unescape(str.replace(/\\u/g, '%u'));
+      if (!chineseReg.test(result)) {
+        result = decodeURIComponent(str);
+      }
+    } catch (e) {
+      result = `${str}（无法转换为中文，输入既非中文也非有效编码）`;
+    }
+    return result;
+  },
+
   onLoad(options) {
     if (options.url) {
       this.setData({
         mp4_url: `${this.data.c_link}/img/${options.url}`,
-        title: options.title
+        title: this.convertToChinese(options.title)
       })
     }
   },
@@ -157,11 +174,50 @@ Page({
   onReachBottom() {
 
   },
+  getCurrentPageFullPath() {
+    try {
+      const pages = getCurrentPages();
+      if (pages.length === 0) {
+        return '';
+      }
+      const currentPage = pages[pages.length - 1];
+      const pageRoute = currentPage.route;
+      const pageOptions = currentPage.options || {};
+      const queryStr = Object.keys(pageOptions)
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(pageOptions[key])}`)
+        .join('&');
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
+      let fullPath = `/${pageRoute}`;
+      if (queryStr) {
+        fullPath += `?${queryStr}`;
+      }
+      return fullPath;
+    } catch (error) {
+      console.error('获取当前页面路径失败：', error);
+      return '';
+    }
+  },
 
-  }
+  onShareAppMessage(res) {
+    // 获取当前页面的路径（带参数）
+    const fullPath = this.getCurrentPageFullPath();
+    // 自定义分享内容
+    return {
+      title: this.data.title,
+      path: fullPath,
+      desc: `请点击进入${this.data.title}`,
+      success(res) {
+        wx.showToast({
+          title: "分享成功",
+          icon: "none"
+        });
+      },
+      fail(res) {
+        wx.showToast({
+          title: "分享失败",
+          icon: "none"
+        });
+      }
+    };
+  },
 })
