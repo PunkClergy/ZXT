@@ -195,7 +195,8 @@ Page({
 
   onReady: function () {
     this.initialiImageBaseConversion()
-    this.initQueryCacheAndRoles()
+    this.handleDeskSource()
+
   },
 
   onShow: function (e) {
@@ -203,7 +204,7 @@ Page({
     this.setData({
       sn_specific_value: this.data.sn_specific_value || scene
     })
-    this.handleDeskSource()
+    this.initQueryCacheAndRoles()
   },
 
 
