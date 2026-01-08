@@ -43,7 +43,7 @@
         },
         {
           "name": "desk",
-          "pathName": "pages/index/index",
+          "pathName": "pages/rentKeySend/sending/sending",
           "query": "",
           "launchMode": "default",
           "scene": null

@@ -130,7 +130,7 @@ Page({
   onLoad(options) {
     if (options.url) {
       this.setData({
-        mp4_url: `${this.data.c_link}/img/${options.url}`,
+        mp4_url: `${this.data.c_link}/img/${this.convertToChinese(options.url)}`,
         title: this.convertToChinese(options.title)
       })
     }
