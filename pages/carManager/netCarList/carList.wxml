@@ -36,10 +36,10 @@
                 <label>设备号 ：</label>
                 <text>{{item.sn||'-'}}</text>
               </view>
-              <view class="info-item  long-info-item">
+              <!-- <view class="info-item  long-info-item">
                 <label>生效周期 ：</label>
                 <text>{{item.startDate||''}}-{{item.endDate||''}}</text>
-              </view>
+              </view> -->
             </view>
             <view class="content-item-footer" wx:if="{{g_source}}">
               <view class="footer-left"></view>
@@ -55,14 +55,20 @@
               </view>
             </view>
             <view class="content-item-footer" wx:else>
-              <view class="footer-left">
+              <view class="footer-left" style="max-width: 65%;">
                 <block wx:for="{{item.driverList}}" wx:for-item="g_item" wx:key="index">
+
                   <view style="display: flex;gap: 15rpx;line-height: 50rpx;">
-                    <text>{{g_item.drivername}}</text>
+                    <text>{{g_item.drivername}}12</text>
                     <text>{{g_item.drivermobile}}</text>
                     <text style="color:#1b64b1;" data-item="{{g_item}}" bindtap="handleUnBindDriver">解绑</text>
                   </view>
+                  <view>
+                    <label style="font-size: 22rpx;">生效周期 ：</label>
+                    <text style="font-size: 22rpx;font-weight: 500;">{{g_item.rentstartdate}} - {{g_item.rentenddate}}</text>
+                  </view>
                 </block>
+
               </view>
               <view class="footer-right" style="display: flex;gap: 10rpx;">
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="handleShowSendNetKeyModal">

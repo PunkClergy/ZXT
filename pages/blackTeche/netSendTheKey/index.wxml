@@ -42,17 +42,17 @@
               <view class="footer-left">
                 <block wx:for="{{item.driverList}}" wx:for-item="g_item">
                   <view style="display: flex;gap: 15rpx;line-height: 45rpx;flex-direction: column;">
-                    <view>
-                      <label>生效周期 ：</label>
-                      <text style="font-size: 22rpx;font-weight: 500;">{{g_item.rentstartdate}} - {{g_item.rentenddate}}</text>
-                    </view>
+                  
                     <view style="display: flex;gap: 10rpx;">
                       <text>{{g_item.drivername}}</text>
                       <text>{{g_item.drivermobile}}</text>
                       <text style="color:#1b64b1;" data-item="{{item}}" data-gitem="{{g_item}}" bindtap="handleShowSendKeyModal">发送钥匙</text>
                     </view>
 
-
+                    <view>
+                      <label>生效周期 ：</label>
+                      <text style="font-size: 22rpx;font-weight: 500;">{{g_item.rentstartdate}} - {{g_item.rentenddate}}</text>
+                    </view>
                   </view>
                 </block>
               </view>

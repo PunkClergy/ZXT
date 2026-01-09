@@ -407,6 +407,7 @@ Page({
           g_items: [],
           y_items: [],
           y_page: 1,
+          vehId:''
         }, () => {
           // showToast('发送成功');
           setTimeout(() => {
@@ -509,7 +510,8 @@ Page({
             c_edit_key_show_momal: false,
             y_triggered: false,
             y_page: 1,
-            y_items: []
+            y_items: [],
+            vehId:''
           }, () => {
             this.getKeySendingList()
           })
