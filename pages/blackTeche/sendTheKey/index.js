@@ -383,7 +383,7 @@ Page({
       personName: formData.personName,
       mobile: formData.mobile,
       bak: formData.bak,
-      platenumber:formData?.platenumber
+      platenumber: formData?.platenumber
     };
 
     const API_ENDPOINTS = {
@@ -408,11 +408,16 @@ Page({
           y_items: [],
           y_page: 1,
         }, () => {
-          showToast('发送成功');
+          // showToast('发送成功');
           setTimeout(() => {
             this.getKeySendingList()
             this.getOrderList()
           }, 1000)
+        });
+        wx.showModal({
+          title: '发送成功',
+          content: response?.data?.msg,
+          showCancel: false,
         });
 
       } catch (error) {
@@ -508,7 +513,13 @@ Page({
           }, () => {
             this.getKeySendingList()
           })
+          wx.showModal({
+            title: '温馨提示',
+            content: response?.data?.msg,
+            showCancel: false,
+          })
         }
+
       },
       (error) => {
 

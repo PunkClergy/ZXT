@@ -542,6 +542,11 @@ Page({
           }, () => {
             this.getKeySendingList()
           })
+          wx.showModal({
+            title: '温馨提示',
+            content: response?.data?.msg,
+            showCancel: false,
+          })
         }
       },
       (error) => {
