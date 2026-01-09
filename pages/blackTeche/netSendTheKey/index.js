@@ -577,7 +577,7 @@ Page({
   onShareAppMessage() {
     return {
       title: '发送电子钥匙',
-      path: '/pages/desk/desk?scene=' + this.data.controlcode,
+      path: '/pages/index/index?scene=' + this.data.controlcode,
     }
   }
 
