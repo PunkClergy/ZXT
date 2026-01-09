@@ -180,7 +180,7 @@ Page({
     const ginfo = evt.currentTarget.dataset.gitem
     console.log(ginfo)
     this.setData({
-      cellData: { ...info, personName: ginfo?.drivername, mobile: ginfo?.drivermobile },
+      cellData: { ...info, personName: ginfo?.drivername, mobile: ginfo?.drivermobile, ...ginfo },
       c_send_key_show_momal: true,
       vehId: info.id
     });
@@ -414,10 +414,10 @@ Page({
 
     const requestParams = {
       vehId: vehId,
-      // startDate: buildDateTime(startDate, startTime),
-      // endDate: buildDateTime(endDate, endTime),
       personName: cellData.personName,
-      mobile: cellData?.mobile
+      mobile: cellData?.mobile,
+      startDate: cellData?.rentstartdate,
+      endDate: cellData?.rentenddate,
     };
 
     const API_ENDPOINTS = {
@@ -446,7 +446,11 @@ Page({
           this.getKeySendingList()
           this.getOrderList()
         });
-
+        wx.showModal({
+          title: '温馨提示',
+          content: response?.data?.msg,
+          showCancel: false,
+        })
       } catch (error) {
         showToast(error.message || '请求失败，请稍后重试');
       }
