@@ -41,7 +41,7 @@
 
 .video-player {
   width: 100%;
-  height: 400rpx;
+  height: 70vh;
 }
 
 .btn-group {

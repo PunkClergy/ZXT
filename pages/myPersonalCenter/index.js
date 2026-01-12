@@ -293,7 +293,10 @@ Page({
     byPost(getApp().data.k1swUrl + u_updateUserName.URL, params, (res) => {
       const data = res.data;
       if (data.code == 1000) {
-        showToast('修改成功')
+        wx.showToast({
+          title: '修改成功',
+          icon: 'none'
+        });
         this.setData({
           create_an_account_modal: false,
           account_info: {},

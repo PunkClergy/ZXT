@@ -507,11 +507,16 @@ Component({
               (response) => {
                 _safeHideLoading();
                 try {
-                  // 根据控制类型生成成功提示
-                  const successMsg = requestParams[u_operation.operationType] === 5
-                    ? '寻车成功，请注意附近鸣笛车辆!'
-                    : '控制成功!';
-                  showToast(successMsg);
+                  if (response?.data?.code == 200) {
+                    // 根据控制类型生成成功提示
+                    const successMsg = requestParams[u_operation.operationType] === 5
+                      ? '寻车成功，请注意附近鸣笛车辆!'
+                      : '控制成功!';
+                    showToast(successMsg);
+                  } else {
+                    showToast(response?.data?.msg);
+                  }
+
                 } catch (error) {
                   _handleControlError(error);
                 }
