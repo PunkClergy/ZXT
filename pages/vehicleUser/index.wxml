@@ -1,5 +1,6 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
   <custom-header title="用车人" tabr="{{!ProhibitClicking}}" homeTabr="{{!ProhibitClicking}}"/>
+  <!-- true不显示 -->
   <map-com multiple="false" source="desk" sn="{{sn_specific_value}}" style="width: 100%;height: {{c_screen_height-(ProhibitClicking?(navBarHeight+80):0)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;" id="myChild" />
   <!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
   <view class="tabbar" style="height: {{tabBarHeight}}px;" wx:if="{{ProhibitClicking}}">

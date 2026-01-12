@@ -13,11 +13,11 @@ Component({
     },
     tabr: {
       type: Boolean,
-      value: false
+      value: true
     },
     homeTabr: {
       type: Boolean,
-      value: false
+      value: true
     }
   },
 

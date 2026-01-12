@@ -119,61 +119,62 @@ Page({
     currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
   /**
-* 处理登录态下校验控制码，动态控制按钮点击权限
-* @returns {Promise<void>} 异步操作Promise
-*/
+   * 处理桌面源数据 - 轮询获取networkBlue后执行后续接口请求
+   * 核心流程：轮询获取本地存储networkBlue → 验证控制码接口 → 查询车辆列表 → 更新按钮点击状态
+   */
   handleDeskSource() {
-    wx.getStorage({
-      key: 'networkBlue',
-      success: (res) => {
-        byPost(
-          `${this.data.c_link}${u_verifyControlcode.URL}`,
-          { code: this.data.sn_specific_value || '' },
-          (response) => {
-            if (response?.data?.code == 1000) {
-              if (isLogin()) {
-                this.setData({
-                  ProhibitClicking: false
-                })
-              }
-            } else {
+    const POLL_CONFIG = {
+      interval: 1000,
+      maxTimes: 30,
+      currentTimes: 0
+    };
+
+
+    const updateButtonStatus = (baseStatus) => {
+      this.setData({ ProhibitClicking: baseStatus }, () => {
+        if (!isLogin()) return;
+        const param = { page: 1 }; 
+        const carListUrl = `${this.data.c_link}${u_carList.URL}`; 
+
+        byGet(carListUrl, param).then(response => {
+            if (response?.statusCode === 200) {
               this.setData({
-                ProhibitClicking: true
-              })
+                ProhibitClicking: response.data.count !== 0
+              });
             }
-          }
-        );
-      },
-      fail: () => {
-        this.setData({
-          ProhibitClicking: true
-        })
-      }
-    })
-  },
-  // 判断是否有缓存
-  initQueryCacheAndRoles() {
-    if (isLogin()) {
-      const param = {
-        page: 1,
-      };
-      byGet(this.data.c_link + u_carList.URL, param).then(response => {
-        if (response.statusCode == 200) {
-          console.log(response?.data?.count)
-          if (response?.data?.count == 0) {
-            this.setData({
-              ProhibitClicking: false
-            })
+          })
+          .catch(error => {
+            this.setData({ ProhibitClicking: true });
+          });
+      });
+    };
+
+    const pollNetworkBlue = () => {
+      wx.getStorage({
+        key: 'networkBlue', 
+        success: (res) => {
+          const verifyUrl = `${this.data.c_link}${u_verifyControlcode.URL}`; 
+          const requestData = { code: this.data.sn_specific_value || '' }; 
+          byPost(verifyUrl, requestData, (response) => {
+            const isVerifySuccess = response?.data?.code === 1000;
+            updateButtonStatus(!isVerifySuccess);
+          });
+        },
+        fail: () => {
+          POLL_CONFIG.currentTimes++;
+          if (POLL_CONFIG.currentTimes < POLL_CONFIG.maxTimes) {
+            setTimeout(pollNetworkBlue, POLL_CONFIG.interval);
           } else {
-            this.setData({
-              ProhibitClicking: true
-            })
+            updateButtonStatus(true); // 超时默认禁用按钮
           }
         }
-      })
-    }
+      });
+    };
+
+    // 启动第一轮轮询
+    pollNetworkBlue();
   },
-  onLoad: function (options) {
+ onLoad: function (options) {
     // 请求底部导航数据
     this.initBottomDirectory()
     if (options?.scene || options?.query) {
@@ -195,7 +196,7 @@ Page({
 
   onReady: function () {
     this.initialiImageBaseConversion()
-    this.handleDeskSource()
+
 
   },
 
@@ -204,7 +205,7 @@ Page({
     this.setData({
       sn_specific_value: this.data.sn_specific_value || scene
     })
-    this.initQueryCacheAndRoles()
+    this.handleDeskSource()
   },
 
 
