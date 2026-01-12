@@ -4,7 +4,7 @@
       <view class="timeline-dot" wx:if="{{events.length - 1!=index}}" />
       <view class="timeline-content" style="border-color:#BDBDBD" />
       <view class="timeline-content-evevt">
-        <text class="timeline-title">{{item.content}}</text>
+        <!-- <text class="timeline-title">{{item.content}}</text> -->
         <text class="timeline-date">{{item.createdate}}</text>
       </view>
     </view>

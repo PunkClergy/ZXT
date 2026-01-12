@@ -95,7 +95,8 @@
               </view>
             </view>
             <view class="card-info">
-              <time-line events="{{[{createdate:item.startdate||'-'},{createdate:item.enddate||'-'}]}}" />
+              <!-- <time-line events="{{[{createdate:item.startdate||'-'},{createdate:item.enddate||'-'}]}}" /> -->
+              <time-line events="{{[ {createdate: (item.startdate || '-') + ' 至 ' + (item.enddate || '-')}]}}" />
             </view>
             <view class="card-footer1" style="display: flex;justify-content: space-between;">
               <block wx:if="{{!item.status}}">
