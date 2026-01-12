@@ -125,7 +125,7 @@ Page({
   handleDeskSource() {
     const POLL_CONFIG = {
       interval: 1000,
-      maxTimes: 30,
+      maxTimes: 5,
       currentTimes: 0
     };
 
