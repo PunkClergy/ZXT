@@ -47,7 +47,16 @@ Page({
     notice_data: '新版偷偷上线！体验更丝滑，速来体验～',
     // 短信进入携带参数
     options: {},
-    servicePhone: '400-090-5050'
+    servicePhone: '400-090-5050',
+    // 日志
+    Journal: [
+      '首页增加更新日志显示功能,方便用户感知更新内容;',
+      '用车人账号，内容显示逻辑优化',
+    ],
+    // 日志弹窗是否显示
+    JournalFlag: false,
+    // 版本号
+    version: 'v2026011401'
   },
   // 点击banner跳转路径
   handleJumpInfo(evt) {
@@ -407,9 +416,33 @@ Page({
       this.initSaveParameters(options)
     })();
   },
+  // 当前版本
+  async handleVersion() {
+    try {
+      const currentVersion = this.data.version;
+      const cacheVersion = wx.getStorageSync('version') ?? '';
+      this.setData({ JournalFlag: currentVersion !== cacheVersion });
+    } catch (err) {
+      this.setData({ JournalFlag: true });
+    }
+  },
+  // 设置当前版本号
+  handleSetVersion() {
+    wx.setStorage({
+      key: 'version',
+      data: this.data.version,
+      success: () => {
+        // 读取缓存验证
+        this.setData({
+          JournalFlag: false
+        })
+      }
+    });
+  },
   onShow() {
     this.heartbeatDetection();
-
+    // 更新日志是否显示
+    this.handleVersion()
   },
   // 判断是否有缓存
   async initQueryCacheAndRoles() {

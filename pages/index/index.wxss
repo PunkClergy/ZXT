@@ -476,3 +476,45 @@
   padding: 0 40rpx;
   line-height: 1.5;
 }
+
+/* 更新日志 */
+.updateLog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.updateLog-theme {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 70vh;
+  overflow: hidden;
+}
+.updateLog-theme-head{
+  display: flex;justify-content: space-between;align-items: center;padding: 16px 20px;border-bottom: 1px solid #f0f0f0;
+}
+.updateLog-theme-head-title{
+  font-size: 18px;font-weight: 600;color: #333;
+}
+.updateLog-theme-head-close{width: 24px;height: 24px;display: flex;justify-content: center;align-items: center;color: #999;font-size: 20px;cursor: pointer;}
+.updateLog-theme-contentArea{flex: 1;padding: 15px;overflow-y: auto;line-height: 1.8;color: #666;font-size: 14px;scrollbar-width: thin;-webkit-overflow-scrolling: touch;scroll-behavior: smooth;}
+.updateLog-theme-contentArea-main{
+  width: 100%;
+}
+.updateLog-theme-contentArea-main-title{
+  font-weight: 500;color: #333;margin-bottom: 12px;font-weight: bold;
+}
+.updateLog-theme-contentArea-main-text{
+  margin-bottom: 8px;
+}

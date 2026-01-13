@@ -112,3 +112,34 @@
     </view>
   </view>
 </view>
+<!-- 更新日志 -->
+<view class="mask-container" wx:if="{{JournalFlag}}">
+  <!-- 更新日志弹窗 -->
+  <view class="updateLog">
+    <!-- 弹窗主体 -->
+    <view class="updateLog-theme">
+      <!-- 弹窗头部 -->
+      <view class="updateLog-theme-head">
+        <view class="updateLog-theme-head-title">更新日志</view>
+        <!-- 关闭按钮 -->
+        <view class="updateLog-theme-head-close">x</view>
+      </view>
+
+      <!-- 日志内容区域（优化滚动体验） -->
+      <view class="updateLog-theme-contentArea">
+        <!-- 增加内边距和背景区分，提升可读性 -->
+        <view class="updateLog-theme-contentArea-main" style="width: 100%;">
+          <view class="updateLog-theme-contentArea-main-title">{{version}} 版本更新</view>
+          <view class="updateLog-theme-contentArea-main-text" wx:for="{{Journal}}" wx:key="index">{{index + 1}}、{{item}}</view>
+        </view>
+      </view>
+
+      <!-- 底部确认按钮 -->
+      <view style="padding: 12px 20px;border-top: 1px solid #f0f0f0;">
+        <view bindtap="handleSetVersion" style="width: 100%;height: 44px;background: #007aff;border-radius: 8px;color: #fff;display: flex;justify-content: center;align-items: center;font-size: 16px;cursor: pointer;">
+          我知道了
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
