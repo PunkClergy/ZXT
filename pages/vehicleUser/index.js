@@ -165,7 +165,10 @@ Page({
           if (POLL_CONFIG.currentTimes < POLL_CONFIG.maxTimes) {
             setTimeout(pollNetworkBlue, POLL_CONFIG.interval);
           } else {
-            updateButtonStatus(true); // 超时默认禁用按钮
+            // 如果已过期，则直接显示
+            this.setData({
+              ProhibitClicking: true
+            });
           }
         }
       });
