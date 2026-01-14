@@ -133,16 +133,16 @@ Page({
     const updateButtonStatus = (baseStatus) => {
       this.setData({ ProhibitClicking: baseStatus }, () => {
         if (!isLogin()) return;
-        const param = { page: 1 }; 
-        const carListUrl = `${this.data.c_link}${u_carList.URL}`; 
+        const param = { page: 1 };
+        const carListUrl = `${this.data.c_link}${u_carList.URL}`;
 
         byGet(carListUrl, param).then(response => {
-            if (response?.statusCode === 200) {
-              this.setData({
-                ProhibitClicking: response.data.count !== 0
-              });
-            }
-          })
+          if (response?.statusCode === 200) {
+            this.setData({
+              ProhibitClicking: response.data.count !== 0
+            });
+          }
+        })
           .catch(error => {
             this.setData({ ProhibitClicking: true });
           });
@@ -151,13 +151,22 @@ Page({
 
     const pollNetworkBlue = () => {
       wx.getStorage({
-        key: 'networkBlue', 
+        key: 'networkBlue',
         success: (res) => {
-          const verifyUrl = `${this.data.c_link}${u_verifyControlcode.URL}`; 
-          const requestData = { code: this.data.sn_specific_value || '' }; 
+          const verifyUrl = `${this.data.c_link}${u_verifyControlcode.URL}`;
+          const requestData = { code: this.data.sn_specific_value || '' };
           byPost(verifyUrl, requestData, (response) => {
+            console.log(response)
             const isVerifySuccess = response?.data?.code === 1000;
-            updateButtonStatus(!isVerifySuccess);
+            console.log(isVerifySuccess)
+            if (isVerifySuccess) {
+              updateButtonStatus(!isVerifySuccess);
+            } else {
+              this.setData({
+                ProhibitClicking: true
+              });
+            }
+
           });
         },
         fail: () => {
@@ -177,7 +186,7 @@ Page({
     // 启动第一轮轮询
     pollNetworkBlue();
   },
- onLoad: function (options) {
+  onLoad: function (options) {
     // 请求底部导航数据
     this.initBottomDirectory()
     if (options?.scene || options?.query) {
