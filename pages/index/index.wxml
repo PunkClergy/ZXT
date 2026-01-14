@@ -113,7 +113,7 @@
   </view>
 </view>
 <!-- 更新日志 -->
-<view class="mask-container" wx:if="{{JournalFlag}}">
+<view class="mask-container" wx:if="{{JournalFlag}}" style="display: none;">
   <!-- 更新日志弹窗 -->
   <view class="updateLog">
     <!-- 弹窗主体 -->
