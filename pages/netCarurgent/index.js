@@ -10,6 +10,7 @@ Page({
     sn: '',
     blueKey: '', //蓝牙密码
     idc: '', //设备唯一标志
+    plateNumber:''
   },
   //底部 "按钮" 操作 
   handleFooterBtn(evt) {
@@ -137,7 +138,8 @@ Page({
     this.setData({
       sn: networkBlue?.sn,
       blueKey: networkBlue?.blueKey,
-      idc: networkBlue?.idc
+      idc: networkBlue?.idc,
+      plateNumber:networkBlue?.plateNumber
     })
   },
   onUnload: function () {
