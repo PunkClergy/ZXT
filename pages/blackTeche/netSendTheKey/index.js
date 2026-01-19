@@ -297,7 +297,8 @@ Page({
       const app = getApp();
       const url = app.data.k1swUrl + u_rentRecord.URL;
       const params = {
-        [u_rentRecord.page]: this.data.y_page
+        [u_rentRecord.page]: this.data.y_page,
+        comParam:this.data.comParam
       };
       const response = await byGet(url, params);
       const resp = response.data;
