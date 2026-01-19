@@ -20,8 +20,10 @@
   "useExtendedLib": {
     "weui": true
   },
-  "pages": [
+  "pages": [ 
+
     "pages/index/index",
+    "pages/trajectoryIndex/index",
     "pages/watchVideos/index",
     "pages/carService/carService",
     "pages/carService/oilCalculator/oilCalculator",

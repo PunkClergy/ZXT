@@ -135,7 +135,7 @@ Page({
 
   handleJumpCarList() {
     wx.redirectTo({
-      url: '/pages/carManager/carList/carList?source=' + '/pages/index/index',
+      url: '/pages/carManager/carList/carList?source=' + '/pages/trajectoryIndex/index',
     })
   },
 
