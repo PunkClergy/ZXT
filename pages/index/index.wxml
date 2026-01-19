@@ -67,9 +67,9 @@
     </view>
 
     <!-- 第五块：全宽海报区域 -->
-    <view class="poster">
+    <!-- <view class="poster">
       <image src="{{'https://k1sw.wiselink.net.cn/img/' + posterImg.img}}" class="poster-img" mode="widthFix"></image>
-    </view>
+    </view> -->
   </scroll-view>
 
   <!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
