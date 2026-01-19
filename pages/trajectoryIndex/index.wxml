@@ -1,0 +1,127 @@
+<view class="container">
+  <custom-header title="车辆轨迹" />
+  <block wx:if="{{!cellData.sn}}">
+    <view wx:if="{{!cellData.sn}}" class="no-vehicle-selected" style="height: {{searchBarHeight}}px; margin-top: {{totalNavHeight}}px;">
+      <view class="no-vehicle-selected-item">
+        <view class="no-vehicle-selected-item-btn" bindtap="handleJumpCarList">
+          <text>请选择车辆</text>
+          <image src="/assets/images/home/right_1.png" style="width: 30rpx;height: 30rpx;" />
+        </view>
+      </view>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="vehicle-basic-info-container" style="height:{{searchBarHeight}}px;margin-top: {{totalNavHeight}}px">
+      <view class="vehicle-basic-content-item">
+        <view class="vehicle-content-item-head">
+          <view class="vehicle-head-left">
+            <view class="vehicle-left-category">
+              <image src="/assets/images/home/01.png" />
+              <text>{{cellData.platenumber||cellData.plateNumber||'-'}}</text>
+            </view>
+            <view class="vehicle-left-brand">
+              {{cellData.vehicleSerialName||'-'}}{{cellData.vehicleModeName||''}}
+            </view>
+          </view>
+          <view class="vehicle-head-right">
+            <view class="vehicle-right-state" bindtap="handleJumpCarList">
+              <text>{{cellData?'重新选择':'选择车辆'}}</text>
+              <image src="/assets/images/home/right_1.png" />
+            </view>
+          </view>
+        </view>
+        <view class="vehicle-content-item-info">
+          <view class="info-item  {{cellData.vin.length > 15 ? 'long-info-item' : ''}}">
+            <label>车架号 ：</label>
+            <text>{{cellData.vin||'-'}}</text>
+          </view>
+          <view class="info-item  {{cellData.xsgw.length > 15 ? 'long-info-item' : ''}}">
+            <label>设备号 ：</label>
+            <text>{{cellData.sn||'-'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 修改 map 为 flex:1 自适应高度 -->
+  <map id="map" longitude="{{centerLng}}" latitude="{{centerLat}}" scale="{{mapScale}}" polyline="{{polyline}}" markers="{{markers}}">
+    <view class="info-upper">
+      <text bindtap="handleTrajectory">历史轨迹</text>
+    </view>
+  </map>
+
+  <!-- 修改 control-bar 增加滚动容器 -->
+  <view class="control-bar">
+    <view class="control-bar-scroll">
+      <view class="info">
+        <view>当前时间：{{drawnPoints.length>0?drawnPoints[drawnPoints.length-1].time:'-'}}</view>
+        <view>当前地址：{{currentAddress}}</view>
+        <view>轨迹总距离：{{totalTrackDistance}} 公里</view>
+        <view class="speed-selector">
+          播放速度：
+          <picker mode="selector" range="{{speedLabels}}" bindchange="onSpeedChange">
+            <view class="selected-speed">{{selectedSpeedLabel}}</view>
+          </picker>
+        </view>
+      </view>
+
+      <slider min="0" max="100" value="{{sliderValue}}" bindchange="onSliderChange" activeColor="#1E88E5" backgroundColor="#eee" />
+
+      <button bindtap="togglePlayPause">
+        {{isPlaying?'暂停':'播放轨迹'}}
+      </button>
+    </view>
+  </view>
+</view>
+<!-- 选择历史轨迹弹窗 -->
+<block>
+  <view class="modal-mask" wx:if="{{s_trajectory_show}}" bindtap="handleHideTrajectory"></view>
+  <view class="modal-base-map" wx:if="{{s_trajectory_show}}">
+    <form bindsubmit="handleFormSubmit">
+      <view class="modal-container">
+        <view class="modal-container-head">
+          <text>历史轨迹</text>
+          <image src="/assets/images/home/right_1.png" bindtap="handleHideTrajectory" />
+        </view>
+        <view class="modal-container-middle">
+          <view class="middle-form-item">
+            <label>开始时间</label>
+            <view class="modal-form-region">
+              <picker mode="date" data-index="startDate" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{startDate}}</text>
+                </view>
+              </picker>
+              <picker mode="time" data-index="startTime" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{startTime}}</text>
+                </view>
+              </picker>
+            </view>
+
+          </view>
+          <view class="middle-form-item">
+            <label>结束时间</label>
+            <view class="modal-form-region">
+              <picker mode="date" data-index="endDate" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{endDate}}</text>
+                </view>
+              </picker>
+              <picker mode="time" data-index="endTime" bindchange="bindTimeChange">
+                <view class="form-item-text">
+                  <text>{{endTime}}</text>
+                </view>
+              </picker>
+            </view>
+
+          </view>
+        </view>
+        <view class="modal-container-footer">
+          <button formType="submit">确认</button>
+        </view>
+      </view>
+    </form>
+  </view>
+</block>

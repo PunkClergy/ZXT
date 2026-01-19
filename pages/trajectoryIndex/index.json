@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "车辆轨迹",
+  "usingComponents": {
+    "custom-header":"/components/CustomHeader/index"
+  },
+  "navigationStyle": "custom",
+  "disableScroll": true
+}
