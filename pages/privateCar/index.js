@@ -703,7 +703,7 @@ Page({
       String(d.getHours()).padStart(2, '0') + ':' +
       String(d.getMinutes()).padStart(2, '0') + ':' +
       String(d.getSeconds()).padStart(2, '0');
-
+    console.log(`${evt}${JSON.stringify(getParseHexDataObject(this.trimHexData(evt)))}`)
     // 构造当前日志项
     const newLogEntry = {
       userId,

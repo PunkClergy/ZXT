@@ -21,13 +21,10 @@
     "weui": true
   },
   "pages": [ 
-
     "pages/index/index",
     "pages/trajectoryIndex/index",
     "pages/watchVideos/index",
     "pages/carService/carService",
-    "pages/carService/oilCalculator/oilCalculator",
-    "pages/carManager/oilDeviceList/oilDeviceList",
     "pages/mapSelection/map",
     "pages/system/carManager/carManager",
     "pages/carManager/carList/carList",
@@ -51,8 +48,6 @@
     "pages/carManager/regCar/regCar",
     "pages/carManager/oilUseRecord/oilUseRecord",
     "pages/carManager/buyRecord/buyRecord",
-    "pages/carManager/buyOilDevice/buyOilDevice",
-    "pages/carService/oilPriceSet/oilPriceSet",
     "pages/system/carManager/add/add",
     "pages/system/balance/balance",
     "pages/system/balance/payRecord/payRecord",
