@@ -689,7 +689,50 @@ Page({
     }
     return bytes
   },
-
+  // 解析报文
+  handleAnalysis(evt) {
+    // 字典值
+    const dictionaries = {
+      inductionEnable: '感应功能',
+      inductionMode: '感应模式',
+      accStatus: false,
+      lock: false,
+      powerOffRemainTime: 0,
+      powerOffRemainTimeDesc: "0分钟",
+      inductionCheckTimes: 3,
+      autoInductionMode: 1,
+      autoInductionModeDesc: "一直有效",
+      bleDisconnectLock: true,
+      carWashMode: false,
+      bleBroadcastMode: 0,
+      modeType: 0,
+      modeTypeDesc: "外置模式",
+      oilCircuitStatus: 0,
+      oilCircuitStatusDesc: "油路开",
+      lockWindowUp: 1,
+      serialBroadcast: "开",
+      workMode: 0,
+      workModeDesc: "正常模式",
+      netCarControl: 0,
+      netCarControlDesc: "不可控制",
+      inductionLockSignal: 81,
+      inductionHandle: false,
+      signalValue: 32,
+      inductionUnlockSignal: 40,
+      voltage: "3.3V",
+      electric: "30",
+      alwaysPower: false,
+      startInductionEnable: "生效",
+      remoteInductionEnable: 1,
+      keyWorkMode: 1,
+      keyAlwaysPower: 0,
+      pairStatus: "已配对",
+      pairConnectIndex: 1,
+      reservedBit3: 0,
+      supply: 0
+    }
+    return evt
+  },
   // 上传报文 
   handleLoggerapi(evt) {
     const MAX_LOGS_BEFORE_UPLOAD = 10;
@@ -703,13 +746,12 @@ Page({
       String(d.getHours()).padStart(2, '0') + ':' +
       String(d.getMinutes()).padStart(2, '0') + ':' +
       String(d.getSeconds()).padStart(2, '0');
-    console.log(`${evt}${JSON.stringify(getParseHexDataObject(this.trimHexData(evt)))}`)
     // 构造当前日志项
     const newLogEntry = {
       userId,
       sn: deviceIDC,
       mobileinfo: `${deviceInfo?.brand || ''} ${deviceInfo?.model || ''} ${deviceInfo?.platform || ''} ${deviceInfo?.system || ''}`,
-      content: `${evt}${JSON.stringify(getParseHexDataObject(this.trimHexData(evt)))}`,
+      content: `${evt}${this.handleAnalysis(JSON.stringify(getParseHexDataObject(this.trimHexData(evt))))}`,
       logdate: fmt
     };
 
