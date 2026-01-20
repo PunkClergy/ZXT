@@ -81,7 +81,7 @@ Page({
                 this.setData({
                   c_activeTab: 1, // 默认选中的Tab索引
                   g_page: 1, //列表页码
-                  g_items: [], //列表数据
+                  g_items: [], //列表 数据
                 })
                 showToast(response.data.msg)
                 getApp().data.reflag = 1

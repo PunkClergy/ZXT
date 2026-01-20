@@ -189,7 +189,7 @@ Page({
       id: evt?.currentTarget?.dataset?.item?.id,
     }
     wx.navigateTo({
-      url: `/pages/carManager/carList/carList?source=/pages/carManager/corpel/index&flagMulti=1&info=${JSON.stringify(temp)}&type=${this.data.type}&name=${this.data.title_name}`
+      url: `/pages/carManager/carList/carList?source=/pages/carManager/corpel/index&flagMulti=1&info=${JSON.stringify(temp)}&type=${this.data.type}&name=${this.data.title_name}&desc=${JSON.stringify(evt?.currentTarget?.dataset?.item)}`
     })
   },
   handleBlur(e) {

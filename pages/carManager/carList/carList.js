@@ -38,7 +38,8 @@ Page({
     batterylift: '一键启动', //启动方式
     carOwnerNameValue: '',
     carOwnerName: '智信通', //所属平台
-    brakingType: 1
+    brakingType: 1,
+    all_c: false
   },
   bindblurSea(evt) {
     this.setData({
@@ -86,37 +87,83 @@ Page({
 
   },
   handleChangeBlack(evt) {
-    // 使用解构赋值一次性获取所有需要的数据
-    const {
-      id
-    } = evt.currentTarget.dataset.item;
-    const {
-      g_black,
-      g_platenumbers,
-      g_items
-    } = this.data;
-
-    // 转换为 Set 操作更高效
-    const blackSet = new Set(g_black);
-    const plateSet = new Set(g_platenumbers);
-
-    // 增加安全判断防止 undefined
-    const vehicle = g_items.find(item => item.id === id);
-    if (!vehicle) return;
-
-    // 统一操作逻辑：存在则删除，不存在则添加
-    if (blackSet.has(id)) {
-      blackSet.delete(id);
-      plateSet.delete(vehicle.platenumber); // 同步移除车牌号
-    } else {
-      blackSet.add(id);
-      plateSet.add(vehicle.platenumber); // 同步添加车牌号
+    // 1. 解构赋值获取目标数据，增加空值防护
+    const targetItem = evt.currentTarget.dataset.item || {};
+    const { id } = targetItem;
+    if (!id) { // 防止id为空导致后续逻辑出错
+      console.warn('未获取到有效的车辆ID');
+      return;
     }
-    // 单次 setData 更新所有数据
+
+    // 2. 获取页面数据并做默认值处理
+    const { g_items = [] } = this.data;
+
+    // 3. 找到对应车辆并验证存在性
+    const vehicleIndex = g_items.findIndex(item => item.id === id);
+    if (vehicleIndex === -1) {
+      console.warn(`未找到ID为${id}的车辆数据`);
+      return;
+    }
+
+    // 4. 切换当前项的checked状态（核心：true↔false）
+    const newGItems = [...g_items]; // 深拷贝原数组，避免直接修改
+    newGItems[vehicleIndex] = {
+      ...newGItems[vehicleIndex],
+      checked: !newGItems[vehicleIndex].checked // 取反切换状态
+    };
+
+    // 5. 核心检测逻辑：判断所有项是否都为checked=true
+    // 逻辑：列表非空时，所有项checked为true则all_c=true，否则false；空列表则all_c=false
+    const all_c = newGItems.length > 0
+      ? newGItems.every(item => item.checked === true)
+      : false;
+
+    // 6. 重新计算g_black和g_platenumbers（所有checked=true的项）
+    const checkedVehicles = newGItems.filter(item => item.checked === true);
+    const g_black = checkedVehicles.map(item => item.id).filter(Boolean);
+    const g_platenumbers = checkedVehicles.map(item => item.platenumber).filter(Boolean);
+
+    // 7. 单次setData批量更新所有数据（包含all_c）
     this.setData({
-      g_black: [...blackSet], // 使用展开运算符更简洁
-      g_platenumbers: [...plateSet]
+      g_items: newGItems,
+      g_black: g_black,
+      g_platenumbers: g_platenumbers,
+      all_c: all_c // 同步更新全选状态
     });
+  },
+
+  handleAllC() {
+    const { g_items = [] } = this.data;
+    if (g_items.length === 0) {
+      showToast('暂无数据可选择');
+      return;
+    }
+
+    // 2. 判断当前是否需要全选（只要有一个未选中，就全选；否则取消全选）
+    const hasUncheckedItem = g_items.some(item => item.checked !== true);
+    const targetCheckedStatus = hasUncheckedItem; // true=全选，false=取消全选
+
+    // 3. 更新所有项的checked状态
+    const newGItems = g_items.map(item => ({
+      ...item,
+      checked: targetCheckedStatus // 统一设置为目标状态（全选/取消全选）
+    }));
+
+    // 4. 重新计算g_black和g_platenumbers（和单个选择逻辑保持一致）
+    const checkedVehicles = newGItems.filter(item => item.checked === true);
+    const g_black = checkedVehicles.map(item => item.id).filter(Boolean); // 过滤空ID
+    const g_platenumbers = checkedVehicles.map(item => item.platenumber).filter(Boolean); // 过滤空车牌号
+
+    // 5. 批量更新数据，保证三者同步
+    this.setData({
+      g_items: newGItems,
+      g_black: g_black,
+      g_platenumbers: g_platenumbers
+    });
+
+    // 6. 可选：添加操作提示，提升用户体验
+    const toastText = targetCheckedStatus ? '已全选所有车辆' : '已取消全选所有车辆';
+    showToast(toastText);
   },
   handleJumpBlackInfo() {
     wx.reLaunch({
@@ -159,7 +206,8 @@ Page({
       info,
       allParams,
       type,
-      name
+      name,
+      desc
     } = evt
 
     this.setData({
@@ -168,7 +216,8 @@ Page({
       info: info && JSON.parse(info),
       allParams: allParams,
       type: type,
-      name: name
+      name: name,
+      desc: desc
     })
   },
   handleSelectJump(evt) {
@@ -232,32 +281,66 @@ Page({
   initList() {
     const param = {
       [u_carList.page]: this.data.g_page,
+      pageSize: 1000,
       comParam: this.data?.comParam || ""
     };
+
     byGet(getApp().data.k1swUrl + u_carList.URL, param).then(response => {
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
           showToast(`已加载全部数据：共${this.data.g_items.length}条`);
         }
+
         this.setData({
           g_items: this.data.g_items.concat(response.data.content),
           g_total: Number(response.data.count || 0).toLocaleString()
         }, () => {
           hideLoading();
+          const vehList = this?.data?.desc ? JSON.parse(this?.data?.desc)?.vehList : [];
+          const g_items = this.data.g_items || [];
+          const vehSnSet = new Set();
+          vehList.forEach(item => {
+            if (item && item.sn) {
+              vehSnSet.add(item.sn);
+            }
+          });
+          const updatedGItems = g_items.map(item => {
+            const newItem = { ...item };
+            newItem.checked = !!(newItem && newItem.sn && vehSnSet.has(newItem.sn));
+            return newItem;
+          });
+
+          const isAllChecked = updatedGItems.length > 0
+            ? updatedGItems.every(item => item?.checked === true)
+            : false;
+
+          const checkedVehicles = updatedGItems.filter(item => item.checked === true);
+          const g_black = checkedVehicles.map(item => item.id).filter(Boolean);
+          const g_platenumbers = checkedVehicles.map(item => item.platenumber).filter(Boolean);
+          this.setData({
+            g_items: updatedGItems,
+            all_c: isAllChecked,
+            g_black: g_black,
+            g_platenumbers: g_platenumbers
+          });
         });
       } else {
         showToast('请求失败，请稍后再试');
         hideLoading();
       }
-    })
+    }).catch(error => {
+      console.error('列表初始化失败：', error);
+      showToast('请求失败，请稍后再试');
+      hideLoading();
+    });
   },
   // 触底请求
   handleLower() {
-    this.setData({
-      g_page: this.data.g_page + 1
-    }, () => {
-      this.initList();
-    });
+    // this.setData({
+    //   g_page: this.data.g_page + 1
+    // }, () => {
+    //   this.initList();
+    // });
   },
   // 下拉刷新
   handleRefresh() {
