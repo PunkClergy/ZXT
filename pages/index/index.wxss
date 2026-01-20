@@ -174,7 +174,7 @@
   align-items: center;
   gap: 20rpx;
   box-sizing: border-box;
-  padding: 0 20rpx;
+  padding: 5rpx 20rpx;
 }
 
 /* 专区图标样式：固定宽高，保持原有比例，不压缩 */
@@ -187,12 +187,27 @@
 
 /* 专区名称样式：粗体，字体大小32rpx，颜色深灰，超出显示省略号 */
 .zone-name {
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+}
+.zone-name-title {
   font-weight: bold;
   font-size: 28rpx;
   color: #333333;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.zone-name-desc {
+  font-weight: 400;
+  font-size: 22rpx;
+  color: #736f6f;
+  white-space: normal;
+  overflow: visible;    
+  width: 200rpx;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 /* 全宽轮播图容器样式：占满宽度，白色背景，内边距0 20rpx */

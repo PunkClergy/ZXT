@@ -48,7 +48,11 @@
       <view class="zone-item" wx:for="{{zoneList}}" wx:key="index" style="margin: {{ index % 2 === 0 ? '0 2% 0 0' : '0 0 0 2%' }}">
         <view class="zone-out" style="background-color: {{item.bgcolor}};" data-info="{{item}}" bindtap="handleGetMenuList">
           <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + item.icon}}" />
-          <view class="zone-name">{{item.name}}</view>
+          <view class="zone-name">
+            <text class="zone-name-title">{{item.name}}</text>
+            <text class="zone-name-desc">{{item.bak}}</text>
+          </view>
+
         </view>
       </view>
     </view>

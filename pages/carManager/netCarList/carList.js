@@ -5,7 +5,8 @@ const {
 } = require('../../../utils/Inspect/tips')
 const {
   u_wycRentVehicleList,
-  u_addOrUpdateCar
+  u_addOrUpdateCar,
+  u_carapiDeleteCar
 } = require('../../../utils/request/car')
 const {
   u_bindOrUpdateDriver,
@@ -55,6 +56,42 @@ Page({
     const value = evt.detail.value
     this.setData({
       [category]: value
+    })
+
+  },
+  // 删除车辆
+  handleDelete(evt) {
+    wx.showModal({
+      title: '提示',
+      content: '确认删除？',
+      complete: (res) => {
+        if (res.confirm) {
+          const info = evt.currentTarget.dataset.item
+          const apiUrls = {
+            getCarStatus: getApp().data.k1swUrl + u_carapiDeleteCar.URL
+          };
+          const param = {
+            sn: info?.sn,
+            code: info?.code
+          }
+          byPost(apiUrls.getCarStatus, param,
+            (response) => {
+              hideLoading();
+              if (response.data.code == 1000) {
+                this.setData({
+                  c_activeTab: 1, // 默认选中的Tab索引
+                  g_page: 1, //列表页码
+                  g_items: [], //列表数据
+                })
+                showToast(response.data.msg)
+                getApp().data.reflag = 1
+                this.initList()
+              } else {
+                showToast(response.data.msg)
+              }
+            });
+        }
+      }
     })
 
   },
@@ -369,7 +406,7 @@ Page({
     showLoading();
     byPost(apiUrls.getCarStatus, param,
       (response) => {
-console.log(response)
+        console.log(response)
         hideLoading();
         if (response.data.code == 1000) {
           this.setData({
@@ -380,10 +417,10 @@ console.log(response)
             batterylift: '一键启动', //启动方式
             carOwnerNameValue: '',
             carOwnerName: '智信通', //所属平台
-            g_items:[],
-            g_page:1
-          },()=>{
-            getApp().data.reflag = 1 
+            g_items: [],
+            g_page: 1
+          }, () => {
+            getApp().data.reflag = 1
             this.initList()
           })
         } else {
@@ -408,7 +445,7 @@ console.log(response)
         vin: info?.vin || "",
         xsgw: info?.xsgw || "",
         sn: info?.sn || "",
-        code:info?.code||''
+        code: info?.code || ''
       },
       batterylift: info?.batterylift || '一键启动',
       carOwnerName: info?.carOwnerName,
