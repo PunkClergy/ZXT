@@ -261,8 +261,8 @@ slider {
   flex-direction: column;
   gap: 20rpx;
   position: absolute;
-  left: 22rpx;
-  bottom: 20rpx;
+  right: 22rpx;
+  bottom: 50rpx;
 }
 
 .info-upper text {

@@ -52,7 +52,7 @@
   </map>
 
   <!-- 修改 control-bar 增加滚动容器 -->
-  <view class="control-bar">
+  <view class="control-bar" wx:if="{{trackPointsWithFixedTime.lenght>0}}">
     <view class="control-bar-scroll">
       <view class="info">
         <view>当前时间：{{drawnPoints.length>0?drawnPoints[drawnPoints.length-1].time:'-'}}</view>
