@@ -27,13 +27,14 @@
   z-index: 100;
   box-sizing: border-box;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
+  flex-direction: column;
 }
 
 /* 头部外层容器样式：flex布局，水平居中对齐，元素间间距10rpx */
 .custom-header-outer-layer {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 25rpx;
 }

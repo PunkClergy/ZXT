@@ -50,7 +50,7 @@
           <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + item.icon}}" />
           <view class="zone-name">
             <text class="zone-name-title">{{item.name}}</text>
-            <text class="zone-name-desc">{{item.bak}}</text>
+            <text class="zone-name-desc" style="font-size: {{item.stfontSize||11}}px">{{item.subtitle}}</text>
           </view>
 
         </view>

@@ -327,6 +327,16 @@ Page({
     this.setData({
       options: options
     })
+    // 定义需要存入缓存的字段集合
+    const cacheFields = {
+      title_name: options?.name,
+      bgcolor: options?.bgcolor,
+      subtitle: options?.subtitle,
+      stfontSize: options?.stfontSize
+    };
+    this.setData(cacheFields, () => {
+      wx.setStorageSync('cacheFields', cacheFields);
+    });
   },
   initCheckTimer() {
     if (this.data.checkTimer) {

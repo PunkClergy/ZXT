@@ -593,9 +593,11 @@ Page({
     const datasetInfo = eventInfo.currentTarget?.dataset?.info || {};
     const menuId = eventInfo.id ?? datasetInfo.id;
     const path = eventInfo.path ?? datasetInfo.path;
+    const subtitle = eventInfo.subtitle ?? datasetInfo.subtitle;
+    const stfontSize = eventInfo.stfontSize ?? datasetInfo.stfontSize;
     const name = eventInfo.name ?? datasetInfo.name;
     const bgcolor = eventInfo.bgcolor ?? datasetInfo.bgcolor;
-    const bak = eventInfo.bak ?? datasetInfo.bak;
+    const externalPath = eventInfo.externalPath ?? datasetInfo.externalPath;
     const miniProgramConfig = {
       'wxcdd55b1d2e790195': { needToken: true },
       'wxf2c0e435976f0ca6': { needToken: false }
@@ -603,7 +605,7 @@ Page({
     if (this.isMiniProgramAppid(path) && miniProgramConfig[path]) {
       const { needToken } = miniProgramConfig[path];
       const extraData = needToken ? { token: getApp()?.data?.userInfo?.token } : {};
-      this.navigateToOtherMiniProgram(path, bak, extraData);
+      this.navigateToOtherMiniProgram(path, externalPath, extraData);
       return;
     }
     getApp().data.funAreaId = menuId;
@@ -613,7 +615,7 @@ Page({
       wx.switchTab({ url: path });
     } else {
       wx.navigateTo({
-        url: `${path}?bgcolor=${bgcolor}&name=${name}`
+        url: `${path}?bgcolor=${bgcolor}&name=${name}&subtitle=${subtitle}&stfontSize=${stfontSize}`
       });
     }
   },

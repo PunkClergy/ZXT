@@ -45,13 +45,13 @@ Page({
   handleJumpInfo(evt) {
     const { item = {} } = evt?.currentTarget?.dataset || {};
     const { fileType, path: localPath, img } = item;
-  
+
     const IMG_BASE_URL = 'https://k3a.wiselink.net.cn/img/';
     const targetPath = fileType === 1
       ? localPath
       : `${IMG_BASE_URL}${img || ''}`;
     const navigateUrl = fileType === 1
-      ? targetPath  
+      ? targetPath
       : `/pages/agreementWebView/agreementWebView?url=${targetPath}`;
 
     if (!navigateUrl) {
@@ -265,7 +265,6 @@ Page({
       }
     })
   },
-
   onLoad(options) {
     // 图片转BASE64
     this.initialiImageBaseConversion()
@@ -277,22 +276,33 @@ Page({
     this.initZoneInfo()
     // 获取使用指南
     this.initBookList()
-    if (options?.name) {
-      this.setData({
-        title_name: options?.name
-      })
-    }
-    if (options?.bgcolor) {
-      this.setData({
-        bgcolor: options?.bgcolor
-      })
-    }
+    // 定义需要存入缓存的字段集合
+    const cacheFields = {
+      title_name: options?.name,
+      bgcolor: options?.bgcolor,
+      subtitle: options?.subtitle,
+      stfontSize: options?.stfontSize
+    };
+    this.setData(cacheFields, () => {
+      wx.setStorageSync('cacheFields', cacheFields);
+    });
   },
   onShow() {
     // 获取系统头部各区域高度
     this.initSystemInfo()
     // 获取是否显示温馨提示
     this.inIsShowInfo()
+    // 读取缓存中的四个值并设置到页面数据
+    try {
+      const cacheFields = wx.getStorageSync('cacheFields') || {};
+      const updateData = {};
+      ['title_name', 'bgcolor', 'subtitle', 'stfontSize'].forEach(key => {
+        if (cacheFields[key] !== undefined) updateData[key] = cacheFields[key];
+      });
+      updateData && Object.keys(updateData).length && this.setData(updateData);
+    } catch (e) {
+      console.error('读取缓存并设置页面数据失败：', e);
+    }
   },
   onReady() {
     // 获取登录状态
