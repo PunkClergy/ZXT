@@ -865,12 +865,14 @@ Component({
     },
     // 开始导航
     handleStartNavigation() {
+      console.log()
       if (!this.data.sn) {
         return
       }
+      console.log(this.data.latitude,this.data.longitude)
       wx.openLocation({
-        latitude: Number(this.data.latitude),
-        longitude: Number(this.data.longitude),
+        latitude: Number(this.data.cellData.latitude||this.data.latitude),
+        longitude: Number(this.data.cellData.longitude||this.data.longitude),
         scale: 18
       })
     },

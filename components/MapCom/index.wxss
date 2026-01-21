@@ -36,7 +36,7 @@ map {
   gap: 20rpx;
   position: absolute;
   left: 22rpx;
-  bottom: 200rpx;
+  bottom: 300rpx;
 }
 
 .info-upper text {
@@ -59,7 +59,7 @@ map {
   width: 150rpx;
   float: right;
   position: absolute;
-  bottom: 140rpx;
+  bottom: 300rpx;
   right: 22rpx;
 }
 
@@ -69,7 +69,7 @@ map {
   align-items: center;
   float: right;
   position: absolute;
-  bottom: 140rpx;
+  bottom: 80rpx;
   right: 22rpx;
   flex-direction: column;
   gap: 30rpx;
