@@ -558,7 +558,7 @@ Component({
       console.log(this.data.idc || `19${this.data.sn}`, this.data.blueKey, '蓝牙设备号和密钥', this?.data?.deviceType)
       const COMMAND_MAPPING = {
         5: 5, // 远程寻车
-        1: (this?.data?.deviceType == 'F1' || this?.data?.deviceType == 'F0') ? 4 : 3, // 锁门
+        1: this?.data?.deviceType ? 4 : 3, // 锁门
         3: this?.data?.deviceType == 'F1' ? 1 : 2, // 开门
         6: 10,//取消拦截
         8: 11//风控拦截
@@ -869,10 +869,10 @@ Component({
       if (!this.data.sn) {
         return
       }
-      console.log(this.data.latitude, this.data.longitude)
+      console.log(this.data.latitude,this.data.longitude)
       wx.openLocation({
-        latitude: Number(this.data.cellData.latitude || this.data.latitude),
-        longitude: Number(this.data.cellData.longitude || this.data.longitude),
+        latitude: Number(this.data.cellData.latitude||this.data.latitude),
+        longitude: Number(this.data.cellData.longitude||this.data.longitude),
         scale: 18
       })
     },
