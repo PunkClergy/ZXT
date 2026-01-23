@@ -226,7 +226,7 @@ Page({
         // 处理接口返回的数据，适配原有轨迹播放逻辑
         const trackPointsWithFixedTime = content.map((item, index) => {
           // 确保有时间字段（如果接口返回的item有time字段，直接用；没有则生成）
-          let timeStr = item.time || '';
+          let timeStr = item.gpstime || '';
           if (!timeStr) {
             // 如果接口没有返回时间，基于查询时间生成
             const baseTime = new Date(`${startDate} ${startTime}`).getTime();
