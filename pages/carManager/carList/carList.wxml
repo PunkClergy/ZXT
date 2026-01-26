@@ -19,9 +19,9 @@
       <view class="tabs-1-conut" style="display: flex;justify-content: {{g_flagMulti&&'space-between'}};">
         <view></view>
         <view>共有{{g_total}}条记录</view>
-        <view style="display: flex;align-items: center;flex-direction: row;justify-content: center;" wx:if="{{g_flagMulti}}">
+        <view style="display: flex;align-items: center;flex-direction: row;justify-content: center;gap: 10rpx;" wx:if="{{g_flagMulti}}">
           <view style="font-size: 24rpx;">全选</view>
-          <checkbox style="transform: scale(0.7);" bindtap="handleAllC" checked="{{all_c}}"></checkbox>
+          <checkbox style="transform: scale(0.9);" bindtap="handleAllC" checked="{{all_c}}"></checkbox>
         </view>
       </view>
       <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
@@ -41,6 +41,18 @@
               <view class="head-right" wx:if="{{!(g_flagMulti)}}">
                 <image src="/assets/images/home/_edit.png" data-item="{{item}}" bindtap="handleEdit" />
                 <image src="/assets/images/home/_delete.png" data-item="{{item}}" bindtap="handleDelete" />
+              </view>
+              <view wx:else>
+                <checkbox-group data-item="{{item}}" bindchange="handleChangeBlack">
+  <checkbox 
+    class="custom-checkbox"  
+    style="transform: scale(1);" 
+    checked="{{item.checked}}" 
+  />
+</checkbox-group>
+                <!-- <checkbox-group data-item="{{item}}" bindchange="handleChangeBlack">
+                  <checkbox style="transform: scale(1);" checked="{{item.checked}}" />
+                </checkbox-group> -->
               </view>
             </view>
             <view class="content-item-info">
@@ -64,9 +76,9 @@
                   <text>选择此车</text>
                 </view>
                 <view wx:else>
-                  <checkbox-group data-item="{{item}}" bindchange="handleChangeBlack">
+                  <!-- <checkbox-group data-item="{{item}}" bindchange="handleChangeBlack">
                     <checkbox style="transform: scale(0.7);" checked="{{item.checked}}" />
-                  </checkbox-group>
+                  </checkbox-group> -->
                 </view>
               </view>
             </view>

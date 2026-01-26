@@ -758,3 +758,27 @@
   padding: 10px;
   /* border-bottom: 1px solid #f0f0f0; */
 }
+/* 自定义 checkbox 样式 */
+.custom-checkbox {
+  /* 基础样式重置 */
+  --wx-checkbox-input-border-color: #f00; /* 未选中时边框色（部分基础库支持） */
+  --wx-checkbox-input-checked-border-color: #00f; /* 选中时边框色（部分基础库支持） */
+}
+
+/* 兼容所有基础库的深度选择器写法 */
+.wx-checkbox-input {
+  /* 未选中状态的边框颜色 */
+  border: 1px solid #64B5F6 !important; /* 自定义边框色（橙色），!important 确保覆盖默认样式 */
+  border-radius: 3px; /* 可选：调整边框圆角 */
+}
+
+/* 选中状态的边框 + 背景色 */
+.wx-checkbox-input.wx-checkbox-input-checked {
+  border: 1px solid #00cc66 !important; /* 选中时边框色（绿色） */
+  background-color: #00cc66 !important; /* 选中时背景色（可选） */
+}
+
+/* 选中状态的对勾颜色（可选） */
+.wx-checkbox-input.wx-checkbox-input-checked::before {
+  color: #fff !important; /* 对勾白色 */
+}

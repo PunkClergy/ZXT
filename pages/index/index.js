@@ -35,6 +35,8 @@ Page({
     join_the_group_modal: false,
     // 专区入口数据
     zoneList: [],
+    // 临时专区入口数据
+    temporaryZoneList: [],
     // 底部tab数据
     tabList: [],
     // 使用指南数据
@@ -53,10 +55,80 @@ Page({
       '首页增加更新日志显示功能,方便用户感知更新内容;',
       '用车人账号，内容显示逻辑优化',
     ],
+    longPress: false,//长按操作
     // 日志弹窗是否显示
     JournalFlag: false,
     // 版本号
     version: 'v2026011401'
+  },
+  // 长按专区卡片执行事件
+  handleLongPress() {
+    this.setData({ longPress: true, isLongPressShaking: true })
+    setTimeout(() => {
+      this.setData({ isLongPressShaking: false });
+    }, 500);
+  },
+  // 取消自定义设定
+  handleCancelSettings() {
+    const temporary = this.data.zoneList
+    this.setData({
+      temporaryZoneList: []
+    }, () => {
+      this.setData({
+        longPress: false,
+        zoneList: temporary
+      })
+    })
+  },
+  // 点击卡片关掉具体卡片
+  handleCloseZone(evt) {
+    if (this.data.temporaryZoneList?.length == 1) {
+      wx.showToast({
+        title: '禁止删除最后一项！',
+        icon: 'none'
+      })
+      return
+    }
+    const id = evt?.currentTarget?.dataset?.item?.id;
+    const temporary = this.data.temporaryZoneList?.length > 0 ? this.data.temporaryZoneList : this.data.zoneList;
+    const newArr = temporary.filter(item => item.id !== id);
+    this.setData({ temporaryZoneList: newArr })
+  },
+  // 确认自定义设定
+  handleConfirmSettings() {
+    if (this.clickLock) return;
+    this.clickLock = true;
+    const temporaryZoneList = this.data.temporaryZoneList;
+    const zoneList = this.data.zoneList
+    const idList = temporaryZoneList.map(item => item.id).filter(id => id);
+    try {
+      wx.setStorageSync('temporaryZoneIds', idList);
+      console.log('临时区域ID已存入小程序缓存:', idList);
+    } catch (error) {
+      console.error('缓存写入失败:', error);
+    }
+
+    this.setData({
+      longPress: false
+    }, () => {
+      this.setData({
+        temporaryZoneList: [],
+        zoneList: temporaryZoneList.length > 0 ? temporaryZoneList : zoneList
+      }, () => {
+        this.clickLock = false;
+      });
+    });
+    setTimeout(() => {
+      this.clickLock = false;
+    }, 2000);
+  },
+  // 重置自定义设定
+  handleResetSettings() {
+    wx.removeStorage({
+      key: 'temporaryZoneIds',
+      success: () => this.setData({ longPress: false }, this.initZoneInfo),
+      fail: (err) => err.errMsg.includes('key not found') && this.setData({ longPress: false }, this.initZoneInfo)
+    });
   },
   // 点击banner跳转路径
   handleJumpInfo(evt) {
@@ -200,11 +272,17 @@ Page({
   },
   // 获取专区目录
   async initZoneInfo() {
-    const { statusCode, data: { content } = {} } = await byGet(`${this.data.c_link}${u_getHomeArea.URL}`, {});
-    if (statusCode !== 200 || !content) return;
-    await new Promise(resolve => this.setData({ zoneList: content }, resolve));
+    const cacheIds = wx.getStorageSync('temporaryZoneIds') || [];
+    const { statusCode, data: { content = [] } = {} } = await byGet(`${this.data.c_link}${u_getHomeArea.URL}`, {});
+    if (statusCode !== 200 || !content.length) return;
+    const zoneList = cacheIds.length
+      ? content.filter(item => cacheIds.includes(item.id))
+      : content;
+    await new Promise(resolve => this.setData({ zoneList }, resolve));
     const { options } = this.data;
-    (Object.prototype.toString.call(options) === '[object Object]' && Object.keys(options).length) && this.initjumpToCar();
+    if (options && typeof options === 'object' && Object.keys(options).length) {
+      this.initjumpToCar();
+    }
   },
   // 获取底部导航数据
   initBottomDirectory() {

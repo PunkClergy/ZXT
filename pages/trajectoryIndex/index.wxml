@@ -46,7 +46,7 @@
 
   <!-- 修改 map 为 flex:1 自适应高度 -->
   <map id="map" longitude="{{centerLng}}" latitude="{{centerLat}}" scale="{{mapScale}}" polyline="{{polyline}}" markers="{{markers}}">
-    <view class="info-upper">
+    <view class="info-upper" style="bottom: {{trackPointsWithFixedTime.length>0?'':'300'}}rpx;">
       <text bindtap="handleTrajectory">历史轨迹</text>
     </view>
   </map>
@@ -60,7 +60,7 @@
         <view>轨迹总距离：{{totalTrackDistance}} 公里</view>
         <view class="speed-selector">
           播放速度：
-          <picker mode="selector" range="{{speedLabels}}" bindchange="onSpeedChange">
+          <picker mode="selector" range="{{speedLabels}}" bindchange="onSpeedChange" style="min-width: 120rpx;">
             <view class="selected-speed">{{selectedSpeedLabel}}</view>
           </picker>
         </view>

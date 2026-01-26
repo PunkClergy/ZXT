@@ -45,14 +45,16 @@
 
     <!-- 第三块：专区入口区域（一行两列布局） -->
     <view class="special-zone">
-      <view class="zone-item" wx:for="{{zoneList}}" wx:key="index" style="margin: {{ index % 2 === 0 ? '0 2% 0 0' : '0 0 0 2%' }}">
-        <view class="zone-out" style="background-color: {{item.bgcolor}};" data-info="{{item}}" bindtap="handleGetMenuList">
+      <view class="zone-item" wx:for="{{temporaryZoneList.length>0?temporaryZoneList:zoneList}}" wx:key="index" style="margin: {{ index % 2 === 0 ? '0 2% 0 0' : '0 0 0 2%' }}">
+        <view bindlongpress="handleLongPress" class="zone-out {{isLongPressShaking ? 'shake-rotate' : ''}}" style="background-color: {{item.bgcolor}};position: relative;" data-info="{{item}}" bindtap="handleGetMenuList">
+          <view style="position: absolute;top: 10rpx;right: 15rpx;" data-item="{{item}}" wx:if="{{longPress}}" catchtap="handleCloseZone">
+            <image src="/assets/images/close.png" style="width: 40rpx;height: 40rpx;" />
+          </view>
           <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + item.icon}}" />
           <view class="zone-name">
             <text class="zone-name-title">{{item.name}}</text>
             <text class="zone-name-desc" style="font-size: {{item.stfontSize||11}}px">{{item.subtitle}}</text>
           </view>
-
         </view>
       </view>
     </view>
@@ -83,6 +85,17 @@
       <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />
       <text>{{item.text}}</text>
     </view>
+  </view>
+  <!-- 底部固定按钮区域 -->
+  <view class="bottom-btn-bar" style="bottom: {{tabBarHeight}}px;" wx:if="{{longPress}}">
+    <view style="display: flex;flex-direction: row;">
+      <view class="bottom-btn btn-white" catchtap="handleCancelSettings">取消</view>
+      <view class="bottom-btn btn-blue" catchtap="handleConfirmSettings">确定</view>
+    </view>
+    <view>
+      <view class="bottom-btn btn-blue-dark" catchtap="handleResetSettings">重置</view>
+    </view>
+
   </view>
 </view>
 

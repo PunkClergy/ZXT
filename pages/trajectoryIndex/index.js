@@ -63,14 +63,14 @@ Page({
     totalTrackDistance: 0, // 轨迹总距离（公里）
     // 播放速度配置 - 关键修改：更新为要求的速度选项
     speedOptions: [ // 速度值配置：1秒/X公里
-      { label: '1秒/2公里', value: 2 },
-      { label: '1秒/5公里', value: 5 },
-      { label: '1秒/10公里', value: 10 },
-      { label: '1秒/20公里', value: 20 }
+      { label: 'x1', value: 2 },
+      { label: 'x2', value: 5 },
+      { label: 'x3', value: 10 },
+      // { label: '1秒/20公里', value: 20 }
     ],
-    speedLabels: ['1秒/2公里', '1秒/5公里', '1秒/10公里', '1秒/20公里'], // 同步更新标签列表
+    speedLabels: ['x1', 'x2', 'x3'], // 同步更新标签列表
     selectedSpeed: 2, // 默认选中1秒/2公里
-    selectedSpeedLabel: '1秒/2公里', // 显示用的标签
+    selectedSpeedLabel: 'x1', // 显示用的标签
     // 新增：轨迹查询相关
     startDate: '',
     endDate: '',

@@ -263,6 +263,7 @@ slider {
   position: absolute;
   right: 22rpx;
   bottom: 50rpx;
+  
 }
 
 .info-upper text {
@@ -273,7 +274,7 @@ slider {
   padding: 10rpx 10px;
   font-size: 30rpx;
   color: #000;
-  background: #FFFFFF;
+  background: rgba(79, 195, 247, 0.9);
   border-radius: 7rpx;
 }
 /* 弹窗蒙版 */
