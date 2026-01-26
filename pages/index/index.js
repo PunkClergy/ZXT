@@ -63,64 +63,41 @@ Page({
   },
   // 长按专区卡片执行事件
   handleLongPress() {
-    this.setData({ longPress: true, isLongPressShaking: true })
-    setTimeout(() => {
-      this.setData({ isLongPressShaking: false });
-    }, 500);
+    this.setData({ longPress: !0, isLongPressShaking: !0 });
+    setTimeout(() => this.setData({ isLongPressShaking: !1 }), 500);
   },
   // 取消自定义设定
   handleCancelSettings() {
-    const temporary = this.data.zoneList
-    this.setData({
-      temporaryZoneList: []
-    }, () => {
-      this.setData({
-        longPress: false,
-        zoneList: temporary
-      })
-    })
+    const t = this.data.zoneList;
+    this.setData({ temporaryZoneList: [] }, () => this.setData({ longPress: !1, zoneList: t }));
   },
   // 点击卡片关掉具体卡片
-  handleCloseZone(evt) {
-    if (this.data.temporaryZoneList?.length == 1) {
-      wx.showToast({
-        title: '禁止删除最后一项！',
-        icon: 'none'
-      })
-      return
-    }
-    const id = evt?.currentTarget?.dataset?.item?.id;
-    const temporary = this.data.temporaryZoneList?.length > 0 ? this.data.temporaryZoneList : this.data.zoneList;
-    const newArr = temporary.filter(item => item.id !== id);
-    this.setData({ temporaryZoneList: newArr })
+  handleCloseZone(e) {
+    if (this.data.temporaryZoneList?.length == 1)
+      return wx.showToast({ title: '禁止关闭最后一项！', icon: 'none' });
+    const i = e?.currentTarget?.dataset?.item?.id,
+      t = this.data.temporaryZoneList?.length > 0 ? this.data.temporaryZoneList : this.data.zoneList,
+      n = t.filter(item => item.id !== i);
+    this.setData({ temporaryZoneList: n });
   },
   // 确认自定义设定
   handleConfirmSettings() {
     if (this.clickLock) return;
-    this.clickLock = true;
-    const temporaryZoneList = this.data.temporaryZoneList;
-    const zoneList = this.data.zoneList
-    const idList = temporaryZoneList.map(item => item.id).filter(id => id);
+    this.clickLock = !0;
+    const t = this.data.temporaryZoneList, z = this.data.zoneList,
+      i = t.map(item => item.id).filter(id => id);
     try {
-      wx.setStorageSync('temporaryZoneIds', idList);
-      console.log('临时区域ID已存入小程序缓存:', idList);
-    } catch (error) {
-      console.error('缓存写入失败:', error);
+      wx.setStorageSync('temporaryZoneIds', i);
+      console.log('临时区域ID已存入小程序缓存:', i);
+    } catch (e) {
+      console.error('缓存写入失败:', e);
     }
-
-    this.setData({
-      longPress: false
-    }, () => {
-      this.setData({
-        temporaryZoneList: [],
-        zoneList: temporaryZoneList.length > 0 ? temporaryZoneList : zoneList
-      }, () => {
-        this.clickLock = false;
-      });
-    });
-    setTimeout(() => {
-      this.clickLock = false;
-    }, 2000);
+    this.setData({ longPress: !1 }, () =>
+      this.setData({ temporaryZoneList: [], zoneList: t.length > 0 ? t : z }, () => {
+        this.clickLock = !1;
+      })
+    );
+    setTimeout(() => { this.clickLock = !1 }, 2000);
   },
   // 重置自定义设定
   handleResetSettings() {
