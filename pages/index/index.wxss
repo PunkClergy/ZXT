@@ -220,6 +220,8 @@
   padding: 0 20rpx;
   /* margin-top: 10rpx; */
   box-sizing: border-box;
+  /* display: flex;
+  justify-content: space-between; */
 }
 
 /* 全宽轮播图标题容器样式：flex水平排列，对齐项目中心，间距20rpx，底部外边距20rpx */

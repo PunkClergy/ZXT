@@ -42,7 +42,14 @@
         </view>
       </view>
     </view>
-
+    <view class="full-width-swiper" style="display: flex;justify-content: space-between;align-items: center;">
+      <view class="full-width-use">
+        <image src="/assets/images/index/useGuideIcon.png" />
+        <text>功能专区</text>
+      </view>
+      <view wx:if="{{longPress}}" bindtap="handleCancelSettings" style="font-size: 28rpx;color: cornflowerblue;">取消</view>
+      <view wx:else bindtap="handleLongPress" style="font-size: 28rpx;color: cornflowerblue;">设置</view>
+    </view>
     <!-- 第三块：专区入口区域（一行两列布局） -->
     <view class="special-zone">
       <view class="zone-item" wx:for="{{temporaryZoneList.length>0?temporaryZoneList:zoneList}}" wx:key="index" style="margin: {{ index % 2 === 0 ? '0 2% 0 0' : '0 0 0 2%' }}">

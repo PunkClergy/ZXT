@@ -494,6 +494,10 @@ Page({
       this.initSaveParameters(options)
     })();
   },
+  onHide() {
+    // 执行取消设定逻辑
+    this.handleCancelSettings()
+  },
   // 当前版本
   async handleVersion() {
     try {
@@ -667,6 +671,9 @@ Page({
   },
   // 点击专区跳转逻辑
   handleGetMenuList(evt) {
+    if (this.data.longPress) {
+      return
+    }
     const eventInfo = evt || {};
     const datasetInfo = eventInfo.currentTarget?.dataset?.info || {};
     const menuId = eventInfo.id ?? datasetInfo.id;
