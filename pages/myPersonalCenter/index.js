@@ -232,6 +232,8 @@ Page({
         ...this.data.account_info
       };
       accountInfo.mobile = getApp()?.data?.userInfo?.mobile || '';
+      accountInfo.newUserName = getApp()?.data?.userInfo?.username || '';
+      accountInfo.username = getApp()?.data?.userInfo?.username || null;
       this.setData({
         create_an_account_modal: true,
         account_info: accountInfo

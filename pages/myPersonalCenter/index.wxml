@@ -56,11 +56,11 @@
   </view>
 </view>
 <!-- 点击咨询入群 -->
-<view class="float-button" >
+<view class="float-button">
   <!-- bindtap="handleShowContact" -->
-  <button open-type="contact" show-message-card="{{true}}" send-message-title="我想咨询问题"  send-message-path="/pages/index/index" class="hidden-contact-btn" bindcontact="handleContact"></button>
-  <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png"  />
-  <image src="/assets/images/tel400.png" style="width: 80rpx;height: 80rpx;" bindtap="handleMakePhoneCallWithConfirm"/>
+  <button open-type="contact" show-message-card="{{true}}" send-message-title="我想咨询问题" send-message-path="/pages/index/index" class="hidden-contact-btn" bindcontact="handleContact"></button>
+  <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png" />
+  <image src="/assets/images/tel400.png" style="width: 80rpx;height: 80rpx;" bindtap="handleMakePhoneCallWithConfirm" />
 </view>
 <view class="qr-group-container" wx:if="{{join_the_group_modal}}">
   <view class="qr-group-mask" bindtap="handleQRClose">
@@ -92,7 +92,7 @@
 
       <!-- 账号输入 -->
       <view class="input-item">
-        <input type="text" placeholder="请输入账号" value="{{account_info.newUserName}}" data-flag="newUserName" bindinput="handleInputCallback" class="input-field" />
+        <input type="text" placeholder="请输入账号" value="{{account_info.newUserName}}" disabled="{{account_info.username}}" data-flag="newUserName" bindinput="handleInputCallback" class="input-field" />
       </view>
 
       <!-- 密码输入 -->
