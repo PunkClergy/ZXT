@@ -126,7 +126,7 @@
 <!-- 发送电子钥匙弹窗 -->
 <block>
   <view class="modal-mask" wx:if="{{c_send_key_show_momal}}" bindtap="handleHideSengKeyModal"></view>
-  <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}">
+  <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}" style="bottom: {{flag_item_state?250:0}}rpx;">
     <form bindsubmit="handleFormSubmit">
       <view class="modal-container">
         <view class="modal-container-head">
@@ -136,23 +136,28 @@
         <view class="modal-container-middle">
           <view class="middle-form-item">
             <label>车牌号</label>
-            <view class="modal-form-region">
-              <input placeholder="请输入车牌号" name='platenumber' style="text-align: right;font-size: 28rpx;" wx:if="{{all_send}}" />
+            <view class="modal-form-region" style="position: relative;">
+              <view wx:if="{{all_send}}" style="position: relative;">
+                <input  bindfocus="onInputFocus" bindblur="onInputBlur" class="temporary"  placeholder="请输入车牌号" name='platenumber' value="{{keyword}}" bindinput="onInputChange"  confirm-type="search" bindconfirm="onSearchConfirm" />
+                <view wx:if="{{g_items_temporary.length>0 && keyword.trim()!=''}}" class="g_items_temporary">
+                  <view wx:for="{{g_items_temporary}}" wx:key="index" bindtap="handleQueRen" data-item="{{item}}" class="item-card-footer">
+                    {{item.platenumber}}
+                  </view>
+                </view>
+              </view>
               <text wx:else>{{cellData.platenumber}}</text>
-
             </view>
-
           </view>
           <view class="middle-form-item">
             <label>使用人</label>
             <view class="modal-form-region">
-              <input placeholder="请输入使用人" name='personName' style="text-align: right;font-size: 28rpx;" />
+              <input bindfocus="onInputFocus" bindblur="onInputBlur" placeholder="请输入使用人" name='personName' style="text-align: right;font-size: 28rpx;" />
             </view>
           </view>
           <view class="middle-form-item">
             <label>手机号</label>
             <view class="modal-form-region">
-              <input placeholder="请输入手机号" name='mobile' style="text-align: right;font-size: 28rpx;" />
+              <input bindfocus="onInputFocus" bindblur="onInputBlur" placeholder="请输入手机号" name='mobile' style="text-align: right;font-size: 28rpx;" />
             </view>
 
           </view>

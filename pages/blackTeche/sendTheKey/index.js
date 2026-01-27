@@ -67,6 +67,52 @@ Page({
 
     selectedIndex: 0, // 默认选中第一个
     his_state: '0',
+    keyword: '',        // 搜索关键词
+  },
+  /**
+ * 监听输入框内容变化
+ */
+  onInputChange(e) {
+    const keyword = e.detail.value.trim();
+    this.setData({ keyword });
+    // 搜索防抖（500ms内只执行最后一次）
+    clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => {
+      this.filterData(keyword);
+    }, 500);
+  },
+  onInputBlur() {
+    this.setData({
+      flag_item_state: false
+    })
+  },
+  onInputFocus() {
+    this.setData({ flag_item_state: true });
+  },
+  filterData(keyword) {
+    let matchedItems = [];
+    if (!keyword || keyword.trim() === '') {
+      this.setData({
+        g_items_temporary: []
+      });
+      return;
+    }
+    const lowerKeyword = keyword.toLowerCase().trim();
+    matchedItems = this.data.g_items.filter(item => {
+      if (!item || !item.platenumber) return false;
+      return item.platenumber.toLowerCase().includes(lowerKeyword);
+    });
+
+    this.setData({
+      g_items_temporary: matchedItems
+    });
+  },
+  handleQueRen(evt) {
+    console.log(evt?.currentTarget?.dataset?.item?.platenumber)
+    this.setData({
+      keyword: evt?.currentTarget?.dataset?.item?.platenumber,
+      g_items_temporary: []
+    })
   },
   handleOnStatusChange(evt) {
     this.setData({
@@ -201,6 +247,7 @@ Page({
   handleHideSengKeyModal() {
     this.setData({
       cellData: {},
+      keyword: '',
       c_send_key_show_momal: false,
       all_send: false
     })
@@ -407,7 +454,7 @@ Page({
           g_items: [],
           y_items: [],
           y_page: 1,
-          vehId:''
+          vehId: ''
         }, () => {
           // showToast('发送成功');
           setTimeout(() => {
@@ -511,7 +558,7 @@ Page({
             y_triggered: false,
             y_page: 1,
             y_items: [],
-            vehId:''
+            vehId: ''
           }, () => {
             this.getKeySendingList()
           })
