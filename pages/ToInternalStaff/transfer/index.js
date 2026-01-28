@@ -2,18 +2,17 @@ const {
   showLoading,
   hideLoading,
   showToast
-} = require('../../utils/Inspect/tips')
+} = require('../../../utils/Inspect/tips')
 const {
-  byGet,
-  byPost
-} = require('../../utils/request/http')
+  byGet
+} = require('../../../utils/request/http')
 const {
-  u_noticeList
-} = require('../../utils/request/dispatch')
+  u_transferCustomerList
+} = require('../../../utils/request/dispatch')
 const {
   _handleWindowInfo,
   _handleDeviceInfo
-} = require('../../utils/public').default
+} = require('../../../utils/public').default
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0,
@@ -25,36 +24,7 @@ Page({
     g_page: 1, //列表页码
     g_comParam: '', //搜索内容
   },
-  hadleView(evt) {
-    if (evt?.currentTarget?.dataset?.info) {
-      wx.downloadFile({
-        url: encodeURI(`https://k3a.wiselink.net.cn/img/${evt?.currentTarget?.dataset?.info}`),
-        success: (res) => {
-          const filePath = res.tempFilePath
-          wx.openDocument({
-            filePath: filePath,
-            success: (res) => {
-              console.log('打开PDF成功')
-            },
-            fail: (err) => {
-              console.error('打开PDF失败', err)
-              wx.showToast({
-                title: '打开文件失败',
-                icon: 'none'
-              })
-            }
-          })
-        },
-        fail: (err) => {
-          console.error('下载失败', err)
-          wx.showToast({
-            title: '文件下载失败',
-            icon: 'none'
-          })
-        }
-      })
-    }
-  },
+
   // 全屏背景
   initialiImageBaseConversion() {
     const _this = this;
@@ -123,52 +93,22 @@ Page({
       this.getOrderList();
     });
   },
-  handleView(evt) {
-    console.log(evt)
-    const {
-      item
-    } = evt.currentTarget.dataset
-    this.setData({
-      showModal: true,
-      OldContent: item?.oldcontent
-    })
-  },
-  hideModal() {
-    this.setData({
-      showModal: false
-    })
-  },
+
   // 查询列表
   getOrderList() {
     showLoading("加载中...");
     const param = {
-      [u_noticeList.title]: this.data.g_comParam,
-      [u_noticeList.page]: this.data.g_page,
+      [u_transferCustomerList.customerName]: this.data.g_comParam,
+      [u_transferCustomerList.page]: this.data.g_page,
     };
-    byGet(getApp().data.k1swUrl + u_noticeList.URL, param).then(response => {
+    byGet(getApp().data.k1swUrl + u_transferCustomerList.URL, param).then(response => {
       hideLoading()
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
           showToast(`已加载全部数据：共${this.data.g_items.length}条`);
         }
-
-        // 处理content字段，只保留前10个字符，超出部分用..代替
-        const processedContent = response.data.content.map(item => {
-          // 检查item是否有content字段，避免报错
-          if (item.content && typeof item.content === 'string') {
-            return {
-              ...item,
-              content: item.content.length > 10
-                ? item.content.substring(0, 10) + '...'
-                : item.content,
-              oldcontent: item?.content
-            };
-          }
-          return item;
-        });
-
         this.setData({
-          g_items: this.data.g_items.concat(processedContent),
+          g_items: this.data.g_items.concat(response.data.content),
           g_total: Number(response.data.count || 0).toLocaleString()
         });
       } else {
@@ -208,19 +148,13 @@ Page({
       this.getOrderList();
     });
   },
-  // 跳转下单页面
-  handleOneClickOrdering() {
-    wx.navigateTo({
-      url: '/pages/CustomerReporting/scanCodeAdd/index',
-    })
-  },
+
 
   onLoad(options) {
     this.setData({
       g_comParam: '',
       g_page: 1,
       g_items: [],
-      type: options?.type
     }, () => {
       this.getOrderList();
     })

@@ -1,7 +1,7 @@
 const {
   _handleWindowInfo,
   _handleDeviceInfo
-} = require('../../../utils/public').default
+} = require('../../../../utils/public').default
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0, //屏幕高度

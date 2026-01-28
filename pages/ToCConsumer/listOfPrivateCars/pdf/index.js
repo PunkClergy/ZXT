@@ -1,6 +1,6 @@
 const {
   _handleWindowInfo,
-} = require('../../../utils/public').default
+} = require('../../../../utils/public').default
 
 Page({
   data: {
@@ -19,7 +19,7 @@ Page({
   // “开始使用”按钮点击事件
   startUsing() {
     wx.redirectTo({
-      url: '/pages/privateCar/index',
+      url: '/pages/ToCConsumer/privateCar/index',
     })
   },
   hadleImage() {

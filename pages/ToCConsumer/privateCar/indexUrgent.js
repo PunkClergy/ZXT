@@ -1,10 +1,10 @@
 const {
   _handleWindowInfo,
   _handleDeviceInfo
-} = require('../../utils/public').default
+} = require('../../../utils/public').default
 
-const bleKeyManager = require('../../utils/BleKeyFun-utils.js');  // 蓝牙密钥管理
-const appUtil = require('../../utils/app-util.js');               // 应用工具
+const bleKeyManager = require('../../../utils/BleKeyFun-utils.js');  // 蓝牙密钥管理
+const appUtil = require('../../../utils/app-util.js');               // 应用工具
 
 // 页面定义
 Page({

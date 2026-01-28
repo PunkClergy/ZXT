@@ -1,16 +1,16 @@
 const {
   _handleWindowInfo,
   _handleDeviceInfo
-} = require('../../utils/public').default
+} = require('../../../utils/public').default
 const {
   u_channelAgreementList
-} = require('../../utils/request/data_info')
+} = require('../../../utils/request/data_info')
 const {
   byGet,
-} = require('../../utils/request/http')
+} = require('../../../utils/request/http')
 const {
   showToast
-} = require('../../utils/Inspect/tips')
+} = require('../../../utils/Inspect/tips')
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0, //屏幕高度

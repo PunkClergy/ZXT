@@ -2,10 +2,10 @@
 const {
   _handleWindowInfo,  // 窗口信息处理工具
   _handleDeviceInfo   // 设备信息处理工具
-} = require('../../../utils/public').default;
-const appUtil = require('../../../utils/app-util.js');          // 应用工具
-const bleKeyManager = require('../../../utils/BleKeyFun-utils.js');  // 蓝牙钥匙功能工具
-const byteUtil = require('../../../utils/byte-util.js');        // 字节工具
+} = require('../../../../utils/public').default;
+const appUtil = require('../../../../utils/app-util.js');          // 应用工具
+const bleKeyManager = require('../../../../utils/BleKeyFun-utils.js');  // 蓝牙钥匙功能工具
+const byteUtil = require('../../../../utils/byte-util.js');        // 字节工具
 
 // 控制项常量数组
 const CONTROL_ITEMS = [

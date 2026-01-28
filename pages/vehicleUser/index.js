@@ -193,7 +193,7 @@ Page({
       if ((options?.scene || options?.query).startsWith('blue_')) {
         console.log(options)
         wx.navigateTo({
-          url: `/pages/privateCar/index?scene=${options?.scene || options?.query}`,
+          url: `/pages/ToCConsumer/privateCar/index?scene=${options?.scene || options?.query}`,
         })
         return
       }

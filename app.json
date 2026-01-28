@@ -20,7 +20,7 @@
   "useExtendedLib": {
     "weui": true
   },
-  "pages": [ 
+  "pages": [
     "pages/index/index",
     "pages/trajectoryIndex/index",
     "pages/watchVideos/index",
@@ -112,13 +112,6 @@
     "pages/policy/index",
     "pages/lostClaims/index",
     "pages/electronicFence/index",
-    "pages/privateCar/index",
-    "pages/privateCar/indexUrgent",
-    "pages/listOfPrivateCars/index",
-    "pages/listOfPrivateCars/setting/index",
-    "pages/listOfPrivateCars/engineering/index",
-    "pages/listOfPrivateCars/list/index",
-    "pages/listOfPrivateCars/pdf/index",
     "pages/videoMaterials/index",
     "pages/netCarurgent/index",
     "pages/orderList/details/details",
@@ -127,17 +120,38 @@
     "pages/nbpg/index",
     "pages/vehicleUser/index",
     "pages/coupon/index",
-    "pages/ChannelAgreement/index",
-    "pages/CustomerReporting/index",
-    "pages/Communicate/index",
-    "pages/CustomerReporting/scanCodeAdd/index",
     "pages/ZoneHome/index",
     "pages/myPersonalCenter/index",
     "pages/zoneCenter/index",
-    "pages/transfer/index",
-    "pages/ChannelIndicators/index",
     "pages/zw/index",
     "pages/video/index"
+  ],
+  "subpackages": [{
+      "root": "pages/ToCConsumer",
+      "name": "ToCConsumer",
+      "pages": [
+        "privateCar/index",
+        "privateCar/indexUrgent",
+        "listOfPrivateCars/index",
+        "listOfPrivateCars/setting/index",
+        "listOfPrivateCars/engineering/index",
+        "listOfPrivateCars/list/index",
+        "listOfPrivateCars/pdf/index"
+      ]
+    },
+    {
+      "root": "pages/ToInternalStaff",
+      "name": "ToInternalStaff",
+      "pages": [
+       "ChannelAgreement/index",
+       "CustomerReporting/index",
+       "CustomerReporting/scanCodeAdd/index",
+       "Communicate/index",
+       "transfer/index",
+       "ChannelIndicators/index"
+      ]
+    }
+
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

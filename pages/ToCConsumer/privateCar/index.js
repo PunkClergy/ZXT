@@ -1,23 +1,23 @@
 import { getInstructions, getOutputConfig, getControlItems, getParseHexDataObject, getInstructionMap } from 'z-utility';
 const {
   u_navlist20
-} = require('../../utils/request/home')
+} = require('../../../utils/request/home')
 const {
   byGet,
   byPost,
   byPostJson,
   isLogin
-} = require('../../utils/request/http')
+} = require('../../../utils/request/http')
 const {
   u_carList,
   u_sendInfo,
   u_uploadLog
-} = require('../../utils/request/car')
-const bleKeyManager = require('../../utils/BleKeyFun-utils-single.js');  // 蓝牙密钥管理
-const appUtil = require('../../utils/app-util.js');               // 应用工具
+} = require('../../../utils/request/car')
+const bleKeyManager = require('../../../utils/BleKeyFun-utils-single.js');  // 蓝牙密钥管理
+const appUtil = require('../../../utils/app-util.js');               // 应用工具
 const {
   u_getCarBluetoothKeyByCode
-} = require('../../utils/request/order')
+} = require('../../../utils/request/order')
 
 Page({
   data: {
@@ -476,7 +476,7 @@ Page({
       return
     }
     wx.redirectTo({
-      url: '/pages/listOfPrivateCars/list/index'
+      url: '/pages/ToCConsumer/listOfPrivateCars/list/index'
     });
 
   },
@@ -490,7 +490,7 @@ Page({
     }
     if (this.data?.bluetoothData?.platenumber) {
       wx.redirectTo({
-        url: `/pages/listOfPrivateCars/index?sn=${this.data.deviceIDC}&bluetoothKey=${this.data.orgKeyOld}`,
+        url: `/pages/ToCConsumer/listOfPrivateCars/index?sn=${this.data.deviceIDC}&bluetoothKey=${this.data.orgKeyOld}`,
       })
     } else {
       wx.showModal({
@@ -500,7 +500,7 @@ Page({
         success: (res) => {
           if (res.confirm) {
             wx.redirectTo({
-              url: '/pages/listOfPrivateCars/list/index'
+              url: '/pages/ToCConsumer/listOfPrivateCars/list/index'
             });
           }
         }
@@ -517,7 +517,7 @@ Page({
       return
     }
     wx.redirectTo({
-      url: '/pages/listOfPrivateCars/pdf/index?flag=1',
+      url: '/pages/ToCConsumer/listOfPrivateCars/pdf/index?flag=1',
     })
   },
 
@@ -866,7 +866,7 @@ Page({
         success: (res) => {
           if (res.confirm) {
             wx.redirectTo({
-              url: '/pages/listOfPrivateCars/list/index'
+              url: '/pages/ToCConsumer/listOfPrivateCars/list/index'
             });
           }
         }
@@ -919,7 +919,7 @@ Page({
       return
     }
     wx.redirectTo({
-      url: '/pages/listOfPrivateCars/setting/index?sign=4',
+      url: '/pages/ToCConsumer/listOfPrivateCars/setting/index?sign=4',
     })
   },//跳转配置
 
@@ -1255,7 +1255,7 @@ Page({
       return
     }
     wx.redirectTo({
-      url: '/pages/listOfPrivateCars/pdf/index?flag=1',
+      url: '/pages/ToCConsumer/listOfPrivateCars/pdf/index?flag=1',
     })
   },
 });

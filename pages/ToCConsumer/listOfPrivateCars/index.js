@@ -1,7 +1,7 @@
 const {
   _handleWindowInfo,
   _handleDeviceInfo
-} = require('../../utils/public').default
+} = require('../../../utils/public').default
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0, //屏幕高度
@@ -75,7 +75,7 @@ Page({
         callback: (content) => {
           if (content == '666888') {
             wx.navigateTo({
-              url: '/pages/listOfPrivateCars/engineering/index',
+              url: '/pages/ToCConsumer/listOfPrivateCars/engineering/index',
             })
           } else {
             wx.showToast({
@@ -87,7 +87,7 @@ Page({
         fallback: () => console.log('用户取消输入操作密码')
       },
       default: {
-        url: `/pages/listOfPrivateCars/setting/index?sign=${sign}&deviceIDC=${this.data.deviceIDC}&orgKey=${this.data.orgKey}`
+        url: `/pages/ToCConsumer/listOfPrivateCars/setting/index?sign=${sign}&deviceIDC=${this.data.deviceIDC}&orgKey=${this.data.orgKey}`
       }
     };
     const action = actionMap[sign] || actionMap.default;

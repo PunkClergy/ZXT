@@ -2,19 +2,19 @@ const {
   showLoading,
   hideLoading,
   showToast
-} = require('../../utils/Inspect/tips')
+} = require('../../../utils/Inspect/tips')
 const {
   byGet,
   byPost
-} = require('../../utils/request/http')
+} = require('../../../utils/request/http')
 const {
-  u_customerList,
+  u_qdTaskRecord,
   u_delCustomer
-} = require('../../utils/request/dispatch')
+} = require('../../../utils/request/dispatch')
 const {
   _handleWindowInfo,
   _handleDeviceInfo
-} = require('../../utils/public').default
+} = require('../../../utils/public').default
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0,
@@ -57,80 +57,16 @@ Page({
         _this.setData(dataToUpdate);
       });
   },
-  // 下拉筛选执行
-  bindPickerChange(e) {
-    const filterAggregate = this.data.filter_aggregate;
-    const {
-      id: targetId
-    } = e.currentTarget.dataset;
-    const {
-      key: selectedKey
-    } = e.detail;
-    const targetIndex = filterAggregate.findIndex(item => item.id === targetId);
-    if (targetIndex === -1) {
-      return;
-    }
-    const targetItem = {
-      ...filterAggregate[targetIndex]
-    };
-    const statusOptions = targetItem.filter_work || [];
-    if (selectedKey >= statusOptions.length) {
-      return;
-    }
-    const selectedStatus = statusOptions[selectedKey] || {};
-    const dynamicParams = {
-      [selectedStatus.params || targetItem.params]: selectedStatus.value ?? targetItem.value ?? ''
-    };
-    const updatedAggregate = filterAggregate.map((item, index) =>
-      index === targetIndex ? {
-        ...item,
-        name: selectedStatus.name || item.name
-      } : item
-    );
-    this.setData({
-      filter_aggregate: updatedAggregate,
-      g_items: [],
-      ...dynamicParams
-    }, () => {
-      this.getOrderList();
-    });
-  },
-  handleEdit(evt) {
-    console.log(evt)
-    const {
-      item
-    } = evt.currentTarget.dataset
-    wx.navigateTo({
-      url: '/pages/CustomerReporting/scanCodeAdd/index?source=' + JSON.stringify(item),
-    })
-  },
-  handleDelete(evt) {
-    const {
-      item
-    } = evt.currentTarget.dataset
-    byPost(`${getApp().data.k1swUrl}${u_delCustomer.URL}`, {
-      id: item?.id
-    }, (response) => {
-      if (response?.data?.code != 1000) {
-        showToast(response?.data?.msg);
-        hideLoading();
-        return
-      }
-      showToast(response?.data?.msg);
-      this.handleRefresh()
-    }, (error) => {
-      hideLoading();
-      showToast('删除失败，请稍后重试');
-    });
-  },
+
+
+
   // 查询列表
   getOrderList() {
     showLoading("加载中...");
     const param = {
-      [u_customerList.customerName]: this.data.g_comParam,
-      [u_customerList.page]: this.data.g_page,
+      [u_qdTaskRecord.page]: this.data.g_page,
     };
-    byGet(getApp().data.k1swUrl + u_customerList.URL, param).then(response => {
+    byGet(getApp().data.k1swUrl + u_qdTaskRecord.URL, param).then(response => {
       hideLoading()
       if (response.statusCode == 200) {
         if (this.data.g_page > 1 && response.data.content.length === 0) {
@@ -145,20 +81,7 @@ Page({
       }
     })
   },
-  // 搜索框执行操作
-  handleBlur(e) {
-    const resp = e.detail.value
-    if (resp == this.data.g_comParam) {
-      return
-    }
-    this.setData({
-      g_comParam: e.detail.value,
-      g_page: 1,
-      g_items: []
-    }, () => {
-      this.getOrderList();
-    })
-  },
+
   // 触底懒加载
   handleLower() {
     this.setData({
@@ -177,12 +100,7 @@ Page({
       this.getOrderList();
     });
   },
-  // 跳转下单页面
-  handleOneClickOrdering() {
-    wx.navigateTo({
-      url: '/pages/CustomerReporting/scanCodeAdd/index',
-    })
-  },
+
 
   onLoad(options) {
     this.setData({
@@ -196,7 +114,6 @@ Page({
   onReady() { },
   onShow() {
     this.initialiImageBaseConversion()
-
   },
 
 })

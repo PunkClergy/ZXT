@@ -2,20 +2,20 @@ const {
   showLoading,
   hideLoading,
   showToast
-} = require('../../../utils/Inspect/tips')
+} = require('../../../../utils/Inspect/tips')
 const {
   u_carList,
   u_addOrUpdateCar,
   u_carapiDeleteCar,
-} = require('../../../utils/request/car')
+} = require('../../../../utils/request/car')
 const {
   byPost,
   byGet
-} = require('../../../utils/request/http')
+} = require('../../../../utils/request/http')
 const {
   _handleWindowInfo,
   _handleDeviceInfo
-} = require('../../../utils/public').default
+} = require('../../../../utils/public').default
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0, //屏幕高度
@@ -133,7 +133,7 @@ Page({
       item
     } = evt.currentTarget.dataset
     wx.navigateTo({
-      url: `/pages/listOfPrivateCars/index?sn=${item.sn}&bluetoothKey=${item.bluetoothKey}`,
+      url: `/pages/ToCConsumer/listOfPrivateCars/index?sn=${item.sn}&bluetoothKey=${item.bluetoothKey}`,
     })
 
   },
@@ -310,7 +310,7 @@ Page({
           })
           if (!this.data.id) {
             wx.redirectTo({
-              url: '/pages/listOfPrivateCars/pdf/index',
+              url: '/pages/ToCConsumer/listOfPrivateCars/pdf/index',
             })
           }
           showToast(response.data.msg)
@@ -425,7 +425,7 @@ Page({
     const sign = evt?.currentTarget?.dataset?.sign || evt;
     const getActionMap = (item) => ({
       default: {
-        url: `/pages/listOfPrivateCars/setting/index?sign=${sign}&deviceIDC=${item?.sn}&orgKey=${item?.bluetoothKey}`
+        url: `/pages/ToCConsumer/listOfPrivateCars/setting/index?sign=${sign}&deviceIDC=${item?.sn}&orgKey=${item?.bluetoothKey}`
       }
     });
     const executeNavigation = (ele) => {

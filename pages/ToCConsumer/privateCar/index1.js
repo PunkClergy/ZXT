@@ -157,7 +157,7 @@ Page({
           complete: (res) => {
             if (res.confirm) {
               wx.redirectTo({
-                url: '/pages/listOfPrivateCars/list/index?tabs=3'
+                url: '/pages/ToCConsumer/listOfPrivateCars/list/index?tabs=3'
               })
             }
           }
@@ -171,7 +171,7 @@ Page({
         success: (res) => {
           if (res.confirm) {
             wx.redirectTo({
-              url: '/pages/listOfPrivateCars/list/index'
+              url: '/pages/ToCConsumer/listOfPrivateCars/list/index'
             });
           }
         }
@@ -363,7 +363,7 @@ Page({
       return
     }
     wx.redirectTo({
-      url: '/pages/listOfPrivateCars/list/index'
+      url: '/pages/ToCConsumer/listOfPrivateCars/list/index'
     });
 
   },
@@ -377,7 +377,7 @@ Page({
     }
     if (this.data?.bluetoothData?.platenumber) {
       wx.redirectTo({
-        url: `/pages/listOfPrivateCars/index?sn=${this.data.deviceIDC}&bluetoothKey=${this.data.orgKeyOld}`,
+        url: `/pages/ToCConsumer/listOfPrivateCars/index?sn=${this.data.deviceIDC}&bluetoothKey=${this.data.orgKeyOld}`,
       })
     } else {
       wx.showModal({
@@ -387,7 +387,7 @@ Page({
         success: (res) => {
           if (res.confirm) {
             wx.redirectTo({
-              url: '/pages/listOfPrivateCars/list/index'
+              url: '/pages/ToCConsumer/listOfPrivateCars/list/index'
             });
           }
         }
@@ -424,7 +424,7 @@ Page({
       return
     }
     wx.redirectTo({
-      url: '/pages/listOfPrivateCars/pdf/index?flag=1',
+      url: '/pages/ToCConsumer/listOfPrivateCars/pdf/index?flag=1',
     })
   },
   /**
@@ -767,7 +767,7 @@ Page({
         success: (res) => {
           if (res.confirm) {
             wx.redirectTo({
-              url: '/pages/listOfPrivateCars/list/index'
+              url: '/pages/ToCConsumer/listOfPrivateCars/list/index'
             });
           }
         }
@@ -820,7 +820,7 @@ Page({
       return
     }
     wx.redirectTo({
-      url: '/pages/listOfPrivateCars/setting/index?sign=4',
+      url: '/pages/ToCConsumer/listOfPrivateCars/setting/index?sign=4',
     })
   },//跳转配置
 

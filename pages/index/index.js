@@ -370,7 +370,7 @@ Page({
           };
           setGlobal(getId(zoneList));
           wx.navigateTo({
-            url: `/pages/privateCar/index?scene=${encodeURIComponent(sceneParam)}`
+            url: `/pages/ToCConsumer/privateCar/index?scene=${encodeURIComponent(sceneParam)}`
           });
         },
         default: () => {
@@ -400,7 +400,7 @@ Page({
       key: 'bluetoothData',
       success(res) {
         wx.redirectTo({
-          url: '/pages/privateCar/indexUrgent',
+          url: '/pages/ToCConsumer/privateCar/indexUrgent',
         })
       },
       fail(err) {
