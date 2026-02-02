@@ -22,6 +22,7 @@
   },
   "pages": [
     "pages/index/index",
+    "pages/carService/oilCalculator/oilCalculator",
     "pages/trajectoryIndex/index",
     "pages/watchVideos/index",
     "pages/carService/carService",
