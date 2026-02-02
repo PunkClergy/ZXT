@@ -6,6 +6,10 @@ const u_rentRecord = {
   page: 'page',
   comParam: 'comParam'
 }
+// 派发记录
+const u_keyListKey={
+  URL: fin3plusUrl + "keyLendReturnApi/keyList",
+}
 const u_sendRentKey = {
   URL: fin3plusUrl + "rentKeyApi/sendRentKey",
 }
@@ -21,11 +25,17 @@ const u_cancelRentKey = {
   URL: fin3plusUrl + "rentKeyApi/cancelRentKey",
   controlCode: 'controlCode'
 }
-
+const u_addOrUpdateKey ={
+  URL: fin3plusUrl + "keyLendReturnApi/addOrUpdate",
+  controlCode: 'controlCode'
+}
+// 派发钥匙
 module.exports = {
   u_unBindDriver,
   u_bindOrUpdateDriver,
   u_cancelRentKey,
   u_rentRecord,
-  u_sendRentKey
+  u_sendRentKey,
+  u_addOrUpdateKey,
+  u_keyListKey
 }

@@ -1,23 +1,23 @@
 const {
   _handleWindowInfo,
   _handleDeviceInfo
-} = require('../../../utils/public').default
+} = require('../../../../utils/public').default
 const {
   u_addOrUpdateCustomer
-} = require('../../../utils/request/dispatch')
+} = require('../../../../utils/request/dispatch')
 const {
   u_getProvinces,
   u_getCitys
-} = require('../../../utils/request/data_info')
+} = require('../../../../utils/request/data_info')
 const {
   byPost,
   byGet
-} = require('../../../utils/request/http')
+} = require('../../../../utils/request/http')
 const {
   showLoading,
   hideLoading,
   showToast
-} = require('../../../utils/Inspect/tips')
+} = require('../../../../utils/Inspect/tips')
 Page({
   data: {
     c_screen_height: _handleWindowInfo.screenHeight || 0, //全高度

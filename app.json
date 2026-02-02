@@ -143,15 +143,21 @@
       "root": "pages/ToInternalStaff",
       "name": "ToInternalStaff",
       "pages": [
-       "ChannelAgreement/index",
-       "CustomerReporting/index",
-       "CustomerReporting/scanCodeAdd/index",
-       "Communicate/index",
-       "transfer/index",
-       "ChannelIndicators/index"
+        "ChannelAgreement/index",
+        "CustomerReporting/index",
+        "CustomerReporting/scanCodeAdd/index",
+        "Communicate/index",
+        "transfer/index",
+        "ChannelIndicators/index"
+      ]
+    },
+    {
+      "root": "pages/ToGovernment",
+      "name": "ToGovernment",
+      "pages": [
+        "InternalKeyIssuance/index"
       ]
     }
-
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
