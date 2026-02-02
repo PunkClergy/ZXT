@@ -21,7 +21,7 @@ const {
 const {
   u_keyListKey,
   u_addOrUpdateKey,
-  u_cancelRentKey
+  u_employeeReturn
 } = require('../../../utils/request/self')
 const {
   u_childUserList,
@@ -112,8 +112,6 @@ Page({
     })
     return
   },
-
-
 
   handleOnStatusChange(evt) {
     this.setData({
@@ -262,7 +260,7 @@ Page({
   // 切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
-    if (flag == '发送钥匙') {
+    if (flag == '派发钥匙') {
       this.setData({
         c_activeTab: 1,
       })
@@ -271,14 +269,6 @@ Page({
         c_activeTab: 2,
       })
     }
-  },
-  // 触底执行
-  handleLower() {
-    this.setData({
-      g_page: this.data.g_page + 1
-    }, () => {
-      this.getOrderList();
-    });
   },
   // 电子钥匙发送记录到底执行
   handleKeyLower() {
@@ -289,16 +279,7 @@ Page({
       this.getKeySendingList()
     });
   },
-  // 下拉操作执行
-  handleRefresh() {
-    this.setData({
-      g_triggered: false,
-      g_page: 1,
-      g_items: []
-    }, () => {
-      this.getOrderList();
-    });
-  },
+
   handleKeyRefresh() {
     this.setData({
       y_triggered: false,
@@ -461,36 +442,36 @@ Page({
 
   },
   handleCance(evt) {
+    console.log(evt)
     const params = {
-      [u_cancelRentKey.controlCode]: evt.currentTarget.dataset.item.controlcode
+      id: evt.currentTarget.dataset.item.id
     }
-    byGet(getApp().data.k1swUrl + u_cancelRentKey.URL, params).then(response => {
-      console.log(response.data)
-      if (response.data.code == 1000) {
-        this.setData({
-          c_send_key_show_momal: false,
-          g_items: [],
-          y_items: [],
-          y_page: 1,
-        }, () => {
-          this.getKeySendingList()
-          this.getOrderList()
-        });
-      } else {
-        showToast(response.data.msg)
+    byPost(`${getApp().data.k1swUrl + u_employeeReturn.URL}`, params,
+      (response) => {
+        if (response.data.code == 1000) {
+          this.setData({
+            c_send_key_show_momal: false,
+            g_items: [],
+            y_items: [],
+            y_page: 1,
+          }, () => {
+            this.getKeySendingList()
+            this.getOrderList()
+          });
+
+        } else {
+          wx.showToast({
+            title: response?.data.msg,
+            icon: 'none'
+          })
+        }
+
+      },
+      (error) => {
+
       }
-    });
-  },
-  handleCopy(evt) {
-    const text = evt.currentTarget.dataset.item.simplecode
-    wx.setClipboardData({
-      data: text,
-      success: () => {
-        this.setData({
-          copied: true
-        })
-      }
-    });
+    );
+
   },
   handleForward(evt) {
     console.log(evt)

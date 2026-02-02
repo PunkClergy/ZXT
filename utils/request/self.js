@@ -25,12 +25,18 @@ const u_cancelRentKey = {
   URL: fin3plusUrl + "rentKeyApi/cancelRentKey",
   controlCode: 'controlCode'
 }
+// 归还物理钥匙
+const u_employeeReturn = {
+  URL: fin3plusUrl + "/keyLendReturnApi/employeeReturn",
+}
+
 const u_addOrUpdateKey ={
   URL: fin3plusUrl + "keyLendReturnApi/addOrUpdate",
   controlCode: 'controlCode'
 }
 // 派发钥匙
 module.exports = {
+  u_employeeReturn,
   u_unBindDriver,
   u_bindOrUpdateDriver,
   u_cancelRentKey,
