@@ -45,14 +45,14 @@
   <view class="record-container" style="height: {{c_screen_height-(searchBarHeight+totalNavHeight)}}px;">
     <view class="record-head">
       <text>油量计算器</text>
-      <view class="search-box">
+      <!-- <view class="search-box">
         <icon type="search" size="16" class="search-icon" />
         <input placeholder="车牌号/设备号/租车人" class="search-input" />
-      </view>
+      </view> -->
     </view>
     <view class="record-info">
-      <view class="search-container" style="height:{{searchBarHeight}}px">
-        <view class="search-drop">
+      <!-- <view class="search-container" style="height:{{searchBarHeight}}px"> -->
+        <!-- <view class="search-drop">
           <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
             <view class="picker">
               <text>所有状态</text>
@@ -72,9 +72,9 @@
               <image src="/assets/images/home/up.png" style="width: 20rpx;height: 30rpx;" />
             </view>
           </picker>
-        </view>
-        <view class="count-text">共有{{g_total}}条记录 </view>
-      </view>
+        </view> -->
+        <!-- <view class="count-text">共有{{g_total}}条记录 </view> -->
+      <!-- </view> -->
       <scroll-view class="content-container" scroll-y="true" style="top:{{25+5 + 8+10+10 + searchBarHeight}}px;" bindscrolltolower="handleLower">
         <block wx:for="{{items}}" wx:key="index">
           <view class="content-item">
