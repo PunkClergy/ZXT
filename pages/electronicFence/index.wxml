@@ -128,8 +128,14 @@
       <block wx:else>
         <view class="map-container-bar">
           <view class="map-left-group">
-            <view bindtap="handleMapType" class="map-button" style="color: {{map_type==2?'#fff':'#333'}}; background: {{map_type == 2?'cornflowerblue':''}};">矩形</view>
-            <text bindtap="handleMapType" class="map-button" style="color: {{map_type==1?'#fff':'#333'}};background: {{map_type == 1?'cornflowerblue':''}};">圆形</text>
+            <picker range-key="province" data-item="2" class="map-button" bindtap="handleMapType" mode="selector" range="{{provinceOptionList}}" value="{{selectedIndex}}" bindchange="handleOnProvinceChange">
+              <view class="picker-display">
+                {{province}}
+                {{currentProvince || '请选择省份'}}
+              </view>
+            </picker>
+
+            <text bindtap="handleMapType" data-item="1" class="map-button" style="color: {{map_type==1?'#fff':'#333'}};background: {{map_type == 1?'cornflowerblue':''}};">圆形</text>
           </view>
           <view class="map-right-group">
             <picker bindchange="handlePickerChangeRadius" value="{{radius_array_index}}" range="{{radius_array}}" wx:if="{{map_type==1}}">
@@ -142,9 +148,8 @@
           </view>
         </view>
         <block wx:if="{{map_type == 2}}">
-          <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="16" show-location polygons="{{polygons}}" bindtap="onMapTap" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;">
+          <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="6" show-location polygons="{{polygons}}" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;">
             <view class="map-bottom-buttons">
-              <text class="map-button" bindtap="handleEliminate">清除上一步</text>
               <text class="map-button" bindtap="handleClear">清空</text>
             </view>
           </map>
