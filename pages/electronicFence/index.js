@@ -254,6 +254,8 @@ Page({
               map_type: type,
 
             }, () => {
+              this.getProvinceBoundaryByTencentMap()
+
               // 此处初始化省份
               // this.setData({
               //   currentProvince: ''
@@ -284,7 +286,7 @@ Page({
           return;
         }
 
-        wx.showToast({ title: response.data.msg || '操作成功',icon:'none' });
+        wx.showToast({ title: response.data.msg || '操作成功', icon: 'none' });
 
         this.setData({
           add_type: 2,
@@ -508,7 +510,7 @@ Page({
           return;
         }
 
-        wx.showToast({ title: res.data.msg || '操作成功',icon:'none' });
+        wx.showToast({ title: res.data.msg || '操作成功', icon: 'none' });
         this.updateListState();
       },
       (err) => {
@@ -610,98 +612,51 @@ Page({
     this.initialiImageBaseConversion()
     this.handleCurrentDate()
   },
-
-  // 以下代码暂时无用
-  /**
-  * 调用腾讯地图行政区域API，获取省份边界
-  */
   getProvinceBoundaryByTencentMap() {
-    // 1. 替换为你自己的腾讯地图WebService Key
-    const tencentMapKey = 'AYHBZ-ZWF33-URK3D-OZHPV-AJSVF-PDFI7';
-    // 2. 目标省份名称（支持中文，如“北京市”“江苏省”）
-    const provinceName = "河北省";
-
-    // 3. 构造请求参数
-    const requestUrl = `https://apis.map.qq.com/ws/district/v1/search`;
-    wx.request({
-      url: requestUrl,
-      method: "GET",
-      data: {
-        keyword: provinceName, // 要查询的行政区域名称
-        get_poly: 1, // 关键参数：1=返回边界坐标，0=不返回（默认0）
-        key: tencentMapKey // 你的腾讯地图Key
-      },
-      success: (res) => {
-        console.log("腾讯地图返回数据：", res.data);
-        if (res.data.status === 0) { // 腾讯地图返回status=0表示请求成功
-          // 提取边界数据并格式化
-          const boundaryData = res.data.result[0];
-          const polygonData = this.formatTencentBoundary(boundaryData);
-          this.setData({
-            provincePolygon: polygonData
-          });
-        } else {
-          wx.showToast({
-            title: `获取失败：${res.data.message}`,
-            icon: "none"
-          });
-        }
-      },
-      fail: (err) => {
-        console.error("网络请求失败：", err);
-        wx.showToast({
-          title: "网络请求失败",
-          icon: "none"
-        });
-      }
-    });
-  },
-
-  /**
-   * 格式化腾讯地图返回的边界数据，适配微信小程序map组件
-   * @param {Object} boundaryData 腾讯地图返回的单个行政区域数据
-   * @returns {Array} 适配map组件polygon的格式数据
-   */
-  formatTencentBoundary(boundaryData) {
-    console.log(boundaryData)
-    const polygonList = [];
-    // 腾讯地图返回的boundaries是数组，每个元素对应一个闭合区域（如省份包含岛屿、飞地）
-    const boundaries = boundaryData.boundaries;
-
-    if (!boundaries || boundaries.length === 0) {
-      wx.showToast({
-        title: "该区域无边界数据",
-        icon: "none"
+    const ProvinceBoundary = this.data.ProvinceBoundary
+    const allPointsArray = Object.values(ProvinceBoundary).map(province => province.points);
+    const pointStr = this.data.params.efencepoints
+    const pointArray = pointStr
+      .split(',')
+      .map(item => {
+        const [lonStr, latStr] = item.split('|');
+        return {
+          latitude: Number(latStr), 
+          longitude: Number(lonStr) 
+        };
       });
-      return polygonList;
+    let matchIndex = -1; 
+
+    for (let arrIndex = 0; arrIndex < allPointsArray.length; arrIndex++) {
+      const currentPoints = allPointsArray[arrIndex]; 
+      let isMatch = true; 
+
+      if (currentPoints.length !== pointArray.length) {
+        isMatch = false;
+        continue; 
+      }
+      for (let pointIndex = 0; pointIndex < currentPoints.length; pointIndex++) {
+        const p1 = currentPoints[pointIndex];
+        const p2 = pointArray[pointIndex];
+        const latDiff = Math.abs(p1.latitude - p2.latitude);
+        const lonDiff = Math.abs(p1.longitude - p2.longitude);
+        if (latDiff > 1e-6 || lonDiff > 1e-6) {
+          isMatch = false;
+          break;
+        }
+      }
+      if (isMatch) {
+        matchIndex = arrIndex;
+        break;
+      }
     }
-
-    // 遍历每个闭合区域，转换格式
-    boundaries.forEach(boundaryStr => {
-      const pointArr = boundaryStr.split(";"); // 单个区域的坐标点用“;”分隔
-      const polygonItem = [];
-
-      pointArr.forEach(point => {
-        const [lng, lat] = point.split(","); // 腾讯地图坐标格式：经度,纬度
-        // 转换为微信小程序map组件要求的格式：{latitude: 纬度, longitude: 经度}
-        polygonItem.push({
-          latitude: parseFloat(lat),
-          longitude: parseFloat(lng)
-        });
-      });
-
-      // 确保多边形闭合（可选，腾讯返回的数据通常已首尾闭合）
-      if (polygonItem.length > 0) {
-        const firstPoint = polygonItem[0];
-        const lastPoint = polygonItem[polygonItem.length - 1];
-        if (firstPoint.latitude !== lastPoint.latitude || firstPoint.longitude !== lastPoint.longitude) {
-          polygonItem.push(firstPoint);
-        }
-      }
-
-      polygonList.push(polygonItem);
-    });
-
-    return polygonList;
+    let provinceName = ""; 
+    if (matchIndex !== -1) {
+      const provinceObjectsArray = Object.values(ProvinceBoundary);
+      const matchedProvinceObj = provinceObjectsArray[matchIndex];
+      provinceName = matchedProvinceObj?.name || "未获取到省市名称";
+    }
+    this.setData({ currentProvince: provinceName })
   }
+
 })
