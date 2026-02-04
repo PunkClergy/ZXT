@@ -612,6 +612,7 @@ Page({
     this.initialiImageBaseConversion()
     this.handleCurrentDate()
   },
+  // 获取当前省份
   getProvinceBoundaryByTencentMap() {
     const ProvinceBoundary = this.data.ProvinceBoundary
     const allPointsArray = Object.values(ProvinceBoundary).map(province => province.points);
