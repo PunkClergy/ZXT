@@ -198,7 +198,7 @@
                     <block wx:else>请选择上门取钥匙地址</block>
                   </view>
                 </view>
-                <view bindtap="handleSendingKeyFunction" class="take_keys_confirm_btn" wx:if="{{all_data.status!=6&&all_data.status!=7}}">确1认</view>
+                <view bindtap="handleSendingKeyFunction" class="take_keys_confirm_btn" wx:if="{{all_data.status!=6&&all_data.status!=7}}">确认</view>
               </view>
             </view>
           </block>
