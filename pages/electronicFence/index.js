@@ -21,7 +21,6 @@ const {
   showToast
 } = require('../../utils/Inspect/tips')
 import {
-  ProvinceBoundary,
   provinceOptionList
 } from 'z-utility';
 Page({
@@ -61,7 +60,17 @@ Page({
       fillColor: '#FF000033'
     }],
     radius_array: [100, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000],
-    radius_array_index: 0
+    radius_array_index: 0,
+    // 省市二维数组（第一列省，第二列对应市）
+    multiArray: [],
+    // 选中的索引（默认选第一个）
+    multiIndex: [0, 0],
+    // 选中的行政区划代码
+    selectedCode: '',
+    // 原始省市数据（包含行政区划代码）
+    provinceCityData: [],
+    province_temp: '',
+    city_temp: ''
   },
   // 更改围栏半径
   handlePickerChangeRadius(evt) {
@@ -221,6 +230,7 @@ Page({
   //提交内容-第一步
   handleSubmit() {
     const { params, id, startdate, enddate, batterylift } = this.data;
+    console.log(this.data.multiArray[0]?.[this.data.multiIndex[0]])
     wx.showLoading({ title: '提交中...', mask: true });
     const postData = {
       ...params,
@@ -254,7 +264,6 @@ Page({
               map_type: type,
 
             }, () => {
-              this.getProvinceBoundaryByTencentMap()
 
               // 此处初始化省份
               // this.setData({
@@ -496,7 +505,9 @@ Page({
     const requestData = {
       ...this.data.temp,
       efencetype: this.data.map_type,
-      efencepoints: pointsData
+      efencepoints: pointsData,
+      province: this.data.multiArray[0]?.[this.data.multiIndex[0]],
+      city: this.data.multiArray[1]?.[this.data.multiIndex[1]]
     };
 
     // 统一请求处理
@@ -588,76 +599,193 @@ Page({
     };
     this.setData({ circles: [circle] });
   },
-  // 选择省份点
-  handleOnProvinceChange(evt) {
-    const value = this.data.provinceOptionList[evt?.detail?.value]?.value
-    const aggregate = this.data.ProvinceBoundary[value]?.points
-    const centerPoint = this.data.ProvinceBoundary[value]?.center
-    this.setData({
-      latitude: centerPoint?.latitude,
-      longitude: centerPoint?.longitude,
-      currentProvince: this.data.ProvinceBoundary[value]?.name
-    }, () => {
-      this.updatePolygon(aggregate)
-    })
-  },
+
   onLoad(options) {
-    // 获取外部封装数据
-    this.setData({ ProvinceBoundary, provinceOptionList })
+    this.setData({
+      provinceCityData: provinceOptionList
+    }, () => {
+      this.initPickerData();
+    })
     this.initCarryParams(options)
     this.getLocation();
-    // this.getProvinceBoundaryByTencentMap()
   },
   onShow() {
     this.initialiImageBaseConversion()
     this.handleCurrentDate()
   },
-  // 获取当前省份
-  getProvinceBoundaryByTencentMap() {
-    const ProvinceBoundary = this.data.ProvinceBoundary
-    const allPointsArray = Object.values(ProvinceBoundary).map(province => province.points);
-    const pointStr = this.data.params.efencepoints
-    const pointArray = pointStr
-      .split(',')
-      .map(item => {
-        const [lonStr, latStr] = item.split('|');
-        return {
-          latitude: Number(latStr), 
-          longitude: Number(lonStr) 
-        };
+
+  initPickerData() {
+    // 提取所有省份名称
+    const provinceNames = this.data.provinceCityData.map(item => item.name);
+    // 默认加载第一个省份的城市名称
+    const firstCityNames = this.data.provinceCityData[0].cities.map(item => item.name);
+    // 更新数据
+    this.setData({
+      multiArray: [provinceNames, firstCityNames],
+    });
+  },
+
+
+  bindMultiPickerColumnChange(e) {
+    const columnIndex = e.detail.column; // 改变的列索引（0=省，1=市）
+    const rowIndex = e.detail.value;     // 选中的行索引
+
+    // 只有切换省份列（第0列）时，才更新城市列表
+    if (columnIndex === 0) {
+      // 获取当前选中的省份数据
+      const currentProvince = this.data.provinceCityData[rowIndex];
+      // 提取当前省份的城市名称
+      const cityNames = currentProvince.cities.map(item => item.name);
+      // 更新选中索引、城市列表和默认代码
+      this.setData({
+        multiIndex: [rowIndex, 0], // 省份切换后，城市默认选第一个
+        multiArray: [this.data.multiArray[0], cityNames],
+        selectedCode: currentProvince.cities[0].code
       });
-    let matchIndex = -1; 
+    } else {
+      // 切换城市列时，更新选中的代码
+      const provinceIndex = this.data.multiIndex[0];
+      const currentCity = this.data.provinceCityData[provinceIndex].cities[rowIndex];
+      // 更新选中索引和代码
+      const newMultiIndex = [...this.data.multiIndex];
+      newMultiIndex[columnIndex] = rowIndex;
+      this.setData({
+        multiIndex: newMultiIndex,
+        selectedCode: currentCity.code
+      });
+    }
+  },
 
-    for (let arrIndex = 0; arrIndex < allPointsArray.length; arrIndex++) {
-      const currentPoints = allPointsArray[arrIndex]; 
-      let isMatch = true; 
+  bindMultiPickerChange(e) {
+    const [provinceIdx, cityIdx] = e.detail.value;
+    const {
+      multiArray,
+      provinceCityData
+    } = this.data;
 
-      if (currentPoints.length !== pointArray.length) {
-        isMatch = false;
-        continue; 
-      }
-      for (let pointIndex = 0; pointIndex < currentPoints.length; pointIndex++) {
-        const p1 = currentPoints[pointIndex];
-        const p2 = pointArray[pointIndex];
-        const latDiff = Math.abs(p1.latitude - p2.latitude);
-        const lonDiff = Math.abs(p1.longitude - p2.longitude);
-        if (latDiff > 1e-6 || lonDiff > 1e-6) {
-          isMatch = false;
-          break;
+    // 解构获取选中项信息
+    const {
+      code: provinceCode,
+      cities: {
+        [cityIdx]: {
+          code: selectedCode,
+          name: cityName
         }
       }
-      if (isMatch) {
-        matchIndex = arrIndex;
-        break;
+    } = provinceCityData[provinceIdx];
+
+    const provinceName = multiArray[0][provinceIdx];
+
+    // 一次性设置所有相关数据
+    this.setData({
+      province_temp: provinceName,
+      city_temp: cityName,
+      selectedProvince: provinceName,
+      selectedCity: cityName,
+      selectedCode,
+      provinceCode
+    });
+
+    // 调用后续处理函数
+    this.handleRetrievePoint(selectedCode);
+  },
+
+  convertTencentPolygonToPoints(polygonData) {
+    // 步骤1：提取原始polygon二维数组（兼容两种入参格式）
+    let rawPolygon = [];
+    if (Array.isArray(polygonData)) {
+      // 入参是直接传入的polygon原始数组
+      rawPolygon = polygonData;
+    } else if (
+      polygonData &&
+      polygonData.result &&
+      Array.isArray(polygonData.result) &&
+      polygonData.result[0] &&
+      polygonData.result[0][0] &&
+      Array.isArray(polygonData.result[0][0].polygon)
+    ) {
+      // 入参是接口返回的完整响应数据，提取核心polygon数组
+      rawPolygon = polygonData.result[0][0].polygon;
+    } else {
+      console.error("入参格式错误，无法提取polygon数据");
+      return [];
+    }
+
+    // 步骤2：处理空数据边界情况
+    if (!rawPolygon.length || !Array.isArray(rawPolygon[0])) {
+      console.warn("polygon数据为空，返回空数组");
+      return [];
+    }
+
+    // 步骤3：转换为{ longitude, latitude }格式
+    const points = [];
+    const coreCoordinates = rawPolygon[0]; // 提取行政区域的核心坐标集合（一维数组，按[lng, lat]排列）
+
+    for (let i = 0; i < coreCoordinates.length; i += 2) {
+      // 腾讯地图polygon一维数组格式：[lng1, lat1, lng2, lat2, ...]
+      const longitude = coreCoordinates[i];
+      const latitude = coreCoordinates[i + 1];
+
+      // 过滤无效坐标（避免NaN等异常值）
+      if (typeof longitude === 'number' && typeof latitude === 'number') {
+        points.push({
+          longitude: longitude,
+          latitude: latitude
+        });
       }
     }
-    let provinceName = ""; 
-    if (matchIndex !== -1) {
-      const provinceObjectsArray = Object.values(ProvinceBoundary);
-      const matchedProvinceObj = provinceObjectsArray[matchIndex];
-      provinceName = matchedProvinceObj?.name || "未获取到省市名称";
+
+    // 步骤4：自动补充闭合点（如果首尾坐标不一致）
+    if (points.length >= 1) {
+      const firstPoint = points[0];
+      const lastPoint = points[points.length - 1];
+      if (
+        firstPoint.longitude !== lastPoint.longitude ||
+        firstPoint.latitude !== lastPoint.latitude
+      ) {
+        points.push({
+          longitude: firstPoint.longitude,
+          latitude: firstPoint.latitude
+        });
+      }
     }
-    this.setData({ currentProvince: provinceName })
-  }
+
+    // 步骤5：返回转换结果
+    return points;
+  },
+  handleRetrievePoint(evt) {
+    wx.request({
+      url: 'https://apis.map.qq.com/ws/district/v1/search',
+      data: {
+        keyword: evt,
+        get_polygon: 1,
+        key: 'W66BZ-ADBC3-COB3F-YWZG4-MAVRO-IJBIM'
+      },
+      success: res => {
+        if (res.data.status === 0) {
+          console.log(res.data.result[0][0]?.location?.lng)
+          const polygon = res.data.result[0][0].polygon;
+          this.setData({
+            polygons: [{
+              points: this.convertTencentPolygonToPoints(polygon),
+              strokeWidth: 3,
+              strokeColor: '#FF0000FF',
+              fillColor: '#FF000033',
+             
+            }],
+            latitude:res.data.result[0][0]?.location.lat,
+            longitude:res.data.result[0][0]?.location?.lng
+          })
+        } else {
+          wx.showToast({ title: res.data.message, icon: 'none' });
+        }
+      },
+      fail: err => {
+        console.error('请求失败：', err);
+        wx.showToast({ title: '边界数据获取失败', icon: 'none' });
+      }
+    });
+  },
+
 
 })

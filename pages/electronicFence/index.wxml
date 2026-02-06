@@ -128,10 +128,11 @@
       <block wx:else>
         <view class="map-container-bar">
           <view class="map-left-group">
-            <picker range-key="province" data-item="2" class="map-button" bindtap="handleMapType" mode="selector" range="{{provinceOptionList}}" value="{{selectedIndex}}" bindchange="handleOnProvinceChange">
-              <view class="picker-display">
-                {{province}}
-                {{currentProvince || '请选择省份'}}
+          
+            <picker class="map-button" mode="multiSelector" range="{{multiArray}}" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}">
+              <view >
+              {{province_temp||'请选择省市'}}{{province_temp}}
+                <!-- {{multiArray[0][multiIndex[0]]||'请选择省市'}}{{multiArray[1][multiIndex[1]]}} -->
               </view>
             </picker>
 
