@@ -40,22 +40,8 @@ Page({
     g_page: 1, //列表页码
     g_items: [], //列表数据
     c_activeTab: 2, //当前页签值
-    // 下单参数
-    g_core_functions: [], //所属功能
-    g_core_functions_index: null, //当前功能
-    g_core_functions_active: [],//当前所选功能
-    g_core_type: [],// 设备类型
-    g_core_type_index: null,// 当前选择设备类型
     g_industry: [], //所属行业
     g_industry_index: null, //当前行业
-    whether_vehicle: false, //是否需要上次车辆信息
-    tabs: [{
-      id: 0,
-      title: '车型1',
-    }],
-    currentIndex: 0,//当前显示车辆tab签
-    scrollLeft: 0,//车辆参数
-    params: {},//新增订单form参数
     g_install_list: [{
       value: 0,
       name: '否'
@@ -63,15 +49,9 @@ Page({
       value: 1,
       name: '是'
     }], // 是否安装
-    g_sending_keys: [{
-      value: 1,
-      name: '直接购买'
-    }, {
-      value: 2,
-      name: '押金方式'
-    }],// 购买方式
+
     g_install_index: 1,//是否安装当前选择
-    g_sending_keys_index: 1,//是否寄送钥匙当前选择
+
     c_address_type: '',// 地址选择类型
     c_select_address: false,//选择地址弹窗
     g_door_address: '',//上门地址
@@ -80,9 +60,6 @@ Page({
     bak: '',//备注
     c_link: 'https://k1sw.wiselink.net.cn/', //域名
     tabList: [
-      { icon: 'https://picsum.photos/50/50?random=50', name: '首页', path: '/pages/index/index' },
-      { icon: 'https://picsum.photos/50/50?random=51', name: '采购下单', path: '/pages/orderList/orderList' },
-      { icon: 'https://picsum.photos/50/50?random=53', name: '我的', path: '/pages/myPersonalCenter/index' }
     ],
     // 底部tabbar高度
     tabBarHeight: 80,
@@ -118,9 +95,21 @@ Page({
       //   price: 2499.00,
       //   checked: false
       // }
-    ]
+    ],
+    goodsList: [
+      { id: 1, name: '无需邮寄' },
+      { id: 2, name: '自行邮寄' },
+      { id: 3, name: '上门取钥匙' }
+    ],
+    selectIndex: 0, // picker绑定的下标（默认选中第0项）
+    selectItem: {}  // 存储当前选中的完整对象（方便后续取值
   },
-  // 获取系统头部各区域高度
+  //  Tabs2选择钥匙邮寄方式
+  onPickerChange(e) {
+    const index = +e.detail.value;
+    this.setData({ selectIndex: index, selectItem: this.data.goodsList[index] });
+  },
+  // All获取系统头部各区域高度
   initSystemInfo() {
     const { statusBarHeight: s } = wx.getWindowInfo()
     const m = wx.getMenuButtonBoundingClientRect()
@@ -133,7 +122,7 @@ Page({
       capsule_distance_to_the_right: c
     })
   },
-  // 全选/取消全选
+  // Tabs3全选/取消全选
   toggleAll() {
     const newValue = !this.data.allChecked;
     const tableData = this.data.tableData.map(item => ({
@@ -148,7 +137,7 @@ Page({
       this.calculateSelected();
     });
   },
-  // 计算选中数量
+  // Tabs3计算选中数量
   calculateSelected() {
     const count = this.data.tableData.filter(item => item.checked).length;
     const total = (this.data.tableData.reduce((sum, item) => {
@@ -162,10 +151,9 @@ Page({
       priceTotal: total
     });
   },
-  // 切换单个复选框
+  // Tabs3切换单个复选框
   toggleCheck(e) {
     const index = e.currentTarget.dataset.value;
-    console.log(e)
     const key = `tableData[${index}].checked`;
     this.setData({
       [key]: !this.data.tableData[index].checked
@@ -174,14 +162,14 @@ Page({
       this.checkAllState();
     });
   },
-  // 检查全选状态
+  // Tabs3检查全选状态
   checkAllState() {
     const allChecked = this.data.tableData.every(item => item.checked);
     this.setData({
       allChecked
     });
   },
-  // 提交操作
+  // Tabs3提交操作
   submit() {
     const selectedItems = this.data.tableData.filter(item => item.checked);
     if (selectedItems.length === 0) {
@@ -198,7 +186,7 @@ Page({
       showCancel: false
     });
   },
-  // 获取底部导航数据
+  // All获取底部导航数据
   initBottomDirectory() {
     byGet(this.data.c_link + u_navlist20.URL, {}).then(response => {
       console.log(response)
@@ -209,7 +197,7 @@ Page({
       }
     })
   },
-  // 切换底部导航
+  // All切换底部导航
   handleSwitchTabNavigation(evt) {
     const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
     if (idx === null) return;
@@ -223,27 +211,21 @@ Page({
     console.log(currentPath, targetPurePath);
     currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
   },
+  // All 跳转登录
   handleOnExistingAccountTap() {
     (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
   },
-  // 选择区间日期
-  bindDateChange(e) {
-    this.setData({ date: e.detail.value });
-  },
-  // 选择取件时间
-  bindTimeChange(e) {
-    this.setData({ time: e.detail.value });
-  },
-  // 选择地区
+
+
+  // Tabs2选择地区
   bindRegionChange(e) {
     this.setData({
       region: e.detail.value
     })
   },
-  // 初始化当前时间
+  // All初始化当前时间
   initialDateTime() {
     const now = new Date();
-
     // 获取年月日
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需+1
@@ -264,7 +246,7 @@ Page({
       time: time
     });
   },
-  // 全屏背景图
+  // All全屏背景图
   initialiImageBaseConversion() {
     const _this = this;
     const imageMap = [{
@@ -322,44 +304,9 @@ Page({
       })
     })
   },
-  // 功能数据
-  initialgetIntroduction() {
-    byGet((getApp().data.k1swUrl || this.data.c_link) + u_getIntroduction.URL, {}).then(response => {
-      const list = response.data.content
-      const simple_info = list.map(ele => {
-        let simple_temp = {
-          id: ele?.id,
-          name: ele?.funname,
-          state: false
-        }
-        return simple_temp
-      })
-      this.setData({
-        g_core_functions: simple_info
-      })
-    })
-  },
-  // 获取设备类型数据
-  initialgetType() {
-    byGet((getApp().data.k1swUrl || this.data.c_link) + u_getDeviceClass.URL, {}).then(response => {
-      const list = response.data.content
-      console.log(list)
-      const simple_info = list.map(ele => {
-        let simple_temp = {
-          id: ele?.id,
-          name: ele?.funname,
-          state: false,
-          ...ele
-        }
-        return simple_temp
-      })
-      this.setData({
-        g_core_type: simple_info,
-        g_core_type_index: list?.[0]
-      })
-    })
-  },
-  // 切换tabs标签
+
+
+  // All切换tabs标签
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
     if (flag == '采购订单') {
@@ -380,10 +327,6 @@ Page({
   getOrderList() {
     showLoading("加载中...");
     const param = {
-      // [u_buyRecord.days]: this.data.g_days,
-      // [u_buyRecord.orderTypes]: this.data.g_orderTypes,
-      // [u_buyRecord.status]: this.data.g_status,
-      // [u_buyRecord.comParam]: this.data.g_comParam,
       [u_buyRecord.page]: this.data.g_page,
     };
     byGet((getApp().data.k1swUrl || this.data.c_link) + u_buyRecord.URL, param).then(response => {
@@ -419,130 +362,12 @@ Page({
       this.getOrderList();
     });
   },
-  // 所属行业变化回到
+  // Tabs所属行业变化回到
   handleIndustryType(evt) {
     this.setData({
       g_industry_index: evt.detail.value
     }, () => {
-      this.handleCalculate()
-    })
-  },
-  // 所属功能之后回调
-  handleFunction(evt) {
-    const index = 1; // 1为单选 2为多选
-    const item = evt?.currentTarget?.dataset?.item;
-    if (!item?.id) return;
-    const { g_core_functions_active = [], g_core_functions = [] } = this.data;
-    const targetId = item.id;
-    const updatedActive = index === 1
-      ? [item]
-      : g_core_functions_active.some(i => i?.id === targetId)
-        ? g_core_functions_active.filter(i => i?.id !== targetId)
-        : [...g_core_functions_active, item];
-    const updatedFunctions = g_core_functions.map(func => {
-      if (index === 1) {
-        return { ...func, state: func.id === targetId };
-      } else {
-        return func.id === targetId
-          ? { ...func, state: !g_core_functions_active.some(i => i?.id === func.id) }
-          : func;
-      }
-    });
-    this.setData({
-      g_core_functions_active: updatedActive,
-      g_core_functions: updatedFunctions
-    });
-  },
-  // 所属设备类型回调
-  handleEquipmentType(evt) {
-    const item = evt?.currentTarget?.dataset?.item
-    console.log(item)
-    this.setData({
-      g_core_type_index: item
-    })
-  },
-  // 操作行业或功能数据后的回调
-  handleCalculate() {
-    const {
-      g_core_functions_index,
-      g_industry_index,
-      g_industry,
-      g_core_functions
-    } = this.data
-    if (g_industry_index == null || g_core_functions_index == null) return
-    const parmas = {
-      introduction: g_core_functions[g_core_functions_index]?.name,
-      industry: g_industry[g_industry_index]?.name
-    }
-    byGet((getApp().data.k1swUrl || this.data.c_link) + u_isNeedCarInfo.URL, parmas).then(response => {
-      const state = response.data.content
-      this.setData({
-        whether_vehicle: state
-      })
-    })
-  },
-  // 切换tab
-  handleSwitchVicheTab(e) {
-    const index = e.currentTarget.dataset.index
-    this.setData({
-      currentIndex: index
-    })
-  },
-  // 添加tab
-  hadnleAddTab() {
-    const newTabs = this.data.tabs
-    const newId = newTabs.length > 0 ? newTabs[newTabs.length - 1].id + 1 : 0
-
-    newTabs.push({
-      id: newId,
-      title: `车型 ${newId + 1}`,
-    })
-
-    this.setData({
-      tabs: newTabs,
-      currentIndex: newTabs.length - 1,
-      scrollLeft: 10000 // 滚动到最右边
-    })
-  },
-  // 删除tab
-  hadnleCloseTab(e) {
-    if (this.data.tabs.length === 1) return
-
-    const id = e.currentTarget.dataset.id
-    const newTabs = this.data.tabs.filter(tab => tab.id !== id)
-    const newIndex = Math.min(this.data.currentIndex, newTabs.length - 1)
-
-    this.setData({
-      tabs: newTabs,
-      currentIndex: newIndex
-    }, () => {
-      this.setData({
-        buycount: this.data.tabs.length
-      })
-    })
-  },
-  // 输入框内容改变回调
-  handleBindinput(evt) {
-    const params = this.data?.params
-    params[evt.currentTarget.dataset.item] = evt.detail.value
-    this.setData({
-      params: {
-        ...params
-      }
-    }, () => {
-      this.setData({
-        buycount: this.data.tabs.length
-      })
-    })
-  },
-  // 启动方式
-  handleBatterylift(evt) {
-    const params = this.data?.params
-    params['runtype' + evt?.currentTarget.dataset.id] = evt.currentTarget.dataset.item
-    this.setData({
-      params: {
-        ...params
-      }
+      // 求价钱
     })
   },
   // 数量改变
@@ -581,12 +406,7 @@ Page({
       g_install_index: evt.detail.value
     })
   },
-  // 是否接受寄送钥匙切换函数
-  handleSendingKeysRadioChange(evt) {
-    this.setData({
-      g_sending_keys_index: evt.detail.value
-    })
-  },
+
   // 跳转到详情
   handleView(evt) {
     wx.navigateTo({
@@ -727,19 +547,17 @@ Page({
       return;
     }
     const {
-      inviteCode = null,
-      buycount = 0,                // 购买设备数量（默认为 0）
-      params = {},                 // 动态表单字段（如车辆信息等）
-      g_core_functions = [],       // 所有可选功能列表，state 为 true 表示已选中
+      inviteCode = null,           //邀请码
       g_industry = [],             // 行业选项列表
       g_industry_index = null,     // 当前选中的行业索引
+      // 设备单价
+      buycount = 0,                // 购买设备数量（默认为 0）
       g_install_index = null,      // 是否安装（true/false 或其他标识，建议后续明确类型）
-      g_sending_keys_index = null, // 是否接受寄送钥匙
-      g_core_type_index = null,    // 当前选中的设备类型对象（含 isneedcar 等属性）
-      // g_door_address = '',         // 上门取钥匙地址（格式：姓名 手机号 详细地址）
+      // 订单总价
+
       g_receiving_address = '',    // 客户收货地址（格式：姓名 手机号 详细地址）
-      date = '',                   // 预约日期
-      time = '',                   // 预约时间
+      // 智信通地址
+      // 客户上门取钥匙地址
       bak = ''                     // 备注信息
     } = this.data;
 
@@ -750,35 +568,18 @@ Page({
       ? g_industry[g_industry_index]?.name?.trim() || null
       : null;
 
-    // 2. 设备功能：筛选出 state 为 true 的功能项，提取名称并拼接为 "||" 分隔的字符串
-    const devicefun = g_core_functions
-      .filter(item => item?.state === true)
-      .map(item => item?.name?.trim())
-      .filter(name => name) // 过滤空字符串
-      .join('||');
 
-    // 3. 设备类型名称（注意：g_core_type_index 是对象，不是索引）
-    const deviceclass = g_core_type_index?.name || g_core_type_index?.funname || null;
 
     // 4. 是否安装（直接使用原始值，建议后续明确其含义和类型）
     const isinstall = g_install_index;
 
-    // 5. 解析上门地址（格式：姓名 手机 详细地址）
-    // const partsDoor = g_door_address.trim().split(/\s+/);
-    // const pickperson = partsDoor[0] || '';
-    // const pickmobile = partsDoor[1] || '';
-    // const pickaddress = partsDoor.slice(2).join(' ') || '';
-
-    // 6. 拼接预约时间
-    // const picktime = `${date} ${time}`.trim();
 
     // 7. 解析收货地址（格式：姓名 手机 详细地址）
     const partsReceiving = g_receiving_address.trim().split(/\s+/);
     const takeperson = partsReceiving[0] || '';
     const takemobile = partsReceiving[1] || '';
     const takeaddress = partsReceiving.slice(2).join(' ') || '';
-    // 8. 是否接受寄送钥匙
-    const sending_keys = g_sending_keys_index;
+
 
     // ========== 表单校验（使用提前 return 避免深层嵌套） ==========
 
@@ -787,98 +588,27 @@ Page({
       return;
     }
 
-    // if (!devicefun) {
-    //   showToast('请选择至少一个功能');
-    //   return;
-    // }
-
-    if (!deviceclass) {
-      showToast('请选择设备类型');
-      return;
-    }
-
-    if (inviteCode == null && g_sending_keys_index == 2) {
-      showToast('请输入邀请码）');
-      return;
-    }
-
     if (!g_receiving_address.trim()) {
       showToast('请输入客户收货地址（格式：姓名 手机 详细地址）');
       return;
     }
 
-    // ========== 处理动态车辆信息（如果设备类型需要车辆信息） ==========
 
-    // 正则用于匹配字段名，如 carmodel1, carserial2 等
-    const CAR_FIELD_PATTERN = /^(\D+)(\d+)$/;
-
-    // 从 params 中提取所有车辆索引（如 1, 2, 3...）
-    const paramKeys = Object.keys(params);
-    const carIndices = new Set(
-      paramKeys
-        .map(key => {
-          const match = key.match(CAR_FIELD_PATTERN);
-          return match ? parseInt(match[2], 10) : null;
-        })
-        .filter(index => index !== null)
-    );
-
-    // 如果设备类型要求提供车辆信息，但未填写任何车辆字段
-    if (g_core_type_index?.isneedcar && carIndices.size === 0) {
-      showToast('请至少填写一辆车的信息');
-      return;
-    }
-
-    // 构建结构化的车辆列表：carList = [{ carmodel, carserial, runtype, ... }, ...]
-    const carList = [];
-    Array.from(carIndices)
-      .sort((a, b) => a - b) // 按索引升序排列，保证顺序
-      .forEach(index => {
-        const carItem = {};
-        paramKeys.forEach(key => {
-          // 动态匹配字段，如 carmodel1 → 字段名 "carmodel"，值为 params[key]
-          const regex = new RegExp(`^(.+?)${index}$`);
-          const match = key.match(regex);
-          if (match) {
-            const fieldName = match[1];
-            carItem[fieldName] = (params[key] || '').trim();
-          }
-        });
-        carList.push(carItem);
-      });
-
-    // 校验每辆车的关键字段是否完整
-    for (const car of carList) {
-      if (!car.carmodel?.trim() || !car.carserial?.trim() || !car.runtype?.trim()) {
-        // 尝试显示更友好的提示（若车型为空，则用“该车辆”代替）
-        const modelName = car.carmodel?.trim() || '该车辆';
-        showToast(`请补全【${modelName}】的车型、车架号和运营类型`);
-        return;
-      }
-    }
 
     // ========== 构造最终提交参数 ==========
 
     const submitParams = {
       industry,           // 行业
-      devicefun,          // 功能（"||" 分隔）
-      deviceclass,        // 设备类型
       isinstall,          // 是否安装
-      buyType: sending_keys,      // 是否接受寄送钥匙
       buycount: Number(buycount) || 0, // 购买数量（转为数字）
       inviteCode,
-      // pickperson,         // 上门联系人
-      // pickmobile,         // 上门联系电话
-      // pickaddress,        // 上门地址
-      // picktime,           // 预约时间
       takeperson,         // 收货联系人
       takemobile,         // 收货电话
       takeaddress,        // 收货地址
       bak,                // 备注
-      carList: g_core_type_index?.isneedcar ? carList : [] // 仅当需要时提交车辆信息
     };
     console.log(submitParams)
-    // return
+    return
     // ========== 发送提交请求 ==========
 
     byPostJson(
@@ -894,20 +624,9 @@ Page({
             g_items: [],
             c_activeTab: 1, //当前页签值
             // 下单参数
-            g_core_functions: [], //所属功能
-            g_core_functions_index: null, //当前功能
-            g_core_functions_active: [],//当前所选功能
-            g_core_type: [],// 设备类型
-            g_core_type_index: null,// 当前选择设备类型
             g_industry: [], //所属行业
             g_industry_index: null, //当前行业
-            tabs: [{
-              id: 0,
-              title: '车型1',
-            }],
-            currentIndex: 0,//当前显示车辆tab签
-            scrollLeft: 0,//车辆参数
-            params: {},//新增订单form参数
+
             g_install_list: [{
               value: 0,
               name: '否'
@@ -924,7 +643,6 @@ Page({
             bak: '',//备注
           }, () => {
             this.getOrderList()
-            this.initialgetType()
           })
         } else {
           showToast(response.data?.msg || '提交失败，请稍后重试');
@@ -970,8 +688,6 @@ Page({
   onShow() {
     this.initialiImageBaseConversion()
     this.initialiIndustry()
-    // this.initialgetIntroduction()
-    this.initialgetType()
     this.initialDateTime()
     this.initSystemInfo()
   },

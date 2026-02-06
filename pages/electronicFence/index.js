@@ -262,9 +262,11 @@ Page({
             this.setData({
               polygons: [polygon],
               map_type: type,
+              province_temp:response?.data?.content?.province,
+              city_temp:response?.data?.content?.city
 
             }, () => {
-
+              console.log(response?.data?.content?.province)
               // 此处初始化省份
               // this.setData({
               //   currentProvince: ''
@@ -689,7 +691,7 @@ Page({
     // 调用后续处理函数
     this.handleRetrievePoint(selectedCode);
   },
-
+  // 1
   convertTencentPolygonToPoints(polygonData) {
     // 步骤1：提取原始polygon二维数组（兼容两种入参格式）
     let rawPolygon = [];
@@ -710,71 +712,84 @@ Page({
       console.error("入参格式错误，无法提取polygon数据");
       return [];
     }
-
+  
     // 步骤2：处理空数据边界情况
-    if (!rawPolygon.length || !Array.isArray(rawPolygon[0])) {
+    if (!rawPolygon.length) {
       console.warn("polygon数据为空，返回空数组");
       return [];
     }
-
-    // 步骤3：转换为{ longitude, latitude }格式
-    const points = [];
-    const coreCoordinates = rawPolygon[0]; // 提取行政区域的核心坐标集合（一维数组，按[lng, lat]排列）
-
-    for (let i = 0; i < coreCoordinates.length; i += 2) {
-      // 腾讯地图polygon一维数组格式：[lng1, lat1, lng2, lat2, ...]
-      const longitude = coreCoordinates[i];
-      const latitude = coreCoordinates[i + 1];
-
-      // 过滤无效坐标（避免NaN等异常值）
-      if (typeof longitude === 'number' && typeof latitude === 'number') {
-        points.push({
-          longitude: longitude,
-          latitude: latitude
-        });
+  
+    // 步骤3：转换为{ longitude, latitude }格式（处理所有项并合并为一维数组）
+    const allPoints = []; // 存储所有解析后的坐标点（一维数组）
+  
+    // 遍历rawPolygon中的每一项
+    for (const coreCoordinates of rawPolygon) {
+      // 跳过非数组的无效项
+      if (!Array.isArray(coreCoordinates)) {
+        console.warn("发现非数组格式的坐标项，已跳过");
+        continue;
+      }
+  
+      // 解析当前项的一维坐标数组 [lng1, lat1, lng2, lat2, ...]
+      for (let i = 0; i < coreCoordinates.length; i += 2) {
+        const longitude = coreCoordinates[i];
+        const latitude = coreCoordinates[i + 1];
+  
+        // 过滤无效坐标（避免NaN等异常值）
+        if (typeof longitude === 'number' && typeof latitude === 'number') {
+          allPoints.push({
+            longitude: longitude,
+            latitude: latitude
+          });
+        }
       }
     }
-
-    // 步骤4：自动补充闭合点（如果首尾坐标不一致）
-    if (points.length >= 1) {
-      const firstPoint = points[0];
-      const lastPoint = points[points.length - 1];
+  
+    // 步骤4：为合并后的整个数组补充闭合点（如果首尾坐标不一致）
+    if (allPoints.length >= 1) {
+      const firstPoint = allPoints[0];
+      const lastPoint = allPoints[allPoints.length - 1];
       if (
         firstPoint.longitude !== lastPoint.longitude ||
         firstPoint.latitude !== lastPoint.latitude
       ) {
-        points.push({
+        allPoints.push({
           longitude: firstPoint.longitude,
           latitude: firstPoint.latitude
         });
       }
     }
-
-    // 步骤5：返回转换结果
-    return points;
+  
+    // 步骤5：返回合并后的一维数组
+    return allPoints;
   },
+  // 2
+
+
   handleRetrievePoint(evt) {
     wx.request({
       url: 'https://apis.map.qq.com/ws/district/v1/search',
       data: {
-        keyword: evt,
+        keyword: evt.trim(),
         get_polygon: 1,
+        level: 'province',
         key: 'W66BZ-ADBC3-COB3F-YWZG4-MAVRO-IJBIM'
       },
       success: res => {
         if (res.data.status === 0) {
           console.log(res.data.result[0][0]?.location?.lng)
           const polygon = res.data.result[0][0].polygon;
+          console.log(polygon)
           this.setData({
             polygons: [{
               points: this.convertTencentPolygonToPoints(polygon),
               strokeWidth: 3,
               strokeColor: '#FF0000FF',
               fillColor: '#FF000033',
-             
+
             }],
-            latitude:res.data.result[0][0]?.location.lat,
-            longitude:res.data.result[0][0]?.location?.lng
+            latitude: res.data.result[0][0]?.location.lat,
+            longitude: res.data.result[0][0]?.location?.lng
           })
         } else {
           wx.showToast({ title: res.data.message, icon: 'none' });

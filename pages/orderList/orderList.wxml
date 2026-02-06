@@ -55,10 +55,7 @@
                 <label>行业 ：</label>
                 <text>{{item.industry||'-'}}</text>
               </view>
-              <!-- <view class="info-item  {{item.devicefun.length > 8 ? 'long-info-item' : ''}}">
-                <label>功能 ：</label>
-                <text>{{item.devicefun||'-'}}</text>
-              </view> -->
+
               <view class="info-item  {{item.deviceclass.length > 15 ? 'long-info-item' : ''}}">
                 <label>设备类型 ：</label>
                 <text>{{item.deviceclass||'-'}}</text>
@@ -125,7 +122,7 @@
               <view class="card-info-item-input">
                 <picker range-key="name" range="{{g_industry}}" bindchange="handleIndustryType">
                   <block wx:if="{{g_industry_index==null}}">
-                    <text style="color: #333;font-size: 26rpx; ">请选择所属行业</text>
+                    <text style="color: #666;font-size: 26rpx; ">请选择所属行业</text>
                   </block>
                   <block wx:else>
                     <text style="color: #333;font-size: 26rpx;">{{g_industry[g_industry_index].name}}</text>
@@ -134,73 +131,13 @@
               </view>
             </block>
           </view>
-
-          <!-- 设备类型 -->
-          <view class="card-info-item">
-            <label style="min-width: 20%;">设备类型<text>*</text></label>
-            <block>
-              <view class="card-info-item-input" style="display: flex;gap: 10rpx;">
-                <text class="tag" wx:for="{{g_core_type}}" wx:key="index" data-item="{{item}}" bindtap="handleEquipmentType" style="background-color: {{g_core_type_index.id == item.id?'#e4edfd':''}};border: {{g_core_type_index.id == item.id?'1px solid rgba(23, 114, 246, 0.5)':'1rpx solid  #f1f1f1'}}">{{item.name}}</text>
-              </view>
-            </block>
-          </view>
-          <!-- 车辆列表 -->
-          <view class="vehicle-card-info-item" wx:if="{{g_core_type_index.isneedcar}}">
-            <view class="vehicle-container-info">
-              <scroll-view scroll-x class="tabs-scroll" scroll-left="{{scrollLeft}}" scroll-with-animation>
-                <view class="tabs-container">
-                  <block wx:for="{{tabs}}" wx:key="id">
-                    <view class="tab-item {{currentIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="handleSwitchVicheTab">
-                      {{params['carmodel' + item.id]?params['carmodel' + item.id]:item.title}}
-                      <view wx:if="{{tabs.length > 1}}" class="close" data-id="{{item.id}}" bindtap="hadnleCloseTab">×</view>
-                    </view>
-                  </block>
-                  <view class="add-btn" bindtap="hadnleAddTab">+</view>
-                </view>
-              </scroll-view>
-
-              <view class="content">
-                <block wx:for="{{tabs}}" wx:key="id">
-                  <view wx:if="{{currentIndex === index}}">
-                    <view class="card-info-item">
-                      <label>车型<text>*</text></label>
-                      <view class="card-info-item-input">
-                        <input placeholder="请输入车型" value="{{ params['carmodel' + item.id] }}" data-item="{{'carmodel'+item.id}}" bindinput="handleBindinput" />
-                      </view>
-                    </view>
-                    <view class="card-info-item">
-                      <label>车系<text>*</text></label>
-                      <view class="card-info-item-input">
-                        <input placeholder="请输入车系" value="{{ params['carserial' + item.id] }}" data-item="{{'carserial'+item.id}}" bindinput="handleBindinput" />
-                      </view>
-                    </view>
-                    <view class="card-info-item">
-                      <label>年款</label>
-                      <view class="card-info-item-input">
-                        <input placeholder="请输入年款" value="{{ params['carversion' + item.id] }}" data-item="{{'carversion'+item.id}}" bindinput="handleBindinput" />
-                      </view>
-                    </view>
-                    <view class="card-info-item">
-                      <label>启动方式<text>*</text></label>
-                      <view class="card-info-item-tabs">
-                        <view class="card-info-item-tabs-btn">
-                          <text class="{{params['runtype' + item.id]  == '一键启动'?'tabs-active':''}}" data-id="{{item.id}}" data-item="一键启动" bindtap="handleBatterylift">一键启动</text>
-                          <text class="{{params['runtype' + item.id]  == '机械钥匙'?'tabs-active':''}}" data-id="{{item.id}}" data-item="机械钥匙" bindtap="handleBatterylift">机械钥匙</text>
-                        </view>
-                      </view>
-                    </view>
-                    <view class="card-info-item">
-                      <label>车架号</label>
-                      <view class="card-info-item-input">
-                        <input placeholder="请输入车架号" value="{{ params['vin' + item.id] }}" data-item="{{'vin'+item.id}}" bindinput="handleBindinput" />
-                      </view>
-                    </view>
-                  </view>
-                </block>
-              </view>
+          <!-- 设备单价 -->
+          <view class="card-info-item" wx:if="{{!g_core_type_index.isneedcar}}">
+            <label>设备单价</label>
+            <view class="card-info-item-input">
+              ￥599
             </view>
           </view>
-          <!-- 类别选择-结束 -->
           <!-- 数量 -->
           <view class="card-info-item" wx:if="{{!g_core_type_index.isneedcar}}">
             <label>数量<text>*</text></label>
@@ -208,41 +145,66 @@
               <input disabled="{{g_device_type_list[g_device_type_index].id == 11}}" style="opacity: {{g_device_type_list[g_device_type_index].id == 11?'0.5':'1'}};" type="number" placeholder="请输入数量" value="{{buycount}}" data-item="buycount" bindinput="handleNumBindinput" />
             </view>
           </view>
+
           <!-- 是否安装 -->
           <view class="card-info-item">
             <label>是否安装<text>*</text></label>
-            <view class="card-info-item-input">
+            <view class="card-info-item-input" style="display: flex;flex-direction: column;justify-content: flex-end;align-items: flex-end;">
               <radio-group bindchange="handleVicheRadioChange" style="display: flex;align-items: center;gap: 20rpx;">
                 <label wx:for="{{g_install_list}}" wx:key="index" style="display: flex;align-items: center;">
                   <radio value="{{item.value}}" checked="{{g_install_index == item.value}}" style=" transform: scale(0.7);" />
                   <view>{{item.name}}</view>
                 </label>
               </radio-group>
+              <text style="color: #666;font-size: 22rpx;">若需提供安装服务，每台将收取安装费用 120 元</text>
             </view>
           </view>
-          <!-- 购买方式 -->
-          <view class="card-info-item">
-            <label>购买方式<text>*</text></label>
-            <view class="card-info-item-input">
-              <radio-group bindchange="handleSendingKeysRadioChange" style="display: flex;align-items: center;gap: 20rpx;">
-                <label wx:for="{{g_sending_keys}}" wx:key="index" style="display: flex;align-items: center;">
-                  <radio value="{{item.value}}" checked="{{g_sending_keys_index == item.value}}" style=" transform: scale(0.7);" />
-                  <view>{{item.name}}</view>
-                </label>
-              </radio-group>
+          <!-- 订单总价 -->
+          <view class="card-info-item" wx:if="{{!g_core_type_index.isneedcar}}">
+            <label>订单总价</label>
+            <view class="card-info-item-input" style="display: flex;flex-direction: column;justify-content: flex-end;align-items: flex-end;">
+              <text>￥1099</text>
+              <text style="color: #666;font-size: 22rpx;">599(单价)X3(数量)+120(安装费)X3(数量)=1099(总价)</text>
             </view>
           </view>
 
-          <!-- 上门取钥匙地址 -->
-          <view class="card-info-item" wx:if="{{g_sending_keys_index == 2}}">
-            <label>邀请码<text>*</text></label>
-            <view class="card-info-item-input">
-              <input placeholder="请输入邀请码" value="{{inviteCode}}" data-item="inviteCode" bindinput="handleInviteCodeBindinput" />
-            </view>
-          </view>
           <!-- 客户收货地址 -->
           <view class="card-info-item">
             <label>客户收货地址<text>*</text></label>
+            <view class="card-info-item-input">
+              <view disabled="true" data-type="receiving" data-item="{{g_receiving_address}}" bindtap="handleSelectAddress" style="font-size: 26rpx;color: #666;">
+                {{g_receiving_address?g_receiving_address:'请输入客户收货地址'}}
+              </view>
+            </view>
+          </view>
+          <!-- 钥匙邮寄 -->
+          <view class="card-info-item">
+            <label>钥匙邮寄<text>*</text></label>
+            <view class="card-info-item-input" style="display: flex;flex-direction: column;justify-content: flex-end;align-items: flex-end;">
+              <picker range="{{goodsList}}" range-key="name" value="{{selectIndex}}" bindchange="onPickerChange">
+                <!-- 下拉框的展示区域，自定义样式 -->
+                <block wx:if="{{!selectItem.name}}">
+                  <text style="color: #666;font-size: 26rpx; ">请选择取钥匙方式</text>
+                </block>
+                <block wx:else>
+                  <text style="color: #333;font-size: 26rpx;">{{selectItem.name}}</text>
+                </block>
+              </picker>
+              <text style="color: #666;font-size: 22rpx;">若需提供安装服务，每台将收取安装费用 120 元</text>
+            </view>
+          </view>
+          <!-- 上门取钥匙地址 -->
+          <view class="card-info-item" wx:if="{{selectItem.id  == 3}}">
+            <label>上门取钥匙地址<text>*</text></label>
+            <view class="card-info-item-input">
+              <view disabled="true" data-type="receiving" data-item="{{g_receiving_address}}" bindtap="handleSelectAddress" style="font-size: 26rpx;color: #666;">
+                {{g_receiving_address?g_receiving_address:'请输入客户收货地址'}}
+              </view>
+            </view>
+          </view>
+          <!-- 智信通地址 -->
+          <view class="card-info-item" wx:if="{{selectItem.id  == 2}}">
+            <label>智信通地址<text>*</text></label>
             <view class="card-info-item-input">
               <view disabled="true" data-type="receiving" data-item="{{g_receiving_address}}" bindtap="handleSelectAddress" style="font-size: 26rpx;color: #666;">
                 {{g_receiving_address?g_receiving_address:'请输入客户收货地址'}}
@@ -258,7 +220,7 @@
           </view>
         </view>
         <view class="card-footer">
-          <view bindtap="handleSubmit">确认提交</view>
+          <view bindtap="handleSubmit">提交并支付</view>
         </view>
       </scroll-view>
     </block>
