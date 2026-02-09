@@ -18,7 +18,8 @@ const {
   u_isNeedCarInfo,
   u_getDeviceClass,
   u_cancalCustomerOrder,
-  u_delCustomerOrder
+  u_delCustomerOrder,
+  u_zxtShippingAddress
 } = require('../../utils/request/data_info')
 const {
   byGet,
@@ -102,7 +103,20 @@ Page({
       { id: 3, name: '上门取钥匙' }
     ],
     selectIndex: 0, // picker绑定的下标（默认选中第0项）
-    selectItem: {}  // 存储当前选中的完整对象（方便后续取值
+    selectItem: {},  // 存储当前选中的完整对象（方便后续取值
+    industry_price: 0,//行业价钱
+    installation_price: 0,//安装费用
+  },
+  // Tbas2 请求智信通地址
+  // 请求区域数据
+  initGetRoles(evt) {
+    byGet(`${getApp().data.k1swUrl}${u_zxtShippingAddress.URL}`, {}).then(allRes => {
+      console.log(allRes)
+      this.setData({
+        allRes: allRes?.data?.content
+      })
+
+    })
   },
   //  Tabs2选择钥匙邮寄方式
   onPickerChange(e) {
@@ -294,8 +308,10 @@ Page({
       const list = response.data.content
       const info = list.map(ele => {
         let temp = {
-          id: ele,
-          name: ele
+          id: ele?.id,
+          name: ele?.deviceTypeName,
+          hardPrice: ele?.hardPrice,
+          installPrice: ele?.installPrice
         }
         return temp
       })
@@ -364,22 +380,106 @@ Page({
   },
   // Tabs所属行业变化回到
   handleIndustryType(evt) {
-    this.setData({
-      g_industry_index: evt.detail.value
-    }, () => {
-      // 求价钱
-    })
+    try {
+      const selectedIndex = evt?.detail?.value;
+      if (selectedIndex === undefined || selectedIndex === null) {
+        return;
+      }
+      const { g_industry } = this.data;
+      const selectedIndustry = g_industry[selectedIndex];
+      if (!selectedIndustry) {
+        this.setData({
+          g_industry_index: selectedIndex,
+          industry_price: 0,
+          installation_price: 0
+        });
+        return;
+      }
+      const { hardPrice = 0, installPrice = 0 } = selectedIndustry;
+      this.setData({
+        g_industry_index: selectedIndex,
+        industry_price: hardPrice,     // 行业价钱
+        installation_price: installPrice // 安装费用
+      }, () => {
+        this.handleRequestPrice?.();
+      });
+    } catch (error) {
+    }
+  },
+
+  //  计算并更新总价
+  handleRequestPrice() {
+    try {
+      const {
+        installation_price = 0,
+        industry_price = 0,
+        buycount = 0
+      } = this.data;
+      const installPrice = Number(installation_price);
+      const industryPrice = Number(industry_price);
+      const buyCount = Number(buycount);
+      if (isNaN(installPrice) || isNaN(industryPrice) || isNaN(buyCount) ||
+        installPrice < 0 || industryPrice < 0 || buyCount < 0) {
+        console.warn('handleRequestPrice: 价格/数量参数不合法', {
+          installPrice, industryPrice, buyCount
+        });
+        this.setData({ totalPrice: 0 });
+        return;
+      }
+      const installTotal = this.multiply(installPrice, buyCount); // 安装费总价
+      const industryTotal = this.multiply(industryPrice, buyCount); // 行业费总价
+      const totalPrice = this.add(installTotal, industryTotal); // 最终总价（已处理精度）
+      this.setData({
+        totalPrice: Number(totalPrice.toFixed(2))
+      });
+
+    } catch (error) {
+      console.error('handleRequestPrice 计算总价异常:', error);
+      this.setData({ totalPrice: 0 });
+    }
+  },
+  // 浮点附加
+  multiply(num1, num2) {
+    const m = (num1.toString().split('.')[1]?.length || 0) + (num2.toString().split('.')[1]?.length || 0);
+    return (Number(num1.toString().replace('.', '')) * Number(num2.toString().replace('.', ''))) / Math.pow(10, m);
+  },
+  // 浮点附加
+  add(num1, num2) {
+    const r1 = num1.toString().split('.')[1]?.length || 0;
+    const r2 = num2.toString().split('.')[1]?.length || 0;
+    const m = Math.pow(10, Math.max(r1, r2));
+    return (this.multiply(num1, m) + this.multiply(num2, m)) / m;
   },
   // 数量改变
   handleNumBindinput(evt) {
-    this.setData({
-      buycount: evt.detail.value
-    })
+    try {
+      const inputValue = evt?.detail?.value ?? '';
+      const filteredValue = inputValue.toString().replace(/[^0-9.]/g, '');
+      const numValue = Number(filteredValue);
+      const isValidNumber = typeof numValue === 'number' && !isNaN(numValue) && isFinite(numValue);
+      let finalCount = '';
+      if (isValidNumber) {
+        finalCount = numValue > 0 ? Math.floor(numValue) : '';
+      }
+      if (this.data.buycount !== finalCount) {
+        this.setData({
+          buycount: finalCount
+        }, () => {
+          this.handleRequestPrice?.();
+        });
+      }
+    } catch (error) {
+      this.setData({ buycount: '' }, () => {
+        this.handleRequestPrice?.();
+      });
+    }
   },
   // 邀请码改变
   handleInviteCodeBindinput(evt) {
     this.setData({
       inviteCode: evt.detail.value
+    }, () => {
+      this.handleRequestPrice()
     })
   },
   // 收货人发生改变
@@ -402,11 +502,55 @@ Page({
   },
   // 是否安装切换函数
   handleVicheRadioChange(evt) {
-    this.setData({
-      g_install_index: evt.detail.value
-    })
+    try {
+      const selectedInstallIndex = evt?.detail?.value;
+      if (selectedInstallIndex === undefined || selectedInstallIndex === null) {
+        return;
+      }
+      this.setData({
+        g_install_index: selectedInstallIndex
+      }, () => {
+        const { g_industry, g_industry_index, g_install_index } = this.data;
+        let installationPrice = 0;
+        if (g_install_index == 1) {
+          const selectedIndustry = g_industry?.[g_industry_index];
+          installationPrice = selectedIndustry?.installPrice ?? 0;
+        }
+        this.setData({
+          installation_price: installationPrice
+        }, () => {
+          this.handleRequestPrice?.();
+        });
+      });
+    } catch (error) {
+      this.setData({
+        g_install_index: '',
+        installation_price: 0
+      }, () => {
+        this.handleRequestPrice?.();
+      });
+    }
   },
-
+  // 复制寄送钥匙地址功能
+  handleCopyAddress() {
+    const allRes = this.data.allRes
+    const { linkperson, linkmobile, address } = allRes?.[0]
+    wx.setClipboardData({
+      data: `${linkperson} ${linkmobile} ${address}`,
+      success: () => {
+        wx.showToast({
+          title: '复制成功',
+          icon: 'none'
+        });
+      },
+      fail: () => {
+        wx.showToast({
+          title: '复制失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
   // 跳转到详情
   handleView(evt) {
     wx.navigateTo({
@@ -556,22 +700,20 @@ Page({
       // 订单总价
 
       g_receiving_address = '',    // 客户收货地址（格式：姓名 手机号 详细地址）
-      // 智信通地址
-      // 客户上门取钥匙地址
-      bak = ''                     // 备注信息
+      g_door_address = '',// 客户上门取钥匙地址
+      bak = '',                     // 备注信息
+      selectItem = {}
     } = this.data;
-
+    console.log(selectItem)
     // ========== 提取并处理关键字段 ==========
 
     // 1. 行业名称：根据选中索引从行业列表中获取
-    const industry = g_industry_index !== null
-      ? g_industry[g_industry_index]?.name?.trim() || null
-      : null;
-
-
+    const industry = g_industry[g_industry_index]?.id
 
     // 4. 是否安装（直接使用原始值，建议后续明确其含义和类型）
     const isinstall = g_install_index;
+    // 5.是否需要邮寄钥匙
+    const select_item = selectItem?.id
 
 
     // 7. 解析收货地址（格式：姓名 手机 详细地址）
@@ -579,12 +721,24 @@ Page({
     const takeperson = partsReceiving[0] || '';
     const takemobile = partsReceiving[1] || '';
     const takeaddress = partsReceiving.slice(2).join(' ') || '';
-
-
+    // 8解析上门取钥地址
+    console.log(g_door_address, g_receiving_address)
+    const partsDoor = (g_door_address || g_receiving_address).trim().split(/\s+/);
+    const doorperson = partsDoor[0] || '';
+    const doormobile = partsDoor[1] || '';
+    const dooraddress = partsDoor?.slice(2)?.join(' ') || '';
     // ========== 表单校验（使用提前 return 避免深层嵌套） ==========
 
     if (!industry) {
       showToast('请选择行业');
+      return;
+    }
+    if (!buycount) {
+      showToast('请输入数量');
+      return;
+    }
+    if (!select_item) {
+      showToast('请选择钥匙邮寄方式');
       return;
     }
 
@@ -598,17 +752,23 @@ Page({
     // ========== 构造最终提交参数 ==========
 
     const submitParams = {
-      industry,           // 行业
-      isinstall,          // 是否安装
-      buycount: Number(buycount) || 0, // 购买数量（转为数字）
-      inviteCode,
-      takeperson,         // 收货联系人
-      takemobile,         // 收货电话
-      takeaddress,        // 收货地址
-      bak,                // 备注
+      industry,                          // 行业
+      isinstall,                         // 是否安装
+      buycount: Number(buycount) || 0, // 购买数量（安全转数字，兜底0）
+      inviteCode,                        // 邀请码
+      takeperson,                        // 收货联系人
+      takemobile,                        // 收货电话
+      takeaddress,                       // 收货地址
+      ...(select_item ? {
+        pickperson: doorperson,          // 上门联系人
+        pickmobile: doormobile,          // 上门电话
+        pickaddress: dooraddress         // 上门地址
+      } : {}),
+      bak: bak || '',                // 备注（兜底空字符串，避免undefined）
+      willingkey: selectItem?.id
     };
     console.log(submitParams)
-    return
+    // return
     // ========== 发送提交请求 ==========
 
     byPostJson(
@@ -617,32 +777,9 @@ Page({
       (response) => {
         if (response.data?.code === 1000) {
           showToast(response.data?.msg || '提交成功');
-          this.setData({
-            inviteCode: null,
-            buycount: null,
-            g_page: 1,
-            g_items: [],
-            c_activeTab: 1, //当前页签值
-            // 下单参数
-            g_industry: [], //所属行业
-            g_industry_index: null, //当前行业
-
-            g_install_list: [{
-              value: 0,
-              name: '否'
-            }, {
-              value: 1,
-              name: '是'
-            }], // 是否安装
-            g_install_index: 1,//是否安装当前选择
-            c_address_type: '',// 地址选择类型
-            c_select_address: false,//选择地址弹窗
-            g_door_address: '',//上门地址
-            g_receiving_address: '',//收货地址
-            region: [],//地址 当前选择地区
-            bak: '',//备注
-          }, () => {
-            this.getOrderList()
+          // 跳转支付
+          wx.navigateTo({
+            url: `/pages/pay/index?info=${JSON.stringify(response.data.content?.childOrderList?.[0])}&coupon=${JSON.stringify(this?.data?.couponText || { amount: 0 })}`
           })
         } else {
           showToast(response.data?.msg || '提交失败，请稍后重试');
@@ -690,5 +827,6 @@ Page({
     this.initialiIndustry()
     this.initialDateTime()
     this.initSystemInfo()
+    this.initGetRoles()
   },
 })

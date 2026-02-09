@@ -74,7 +74,7 @@ const u_getDeviceType = {
 //   URL: fin3plusUrl + "deviceBuyApi/buyDevice"
 // }
 const u_buyDevice = {
-  URL: fin3plusUrl + "deviceBuyApi/submitCustomerOrder"
+  URL: fin3plusUrl + "deviceBuyApi/submitCustomerOrder20"
 }
 // 地址列表
 const u_addressapiList = {
@@ -112,7 +112,7 @@ const u_orderConfirm = {
 }
 // 获取行业列表
 const u_getIndustry = {
-  URL: fin3plusUrl + "publicApi/getIndustry",
+  URL: fin3plusUrl + "deviceBuyApi/getIndustry20",
 }
 // 原始订单取消
 const u_cancalCustomerOrder = {
