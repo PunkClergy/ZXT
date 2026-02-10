@@ -233,7 +233,10 @@ Page({
           date: pickupDate,
           time: pickupTime,
           all_data: info,
-          navList
+          navList,
+          g_door_address:`${info?.orderPickup?.personname} ${info?.orderPickup?.mobile} ${info?.orderPickup?.address}`,
+          date: info?.orderPickup?.createdate?.slice(0, 10),
+          time: info?.orderPickup?.createdate?.slice(11, 16)
         });
       })
       .catch(error => {
@@ -424,7 +427,7 @@ Page({
   // 去支付
   handleOneClickOrdering() {
     wx.navigateTo({
-      url: `/pages/pay/index?info=${JSON.stringify(this.data.all_data)}&coupon=${JSON.stringify(this.data.couponText||{amount: 0})}`
+      url: `/pages/pay/index?info=${JSON.stringify(this.data.all_data)}&coupon=${JSON.stringify(this.data.couponText || { amount: 0 })}`
     })
   },
   onLoad(options) {

@@ -121,7 +121,7 @@
             </view>
           </block>
           <!-- 寄送钥匙 -->
-          <block wx:if="{{(item.id == 12 && all_data.isMailingKeys == 1&&(all_data.status==5||all_data.status==13))}}">
+          <block wx:if="{{(item.id == 12 && all_data.isMailingKeys&&(all_data.status==5||all_data.status==13))}}">
             <view class="main-content-area">
               <view class="main-content-area-head">
                 <view class="head-left">
