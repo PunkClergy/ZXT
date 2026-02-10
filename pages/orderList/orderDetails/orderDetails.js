@@ -175,7 +175,7 @@ Page({
       { key: 'orderCostList', id: '11', name: '报价信息' },
       { key: 'orderKeyMailingList', id: '12', name: '寄送钥匙信息' },
       { key: 'orderLogisticsList', id: '13', name: '物流信息' },
-      { key: 'orderInstallList', id: '14', name: '安装信息' }
+      // { key: 'orderInstallList', id: '14', name: '安装信息' }
     ];
 
     // === 主逻辑开始 ===

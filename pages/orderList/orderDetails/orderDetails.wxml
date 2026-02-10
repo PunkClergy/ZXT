@@ -12,6 +12,9 @@
         </block>
       </view>
     </scroll-view>
+    <block wx:if="{{all_data.status == 10}}">
+      <view bindtap="handleInstall" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;display: flex;justify-content: flex-end;">需要厂家安装</view>
+    </block>
     <scroll-view enhanced show-scrollbar="{{false}}" scroll-y style="height:{{c_screen_height-(c_statusBarHeight + c_navBarHeight +45)}}px" scroll-into-view="{{scrollIntoViewId}}" scroll-with-animation>
       <view class="info-container">
         <view wx:for="{{navList}}" wx:key="index" id="{{'section' + item.id}}" wx:for-item="item">
@@ -93,10 +96,6 @@
                   <label>数量 ：</label>
                   <text>{{all_data.deviceCount||'-'}}</text>
                 </view>
-                <view class="main-content-area-info-item  {{all_data.deposit.length > 15 ? 'long-info-item' : ''}}">
-                  <label>押金 ：</label>
-                  <text>{{all_data.deposit||'-'}}</text>
-                </view>
                 <view class="main-content-area-info-item  {{all_data.hardUnitPrice.length > 15 ? 'long-info-item' : ''}}">
                   <label>硬件单价 ：</label>
                   <text>{{all_data.hardUnitPrice||'-'}}</text>
@@ -116,12 +115,6 @@
                 <view class="main-content-area-info-item  {{all_data.installUnitPrice.length > 15 ? 'long-info-item' : ''}}">
                   <label>安装费 ：</label>
                   <text>{{all_data.installUnitPrice||'-'}}</text>
-                </view>
-
-                <view class="main-content-area-info-item  long-info-item">
-                  <label>优惠券 ：</label>
-                  <!-- <text wx:if="{{all_data.cost}}">{{all_data.cost}}</text> -->
-                  <text style="color: rgba(69, 135, 253, 1);" bindtap="handleUseCoupon">{{couponText?couponText.content:'去选择'}}</text>
                 </view>
                 <!-- </block> -->
               </view>
@@ -270,11 +263,11 @@
           <!-- 安装信息 -->
           <block wx:if="{{item.id == 14 && (all_data.status == 9||all_data.status == 10||all_data.status==11)}}">
             <view class="main-content-area">
-              <view class="main-content-area-head">
+              <!-- <view class="main-content-area-head">
                 <view class="head-left">
                   {{item.name}}
                 </view>
-              </view>
+              </view> -->
               <block wx:for="{{item.list}}" wx:for-item="installmodule" wx:for-index="index" wx:key="index">
                 <view class="main-content-area-info">
                   <view class="main-content-area-info-item  {{installmodule.personname.length > 15 ? 'long-info-item' : ''}}">
@@ -296,9 +289,9 @@
 
                 </view>
               </block>
-              <block wx:if="{{item.list.length < 1}}">
+              <!-- <block wx:if="{{item.list.length < 1}}">
                 <view bindtap="handleInstall" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">申请安装</view>
-              </block>
+              </block> -->
             </view>
           </block>
         </view>
