@@ -6,7 +6,7 @@
     <scroll-view enhanced show-scrollbar="{{false}}" scroll-x class="nav-scroll" scroll-left="{{navScrollLeft}}" scroll-with-animation style="white-space: nowrap;">
       <view class="nav-container">
         <block wx:for="{{navList}}" wx:key="index">
-          <view wx:if="{{(item.id == '10')||(item.id == '11' && all_data.status > 1)||(item.id == '12' && all_data.isMailingKeys == 1 && (all_data.status == 5 || all_data.status == 13 || all_data.status == 6))||(item.id == '13' && (all_data.status == 8 || all_data.status == 9 || all_data.status == 10 || all_data.status == 11 || all_data.status == 12))||(item.id == '14' && (all_data.status == 9 || all_data.status == 10 || all_data.status == 11))}}" class="nav-item {{'section' + item.id == scrollIntoViewId ? 'active' : ''}}" data-id="{{item.id}}" bindtap="handleSwitchNav">
+          <view wx:if="{{(item.id == '10')||(item.id == '11' && all_data.status > 1)||(item.id == '12' && all_data.isMailingKeys&& (all_data.status == 5 || all_data.status == 13 || all_data.status == 6))||(item.id == '13' && (all_data.status == 8 || all_data.status == 9 || all_data.status == 10 || all_data.status == 11 || all_data.status == 12))||(item.id == '14' && (all_data.status == 9 || all_data.status == 10 || all_data.status == 11))}}" class="nav-item {{'section' + item.id == scrollIntoViewId ? 'active' : ''}}" data-id="{{item.id}}" bindtap="handleSwitchNav">
             {{item.name}}
           </view>
         </block>
