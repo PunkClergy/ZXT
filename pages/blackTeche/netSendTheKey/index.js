@@ -63,7 +63,8 @@ Page({
     controlcode: '',
     c_edit_key_show_momal: false,
     g_edit_info: {},
-    net_send_key_show_momal: false
+    net_send_key_show_momal: false,
+    comParam: ''
   },
   handleBindCar() {
     wx.navigateTo({
@@ -298,7 +299,7 @@ Page({
       const url = app.data.k1swUrl + u_rentRecord.URL;
       const params = {
         [u_rentRecord.page]: this.data.y_page,
-        comParam:this.data.comParam
+        comParam: this.data.comParam
       };
       const response = await byGet(url, params);
       const resp = response.data;
