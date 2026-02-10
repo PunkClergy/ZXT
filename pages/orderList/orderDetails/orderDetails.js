@@ -229,14 +229,23 @@ Page({
         // 更新数据
         this.setData({
           g_keys_type_index: info.willingKey || 2,
-          g_door_address,
+          g_door_address, // 注：这里保留了你原有的变量，若不需要可删除
           date: pickupDate,
           time: pickupTime,
           all_data: info,
           navList,
-          g_door_address:`${info?.orderPickup?.personname} ${info?.orderPickup?.mobile} ${info?.orderPickup?.address}`,
-          date: info?.orderPickup?.createdate?.slice(0, 10),
-          time: info?.orderPickup?.createdate?.slice(11, 16)
+          g_door_address: (() => {
+            const personname = info?.orderPickup?.personname || '';
+            const mobile = info?.orderPickup?.mobile || '';
+            const address = info?.orderPickup?.address || '';
+            if (!personname && !mobile && !address) {
+              return '';
+            }
+            return `${personname} ${mobile} ${address}`;
+          })(),
+          date: info?.orderPickup?.createdate?.slice(0, 10) || new Date().toISOString().slice(0, 10),
+          time: info?.orderPickup?.createdate?.slice(11, 16) || new Date().toTimeString().slice(0, 5)
+
         });
       })
       .catch(error => {
