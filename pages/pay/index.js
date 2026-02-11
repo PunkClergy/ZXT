@@ -107,7 +107,7 @@ Page({
             success(res) {
               const params_pay = {
                 [u_pay.orderNum]: _this.data.orderInfo.num || _this.data.orderInfo.guid,
-                couponGuid: _this.data.coupon?.guid
+                couponGuid: _this.data.coupon?.guid||''
               }
               byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
                 if (resp.data.code == 1000) {
@@ -131,7 +131,7 @@ Page({
     } else {
       const params_pay = {
         [u_pay.orderNum]: _this.data.orderInfo.num || _this.data.orderInfo.guid,
-        couponGuid: _this.data.coupon?.guid
+        couponGuid: _this.data.coupon?.guid||''
       }
       byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
         if (resp.data.code == 1000) {

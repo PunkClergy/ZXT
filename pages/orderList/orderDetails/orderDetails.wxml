@@ -137,7 +137,7 @@
               </view>
               <!-- 钥匙邮寄方式选择后的渲染 -->
               <!-- 自行邮寄 -->
-              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 3}}">
+              <view class="main-content-area-info" wx:if="{{g_keys_type_index == 2}}">
                 <label class="long-info-item cost-main-order">寄送地址</label>
                 <view class="long-info-item mailing_address">
                   <label>智信通</label>
@@ -169,7 +169,7 @@
                 <view bindtap="handleSendingKeyFunction" style="margin: 20rpx auto;background: rgba(245, 111, 72, 1);font-size: 26rpx;color: #fff;padding: 10rpx 80rpx;border-radius: 20rpx;">确认</view>
               </view>
               <!-- 上门取钥匙 -->
-              <view class="main-content-area-info take_keys_container" wx:if="{{g_keys_type_index == 2}}">
+              <view class="main-content-area-info take_keys_container" wx:if="{{g_keys_type_index == 3}}">
                 <!-- 上门地址和上门时间 -->
                 <view class="take_keys_row">
                   <label class="keys_label cost-main-order">上门取钥匙时间 ：</label>
@@ -191,12 +191,12 @@
                     <block wx:else>请选择上门取钥匙地址</block>
                   </view>
                 </view>
-                <view bindtap="handleSendingKeyFunction" class="take_keys_confirm_btn" wx:if="{{all_data.status!=6&&all_data.status!=7}}">确认</view>
+                <view bindtap="handleSendingKeyFunction" class="take_keys_confirm_btn" wx:if="{{all_data.status!=6&&all_data.status!=7}}">确认修改</view>
               </view>
             </view>
           </block>
           <!-- 寄送钥匙渲染 -->
-          <block wx:if="{{item.id == 12 && all_data.isMailingKeys == 1&&(all_data.status == 8 || all_data.status == 9 || all_data.status == 10 || all_data.status == 11 || all_data.status == 12||all_data.status==6)}}">
+          <block wx:if="{{item.id == 12 && all_data.isMailingKeys&&(all_data.status == 8 || all_data.status == 9 || all_data.status == 10 || all_data.status == 11 || all_data.status == 12||all_data.status==6)}}">
             <view class="main-content-area">
               <view class="main-content-area-head">
                 <view class="head-left">
