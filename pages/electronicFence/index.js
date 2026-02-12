@@ -239,6 +239,7 @@ Page({
       enddate,
       alarmtype: batterylift
     };
+
     byPost(
       `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`,
       postData,
@@ -246,45 +247,56 @@ Page({
         wx.hideLoading();
         if (id && params?.efencepoints) {
           const points = params.efencepoints;
+          const groupArray = points.split('&');
           const type = params.efencetype;
 
-          if (type == 2) { // 矩形
-            const polygon = {
-              points: points.split(',').map(pair => {
-                const [longitude, latitude] = pair.split('|');
-                return { latitude: +latitude, longitude: +longitude };
-              }),
-              strokeWidth: 3,
-              strokeColor: '#FF0000FF',
-              fillColor: '#FF000033'
-            };
+          // 定义多边形样式常量，便于统一维护
+          const POLYGON_STYLE = {
+            strokeWidth: 3,
+            strokeColor: '#FF0000FF',
+            fillColor: '#FF000033'
+          };
+
+          // 定义坐标解析函数，避免重复代码
+          const parsePoints = (pointStr) => {
+            return pointStr.split(',').map(pair => {
+              const [longitude, latitude] = pair.split('|');
+              // 增加类型转换的容错处理
+              return {
+                latitude: Number(latitude) || 0,
+                longitude: Number(longitude) || 0
+              };
+            });
+          };
+
+          if (type == 2) { // 矩形/多边形
+            // 遍历所有分组，动态生成多边形数组（支持任意数量）
+            const polygons = groupArray.map(pointGroup => ({
+              ...POLYGON_STYLE,
+              points: parsePoints(pointGroup)
+            }));
 
             this.setData({
-              polygons: [polygon],
+              polygons, // 直接赋值动态生成的数组
               map_type: type,
-              province_temp:response?.data?.content?.province,
-              city_temp:response?.data?.content?.city
-
-            }, () => {
-              console.log(response?.data?.content?.province)
-              // 此处初始化省份
-              // this.setData({
-              //   currentProvince: ''
-              // })
+              province_temp: response?.data?.content?.province,
+              city_temp: response?.data?.content?.city
             });
           } else { // 圆形
-            const [coords, radiusStr] = points.split('|');
-            const [longitude, latitude] = coords.split(',');
-            const radius = +radiusStr;
+            // 增加容错处理，避免解构赋值时报错
+            const [coords = '', radiusStr = '0'] = points.split('|') || [];
+            const [longitude = '0', latitude = '0'] = coords.split(',') || [];
+            const radius = Number(radiusStr) || 0;
 
             const circle = {
-              latitude: +latitude,
-              longitude: +longitude,
+              latitude: Number(latitude) || 0,
+              longitude: Number(longitude) || 0,
               radius,
               color: '#FF0000AA',
               strokeWidth: 2,
               strokeColor: '#FF0000FF'
             };
+
             this.setData({
               circles: [circle],
               radius,
@@ -298,7 +310,7 @@ Page({
         }
 
         wx.showToast({ title: response.data.msg || '操作成功', icon: 'none' });
-
+        console.log('123', params?.efencepoints)
         this.setData({
           add_type: 2,
           g_items: [],
@@ -476,14 +488,28 @@ Page({
   handleSumit() {
     const { map_type } = this.data;
     let pointsData, validation;
+    if (map_type === 2) {
+      const formatPolygonPoints = (points = []) => {
+        if (points.length < 3) return null;
+        return points
+          .map(point => `${parseFloat(point.longitude)}|${parseFloat(point.latitude)}`)
+          .join();
+      };
 
-    if (map_type == 2) {
-      // 多边形处理逻辑
-      const points = this.data?.polygons[0]?.points || [];
-      validation = points.length >= 3;
-      pointsData = validation
-        ? points.map(c => `${parseFloat(c.longitude)}|${parseFloat(c.latitude)}`).join()
-        : null;
+
+      // 安全获取多边形数组，默认空数组避免报错
+      const { polygons = [] } = this.data || {};
+
+
+      const validPointsList = polygons
+        .map(polygon => formatPolygonPoints(polygon?.points))
+        .filter(Boolean);
+
+
+      pointsData = validPointsList.join('&');
+
+
+      console.log('多多边形坐标拼接结果：', pointsData);
     } else {
       // 圆形处理逻辑
       const circles = this.data.circles;
@@ -493,24 +519,19 @@ Page({
         : null;
     }
 
-    // 验证数据
-    if (!validation) {
-      return wx.showModal({
-        title: '提示',
-        content: '请先从地图选点圈定围栏',
-      });
-    }
 
     wx.showLoading({ title: '提交中...', mask: true });
+
 
     // 构造请求参数
     const requestData = {
       ...this.data.temp,
       efencetype: this.data.map_type,
       efencepoints: pointsData,
-      province: this.data.multiArray[0]?.[this.data.multiIndex[0]],
-      city: this.data.multiArray[1]?.[this.data.multiIndex[1]]
+      province: this.data.province_temp||(this.data.multiArray[0]?.[this.data.multiIndex[0]]),
+      city: this.data.city_temp||(this.data.multiArray[1]?.[this.data.multiIndex[1]])
     };
+    console.log(requestData)
 
     // 统一请求处理
     byPost(
@@ -523,6 +544,7 @@ Page({
           return;
         }
 
+
         wx.showToast({ title: res.data.msg || '操作成功', icon: 'none' });
         this.updateListState();
       },
@@ -532,6 +554,7 @@ Page({
       }
     );
   },
+
 
   // 新增的状态更新方法
   updateListState() {
@@ -712,16 +735,16 @@ Page({
       console.error("入参格式错误，无法提取polygon数据");
       return [];
     }
-  
+
     // 步骤2：处理空数据边界情况
     if (!rawPolygon.length) {
       console.warn("polygon数据为空，返回空数组");
       return [];
     }
-  
+
     // 步骤3：转换为{ longitude, latitude }格式（处理所有项并合并为一维数组）
     const allPoints = []; // 存储所有解析后的坐标点（一维数组）
-  
+
     // 遍历rawPolygon中的每一项
     for (const coreCoordinates of rawPolygon) {
       // 跳过非数组的无效项
@@ -729,12 +752,12 @@ Page({
         console.warn("发现非数组格式的坐标项，已跳过");
         continue;
       }
-  
+
       // 解析当前项的一维坐标数组 [lng1, lat1, lng2, lat2, ...]
       for (let i = 0; i < coreCoordinates.length; i += 2) {
         const longitude = coreCoordinates[i];
         const latitude = coreCoordinates[i + 1];
-  
+
         // 过滤无效坐标（避免NaN等异常值）
         if (typeof longitude === 'number' && typeof latitude === 'number') {
           allPoints.push({
@@ -744,7 +767,7 @@ Page({
         }
       }
     }
-  
+
     // 步骤4：为合并后的整个数组补充闭合点（如果首尾坐标不一致）
     if (allPoints.length >= 1) {
       const firstPoint = allPoints[0];
@@ -759,7 +782,7 @@ Page({
         });
       }
     }
-  
+
     // 步骤5：返回合并后的一维数组
     return allPoints;
   },
@@ -776,21 +799,27 @@ Page({
         key: 'W66BZ-ADBC3-COB3F-YWZG4-MAVRO-IJBIM'
       },
       success: res => {
+        // 做改变
         if (res.data.status === 0) {
-          console.log(res.data.result[0][0]?.location?.lng)
           const polygon = res.data.result[0][0].polygon;
-          console.log(polygon)
-          this.setData({
-            polygons: [{
-              points: this.convertTencentPolygonToPoints(polygon),
-              strokeWidth: 3,
-              strokeColor: '#FF0000FF',
-              fillColor: '#FF000033',
+          // 提取多边形公共样式配置，便于统一修改
+          const POLYGON_STYLE = {
+            strokeWidth: 1,
+            strokeColor: '#FF0000FF',
+            fillColor: '#FF000033'
+          };
 
-            }],
-            latitude: res.data.result[0][0]?.location.lat,
-            longitude: res.data.result[0][0]?.location?.lng
-          })
+          // 重构后的核心逻辑
+          this.setData({
+            // 遍历polygon数组生成多边形配置，彻底消除重复代码
+            polygons: (polygon || []).map(item => ({
+              ...POLYGON_STYLE, // 复用公共样式
+              points: this.convertTencentPolygonToPoints([item])
+            })),
+            // 增加空值兜底，避免坐标缺失导致地图异常
+            latitude: res?.data?.result?.[0]?.[0]?.location?.lat || this.data.latitude,
+            longitude: res?.data?.result?.[0]?.[0]?.location?.lng || this.data.longitude
+          });
         } else {
           wx.showToast({ title: res.data.message, icon: 'none' });
         }
