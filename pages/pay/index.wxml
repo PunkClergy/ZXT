@@ -17,19 +17,76 @@
 
   <!-- 支付方式 -->
   <view class="pay-methods">
-    <view class="pay-item">
+    <!-- 仅展示余额，不可选择 -->
+    <view class="pay-item balance-display">
       <view class="pay-item-title">
         <image class="pay-icon" src="/assets/images/wallet.png"></image>
         <text class="pay-name">当前余额</text>
       </view>
-      <view>{{balance}} </view>
+      <view>{{balance}}</view>
+    </view>
+
+    <view class="pay-header">选择支付方式</view>
+    <!-- 对公支付（可选择） -->
+    <view class="pay-item selectable" bindtap="selectPayMethod" data-type="corporate">
+      <view class="pay-item-title">
+        <image class="pay-icon" src="/assets/images/to_the_public.png"></image>
+        <text class="pay-name">对公支付</text>
+      </view>
+      <image class="check-icon" src="/assets/images/check.png" wx:if="{{selectedPayMethod === 'corporate'}}"></image>
+    </view>
+    <!-- 微信支付（可选择，保留原有逻辑） -->
+    <view class="pay-item selectable" bindtap="selectPayMethod" data-type="wechat" wx:if="{{isWechat}}">
+      <view class="pay-item-title">
+        <image class="pay-icon" src="/assets/images/wechat.png"></image>
+        <text class="pay-name">微信支付</text>
+      </view>
+      <image class="check-icon" src="/assets/images/check.png" wx:if="{{selectedPayMethod === 'wechat'}}"></image>
     </view>
   </view>
 
   <!-- 支付按钮 -->
   <view class="footer">
-    <view class="pay-btn" bindtap="handlePay">
+    <view class="pay-btn" bindtap="handlePay" wx:if="{{selectedPayMethod&&payMethodText=='微信支付'}}">
       {{isWechat?'微信支付':'余额支付'}} ¥{{orderInfo.cost - coupon.amount||orderInfo.premium- coupon.amount}}
+    </view>
+    <view class="pay-btn" bindtap="handleToThePublic" wx:if="{{selectedPayMethod&&payMethodText=='对公支付'}}">
+      确认
+    </view>
+    <!-- 未选择支付方式时禁用按钮 -->
+    <view class="pay-btn disabled" wx:if="{{!selectedPayMethod}}">
+      请选择支付方式
+    </view>
+  </view>
+</view>
+
+
+<!-- 新增：自定义对公账户弹窗 -->
+<view class="corporate-modal" wx:if="{{showCorporateModal}}">
+  <!-- 遮罩层 -->
+  <view class="modal-mask" bindtap="hideCorporateModal"></view>
+  <!-- 弹窗内容 -->
+  <view class="modal-box">
+    <view class="modal-header">
+      <text class="modal-title">对公账户信息</text>
+      <image class="close-icon" src="/assets/images/close.png" bindtap="hideCorporateModal"></image>
+    </view>
+    <view class="modal-body">
+      <view class="account-item">
+        <text class="item-label">企业名称：</text>
+        <text class="item-value">{{corporateAccount.enterpriseName}}</text>
+      </view>
+      <view class="account-item">
+        <text class="item-label">开户银行：</text>
+        <text class="item-value">{{corporateAccount.bankName}}</text>
+      </view>
+      <view class="account-item">
+        <text class="item-label">银行账号：</text>
+        <text class="item-value account-number">{{corporateAccount.bankAccount}}</text>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="confirm-btn" bindtap="copyAccountInfo">我已记录（复制信息）</button>
     </view>
   </view>
 </view>

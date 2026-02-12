@@ -23,7 +23,14 @@ Page({
     c_totalNavHeight: (_handleWindowInfo.statusBarHeight || 0) + (_handleDeviceInfo.platform == 'ios' ? 49 : 44), // 总导航高度 = 状态栏高度 + 导航栏高度
     balance: 0,
     orderInfo: {},
-    isWechat: false
+    isWechat: false,
+    corporateAccount: {
+      enterpriseName: '北京开元智信通科技有限公司',
+      bankName: '中信银行北京石景山支行',
+      bankAccount: '8110701014000126657'
+    },
+    // 控制弹窗显示/隐藏
+    showCorporateModal: false
   },
   // 全屏背景
   initialiImageBaseConversion() {
@@ -54,6 +61,68 @@ Page({
         }), {});
         _this.setData(dataToUpdate);
       });
+  },
+  // 选择支付方式（仅对公/微信支付可选择）
+  selectPayMethod(e) {
+    const type = e.currentTarget.dataset.type;
+    let text = '';
+    switch (type) {
+      case 'corporate':
+        text = '对公支付';
+        break;
+      case 'wechat':
+        text = '微信支付';
+        break;
+    }
+    this.setData({
+      selectedPayMethod: type,
+      payMethodText: text
+    });
+  },
+  // 对公付款
+  handleToThePublic() {
+    this.setData({ showCorporateModal: true })
+
+  },
+  hideCorporateModal() {
+    this.setData({ showCorporateModal: false })
+  },
+  // 复制银行卡信息
+  copyAccountInfo() {
+    const { corporateAccount } = this.data;
+    // 拼接要复制的信息
+    const copyText = `企业名称：${corporateAccount.enterpriseName}
+开户银行：${corporateAccount.bankName}
+银行账号：${corporateAccount.bankAccount}`;
+
+    // 调用微信复制接口
+    wx.setClipboardData({
+      data: copyText,
+      success: () => {
+        this.hideCorporateModal();
+        setTimeout(() => {
+          wx.showModal({
+            title: '温馨提示',
+            content: '打款后请等待财务审核',
+            showCancel: false,
+            confirmText: '我知道了',
+            success: (res) => {
+              if (res.confirm) {
+                wx.redirectTo({
+                  url: '/pages/index/index',
+                });
+              }
+            }
+          });
+        }, 1500);
+      },
+      fail: () => {
+        wx.showToast({
+          title: '复制失败，请手动记录',
+          icon: 'none'
+        });
+      }
+    });
   },
   // 判断金额是否大于余额
   initAmountSizeBalance() {
@@ -107,7 +176,7 @@ Page({
             success(res) {
               const params_pay = {
                 [u_pay.orderNum]: _this.data.orderInfo.num || _this.data.orderInfo.guid,
-                couponGuid: _this.data.coupon?.guid||''
+                couponGuid: _this.data.coupon?.guid || ''
               }
               byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
                 if (resp.data.code == 1000) {
@@ -131,7 +200,7 @@ Page({
     } else {
       const params_pay = {
         [u_pay.orderNum]: _this.data.orderInfo.num || _this.data.orderInfo.guid,
-        couponGuid: _this.data.coupon?.guid||''
+        couponGuid: _this.data.coupon?.guid || ''
       }
       byPost(getApp().data.k1swUrl + u_pay.URL, params_pay, (resp) => {
         if (resp.data.code == 1000) {
