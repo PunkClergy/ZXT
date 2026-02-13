@@ -147,7 +147,7 @@
           </view>
 
           <!-- 是否安装 -->
-          <view class="card-info-item" wx:if="{{installation_price!=0}}">
+          <view class="card-info-item">
             <label>是否安装<text>*</text></label>
             <view class="card-info-item-input" style="display: flex;flex-direction: column;justify-content: flex-end;align-items: flex-end;">
               <radio-group bindchange="handleVicheRadioChange" style="display: flex;align-items: center;gap: 20rpx;">
@@ -173,7 +173,7 @@
             <label>客户收货地址<text>*</text></label>
             <view class="card-info-item-input">
               <view disabled="true" data-type="receiving" data-item="{{g_receiving_address}}" bindtap="handleSelectAddress" style="font-size: 26rpx;color: #666;">
-                {{g_receiving_address?g_receiving_address:'请输入客户收货地址'}}
+                {{g_receiving_address.lenght>0?g_receiving_address:'请输入客户收货地址'}}
               </view>
             </view>
           </view>
@@ -198,7 +198,7 @@
             <label>上门取钥匙地址<text>*</text></label>
             <view class="card-info-item-input">
               <view disabled="true" data-type="door" data-item="{{g_receiving_address}}" bindtap="handleSelectAddress" style="font-size: 26rpx;color: #666;">
-                {{g_door_address||g_receiving_address}}
+                {{g_receiving_address.lenght>0?(g_door_address||g_receiving_address):'请输入上门取钥匙地址'}}
               </view>
             </view>
           </view>
