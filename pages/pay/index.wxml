@@ -74,15 +74,15 @@
     <view class="modal-body">
       <view class="account-item">
         <text class="item-label">企业名称：</text>
-        <text class="item-value">{{corporateAccount.enterpriseName}}</text>
+        <text class="item-value">{{corporateAccount.name}}</text>
       </view>
       <view class="account-item">
         <text class="item-label">开户银行：</text>
-        <text class="item-value">{{corporateAccount.bankName}}</text>
+        <text class="item-value">{{corporateAccount.depositbank}}</text>
       </view>
       <view class="account-item">
         <text class="item-label">银行账号：</text>
-        <text class="item-value account-number">{{corporateAccount.bankAccount}}</text>
+        <text class="item-value account-number">{{corporateAccount.bankaccounts}}</text>
       </view>
     </view>
     <view class="modal-footer">

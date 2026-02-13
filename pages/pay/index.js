@@ -5,8 +5,11 @@ const {
 const urlUtil = require('../../utils/url-util.js');
 const appUtil = require('../../utils/app-util.js');
 const {
-  byPost
+  byPost,byGet
 } = require('../../utils/request/http')
+const {
+  u_zxtInvoicelnfo
+} = require('../../utils/request/data_info')
 import {
   u_getCompanyInfo,
 } from '../../utils/request/eqpmnt';
@@ -25,12 +28,18 @@ Page({
     orderInfo: {},
     isWechat: false,
     corporateAccount: {
-      enterpriseName: '北京开元智信通科技有限公司',
-      bankName: '中信银行北京石景山支行',
-      bankAccount: '8110701014000126657'
     },
     // 控制弹窗显示/隐藏
     showCorporateModal: false
+  },
+  // 请求区域数据
+  initGetRoles(evt) {
+    byGet(`${getApp().data.k1swUrl}${u_zxtInvoicelnfo.URL}`, {}).then(allRes => {
+      this.setData({
+        corporateAccount: allRes?.data?.content[0]
+      })
+
+    })
   },
   // 全屏背景
   initialiImageBaseConversion() {
@@ -91,9 +100,9 @@ Page({
   copyAccountInfo() {
     const { corporateAccount } = this.data;
     // 拼接要复制的信息
-    const copyText = `企业名称：${corporateAccount.enterpriseName}
-开户银行：${corporateAccount.bankName}
-银行账号：${corporateAccount.bankAccount}`;
+    const copyText = `企业名称：${corporateAccount?.name}
+开户银行：${corporateAccount?.depositbank}
+银行账号：${corporateAccount?.bankaccounts}`;
 
     // 调用微信复制接口
     wx.setClipboardData({
@@ -236,6 +245,7 @@ Page({
   },
   onShow() {
     this.initialiImageBaseConversion()
+    this.initGetRoles()
   },
 
 })
