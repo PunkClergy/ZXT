@@ -369,12 +369,6 @@ Page({
       if (res.statusCode == 200) {
         var data = res.data;
         if (data.code == 1000) {
-          //请求成功
-          let pages = getCurrentPages();
-          console.log(pages)
-          let prePage = pages[0];
-          prePage.triggerChildEvent()
-          console.log(res.data)
           wx.removeStorage({
             key: 'scene',
           })
