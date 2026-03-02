@@ -156,7 +156,8 @@
       "root": "pages/ToGovernment",
       "name": "ToGovernment",
       "pages": [
-        "InternalKeyIssuance/index"
+        "InternalKeyIssuance/index",
+        "DemolitionWarning/index"
       ]
     }
   ],
