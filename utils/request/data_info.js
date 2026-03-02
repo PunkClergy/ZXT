@@ -280,7 +280,12 @@ const u_getUserlnfo = {
   URL: fin3plusUrl + "deskapi/getUserInfo",
   
 }
+const u_alarmList = {
+  URL: fin3plusUrl + "efenceApi/alarmList",
+  
+}
 module.exports = {
+  u_alarmList,
   u_getUserlnfo,
   u_channelAgreementList,
   u_getMyCoupon,

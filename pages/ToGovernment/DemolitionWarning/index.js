@@ -1,10 +1,18 @@
+const {
+  byGet,
+  byPost
+} = require('../../../utils/request/http')
+const {
+  u_alarmList
+
+} = require('../../../utils/request/data_info')
 Page({
   data: {
     isSubscribed: false,
     totalCount: 20, // 异常记录总数（新增后20条）
     todayCount: 8, // 今日新增异常
     unHandleCount: 20, // 待处理异常数（全部都是）
-    warningTemplateId: "你的模板ID",
+    warningTemplateId: "kHSR9WLqadYVKxkInGWBvF6no_Ee_iPt1u2dOzNiJFs",
 
     // 原始异常记录数据（新增至20条）
     warningRecords: [
@@ -207,8 +215,19 @@ Page({
     this.setData({
       filteredRecords: [...this.data.warningRecords]
     });
+    console.log(byPost)
+    this.handle()
   },
-
+  // 请求数据列表
+  handle() {
+    byGet(`${getApp().data.k1swUrl}${u_alarmList.URL}`, {}).then(response => {
+      if (response.data.code == 1000) {
+        this.setData({
+          objectList: response.data.content,
+        });
+      }
+    })
+  },
   // 检查订阅状态
   checkSubscribeStatus() {
     wx.getSetting({
@@ -224,7 +243,7 @@ Page({
   // 订阅预警通知
   handleSubscribeWarning() {
     if (this.data.isSubscribed) {
-      wx.showToast({ title: '已订阅', icon: 'success' });
+      wx.showToast({ title: '已订阅', icon: 'none' });
       return;
     }
 
@@ -251,7 +270,7 @@ Page({
           success: (res) => {
             if (res[this.data.warningTemplateId] === 'accept') {
               this.setData({ isSubscribed: true });
-              wx.showToast({ title: '订阅成功', icon: 'success' });
+              wx.showToast({ title: '订阅成功', icon: 'none' });
             } else {
               wx.showToast({ title: '已拒绝', icon: 'none' });
             }
@@ -298,8 +317,8 @@ Page({
 
     const { warningRecords } = this.data;
     const candidateList = warningRecords.filter(item => {
-      return item.carNumber.toUpperCase().includes(inputVal) || 
-             item.carModel.includes(inputVal);
+      return item.carNumber.toUpperCase().includes(inputVal) ||
+        item.carModel.includes(inputVal);
     }).map(item => ({
       carModel: item.carModel,
       carNumber: item.carNumber
@@ -317,7 +336,7 @@ Page({
   selectCarNumber(e) {
     const selectedCarNum = e.currentTarget.dataset.carnumber;
     const targetCar = this.data.warningRecords.find(item => item.carNumber === selectedCarNum);
-    
+
     this.setData({
       inputCarNumber: selectedCarNum,
       carCandidateList: []
