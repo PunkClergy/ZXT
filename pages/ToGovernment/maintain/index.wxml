@@ -1,0 +1,123 @@
+<view class="page-container">
+  <!-- 统计卡片 -->
+  <view class="stats-card">
+    <view class="stats-item">
+      <text class="stats-num risky">{{totalCount}}</text>
+      <text class="stats-label">车辆总数</text>
+    </view>
+    <view class="stats-item">
+      <text class="stats-num risky">{{todayCount}}</text>
+      <text class="stats-label">辆车需要保养</text>
+    </view>
+  </view>
+
+  <!-- 保养提醒列表（铺满剩余高度） -->
+  <view class="record-list-container">
+    <view class="record-list">
+      <view class="list-title">
+        <text>车辆保养提醒</text>
+        <!-- 筛选按钮 -->
+        <view class="filter-btn" bindtap="openFilterModal">
+          筛选 📋
+        </view> 
+      </view>
+
+      <!-- 保养提醒记录 -->
+      <view class="record-item"
+        wx:for="{{filteredRecords}}" wx:key="recordId"
+         data-record="{{item}}"
+      >
+        <view class="record-left">
+          <text class="record-time">{{item.carModel}}（{{item.carNumber}}）</text>
+          <text class="record-desc">离保养里程: {{item.remainingMileage}}公里</text>
+          <!-- 调整布局：总里程和校准同行，保养周期另起一行 -->
+          <view class="mileage-row">
+            <text class="mileage-text">总里程: {{item.totalMileage}}公里</text>
+            <text class="calibrate-btn" bindtap="openCalibrateModal" data-record="{{item}}" catchtap>校准</text>
+          </view>
+          <text class="cycle-text">保养周期: {{item.maintenanceCycle}}公里</text>
+          <text class="record-vehicle">记录时间：{{item.warningTime}}</text>
+        </view>
+        <view class="record-right">
+          <view class="nav-btn" size="mini"
+            bindtap="handleNavToRecord"
+            data-record="{{item}}" catchtap wx:if="{{item.maintenanceStatus == 'pending'}}">
+            我已保养
+          </view>
+        </view>
+      </view>
+
+      <view class="empty" wx:if="{{filteredRecords.length === 0}}">
+        暂无符合条件的保养提醒记录
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 筛选弹窗 -->
+<view class="filter-modal" wx:if="{{showFilterModal}}">
+  <view class="modal-mask" bindtap="closeFilterModal"></view>
+  <view class="modal-content">
+    <view class="modal-title">筛选条件</view>
+    
+    <!-- 保养状态筛选（替换原日期筛选） -->
+    <view class="filter-item">
+      <text class="filter-label">保养状态：</text>
+      <picker mode="selector" range="{{maintenanceStatusOptions}}" range-key="name" value="{{selectedStatusIndex}}" bindchange="onStatusChange">
+        <view class="picker-input">{{selectedStatus.name || '请选择状态'}}</view>
+      </picker>
+    </view>
+
+    <!-- 车牌号搜索（实时搜索+候选列表） -->
+    <view class="filter-item">
+      <text class="filter-label">车牌号：</text>
+      <input 
+        class="input-box" 
+        placeholder="请输入车牌号（如京A00293）"
+        value="{{inputCarNumber}}"
+        bindinput="onCarNumberInput"
+        focus="{{focusCarInput}}"
+      ></input>
+      
+      <!-- 车牌号候选列表（输入时显示匹配结果） -->
+      <view class="car-list" wx:if="{{carCandidateList.length > 0}}">
+        <view 
+          class="car-item" 
+          wx:for="{{carCandidateList}}" wx:key="carNumber"
+          bindtap="selectCarNumber"
+          data-carnumber="{{item.carNumber}}"
+        >
+          {{item.carModel}}（{{item.carNumber}}）
+        </view>
+      </view>
+    </view>
+
+    <!-- 筛选按钮组 -->
+    <view class="btn-group">
+      <button class="reset-btn" bindtap="resetFilter">重置</button>
+      <button class="confirm-btn" bindtap="confirmFilter">确认筛选</button>
+    </view>
+  </view>
+</view>
+
+<!-- 里程校准弹窗 -->
+<view class="calibrate-modal" wx:if="{{showCalibrateModal}}">
+  <view class="modal-mask" bindtap="closeCalibrateModal"></view>
+  <view class="calibrate-content">
+    <view class="modal-title">里程校准</view>
+    <view class="calibrate-input-wrap">
+      <input 
+        class="calibrate-input" 
+        type="number" 
+        placeholder="请输入校准里程"
+        value="{{calibrateValue}}"
+        bindinput="onCalibrateInput"
+      ></input>
+      <text class="unit-text">km</text>
+    </view>
+    <view class="btn-group">
+      <button class="cancel-btn" bindtap="closeCalibrateModal">取消</button>
+      <button class="confirm-btn" bindtap="confirmCalibrate">确认</button>
+    </view>
+  </view>
+</view>

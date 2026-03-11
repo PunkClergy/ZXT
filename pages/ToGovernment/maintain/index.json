@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "保养提醒",
+  "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "disableScroll": true
+}
+

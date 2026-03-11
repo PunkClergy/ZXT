@@ -168,9 +168,16 @@ const u_promotionalApiWxBooklist = {
   URL: fin3plusUrl + "promotionalApi/wxFilelist",
   page: 'page'
 }
-
+const u_maintained = {
+  URL: fin3plusUrl + "carapi/maintained",
+}
+const u_calibrateTotalMileage = {
+  URL: fin3plusUrl + "carapi/calibrateTotalMileage",
+}
 
 module.exports = {
+  u_calibrateTotalMileage,
+  u_maintained,
   u_promotionalApiWxBooklist,
   u_promotionalApi,
   u_uploadLog,
