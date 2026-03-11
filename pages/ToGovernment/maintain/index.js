@@ -204,7 +204,7 @@ Page({
             totalMileage:currentCalibrateRecord?.totalMileage
           };
 
-          wx.showLoading({ title: '校准中...' });
+          wx.showLoading({ title: '数据上传中...' });
           const baseUrl = getApp().data.k1swUrl;
           byPost(`${baseUrl}${u_maintained.URL}`, requestParams, (res) => {
             wx.hideLoading();
