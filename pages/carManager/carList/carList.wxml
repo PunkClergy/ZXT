@@ -151,7 +151,7 @@
           </view>
 
           <!-- 车架号 -->
-          <view class="card-info-item">
+          <view class="card-info-item" wx:if="{{(!params.initMileage)||params.initMileage<1}}">
             <label>初始化里程(km)</label>
             <block>
               <view class="card-info-item-input">

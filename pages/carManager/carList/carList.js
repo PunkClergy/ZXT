@@ -457,6 +457,8 @@ Page({
       btnState: '修改',
       id: info?.id,
       params: {
+        maintainMileageInterval:info?.maintainMileageInterval,
+        initMileage:info?.initMileage,
         vehicleSerialName: info?.vehicleSerialName,
         vehicleModeName: info?.vehicleModeName,
         ccdate: info?.ccdate,

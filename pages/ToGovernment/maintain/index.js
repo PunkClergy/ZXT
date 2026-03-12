@@ -201,7 +201,7 @@ Page({
         if (res.confirm) {
           const requestParams = {
             sn: currentCalibrateRecord.sn,
-            totalMileage:currentCalibrateRecord?.totalMileage
+            totalMileage: currentCalibrateRecord?.totalMileage
           };
 
           wx.showLoading({ title: '数据上传中...' });
@@ -270,8 +270,16 @@ Page({
     byPost(`${baseUrl}${u_calibrateTotalMileage.URL}`, requestParams, (res) => {
       wx.hideLoading();
       if (res?.data?.code === 1000) {
-        this.initList();
-        wx.showToast({ title: '里程校准成功' });
+
+        wx.showToast({ title: '里程校准成功',icon:'none' });
+        this.setData({
+          showCalibrateModal: false,
+          calibrateValue: '',
+          currentCalibrateRecord: null
+        }, () => {
+          this.initList();
+        });
+
       } else {
         wx.showToast({ title: res?.data?.msg || '校准失败', icon: 'none' });
       }
