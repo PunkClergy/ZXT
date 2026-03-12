@@ -151,11 +151,11 @@
           </view>
 
           <!-- 车架号 -->
-          <view class="card-info-item" wx:if="{{(!params.initMileage)||params.initMileage<1}}">
+          <view class="card-info-item">
             <label>初始化里程(km)</label>
             <block>
               <view class="card-info-item-input">
-                <input placeholder="请输入车辆当前里程" value="{{params.initMileage}}" data-item="initMileage" bindinput="handleBindinput" />
+                <input placeholder="请输入车辆当前里程" value="{{params.totalMileage}}" data-item="totalMileage" bindinput="handleBindinput" />
               </view>
             </block>
 

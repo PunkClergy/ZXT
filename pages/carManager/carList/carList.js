@@ -458,7 +458,7 @@ Page({
       id: info?.id,
       params: {
         maintainMileageInterval:info?.maintainMileageInterval,
-        initMileage:info?.initMileage,
+        totalMileage:info?.totalMileage,
         vehicleSerialName: info?.vehicleSerialName,
         vehicleModeName: info?.vehicleModeName,
         ccdate: info?.ccdate,
