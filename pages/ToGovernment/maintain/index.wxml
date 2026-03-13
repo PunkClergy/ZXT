@@ -6,7 +6,7 @@
       <text class="stats-label">车辆总数</text>
     </view>
     <view class="stats-item">
-      <text class="stats-num risky">{{todayCount}}</text>
+      <text class="stats-num risky" style="color: {{todayCount>0?'#fa4143':''}}">{{todayCount}}</text>
       <text class="stats-label">辆车需要保养</text>
     </view>
   </view>
@@ -19,17 +19,14 @@
         <!-- 筛选按钮 -->
         <view class="filter-btn" bindtap="openFilterModal">
           筛选 📋
-        </view> 
+        </view>
       </view>
 
       <!-- 保养提醒记录 -->
-      <view class="record-item"
-        wx:for="{{filteredRecords}}" wx:key="recordId"
-         data-record="{{item}}"
-      >
+      <view class="record-item" wx:for="{{filteredRecords}}" wx:key="recordId" data-record="{{item}}">
         <view class="record-left">
           <text class="record-time">{{item.carModel}}（{{item.carNumber}}）</text>
-          <text class="record-desc">离保养里程: {{item.remainingMileage}}公里</text>
+          <text class="record-desc" style="color: {{item.remainingMileage>0?'':'#fa4143'}};">离保养里程: {{item.remainingMileage}}公里</text>
           <!-- 调整布局：总里程和校准同行，保养周期另起一行 -->
           <view class="mileage-row">
             <text class="mileage-text">总里程: {{item.totalMileage}}公里</text>
@@ -39,9 +36,7 @@
           <text class="record-vehicle">记录时间：{{item.warningTime}}</text>
         </view>
         <view class="record-right">
-          <view class="nav-btn" size="mini"
-            bindtap="handleNavToRecord"
-            data-record="{{item}}" catchtap wx:if="{{item.maintenanceStatus == 'pending'}}">
+          <view class="nav-btn" size="mini" bindtap="handleNavToRecord" data-record="{{item}}" catchtap wx:if="{{item.maintenanceStatus == 'pending'}}">
             保养确认
           </view>
         </view>
@@ -59,7 +54,7 @@
   <view class="modal-mask" bindtap="closeFilterModal"></view>
   <view class="modal-content">
     <view class="modal-title">筛选条件</view>
-    
+
     <!-- 保养状态筛选（替换原日期筛选） -->
     <view class="filter-item">
       <text class="filter-label">保养状态：</text>
@@ -71,22 +66,11 @@
     <!-- 车牌号搜索（实时搜索+候选列表） -->
     <view class="filter-item">
       <text class="filter-label">车牌号：</text>
-      <input 
-        class="input-box" 
-        placeholder="请输入车牌号（如京A00293）"
-        value="{{inputCarNumber}}"
-        bindinput="onCarNumberInput"
-        focus="{{focusCarInput}}"
-      ></input>
-      
+      <input class="input-box" placeholder="请输入车牌号（如京A00293）" value="{{inputCarNumber}}" bindinput="onCarNumberInput" focus="{{focusCarInput}}"></input>
+
       <!-- 车牌号候选列表（输入时显示匹配结果） -->
       <view class="car-list" wx:if="{{carCandidateList.length > 0}}">
-        <view 
-          class="car-item" 
-          wx:for="{{carCandidateList}}" wx:key="carNumber"
-          bindtap="selectCarNumber"
-          data-carnumber="{{item.carNumber}}"
-        >
+        <view class="car-item" wx:for="{{carCandidateList}}" wx:key="carNumber" bindtap="selectCarNumber" data-carnumber="{{item.carNumber}}">
           {{item.carModel}}（{{item.carNumber}}）
         </view>
       </view>
@@ -106,13 +90,7 @@
   <view class="calibrate-content">
     <view class="modal-title">里程校准</view>
     <view class="calibrate-input-wrap">
-      <input 
-        class="calibrate-input" 
-        type="number" 
-        placeholder="请输入校准里程"
-        value="{{calibrateValue}}"
-        bindinput="onCalibrateInput"
-      ></input>
+      <input class="calibrate-input" type="number" placeholder="请输入校准里程" value="{{calibrateValue}}" bindinput="onCalibrateInput"></input>
       <text class="unit-text">km</text>
     </view>
     <view class="btn-group">
