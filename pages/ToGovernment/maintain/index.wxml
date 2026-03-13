@@ -42,7 +42,7 @@
           <view class="nav-btn" size="mini"
             bindtap="handleNavToRecord"
             data-record="{{item}}" catchtap wx:if="{{item.maintenanceStatus == 'pending'}}">
-            我已保养
+            保养确认
           </view>
         </view>
       </view>

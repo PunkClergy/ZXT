@@ -6,8 +6,8 @@ const {
 } = require('../../../utils/request/http')
 Page({
   data: {
-    totalCount: 20, // 车辆总数
-    todayCount: 8,  // 需要保养车辆数
+    totalCount: 0, // 车辆总数
+    todayCount: 0,  // 需要保养车辆数
 
     // 保养状态选项
     maintenanceStatusOptions: [
@@ -78,6 +78,7 @@ Page({
 
       this.setData({
         filteredRecords: carList,
+        carList:carList,
         totalCount: content.length, // 车辆总数
         todayCount: pendingMaintenanceCount, // 保持原有字段名，避免页面引用报错
       });
@@ -121,8 +122,8 @@ Page({
       return;
     }
 
-    const { filteredRecords } = this.data;
-    const candidateList = filteredRecords.filter(item => {
+    const { carList } = this.data;
+    const candidateList = carList.filter(item => {
       return item.carNumber.toUpperCase().includes(inputVal) ||
         item.carModel.includes(inputVal);
     }).map(item => ({
@@ -154,15 +155,15 @@ Page({
       selectedStatus: { name: '全部', value: 'all' },
       inputCarNumber: '',
       carCandidateList: [],
-      filteredRecords: [...this.data.filteredRecords]
+      filteredRecords: [...this.data.carList],
+      showFilterModal:false
     });
   },
 
   // 确认筛选
   confirmFilter() {
-    const { filteredRecords, selectedStatus, inputCarNumber } = this.data;
-    let result = [...filteredRecords];
-
+    const {carList, selectedStatus, inputCarNumber } = this.data;
+    let result = [...carList];
     // 保养状态筛选
     if (selectedStatus.value !== 'all') {
       result = result.filter(item => item.maintenanceStatus === selectedStatus.value);
