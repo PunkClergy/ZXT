@@ -121,7 +121,7 @@
     <view class="control_button" id="3" bindtap="handleReturningVehicles">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_return.png" class="control_button-image" />
     </view>
-    <text class="control_label">归还车辆</text>
+    <text class="control_label">{{flagSource=='added'?'送车拍照':'归还车辆'}}</text>
   </view>
 
   <view class="control_item">
