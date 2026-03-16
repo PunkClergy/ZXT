@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "还车记录",
+  "usingComponents": {
+    "custom-header":"/components/CustomHeader/index",
+    "time-line":"/components/timeline/timeline"
+  },
+  "disableScroll": true
+}

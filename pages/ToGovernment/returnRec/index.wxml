@@ -1,0 +1,36 @@
+<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
+  <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight + 10)}}px;">   
+    <!-- 搜索框 -->
+    <view class="record-tabs-1">
+      <view class="search-box">
+        <icon type="search" size="16" class="search-icon" />
+        <input placeholder="车牌号/设备号/使用人" class="search-input" bindblur="bindblurSea" />
+      </view>    
+    </view>
+    <!-- 记录总数 -->
+    <view class="tabs-1-conut">共有{{y_total}}条记录</view>
+    <!-- 记录列表 -->
+    <scroll-view class="content-container" scroll-y="true" style="top:{{searchBarHeight}}px;" 
+      bindscrolltolower="handleKeyLower" bindrefresherrefresh="handleKeyRefresh" 
+      refresher-enabled="true" refresher-triggered="{{y_triggered}}">
+      <block wx:for="{{y_items}}" wx:key="index">
+        <view class="content-card">
+          <view class="card-head">
+            <view class="card-head-left">
+              <text>{{item.platenumber}}</text>
+              <text>{{item.personname}}</text>
+              <text class="split-line"></text>
+              <text class="phone-text">{{item.mobile}}</text>
+            </view>
+          </view>
+          <view class="card-info">
+            <time-line events="{{[ {createdate: (item.startdate || '-') + ' 至 ' + (item.enddate || '-')}]}}" />
+          </view>
+          <view class="card-footer1">
+            <text bindtap="handleViewPhotos" data-item="{{item}}">查看照片</text>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+</view>
