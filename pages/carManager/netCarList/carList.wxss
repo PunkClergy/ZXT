@@ -277,6 +277,7 @@
   font-size: 26rpx;
   color: #333333;
 }
+
 .viewText {
   text-align: right;
   font-family: PingFang SC;
@@ -285,8 +286,7 @@
   color: #333333;
 }
 
-.card-info-item-tabs {
-}
+.card-info-item-tabs {}
 
 .card-info-item-tabs-btn {
   display: flex;
@@ -391,9 +391,11 @@
   width: 36rpx;
   height: 36rpx;
 }
+
 .child-node {
   margin-top: 5rpx;
 }
+
 .checkbox.indeterminate {
   background: #fff;
   border-color: #07c160;
@@ -621,7 +623,8 @@
   font-size: 26rpx;
   color: #333333;
 }
-.viewText{
+
+.viewText {
   text-align: right;
   font-family: PingFang SC;
   font-weight: 500;
@@ -808,4 +811,80 @@
 .form-item-text image {
   width: 30rpx;
   height: 30rpx;
+}
+
+/* 搜索框 */
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #f0f0f0;
+  border-radius: 40rpx;
+  padding: 4px 12px;
+  width: 92%;
+}
+
+/* 搜索图标 */
+.search-icon {
+  margin-right: 8px;
+  /* 图标与输入框之间留出间距 */
+}
+
+/* 输入框 */
+.search-input {
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 22rpx;
+}
+
+.count-text {
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 22rpx;
+  color: #7b7c7c;
+}
+
+.tabs-1-conut {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #7b7c7c;
+  padding: 10px;
+  /* border-bottom: 1px solid #f0f0f0; */
+}
+
+/* 自定义 checkbox 样式 */
+.custom-checkbox {
+  /* 基础样式重置 */
+  --wx-checkbox-input-border-color: #f00;
+  /* 未选中时边框色（部分基础库支持） */
+  --wx-checkbox-input-checked-border-color: #00f;
+  /* 选中时边框色（部分基础库支持） */
+}
+
+/* 兼容所有基础库的深度选择器写法 */
+.wx-checkbox-input {
+  /* 未选中状态的边框颜色 */
+  border: 1px solid #64B5F6 !important;
+  /* 自定义边框色（橙色），!important 确保覆盖默认样式 */
+  border-radius: 3px;
+  /* 可选：调整边框圆角 */
+}
+
+/* 选中状态的边框 + 背景色 */
+.wx-checkbox-input.wx-checkbox-input-checked {
+  border: 1px solid #00cc66 !important;
+  /* 选中时边框色（绿色） */
+  background-color: #00cc66 !important;
+  /* 选中时背景色（可选） */
+}
+
+/* 选中状态的对勾颜色（可选） */
+.wx-checkbox-input.wx-checkbox-input-checked::before {
+  color: #fff !important;
+  /* 对勾白色 */
 }

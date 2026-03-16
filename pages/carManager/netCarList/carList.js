@@ -50,7 +50,15 @@ Page({
     endDate: '2025-03-20', //历史轨迹查询时间
     endTime: '19:00', //历史轨迹查询时间
   },
-
+  bindblurSea(evt) {
+    this.setData({
+      comParam: evt.detail.value,
+      g_page: 1,
+      g_items: []
+    }, () => {
+      this.initList()
+    })
+  },
   bindTimeChange(evt) {
     const category = evt.currentTarget.dataset.index
     const value = evt.detail.value
@@ -300,6 +308,8 @@ Page({
   initList() {
     const param = {
       [u_wycRentVehicleList.page]: this.data.g_page,
+      comParam: this.data?.comParam || ""
+
     };
     byGet(getApp().data.k1swUrl + u_wycRentVehicleList.URL, param).then(response => {
       if (response.statusCode == 200) {
@@ -437,6 +447,9 @@ Page({
       btnState: '修改',
       id: info?.id,
       params: {
+        maintainMileage: info?.maintainMileage || '',
+        maintainMileageInterval: info?.maintainMileageInterval || '',
+        totalMileage: info?.totalMileage || '',
         vehicleSerialName: info?.vehicleSerialName || "",
         vehicleModeName: info?.vehicleModeName || "",
         ccdate: info?.ccdate || "",
