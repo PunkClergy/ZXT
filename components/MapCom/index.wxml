@@ -117,7 +117,7 @@
 </map>
 <view class="control-panel" style="display: flex;flex-direction: row;align-items: flex-end">
   <!-- 归还车辆 -->
-  <view class="control_item" wx:if="{{source=='desk'}}">
+  <view class="control_item" wx:if="{{source=='desk'||flagSource=='added'}}">
     <view class="control_button" id="3" bindtap="handleReturningVehicles">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_return.png" class="control_button-image" />
     </view>
@@ -145,21 +145,21 @@
     <text class="control_label">寻车</text>
   </view>
   <!-- 查看照片 -->
-  <view class="control_item" wx:if="{{source=='desk'}}">
+  <view class="control_item" wx:if="{{source=='desk'||flagSource=='added'}}">
     <view class="control_button" id="3" bindtap="handleViewPhotos">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_photo.png" class="control_button-image" />
     </view>
     <text class="control_label">查看照片</text>
   </view>
   <!-- 风控拦截 -->
-  <view class="control_item" wx:if="{{source!='desk'}}">
+  <view class="control_item" wx:if="{{source=='carDetail'&&flagSource!='added'}}">
     <view class="control_button" id="8" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_intercept.png" class="control_button-image" />
     </view>
     <text class="control_label">风控拦截</text>
   </view>
   <!-- 取消拦截 -->
-  <view class="control_item" wx:if="{{source!='desk'}}">
+  <view class="control_item" wx:if="{{source=='carDetail'&&flagSource!='added'}}">
     <view class="control_button" id="6" bindtap="handleFooterBtn">
       <image src="https://k3a.wiselink.net.cn/img/app/desk/ren_recovery.png" class="control_button-image" />
     </view>
