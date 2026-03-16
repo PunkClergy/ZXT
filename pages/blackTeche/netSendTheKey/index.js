@@ -214,10 +214,12 @@ Page({
     if (flag == '发送钥匙') {
       this.setData({
         c_activeTab: 1,
+        comParam: ''
       })
     } else {
       this.setData({
         c_activeTab: 2,
+        comParam: ''
       })
     }
   },
@@ -262,6 +264,7 @@ Page({
     showLoading("加载中...");
     const param = {
       [u_addOrUpdate.page]: this.data.g_page,
+      comParam: this.data.comParam
     };
     byGet(getApp().data.k1swUrl + u_wycRentVehicleList.URL, param).then(response => {
       if (response.statusCode == 200) {
@@ -289,6 +292,16 @@ Page({
       y_items: []
     }, () => {
       this.getKeySendingList()
+    })
+  },
+  bindblurSeaGetList(evt) {
+    this.setData({
+      comParam: evt.detail.value,
+      g_triggered: false,
+      g_page: 1,
+      g_items: []
+    }, () => {
+      this.getOrderList()
     })
   },
   // 请求发送记录列表

@@ -8,6 +8,13 @@
     </view>
     <!-- 详情区域部分 -->
     <block wx:if="{{c_activeTab == 1}}">
+      <view class="record-tabs-1">
+        <view class="search-box">
+          <icon type="search" size="16" class="search-icon" />
+          <input placeholder="车牌号/设备号" class="search-input" bindblur="bindblurSeaGetList" />
+        </view>
+      </view>
+      <view class="tabs-1-conut">共有{{g_total}}条记录</view>
       <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
         <block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
           <view class="content-item">
@@ -72,7 +79,7 @@
           <icon type="search" size="16" class="search-icon" />
           <input placeholder="车牌号/设备号/使用人" class="search-input" bindblur="bindblurSea" />
         </view>
-        
+
       </view>
       <view class="tabs-1-conut">共有{{y_total}}条记录</view>
       <scroll-view class="content-container" scroll-y="true" style="top:{{25 + 5 + 8 + 10 + 10 + searchBarHeight}}px;" bindscrolltolower="handleKeyLower" bindrefresherrefresh="handleKeyRefresh" refresher-enabled="true" refresher-triggered="{{y_triggered}}">
@@ -91,7 +98,7 @@
               </view>
             </view>
             <view class="card-info">
-             <time-line events="{{[ {createdate: (item.startdate || '-') + ' 至 ' + (item.enddate || '-')}]}}" />
+              <time-line events="{{[ {createdate: (item.startdate || '-') + ' 至 ' + (item.enddate || '-')}]}}" />
             </view>
             <view class="card-footer1" wx:if="{{!item.status}}" style="display: flex;justify-content: space-between;">
               <view>
