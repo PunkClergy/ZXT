@@ -128,7 +128,7 @@ Component({
     g_leaseTime: null, //当前车辆租用时间
     g_images: null, //当前车辆照片
     c_k1sw_link: 'https://k1sw.wiselink.net.cn/', //域名
-    c_fin3_link: 'https://fin3.wiselink.net.cn/fin/',
+    c_fin3_link: 'https://k1sw.wiselink.net.cn/img/',
     blueKey: '', //蓝牙密码
     idc: '', //设备唯一标志
     qu_num: 0,//点击问号展示
@@ -668,7 +668,7 @@ Component({
       const param = {
         [u_getCarPoisitonDesk.sn]: evt
       };
-      byPost(this.data.c_fin3_link + u_getCarPoisitonDesk.URL, param, (response) => {
+      byPost(this.data.c_k1sw_link + u_getCarPoisitonDesk.URL, param, (response) => {
         hideLoading();
         const content = response?.data?.content;
         const markerList = [{
@@ -758,7 +758,7 @@ Component({
       } = this.data;
       const targetMarker = markers.find(marker => marker?.callout?.display === 'ALWAYS');
       const sn = targetMarker?.sn ?? '';
-      const url = this.data.c_fin3_link + u_getTrackPlayback.URL;
+      const url = this.data.c_k1sw_link + u_getTrackPlayback.URL;
       const params = {
         [u_getTrackPlayback.sn]: sn,
         [u_getTrackPlayback.startDate]: `${startDate} ${startTime || '00:00:00'}`,
@@ -957,24 +957,53 @@ Component({
         return
       }
       wx.navigateTo({
-        url: `/pages/upload-img/upload-img?type=${SHOW_TYPE?.DRIVINGCARD_TYPE}&code=${this.data.sn}`
+        url: `/pages/upload-img/upload-img?type=${SHOW_TYPE?.DRIVINGCARD_TYPE}&code=${this?.data?.flagSource?'':this.data.sn}&vehid=${this?.data?.cellData?.id}`
       })
     },
     // 查看照片
     handleViewPhotos() {
-      console.log(this.data)
-      if (!this.data.sn) {
-        showToast('无可用车辆')
-        return
+      // 1. 提前校验核心参数，无车辆信息直接提示并返回
+      if (!this.data?.sn) {
+        showToast('无可用车辆');
+        return;
       }
-      console.log()
-      const images = this.data.g_images.map(ele => {
-        let temp = this.data.c_fin3_link + ele.replace(/\\/g, "/")
-        console.log(temp)
-        return temp
-      })
+    
+      // 2. 定义图片URL的key列表，便于维护和扩展
+      const imageUrlKeys = [
+        'uploadImgUrl',
+        'uploadImgUrlFive',
+        'uploadImgUrlFour',
+        'uploadImgUrlThree',
+        'uploadImgUrlTwo'
+      ];
+    
+      // 3. 优先使用已有的g_images，否则从cellData中提取
+      let g_images = this.data?.g_images || [];
+      if (g_images.length === 0 && this.data?.cellData) {
+        // 从cellData中提取图片URL，自动过滤空值
+        g_images = imageUrlKeys.map(key => this.data.cellData[key]).filter(Boolean);
+      }
+    
+      // 4. 处理图片链接，过滤无效链接后生成预览列表
+      const baseLink = this.data?.c_fin3_link || '';
+      const previewImages = g_images
+        .filter(imgUrl => !!imgUrl) // 过滤空/undefined的图片URL
+        .map(imgUrl => {
+          // 替换反斜杠为正斜杠，并拼接基础链接
+          const normalizedUrl = imgUrl.replace(/\\/g, '/');
+          return baseLink ? `${baseLink}${normalizedUrl}` : normalizedUrl;
+        })
+        .filter(Boolean); // 最终过滤拼接后仍为空的链接
+    
+      // 5. 无图片时提示，避免预览空列表
+      if (previewImages.length === 0) {
+        showToast('暂无可预览的图片');
+        return;
+      }
+    
+      // 6. 调用微信预览图片API
       wx.previewImage({
-        urls: images // 需要预览的图片http链接列表
+        urls: previewImages
       });
     },
     // 归还车辆父页面需要调用的方法

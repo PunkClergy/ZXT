@@ -44,11 +44,12 @@ Page({
     leftGap: 40, //单位rpx
     authCamera: false,
     uploadUrl: '', //上传图片地址
-    code:'',
+    code: '',
+    vehid: ''
   },
 
-  onReady: function() {
-    appUtil.getSystemInfoComplete(function(res) {
+  onReady: function () {
+    appUtil.getSystemInfoComplete(function (res) {
       that.setData({
         showPhoneHeight: res.windowHeight,
         showPhoneWidth: res.windowWidth,
@@ -57,7 +58,7 @@ Page({
         idcardHeight: (res.windowWidth / 750 * (750 - 80)) / 1.6,
         drivingcardHeight: (res.windowWidth / 750 * (750 - 80)) / 1.6
       });
-    }, function() {
+    }, function () {
 
       if (that.data.showType == appUtil.SHOW_TYPE.IDCARD_TYPE) {
         //上传身份证
@@ -122,18 +123,19 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
     that = this;
     that.setData({
-      showType: options.type,
-      code:options.code,
+      showType: options.type || '',
+      code: options.code || '',
+      vehid: options?.vehid | ''
     });
   },
 
   /**
    * 上传图片
    */
-  inputCardBtnTap: function(e) {
+  inputCardBtnTap: function (e) {
     that.chooseImage(1, e.currentTarget.id);
     return;
     if (e.currentTarget.id == '1') {
@@ -177,7 +179,7 @@ Page({
    * viewType:第几个view
    * cardType:1身份证正面、2身份证反面、3驾驶证正面
    */
-  chooseImage: function(viewType, cardType) {
+  chooseImage: function (viewType, cardType) {
 
     // appUtil.chooseImageDefault(function(res) {
     //   if (res) {
@@ -205,7 +207,7 @@ Page({
     appUtil.navigateTo('../camera/camera?view=' + viewType + "&card=" + cardType);
   },
 
-  parseCameraShowHeight: function(cameraType) {
+  parseCameraShowHeight: function (cameraType) {
     if (cameraType == 1) {
       return that.data.firstCardHeight;
     } else if (cameraType == 2) {
@@ -215,15 +217,15 @@ Page({
     }
   },
 
-  onShow: function() {
+  onShow: function () {
     if (that.data.authCamera) {
       that.setData({
         authCamera: false
       });
-      appUtil.showModal('请打开相机权限!', true, function(res) {
+      appUtil.showModal('请打开相机权限!', true, function (res) {
         if (res) {
           wx.openSetting({
-            success(res) {}
+            success(res) { }
           })
         }
       });
@@ -256,12 +258,12 @@ Page({
   /**
    * 上传照片
    */
-  uploadImg: function(temPath, cardType) {
+  uploadImg: function (temPath, cardType) {
     appUtil.showLoading('请稍后...');
     var param = {};
     param[urlUtil.UploadImageUrl.CODE] = that.data.code;
-    uploadTask = appUtil.uploadFile2(urlUtil.UploadImageUrl.UPLOAD_API,"img1Arr", temPath, param, function(res) {
-      appUtil.hideLoading(); 
+    uploadTask = appUtil.uploadFile2(urlUtil.UploadImageUrl.UPLOAD_API, "img1Arr", temPath, param, function (res) {
+      appUtil.hideLoading();
       if (res && res.statusCode == 200) {
         var data = JSON.parse(res.data);
         if (data.code == 1000) {
@@ -280,29 +282,28 @@ Page({
             });
           }
         } else {
-          appUtil.showModal(data.data.message, false, function() {});
+          appUtil.showModal(data.data.message, false, function () { });
         }
       } else {
-        appUtil.showModal('网络异常，图片上传失败！', false, function() {});
+        appUtil.showModal('网络异常，图片上传失败！', false, function () { });
       }
 
     });
   },
 
-  uploadImg2 : function (url,code,fileNmae,filePath)
-  {
+  uploadImg2: function (url, code, fileNmae, filePath) {
     appUtil.showLoading('请稍后...');
-    uploadTask = appUtil.uploadFile2(url,fileNmae,filePath, {'code':code}, function(res) {
-      appUtil.hideLoading(); 
+    uploadTask = appUtil.uploadFile2(url, fileNmae, filePath, { 'code': code, 'vehId': this?.data?.vehid || '' }, function (res) {
+      appUtil.hideLoading();
       if (res && res.statusCode == 200) {
         var data = JSON.parse(res.data);
         if (data.code == 1000) {
           // appUtil.showToast('上传成功！');
         } else {
-          appUtil.showModal(data.msg, false, function() {});
+          appUtil.showModal(data.msg, false, function () { });
         }
       } else {
-        appUtil.showModal('网络异常，图片上传失败！', false, function() {});
+        appUtil.showModal('网络异常，图片上传失败！', false, function () { });
       }
 
     });
@@ -311,47 +312,40 @@ Page({
   /**
    * 提交
    */
-  submitBtnTap: function() { 
-    
-    // var url = "https://fin3.wiselink.net.cn/fin/h5Car/saveImg";
-    var url = 'https://fin3.wiselink.net.cn/fin/' + "h5Car/saveImg";
+  submitBtnTap: function () {
+
+    var url = 'https://k1sw.wiselink.net.cn/' + "renterApi/saveImg";
     var code = that.data.code;
-    if(that.data.firstTempFilePaths.length == 0 || that.data.firstTempFilePaths[0].length == 0)
-    {
+    if (that.data.firstTempFilePaths.length == 0 || that.data.firstTempFilePaths[0].length == 0) {
       appUtil.showToast('请上传车头照片！');
       return;
     }
-    else if(that.data.secondTempFilePaths.length == 0 || that.data.secondTempFilePaths[0].length == 0)
-    {
+    else if (that.data.secondTempFilePaths.length == 0 || that.data.secondTempFilePaths[0].length == 0) {
       appUtil.showToast('请上传车尾照片！');
       return;
     }
-    else if(that.data.thirdTempFilePaths.length == 0 || that.data.thirdTempFilePaths[0].length ==  0)
-    {
+    else if (that.data.thirdTempFilePaths.length == 0 || that.data.thirdTempFilePaths[0].length == 0) {
       appUtil.showToast('请上传车身左侧照片！');
       return;
     }
-    else if(that.data.fourthTempFilePaths.length == 0 || that.data.fourthTempFilePaths[0].length ==  0)
-    {
+    else if (that.data.fourthTempFilePaths.length == 0 || that.data.fourthTempFilePaths[0].length == 0) {
       appUtil.showToast('请上传车身右侧照片！');
       return;
     }
-    else if(that.data.fifthTempFilePaths.length == 0 || that.data.fifthTempFilePaths[0].length ==  0)
-    {
+    else if (that.data.fifthTempFilePaths.length == 0 || that.data.fifthTempFilePaths[0].length == 0) {
       appUtil.showToast('请上传车钥匙位置照片！');
       return;
     }
-    else
-    {
-      that.uploadImg2(url,code,"img1Arr",that.data.firstTempFilePaths[0]);
-      that.uploadImg2(url,code,"img2Arr",that.data.secondTempFilePaths[0]);
-      that.uploadImg2(url,code,"img3Arr",that.data.thirdTempFilePaths[0]);
-      that.uploadImg2(url,code,"img4Arr",that.data.fourthTempFilePaths[0]);
-      that.uploadImg2(url,code,"img5Arr",that.data.fifthTempFilePaths[0]);
+    else {
+      that.uploadImg2(url, code, "img1Arr", that.data.firstTempFilePaths[0]);
+      that.uploadImg2(url, code, "img2Arr", that.data.secondTempFilePaths[0]);
+      that.uploadImg2(url, code, "img3Arr", that.data.thirdTempFilePaths[0]);
+      that.uploadImg2(url, code, "img4Arr", that.data.fourthTempFilePaths[0]);
+      that.uploadImg2(url, code, "img5Arr", that.data.fifthTempFilePaths[0]);
     }
-    
 
-    
+
+
     // let pages = getCurrentPages();
     // let prePage = pages[pages.length - 2];
     // prePage.setData({
@@ -362,10 +356,11 @@ Page({
     //   delta: 1
     // })
   },
-  carManagerFinish : function(){
+  carManagerFinish: function () {
     var param = {};
-    param[urlUtil.returnCar.CONTROLCODE] = that.data.code;
-    appUtil.byPost('https://fin3.wiselink.net.cn/fin/' + urlUtil.returnCar.URL, param, function(res) {
+    param[urlUtil.returnCar.CONTROLCODE] = that.data.code
+    param.vehId = this?.data?.vehid
+    appUtil.byPost('https://k1sw.wiselink.net.cn/' + urlUtil.returnCar.URL, param, function (res) {
       if (res.statusCode == 200) {
         var data = res.data;
         if (data.code == 1000) {
@@ -376,10 +371,10 @@ Page({
             url: '/pages/index/index',
           })
 
-          
-          appUtil.showModal(data.msg, false, function() {});
+
+          appUtil.showModal(data.msg, false, function () { });
         } else {
-          appUtil.showModal(data.msg, false, function() {});
+          appUtil.showModal(data.msg, false, function () { });
         }
       } else {
         appUtil.showToast('网络异常！');
@@ -390,10 +385,10 @@ Page({
   /**
    * 获取用户信息
    */
-  getUserInfo: function(user) {
+  getUserInfo: function (user) {
     var param = {};
     param[urlUtil.MemberManagementInfoPar.ID] = user.id;
-    appUtil.byPost(urlUtil.MemberManagementInfoPar.MEMBER_MANAGERMENT_API, param, function(res) {
+    appUtil.byPost(urlUtil.MemberManagementInfoPar.MEMBER_MANAGERMENT_API, param, function (res) {
       if (res.statusCode == 200) {
         var data = res.data;
         if (data.code == '10000') {
@@ -443,14 +438,14 @@ Page({
     });
   },
 
-  goBack: function() {
-    appUtil.showModal('用户信息获取失败！', false, function(res) {
+  goBack: function () {
+    appUtil.showModal('用户信息获取失败！', false, function (res) {
       wx.navigateBack({
         delta: 1
       })
     });
   },
-  takePhoto: function() {
+  takePhoto: function () {
     const ctx = wx.createCameraContext()
     ctx.takePhoto({
       quality: 'high',
@@ -459,7 +454,7 @@ Page({
           progressTip: res.tempImagePath
         })
       },
-      fail: function() {
+      fail: function () {
         result(false);
       }
     })

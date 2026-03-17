@@ -707,8 +707,8 @@ var getUserUseingCar = {
  * 员工还车
  */
 var returnCar = {
-  URL: fin3plusUrl + 'h5CarManager/returnCar',
-  CONTROLCODE: 'controlCode'
+  URL: fin3plusUrl + 'renterApi/returnCar',
+  CONTROLCODE: 'code'
 }
 
 /**
