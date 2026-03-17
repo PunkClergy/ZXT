@@ -956,8 +956,9 @@ Component({
         showToast('无可用车辆')
         return
       }
+      const timestamp = `cw${Date.now()}`
       wx.navigateTo({
-        url: `/pages/upload-img/upload-img?type=${SHOW_TYPE?.DRIVINGCARD_TYPE}&code=${this?.data?.flagSource?'':this.data.sn}&vehid=${this?.data?.cellData?.id}`
+        url: `/pages/upload-img/upload-img?type=${SHOW_TYPE?.DRIVINGCARD_TYPE}&code=${this?.data?.flagSource?timestamp:this.data.sn}&vehid=${this?.data?.cellData?.id}`
       })
     },
     // 查看照片

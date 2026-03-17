@@ -29,7 +29,7 @@ Page({
     y_triggered: false,// 下拉刷新状态
     y_total: 0,        // 记录总数
     comParam: '',      // 搜索关键词
-    c_fin3_link: 'https://fin3.wiselink.net.cn/fin/' // 照片链接前缀
+    c_fin3_link: 'https://k1sw.wiselink.net.cn/img/' // 照片链接前缀
   },
 
   // 搜索框失焦触发搜索
@@ -97,6 +97,7 @@ Page({
 
   // 查看照片
   handleViewPhotos(evt) {
+    
     const info = evt?.currentTarget?.dataset?.item;
     if (!info) {
       showToast('无效数据');

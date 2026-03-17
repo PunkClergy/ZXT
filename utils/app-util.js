@@ -436,6 +436,7 @@ function uploadFile(url, path, param, result) {
 }
 
 function uploadFile2(url, fileName, path, param, result) {
+  console.log(param,'3333')
   if (isEmpty(path)) {
     byPost(url, param, result)
   }
