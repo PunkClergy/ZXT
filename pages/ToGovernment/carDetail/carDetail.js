@@ -61,7 +61,7 @@ Page({
   },
   handleJumpCarList() {
     wx.redirectTo({
-      url: '/pages/carManager/carList/carList?source=' + '/pages/riskControl/carDetail/carDetail',
+      url: '/pages/carManager/carList/carList?source=' + '/pages/ToGovernment/carDetail/carDetail',
     })
   },
   initialiImageBaseConversion() {
