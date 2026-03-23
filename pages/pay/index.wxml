@@ -36,7 +36,7 @@
       <image class="check-icon" src="/assets/images/check.png" wx:if="{{selectedPayMethod === 'corporate'}}"></image>
     </view>
     <!-- 微信支付（可选择，保留原有逻辑） -->
-    <view class="pay-item selectable" bindtap="selectPayMethod" data-type="wechat" wx:if="{{isWechat}}">
+    <view class="pay-item selectable" bindtap="selectPayMethod" data-type="wechat">
       <view class="pay-item-title">
         <image class="pay-icon" src="/assets/images/wechat.png"></image>
         <text class="pay-name">微信支付</text>
