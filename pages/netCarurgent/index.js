@@ -29,7 +29,7 @@ Page({
     const COMMAND_MAPPING = {
       5: 5, // 远程寻车
       1: this?.data?.deviceType ? 4 : 3, // 锁门
-      3: this?.data?.deviceType == 'F1' ? 1 : 2, // 开门
+      3: 1 , // 开门
       6: 10,//取消拦截
       8: 11//风控拦截
     };
