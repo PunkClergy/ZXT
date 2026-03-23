@@ -693,3 +693,29 @@
   width: 30rpx;
   height: 30rpx;
 }
+
+.radio-group {
+  display: flex;
+  gap: 60rpx;
+  /* 选项之间的间距 */
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+}
+
+.radio-label {
+  margin-left: 10rpx;
+  color: #666;
+}
+
+.radio-result {
+  margin-top: 30rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #666;
+  background-color: #f8f8f8;
+  border-radius: 8rpx;
+}
