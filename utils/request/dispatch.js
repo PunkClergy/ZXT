@@ -50,7 +50,7 @@ const u_myCompanyList = {
 }
 // 手工及扫码新建客户报备
 const u_customerList = {
-  URL: fin3plusUrl + "notifyCustomerApi/customerList",
+  URL: fin3plusUrl + "notifyCustomerApi/myCustomerList",
   customerName: 'customerName',
   page: 'page'
 }
