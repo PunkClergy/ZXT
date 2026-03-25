@@ -281,7 +281,7 @@ Page({
   onShow: function () {
     const _this = this
     wx.getStorage({
-      key: 'scene',
+      key: 'invite',
       success(res) {
         _this.setData({
           invit_code: res.data

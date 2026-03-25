@@ -348,6 +348,11 @@ Page({
     this.setData({
       options: options || {}
     });
+    const { scene, query } = options;
+
+    if ((scene?.length < 6 || query?.length < 6) && (scene || query)) {
+      wx.setStorageSync('invite', scene || query);
+    }
   },
   // 用车人进入
   initjumpToCar() {
