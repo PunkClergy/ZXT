@@ -35,26 +35,35 @@
       <view class="item-row">
         <view class="item-col">
           <text class="label">批单号：</text>
-          <text class="content">{{item.batchNo}}</text>
+          <text class="content">{{item.pdNo||''}}</text>
         </view>
         <view class="item-col">
           <text class="label">类型：</text>
-          <text class="content">{{item.type}}</text>
+          <text class="content">{{item.typename}}</text>
         </view>
       </view>
-      
+
       <view class="item-row">
         <view class="item-col">
-          <text class="label">公司：</text>
-          <text class="content">{{item.company}}</text>
+          <text class="label">公司名称：</text>
+          <text class="content">{{item.companyName}}</text>
         </view>
+
       </view>
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">批单文件名称：</text>
+          <text class="content">{{item.filename}}</text>
+        </view>
+
+      </view>
+
 
       <!-- 创建时间 倒数第二个 -->
       <view class="item-row">
         <view class="item-col">
           <text class="label">创建时间：</text>
-          <text class="content">{{item.createTime}}</text>
+          <text class="content">{{item.publishDate}}</text>
         </view>
       </view>
 
@@ -62,23 +71,10 @@
       <view class="item-row">
         <view class="item-col">
           <text class="label">批单文件：</text>
-          <text class="file-path" bindtap="previewPDF" data-path="{{item.filePath}}">点击查看PDF</text>
+          <text class="file-path" bindtap="previewPDF" data-path="{{'https://k1sw.wiselink.net.cn/img/'+ item.filepath}}">点击查看PDF</text>
         </view>
       </view>
     </view>
   </block>
 </view>
 
-<!-- PDF预览弹窗 -->
-<view class="pdf-modal {{showPdfModal ? 'show' : ''}}" bindtap="closePdfModal">
-  <view class="modal-content" catchtap="preventClose">
-    <view class="modal-header">
-      <text>批单PDF预览</text>
-      <text class="close-btn" bindtap="closePdfModal">×</text>
-    </view>
-    <view class="pdf-body">
-      <web-view wx:if="{{currentPdfPath}}" src="{{currentPdfPath}}"></web-view>
-      <text wx:else>文件路径无效</text>
-    </view>
-  </view>
-</view>

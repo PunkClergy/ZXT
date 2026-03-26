@@ -57,20 +57,24 @@ Page({
       typeName: selectType || '',
       month: targetMonth || ''
     }
-    byGet(getApp().data.k1swUrl + u_customerList.URL, param).then(response => {
+    byGet(getApp().data.k1swUrl + u_myCustomerPdList.URL, param).then(response => {
       hideLoading()
       // 停止下拉刷新动画
       wx.stopPullDownRefresh()
 
       if (response.statusCode == 200) {
         const total = Number(response.data.count || 0)
-        const list = response.data?.content
-        let { g_page } = this.data
+        const list = response.data?.content.map(ele => {
+          let temp = {
+            ...ele,
+            filepath: encodeURI(ele?.filepath)
+          }
+          return temp
 
+        })
 
         this.setData({
-          list,
-          g_page: g_page + 1,
+          list,   
           g_total: total.toLocaleString()
         });
 
@@ -121,17 +125,41 @@ Page({
 
   // 点击查看PDF
   previewPDF(e) {
-    const path = e.currentTarget.dataset.path;
-    this.setData({
-      currentPdfPath: path,
-      showPdfModal: true
-    });
+    wx.showLoading({
+      title: '下载中...',
+    })
+    wx.downloadFile({
+      url: e.currentTarget.dataset.path,
+      success: (res) => {
+        wx.hideLoading()
+        const filePath = res.tempFilePath
+        wx.openDocument({
+          filePath: filePath,
+          success: (res) => {
+            console.log('打开PDF成功')
+          },
+          fail: (err) => {
+            console.error('打开PDF失败', err)
+            wx.showToast({
+              title: '打开文件失败',
+              icon: 'none'
+            })
+          }
+        })
+      },
+      fail: (err) => {
+        wx,hideLoading()
+        console.error('下载失败', err)
+        wx.showToast({
+          title: '文件下载失败',
+          icon: 'none'
+        })
+      }
+    })
+
   },
 
-  // 关闭PDF弹窗
-  closePdfModal() {
-    this.setData({ showPdfModal: false, currentPdfPath: '' });
-  },
+
 
   // 阻止弹窗内容区关闭
   preventClose() { }
