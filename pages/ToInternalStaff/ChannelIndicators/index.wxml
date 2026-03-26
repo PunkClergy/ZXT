@@ -1,36 +1,84 @@
-<view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
-	<!-- 自定义头部 -->
-	<custom-header title="月度采购目标" />
-	<!-- 主要内容区域 -->
-	<scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight  +40}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
-		<block wx:for="{{g_items}}" wx:key="index" wx:for-item="item">
-			<view class="content-item" data-item="{{item}}">
-				<view class="content-item-head">
-					<view class="head-left">
-						<view class="left-category">
-							<text>采购月份: {{item.month ||'-'}}</text>
-						</view>
-					</view>
-				</view>
-				<view class="content-item-info">
-					<view class="info-item  {{item.areaCount .length > 8 ? 'long-info-item' : ''}}">
-						<label>区域数量 ：</label>
-						<text>{{item.areaCount ||'-'}}</text>
-					</view>
-					<view class="info-item  {{item.taskCount .length > 8 ? 'long-info-item' : ''}}">
-						<label>任务数量 ：</label>
-						<text>{{item.taskCount ||'-'}}</text>
-					</view>
-					<view class="info-item {{item.purchaseCount.length > 8 ? 'long-info-item' : ''}}">
-						<label>采购数量 ：</label>
-						<text>{{item.purchaseCount ||'-'}}</text>
-					</view>
-					<view class="info-item {{item.createdate.length > 8 ? 'long-info-item' : ''}}">
-						<label>是否达标 ：</label>
-						<text>{{item.qualified }}</text>
-					</view>
-				</view>
-			</view>
-		</block>
-	</scroll-view>
+<!-- 搜索条件区域 -->
+<view class="search-box">
+  <!-- 月份选择 -->
+  <picker mode="date" fields="month" value="{{searchDate}}" bindchange="onDateChange">
+    <view class="search-item date-picker">
+      <text>月份：</text>
+      <text>{{searchDate || '请选择月份'}}</text>
+    </view>
+  </picker>
+
+  <!-- 类型选择 -->
+  <picker mode="selector" range="{{typeList}}" value="{{typeIndex}}" bindchange="onTypeChange">
+    <view class="search-item type-picker">
+      <text>类型：</text>
+      <text>{{typeList[typeIndex] || '全部'}}</text>
+    </view>
+  </picker>
+
+  <!-- 搜索框 -->
+  <view class="search-input-box">
+    <input placeholder="请输入批单号/公司名/文件名称" value="{{keyword}}" bindinput="onKeywordInput" />
+    <button bindtap="onSearch" type="primary" size="mini">搜索</button>
+  </view>
+</view>
+
+<!-- 列表区域 -->
+<view class="list-container">
+  <!-- 无数据 + 有数据 必须紧挨着，不能换行/空行 -->
+  <block wx:if="{{list.length === 0}}">
+    <view class="empty">暂无数据</view>
+  </block>
+  <block wx:else>
+    <view class="list-item" wx:for="{{list}}" wx:key="index">
+      <!-- 一行两个字段 -->
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">批单号：</text>
+          <text class="content">{{item.batchNo}}</text>
+        </view>
+        <view class="item-col">
+          <text class="label">类型：</text>
+          <text class="content">{{item.type}}</text>
+        </view>
+      </view>
+      
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">公司：</text>
+          <text class="content">{{item.company}}</text>
+        </view>
+      </view>
+
+      <!-- 创建时间 倒数第二个 -->
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">创建时间：</text>
+          <text class="content">{{item.createTime}}</text>
+        </view>
+      </view>
+
+      <!-- 批单文件 最后一个 -->
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">批单文件：</text>
+          <text class="file-path" bindtap="previewPDF" data-path="{{item.filePath}}">点击查看PDF</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
+
+<!-- PDF预览弹窗 -->
+<view class="pdf-modal {{showPdfModal ? 'show' : ''}}" bindtap="closePdfModal">
+  <view class="modal-content" catchtap="preventClose">
+    <view class="modal-header">
+      <text>批单PDF预览</text>
+      <text class="close-btn" bindtap="closePdfModal">×</text>
+    </view>
+    <view class="pdf-body">
+      <web-view wx:if="{{currentPdfPath}}" src="{{currentPdfPath}}"></web-view>
+      <text wx:else>文件路径无效</text>
+    </view>
+  </view>
 </view>

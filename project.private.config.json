@@ -1,7 +1,7 @@
 {
   "setting": {
     "compileHotReLoad": true,
-    "urlCheck": false,
+    "urlCheck": true,
     "coverView": true,
     "lazyloadPlaceholderEnable": false,
     "preloadBackgroundData": false,
@@ -44,7 +44,7 @@
         {
           "name": "desk",
           "pathName": "pages/index/index",
-          "query": "scene=1760_BA36B6FCF78540E9BECC6638E022A27F",
+          "query": "",
           "launchMode": "default",
           "scene": null
         }

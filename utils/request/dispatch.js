@@ -48,6 +48,10 @@ const u_myCompanyList = {
   name: 'name',
   page: 'page'
 }
+//我的客户批单
+const u_myCustomerPdList = {
+  URL: fin3plusUrl + "notifyCustomerApi/myCustomerPdList",
+}
 // 手工及扫码新建客户报备
 const u_customerList = {
   URL: fin3plusUrl + "notifyCustomerApi/myCustomerList",
@@ -109,6 +113,7 @@ module.exports = {
   u_delCustomer,
   u_addOrUpdateCustomer,
   u_customerList,
+  u_myCustomerPdList,
   u_getSharelinkTitleImg,
   u_getInviteCodeImg,
   u_comfirmMyCompany,
