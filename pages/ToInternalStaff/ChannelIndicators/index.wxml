@@ -25,13 +25,11 @@
 
 <!-- 列表区域 -->
 <view class="list-container">
-  <!-- 无数据 + 有数据 必须紧挨着，不能换行/空行 -->
   <block wx:if="{{list.length === 0}}">
     <view class="empty">暂无数据</view>
   </block>
   <block wx:else>
     <view class="list-item" wx:for="{{list}}" wx:key="index">
-      <!-- 一行两个字段 -->
       <view class="item-row">
         <view class="item-col">
           <text class="label">批单号：</text>
@@ -48,18 +46,14 @@
           <text class="label">公司名称：</text>
           <text class="content">{{item.companyName}}</text>
         </view>
-
       </view>
       <view class="item-row">
         <view class="item-col">
           <text class="label">批单文件名称：</text>
           <text class="content">{{item.filename}}</text>
         </view>
-
       </view>
 
-
-      <!-- 创建时间 倒数第二个 -->
       <view class="item-row">
         <view class="item-col">
           <text class="label">创建时间：</text>
@@ -67,7 +61,6 @@
         </view>
       </view>
 
-      <!-- 批单文件 最后一个 -->
       <view class="item-row">
         <view class="item-col">
           <text class="label">批单文件：</text>
@@ -77,4 +70,3 @@
     </view>
   </block>
 </view>
-
