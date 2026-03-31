@@ -1,0 +1,65 @@
+<!-- 搜索条件区域 -->
+<view class="search-box">
+  <!-- 月份选择 -->
+  <picker mode="date" fields="month" value="{{searchDate}}" bindchange="onDateChange">
+    <view class="search-item date-picker">
+      <text>月份：</text>
+      <text>{{searchDate || '请选择月份'}}</text>
+    </view>
+  </picker>
+
+  <!-- 搜索框 -->
+  <view class="search-input-box">
+    <input placeholder="公司名称" value="{{keyword}}" bindinput="onKeywordInput" />
+    <button bindtap="onSearch" type="primary" size="mini">搜索</button>
+  </view>
+</view>
+
+<!-- 列表区域 -->
+<view class="list-container">
+  <block wx:if="{{list.length === 0}}">
+    <view class="empty">暂无数据</view>
+  </block>
+  <block wx:else>
+    <view class="list-item" wx:for="{{list}}" wx:key="index">
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">公司名称：</text>
+          <text class="content">{{item.companyName}}</text>
+        </view>
+      </view>
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">月份：</text>
+          <text class="content">{{item.month||''}}</text>
+        </view>
+        <view class="item-col">
+          <text class="label">合计返佣：</text>
+          <text class="content">{{item.sumCommission}}</text>
+        </view>
+      </view>
+
+
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">停运险单数：</text>
+          <text class="content">{{item.shutInsuranceCount||''}}</text>
+        </view>
+        <view class="item-col">
+          <text class="label">停运险返佣：</text>
+          <text class="content">{{item.shutCommission}}</text>
+        </view>
+      </view>
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">失联险单数：</text>
+          <text class="content">{{item.loseInsuranceCount||''}}</text>
+        </view>
+        <view class="item-col">
+          <text class="label">失联险返佣：</text>
+          <text class="content">{{item.loseCommission}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

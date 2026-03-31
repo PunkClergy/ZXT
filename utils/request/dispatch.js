@@ -52,6 +52,10 @@ const u_myCompanyList = {
 const u_myCustomerPdList = {
   URL: fin3plusUrl + "notifyCustomerApi/myCustomerPdList",
 }
+//佣金查询
+const u_channelCommissionList = {
+  URL: fin3plusUrl + "notifyCustomerApi/channelCommissionList",
+}
 // 手工及扫码新建客户报备
 const u_customerList = {
   URL: fin3plusUrl + "notifyCustomerApi/myCustomerList",
@@ -113,6 +117,7 @@ module.exports = {
   u_delCustomer,
   u_addOrUpdateCustomer,
   u_customerList,
+  u_channelCommissionList,
   u_myCustomerPdList,
   u_getSharelinkTitleImg,
   u_getInviteCodeImg,

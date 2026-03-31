@@ -151,7 +151,8 @@
         "CustomerReporting/scanCodeAdd/index",
         "Communicate/index",
         "transfer/index",
-        "ChannelIndicators/index"
+        "ChannelIndicators/index",
+        "Commission/index"
       ]
     },
     {
