@@ -104,7 +104,7 @@
                   <text bindtap="handleEditKey" data-item="{{item}}" style="float: left;">修改</text>
                 </view>
                 <view style="display: flex;flex-direction: row;">
-                  <button data-item="{{item}}" open-type="share" bindtap="handleForward">一键转发</button>
+                  <!-- <button data-item="{{item}}" open-type="share" bindtap="handleForward">一键转发</button> -->
                   <text bindtap="handleCopy" data-item="{{item}}">{{ copied ? '已复制' : '复制链接' }}</text>
                   <text bindtap="handleCance" data-item="{{item}}">取消用车</text>
                 </view>
