@@ -8,7 +8,10 @@ const {
 const {
   u_logo,
   u_getQrcodeImg,
-  u_setBtype
+  u_setBtype,
+  u_bindChannelinfo,
+  u_channelInfo,
+  u_confirmBindChannel,
 } = require('../../../utils/request/home')
 var that;
 var currentTime = 60;
@@ -41,86 +44,9 @@ Page({
       sources: [{
         url: this.data.init_qr_code, // 图片路径
         type: 'image',
-      },],
+      }, ],
     });
   },
-  // async onGetPhoneNumber(e) {
-  //   wx.login({
-  //     success: async (loginres) => {
-  //       if (loginres.code) {
-  //         try {
-  //           // 基础校验
-  //           if (!e.detail?.code) {
-  //             console.warn('用户拒绝了授权');
-  //             return;
-  //           }
-
-  //           // 发送登录请求
-  //           const response = await new Promise((resolve, reject) => {
-  //             byPost(
-  //               `${this.data.c_link}userapi/wxLogin`, {
-  //                 code: e.detail.code,
-  //                 inviteCode: that.data.invit_code||'',
-  //                 wxCode: loginres.code
-  //               },
-  //               (res) => {
-  //                 if (res?.data?.content) {
-  //                   resolve(res);
-  //                 } else {
-  //                   reject(new Error(res?.data?.message || '登录接口响应异常'));
-  //                 }
-  //               },
-  //               (err) => reject(new Error(`网络请求失败: ${err.errMsg}`))
-  //             );
-  //           });
-
-  //           const userInfo = response.data.content;
-  //           const isTestUser = userInfo?.username == '13683187039*';
-
-  //           const urlConfig = {
-  //             k1swUrl: isTestUser ?
-  //               "https://k1swtest.wiselink.net.cn/" : "https://k3a.wiselink.net.cn/",
-  //             fin3Url: "https://fin3.wiselink.net.cn/fin/" // 固定地址
-  //           };
-
-  //           const storageTasks = [
-  //             [getApp().data.k1swUrlKey, urlConfig.k1swUrl],
-  //             [getApp().data.fin3UrlKey, urlConfig.fin3Url],
-  //             [getApp().data.userKey, userInfo]
-  //           ].map(([key, value]) => new Promise((resolve, reject) => {
-  //             appUtil.setStorage(key, value, success =>
-  //               success ? resolve() : reject(`存储失败: ${key}`)
-  //             );
-  //           }));
-
-  //           await Promise.all(storageTasks);
-
-  //           const app = getApp();
-  //           app.data.k1swUrl = urlConfig.k1swUrl;
-  //           app.data.fin3Url = urlConfig.fin3Url;
-  //           app.data.userInfo = userInfo;
-  //           getApp().data.reflag = 1 
-  //           wx.navigateBack({
-  //             delta: 1
-  //           });
-  //         } catch (error) {
-  //           console.error('处理流程异常:', error);
-  //           appUtil.showModal(
-  //             error.message.includes('存储失败') ?
-  //             "本地数据处理失败，请重新登录！" :
-  //             "操作失败，请检查网络后重试",
-  //             false,
-  //             () => {
-  //               /* 可添加重试逻辑 */
-  //             }
-  //           );
-  //         }
-  //       }
-  //     },
-  //   })
-  //   return
-
-  // },
   // 选择选项
   handleSelectOption(e) {
     const value = parseInt(e.currentTarget.dataset.value)
@@ -130,7 +56,9 @@ Page({
   },
   handleConfirmSelect() {
     if (!this.data.selected) return
-    byPost(this.data.c_link + u_setBtype.URL, { btype: this.data.selected },  (res)=> {
+    byPost(this.data.c_link + u_setBtype.URL, {
+      btype: this.data.selected
+    }, (res) => {
       console.log(res)
       if (res?.data?.code == 1000) {
         this.setData({
@@ -144,6 +72,7 @@ Page({
     });
   },
   async onGetPhoneNumber(e) {
+    const _this = this
     try {
       // 获取登录凭证
       const loginRes = await new Promise((resolve, reject) => {
@@ -166,8 +95,7 @@ Page({
       // 发送登录请求
       const response = await new Promise((resolve, reject) => {
         byPost(
-          `${this.data.c_link}userapi/wxLogin`,
-          {
+          `${this.data.c_link}userapi/wxLogin`, {
             code: e.detail.code,
             inviteCode: this.data.invit_code || '',
             wxCode: loginRes.code
@@ -191,9 +119,8 @@ Page({
       // 配置URL
       const isTestUser = userInfo.username === '13683187039*';
       const urlConfig = {
-        k1swUrl: isTestUser
-          ? 'https://k1swtest.wiselink.net.cn/'
-          : 'https://k3a.wiselink.net.cn/',
+        k1swUrl: isTestUser ?
+          'https://k1swtest.wiselink.net.cn/' : 'https://k3a.wiselink.net.cn/',
         fin3Url: 'https://fin3.wiselink.net.cn/fin/' // 固定地址
       };
 
@@ -216,19 +143,83 @@ Page({
       app.data.fin3Url = urlConfig.fin3Url;
       app.data.userInfo = userInfo;
       app.data.reflag = 1;
-      console.log(response?.data)
-  
-        // wx.navigateBack({ delta: 1 });
-        wx.redirectTo({
-          url: '/pages/index/index',
-        })
-      
+      console.log(response?.data, '3332232323')
+      // 1判断此账号是否是否已绑定
+      byGet(this.data.c_link + u_bindChannelinfo.URL, {}).then(response => {
+        const rspns = response.data.content
+        console.log(!rspns)
+        if (response?.data?.code != 1000) {
+          // 2判断是否有邀请码
+          wx.getStorage({
+            key: 'invite',
+            success: res => {
+              // 3搜索此邀请码所属主体
+              byGet(_this.data.c_link + u_channelInfo.URL, {
+                inviteCode: res?.data
+              }).then(response_one => {
+                console.log(response_one)
+                if (response_one?.data?.code == 1000) {
+                  wx.showModal({
+                    title: '提示',
+                    content: `您是通过【${response_one?.data?.name}-${response_one?.data?.chargename}】邀请使用小程序，是否同意绑定为您的上级渠道？`,
+                    success(res_set) {
+                      if (res_set.confirm) {
+                        console.log('用户点击确定')
+                        // 绑定此渠道
+                        byPost(_this.data.c_link + u_confirmBindChannel.URL, {
+                          inviteCode: res?.data
+                        }, (res_bid) => {
+                          if (res_bid?.data?.code == 1000) {
+                            wx.showToast(res?.data.msg)
+                            wx.redirectTo({
+                              url: '/pages/index/index',
+                            })
+                          }
+
+                        });
+                      } else if (res_set.cancel) {
+                        console.log('用户点击取消')
+                        wx.redirectTo({
+                          url: '/pages/index/index',
+                        })
+                      }
+                    }
+                  })
+                } else {
+                  wx.redirectTo({
+                    url: '/pages/index/index',
+                  })
+                }
+              })
+            },
+            fail: () => {
+              wx.redirectTo({
+                url: '/pages/index/index',
+              })
+            }
+          })
+        } else {
+          wx.redirectTo({
+            url: '/pages/index/index',
+          })
+        }
+      })
+      // 1.判断是否有邀请码
+      // 2.判断此账号是否是否已绑定
+      // 3.搜索此邀请码所属主体
+      // 4.绑定此邀请公司
+
+      // wx.navigateBack({ delta: 1 });
+      // wx.redirectTo({
+      //   url: '/pages/index/index',
+      // })
+
       return
     } catch (error) {
       console.error('处理流程异常:', error);
-      const errorMsg = error.message.includes('存储失败')
-        ? '本地数据处理失败，请重新登录！'
-        : '操作失败，请检查网络后重试';
+      const errorMsg = error.message.includes('存储失败') ?
+        '本地数据处理失败，请重新登录！' :
+        '操作失败，请检查网络后重试';
 
       appUtil.showModal(errorMsg, false, () => {
         /* 可添加重试逻辑 */
@@ -436,7 +427,7 @@ Page({
       if (success) {
         getApp().data.k1swUrl = k1swUrl;
       } else {
-        appUtil.showModal("本地数据处理失败，请重新登录！", false, function () { });
+        appUtil.showModal("本地数据处理失败，请重新登录！", false, function () {});
       }
     });
 
@@ -444,7 +435,7 @@ Page({
       if (success) {
         getApp().data.fin3Url = fin3Url;
       } else {
-        appUtil.showModal("本地数据处理失败，请重新登录！", false, function () { });
+        appUtil.showModal("本地数据处理失败，请重新登录！", false, function () {});
       }
     });
 
@@ -470,14 +461,14 @@ Page({
               })
 
             } else {
-              appUtil.showModal("本地数据处理失败，请重新登录！", false, function () { });
+              appUtil.showModal("本地数据处理失败，请重新登录！", false, function () {});
             }
           });
         } else {
-          appUtil.showModal(res.data.msg, false, function () { });
+          appUtil.showModal(res.data.msg, false, function () {});
         }
       } else {
-        appUtil.showModal("请求发生错误，请检查网络！", false, function () { });
+        appUtil.showModal("请求发生错误，请检查网络！", false, function () {});
       }
 
     });

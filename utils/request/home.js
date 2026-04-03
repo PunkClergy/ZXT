@@ -91,6 +91,19 @@ const u_updatePassword = {
 const u_setBtype = {
   URL: "accountapi/setBtype",
 }
+// 查询自己已绑定的渠道信息
+const u_bindChannelinfo = {
+  URL: "accountapi/bindChannelInfo",
+}
+// 查询渠道码的公司信息
+const u_channelInfo = {
+  // URL: "accountapi/channelInfo",
+  URL: "accountapi/channelInfo",
+}
+// 确认绑定渠道
+const u_confirmBindChannel = {
+  URL: "accountapi/confirmBindChannel"
+}
 const u_applyMenus = {
   URL: "accountapi/applyMenus",
 }
@@ -108,6 +121,9 @@ module.exports = {
   u_forceLogin,
   u_applyMenus,
   u_setBtype,
+  u_bindChannelinfo,
+  u_channelInfo,
+  u_confirmBindChannel,
   u_updatePassword,
   u_updateUserName,
   u_getQrcodeImg,
