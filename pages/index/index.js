@@ -7,8 +7,13 @@ const {
   u_booklist,
   u_getposter,
   u_getnotice,
-  u_termialList
+  u_termialList,
+
+  u_bindChannelinfo,
+  u_channelInfo,
+  u_confirmBindChannel,
 } = require('../../utils/request/home')
+
 const {
   u_carList
 } = require('../../utils/request/car')
@@ -55,36 +60,97 @@ Page({
       '首页增加更新日志显示功能,方便用户感知更新内容;',
       '用车人账号，内容显示逻辑优化',
     ],
-    longPress: false,//长按操作
+    longPress: false, //长按操作
     // 日志弹窗是否显示
     JournalFlag: false,
     // 版本号
     version: 'v2026011401'
   },
+  handleInvite() {
+    byGet(this.data.c_link + u_bindChannelinfo.URL, {}).then(response => {
+      const rspns = response.data.content
+      console.log(!rspns)
+      if (response?.data?.code != 1000) {
+        // 2判断是否有邀请码
+        wx.getStorage({
+          key: 'invite',
+          success: res => {
+            // 3搜索此邀请码所属主体
+            byGet(_this.data.c_link + u_channelInfo.URL, {
+              inviteCode: res?.data
+            }).then(response_one => {
+              console.log(response_one)
+              if (response_one?.data?.code == 1000) {
+                wx.showModal({
+                  title: '提示',
+                  content: `您是通过【${response_one?.data?.name}-${response_one?.data?.chargename}】邀请使用小程序，是否同意绑定为您的上级渠道？`,
+                  success(res_set) {
+                    if (res_set.confirm) {
+                      console.log('用户点击确定')
+                      // 绑定此渠道
+                      byPost(_this.data.c_link + u_confirmBindChannel.URL, {
+                        inviteCode: res?.data
+                      }, (res_bid) => {
+                        if (res_bid?.data?.code == 1000) {
+                          wx.showToast(res?.data.msg)
+                        }
+
+                      });
+                    } else if (res_set.cancel) {
+                      console.log('用户点击取消')
+                      wx.redirectTo({
+                        url: '/pages/index/index',
+                      })
+                    }
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+    })
+  },
   // 长按专区卡片执行事件
   handleLongPress() {
-    this.setData({ longPress: !0, isLongPressShaking: !0 });
-    setTimeout(() => this.setData({ isLongPressShaking: !1 }), 500);
+    this.setData({
+      longPress: !0,
+      isLongPressShaking: !0
+    });
+    setTimeout(() => this.setData({
+      isLongPressShaking: !1
+    }), 500);
   },
   // 取消自定义设定
   handleCancelSettings() {
     const t = this.data.zoneList;
-    this.setData({ temporaryZoneList: [] }, () => this.setData({ longPress: !1, zoneList: t }));
+    this.setData({
+      temporaryZoneList: []
+    }, () => this.setData({
+      longPress: !1,
+      zoneList: t
+    }));
   },
   // 点击卡片关掉具体卡片
   handleCloseZone(e) {
     if (this.data.temporaryZoneList?.length == 1)
-      return wx.showToast({ title: '禁止关闭最后一项！', icon: 'none' });
+      return wx.showToast({
+        title: '禁止关闭最后一项！',
+        icon: 'none'
+      });
     const i = e?.currentTarget?.dataset?.item?.id,
       t = this.data.temporaryZoneList?.length > 0 ? this.data.temporaryZoneList : this.data.zoneList,
       n = t.filter(item => item.id !== i);
-    this.setData({ temporaryZoneList: n });
+    this.setData({
+      temporaryZoneList: n
+    });
   },
   // 确认自定义设定
   handleConfirmSettings() {
     if (this.clickLock) return;
     this.clickLock = !0;
-    const t = this.data.temporaryZoneList, z = this.data.zoneList,
+    const t = this.data.temporaryZoneList,
+      z = this.data.zoneList,
       i = t.map(item => item.id).filter(id => id);
     try {
       wx.setStorageSync('temporaryZoneIds', i);
@@ -92,36 +158,56 @@ Page({
     } catch (e) {
       console.error('缓存写入失败:', e);
     }
-    this.setData({ longPress: !1 }, () =>
-      this.setData({ temporaryZoneList: [], zoneList: t.length > 0 ? t : z }, () => {
+    this.setData({
+        longPress: !1
+      }, () =>
+      this.setData({
+        temporaryZoneList: [],
+        zoneList: t.length > 0 ? t : z
+      }, () => {
         this.clickLock = !1;
       })
     );
-    setTimeout(() => { this.clickLock = !1 }, 2000);
+    setTimeout(() => {
+      this.clickLock = !1
+    }, 2000);
   },
   // 重置自定义设定
   handleResetSettings() {
     wx.removeStorage({
       key: 'temporaryZoneIds',
-      success: () => this.setData({ longPress: false }, this.initZoneInfo),
-      fail: (err) => err.errMsg.includes('key not found') && this.setData({ longPress: false }, this.initZoneInfo)
+      success: () => this.setData({
+        longPress: false
+      }, this.initZoneInfo),
+      fail: (err) => err.errMsg.includes('key not found') && this.setData({
+        longPress: false
+      }, this.initZoneInfo)
     });
   },
   // 点击banner跳转路径
   handleJumpInfo(evt) {
-    const { item = {} } = evt?.currentTarget?.dataset || {};
-    const { fileType, path: localPath, img } = item;
+    const {
+      item = {}
+    } = evt?.currentTarget?.dataset || {};
+    const {
+      fileType,
+      path: localPath,
+      img
+    } = item;
 
     const IMG_BASE_URL = 'https://k3a.wiselink.net.cn/img/';
-    const targetPath = fileType === 1
-      ? localPath
-      : `${IMG_BASE_URL}${img || ''}`;
-    const navigateUrl = fileType === 1
-      ? targetPath
-      : `/pages/agreementWebView/agreementWebView?url=${targetPath}`;
+    const targetPath = fileType === 1 ?
+      localPath :
+      `${IMG_BASE_URL}${img || ''}`;
+    const navigateUrl = fileType === 1 ?
+      targetPath :
+      `/pages/agreementWebView/agreementWebView?url=${targetPath}`;
 
     if (!navigateUrl) {
-      wx.showToast({ title: '跳转路径无效', icon: 'none' });
+      wx.showToast({
+        title: '跳转路径无效',
+        icon: 'none'
+      });
       return;
     }
 
@@ -129,13 +215,18 @@ Page({
       url: navigateUrl,
       fail: (err) => {
         console.error('页面跳转失败:', err);
-        wx.showToast({ title: '跳转失败，请重试', icon: 'none' });
+        wx.showToast({
+          title: '跳转失败，请重试',
+          icon: 'none'
+        });
       }
     });
   },
   // 400拨号
   handleMakePhoneCallWithConfirm() {
-    const { servicePhone } = this.data;
+    const {
+      servicePhone
+    } = this.data;
     // 第一步：弹出确认框，告知用户要拨打的号码
     wx.showModal({
       title: '拨打电话',
@@ -172,7 +263,9 @@ Page({
   },
   // 获取系统头部各区域高度
   initSystemInfo() {
-    const { statusBarHeight: s } = wx.getWindowInfo()
+    const {
+      statusBarHeight: s
+    } = wx.getWindowInfo()
     const m = wx.getMenuButtonBoundingClientRect()
     if (!m) return
     const n = m.height + (m.top - s) * 2
@@ -185,7 +278,10 @@ Page({
   },
   // 转换背景图base64
   initialiImageBaseConversion() {
-    const [o, l] = [this, [{ path: "/assets/images/index/bg.png", key: "s_background_picture_of_the_front_page" }]];
+    const [o, l] = [this, [{
+      path: "/assets/images/index/bg.png",
+      key: "s_background_picture_of_the_front_page"
+    }]];
     (new class {
       constructor(t) {
         this.t = t;
@@ -196,8 +292,13 @@ Page({
         Promise.all(this.t.map((i, _, a) => new Promise((r, j) => this.p.readFile({
           filePath: i.path,
           encoding: 'base64',
-          success: (d) => r({ [i.key]: `data:image/png;base64,${d.data}` })
-        })))).then((s) => this.t[0] && o.setData(s.reduce((_, c) => ({ ..._, ...c }), {})));
+          success: (d) => r({
+            [i.key]: `data:image/png;base64,${d.data}`
+          })
+        })))).then((s) => this.t[0] && o.setData(s.reduce((_, c) => ({
+          ..._,
+          ...c
+        }), {})));
       }
     }(l));
   },
@@ -207,11 +308,17 @@ Page({
     try {
       (async (a, b, c) => {
         if (!a || !b || typeof c !== 'function') throw ___;
-        const d = await c(`${b.data.c_link}${a}`, { terminalId: 0 });
+        const d = await c(`${b.data.c_link}${a}`, {
+          terminalId: 0
+        });
         if (!d?.data?.content) throw ___;
-        b.setData({ g_banner_image: d.data.content });
+        b.setData({
+          g_banner_image: d.data.content
+        });
       })(__, $$, byGet).catch(e => e !== ___ && console.error(e));
-    } catch (e) { /* */ }
+    } catch (e) {
+      /* */
+    }
   },
   // 获取是否要显示优惠券弹窗
   initforceLogin() {
@@ -220,7 +327,9 @@ Page({
       const s = t.setData.bind(t),
         l = isLogin(),
         c = r?.data?.content;
-      s({ coupon_modal: !l && c === 1 })
+      s({
+        coupon_modal: !l && c === 1
+      })
     }).catch(_ => void 0)
   },
   // 获取当前登录状态
@@ -250,13 +359,22 @@ Page({
   // 获取专区目录
   async initZoneInfo() {
     const cacheIds = wx.getStorageSync('temporaryZoneIds') || [];
-    const { statusCode, data: { content = [] } = {} } = await byGet(`${this.data.c_link}${u_getHomeArea.URL}`, {});
+    const {
+      statusCode,
+      data: {
+        content = []
+      } = {}
+    } = await byGet(`${this.data.c_link}${u_getHomeArea.URL}`, {});
     if (statusCode !== 200 || !content.length) return;
-    const zoneList = cacheIds.length
-      ? content.filter(item => cacheIds.includes(item.id))
-      : content;
-    await new Promise(resolve => this.setData({ zoneList }, resolve));
-    const { options } = this.data;
+    const zoneList = cacheIds.length ?
+      content.filter(item => cacheIds.includes(item.id)) :
+      content;
+    await new Promise(resolve => this.setData({
+      zoneList
+    }, resolve));
+    const {
+      options
+    } = this.data;
     if (options && typeof options === 'object' && Object.keys(options).length) {
       this.initjumpToCar();
     }
@@ -304,18 +422,37 @@ Page({
   },
   // 动态改变轮播图高度
   LoadOnUseGuideImageLoad(e) {
-    const [self, { currentTarget: { dataset: { flag: mark } = {} } = {} }] = [this, e ?? {}];
+    const [self, {
+      currentTarget: {
+        dataset: {
+          flag: mark
+        } = {}
+      } = {}
+    }] = [this, e ?? {}];
     (async () => {
       try {
-        const { detail: { width: w, height: h } = {} } = e ?? {};
+        const {
+          detail: {
+            width: w,
+            height: h
+          } = {}
+        } = e ?? {};
         if (!w || !h || typeof w !== 'number' || typeof h !== 'number') throw Symbol();
-        const { windowWidth: winW } = await wx.getSystemInfo({});
+        const {
+          windowWidth: winW
+        } = await wx.getSystemInfo({});
         if (!winW || typeof winW !== 'number') throw Symbol();
         const ratioH = h / w * winW;
         const validH = isFinite(ratioH) ? ratioH : 0;
-        mark === 'use' && self.setData({ s_use_height: validH });
-        mark === 'banner' && self.setData({ s_banner_height: validH });
-      } catch (err) { err.description || console.error('imgLoadErr:', err); }
+        mark === 'use' && self.setData({
+          s_use_height: validH
+        });
+        mark === 'banner' && self.setData({
+          s_banner_height: validH
+        });
+      } catch (err) {
+        err.description || console.error('imgLoadErr:', err);
+      }
     })();
   },
   // 判断参数是否为APPID
@@ -348,7 +485,10 @@ Page({
     this.setData({
       options: options || {}
     });
-    const { scene, query } = options;
+    const {
+      scene,
+      query
+    } = options;
 
     if ((scene?.length < 6 || query?.length < 6) && (scene || query)) {
       wx.setStorageSync('invite', scene || query);
@@ -356,8 +496,13 @@ Page({
   },
   // 用车人进入
   initjumpToCar() {
-    const { options = {}, zoneList } = this.data;
-    const { scene, query } = options;
+    const {
+      options = {}, zoneList
+    } = this.data;
+    const {
+      scene,
+      query
+    } = options;
     const sceneParam = scene ?? query;
     if (!sceneParam || typeof sceneParam !== 'string' || sceneParam.length < 10) return;
     (() => {
@@ -386,7 +531,9 @@ Page({
           }, () => {
             wx.setStorageSync('scene', sceneParam);
             if (sceneParam.length > 6) {
-              wx.navigateTo({ url: '/pages/vehicleUser/index' });
+              wx.navigateTo({
+                url: '/pages/vehicleUser/index'
+              });
             }
           });
         }
@@ -485,9 +632,13 @@ Page({
     try {
       const currentVersion = this.data.version;
       const cacheVersion = wx.getStorageSync('version') ?? '';
-      this.setData({ JournalFlag: currentVersion !== cacheVersion });
+      this.setData({
+        JournalFlag: currentVersion !== cacheVersion
+      });
     } catch (err) {
-      this.setData({ JournalFlag: true });
+      this.setData({
+        JournalFlag: true
+      });
     }
   },
   // 设置当前版本号
@@ -507,30 +658,51 @@ Page({
     this.heartbeatDetection();
     // 更新日志是否显示
     this.handleVersion()
+    this.handleInvite()
   },
   // 判断是否有缓存
   async initQueryCacheAndRoles() {
-    const key = 'scene', code = 200, url = '/pages/vehicleUser/index';
+    const key = 'scene',
+      code = 200,
+      url = '/pages/vehicleUser/index';
     if (isLogin()) {
       try {
-        const res = await byGet(this.data.c_link + u_carList.URL, { page: 1 });
+        const res = await byGet(this.data.c_link + u_carList.URL, {
+          page: 1
+        });
         if (res?.statusCode == code && res?.data?.count == 0) {
           try {
-            const sceneRes = await wx.getStorage({ key });
-            sceneRes?.data && wx.redirectTo({ url });
-          } catch (e) { console.warn('读取scene缓存失败：', e); }
+            const sceneRes = await wx.getStorage({
+              key
+            });
+            sceneRes?.data && wx.redirectTo({
+              url
+            });
+          } catch (e) {
+            console.warn('读取scene缓存失败：', e);
+          }
         }
-      } catch (e) { console.error('车辆列表请求失败：', e); }
+      } catch (e) {
+        console.error('车辆列表请求失败：', e);
+      }
     } else {
       try {
-        const sceneRes = await wx.getStorage({ key });
-        sceneRes?.data && wx.redirectTo({ url });
-      } catch (e) { console.warn('读取scene缓存失败：', e); }
+        const sceneRes = await wx.getStorage({
+          key
+        });
+        sceneRes?.data && wx.redirectTo({
+          url
+        });
+      } catch (e) {
+        console.warn('读取scene缓存失败：', e);
+      }
     }
   },
   // 已有账号，跳转常规登录页面
   handleOnExistingAccountTap() {
-    (0, wx.navigateTo)({ url: '/pages/system/managerLoginView/loginView' })
+    (0, wx.navigateTo)({
+      url: '/pages/system/managerLoginView/loginView'
+    })
   },
   // 授权登录
   async handleOnGetPhoneNumber(e) {
@@ -545,40 +717,56 @@ Page({
       })))();
 
       // 判断是否继续执行
-      !(loginRes?.code) && (() => { throw new Error('无法获取登录凭证'); })();
+      !(loginRes?.code) && (() => {
+        throw new Error('无法获取登录凭证');
+      })();
 
       // 检查授权码 判断是否拒绝了授权
-      !e?.detail?.code && (() => { return; })();
+      !e?.detail?.code && (() => {
+        return;
+      })();
 
       // 发送登录请求
       const response = await (() => new Promise((_, $) => byPost(
-        `${this.data.c_link}userapi/wxLogin`,
-        { code: e.detail.code, inviteCode: this.data.invit_code || '', wxCode: loginRes.code },
+        `${this.data.c_link}userapi/wxLogin`, {
+          code: e.detail.code,
+          inviteCode: this.data.invit_code || '',
+          wxCode: loginRes.code
+        },
         r => r?.data?.content ? _(r) : $(new Error((() => r?.data?.message || '登录接口响应异常')())),
         e => $(new Error(`网络请求失败:${e.errMsg}`))
       )))();
 
       // 用户信息获取失败
       const userInfo = response?.data?.content;
-      !userInfo && (void (() => { throw new Error('用户信息获取失败'); })());
+      !userInfo && (void(() => {
+        throw new Error('用户信息获取失败');
+      })());
 
       // 配置URL（简化条件判断）
       const isTestUser = userInfo.username === '13683187039*';
       const BASE_DOMAIN = 'wiselink.net.cn';
       const urlConfig = {
-        k1swUrl: isTestUser
-          ? `https://k1swtest.${BASE_DOMAIN}/`
-          : `https://k3a.${BASE_DOMAIN}/`,
+        k1swUrl: isTestUser ?
+          `https://k1swtest.${BASE_DOMAIN}/` : `https://k3a.${BASE_DOMAIN}/`,
         fin3Url: `https://fin3.${BASE_DOMAIN}/fin/`
       };
 
       // 封装微信存储操作的工具函数
       const storageUtil = {
         set: (key, data) => new Promise((resolve) => {
-          wx.setStorage({ key, data, success: resolve });
+          wx.setStorage({
+            key,
+            data,
+            success: resolve
+          });
         }),
         get: (key) => new Promise((resolve, reject) => {
-          wx.getStorage({ key, success: resolve, fail: reject });
+          wx.getStorage({
+            key,
+            success: resolve,
+            fail: reject
+          });
         })
       };
 
@@ -602,25 +790,32 @@ Page({
       });
 
       // 处理模态框和用户信息设置
-      this.setData({ coupon_modal: false });
+      this.setData({
+        coupon_modal: false
+      });
 
       // 读取用户信息并更新视图
       try {
-        const { data } = await storageUtil.get('userKey');
+        const {
+          data
+        } = await storageUtil.get('userKey');
         console.log(data)
         this.setData({
           account: data?.companyName || data?.username
         });
       } catch (err) {
         console.warn('获取用户信息失败:', err);
-        this.setData({ account: '' });
+        this.setData({
+          account: ''
+        });
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   },
   // 点击“咨询” 显示入群二维码
   handleShowContact() {
-    this.setData({ join_the_group_modal: true })
+    this.setData({
+      join_the_group_modal: true
+    })
   },
   // 点击关闭咨询&群二维码
   handleQRClose() {
@@ -634,22 +829,36 @@ Page({
       sources: [{
         url: this.data.personal_qr_code, // 图片路径
         type: 'image',
-      },],
+      }, ],
     });
   },
   // 切换底部导航
   handleSwitchTabNavigation(evt) {
-    const { currentTarget: { dataset: { index: idx = null } = {} } = {} } = evt ?? {};
+    const {
+      currentTarget: {
+        dataset: {
+          index: idx = null
+        } = {}
+      } = {}
+    } = evt ?? {};
     if (idx === null) return;
-    const { tabList = [] } = this.data;
-    const { pagePath: targetUrl } = tabList[idx] ?? {};
+    const {
+      tabList = []
+    } = this.data;
+    const {
+      pagePath: targetUrl
+    } = tabList[idx] ?? {};
     if (!targetUrl) return;
     const [currentPage] = getCurrentPages().slice(-1);
-    const { route: currentPath } = currentPage ?? {};
+    const {
+      route: currentPath
+    } = currentPage ?? {};
     if (!currentPath) return;
     const targetPurePath = targetUrl.split('?')[0];
     console.log(currentPath, targetPurePath);
-    currentPath !== targetPurePath && wx.redirectTo({ url: `/${targetUrl}` });
+    currentPath !== targetPurePath && wx.redirectTo({
+      url: `/${targetUrl}`
+    });
   },
   // 点击专区跳转逻辑
   handleGetMenuList(evt) {
@@ -666,12 +875,20 @@ Page({
     const bgcolor = eventInfo.bgcolor ?? datasetInfo.bgcolor;
     const externalPath = eventInfo.externalPath ?? datasetInfo.externalPath;
     const miniProgramConfig = {
-      'wxcdd55b1d2e790195': { needToken: true },
-      'wxf2c0e435976f0ca6': { needToken: false }
+      'wxcdd55b1d2e790195': {
+        needToken: true
+      },
+      'wxf2c0e435976f0ca6': {
+        needToken: false
+      }
     };
     if (this.isMiniProgramAppid(path) && miniProgramConfig[path]) {
-      const { needToken } = miniProgramConfig[path];
-      const extraData = needToken ? { token: getApp()?.data?.userInfo?.token } : {};
+      const {
+        needToken
+      } = miniProgramConfig[path];
+      const extraData = needToken ? {
+        token: getApp()?.data?.userInfo?.token
+      } : {};
       this.navigateToOtherMiniProgram(path, externalPath, extraData);
       return;
     }
@@ -679,7 +896,9 @@ Page({
     const isDeskPath = path.includes('desk');
 
     if (isDeskPath) {
-      wx.switchTab({ url: path });
+      wx.switchTab({
+        url: path
+      });
     } else {
       wx.navigateTo({
         url: `${path}?bgcolor=${bgcolor}&name=${name}&subtitle=${subtitle}&stfontSize=${stfontSize}`
