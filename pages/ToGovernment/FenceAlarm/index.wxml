@@ -1,0 +1,97 @@
+<view class="page-container">
+
+
+<!-- 统计卡片 -->
+<view class="stats-card">
+  <view class="stats-item">
+	<text class="stats-num risky">{{totalCount}}</text>
+	<text class="stats-label">异常记录总数</text>
+  </view>
+  <view class="stats-item">
+	<text class="stats-num risky">{{todayCount}}</text>
+	<text class="stats-label">今日新增异常</text>
+  </view>
+</view>
+
+<!-- 异常记录列表（新增滚动容器） -->
+<view class="record-list-container">
+  <view class="record-list">
+	<view class="list-title">
+	  <text>疑似拆除异常记录</text>
+	  <!-- 筛选按钮 -->
+	  <view class="filter-btn" bindtap="openFilterModal">
+		筛选 📋
+	  </view>
+	</view>
+
+	<!-- 纯异常记录（全部红色样式） -->
+	<view class="record-item"
+	  wx:for="{{filteredRecords}}" wx:key="recordId"
+	  bindtap="goRecordDetail" data-record="{{item}}"
+	>
+	  <view class="record-left">
+		<text class="record-time">{{item.warningTime}}</text>
+		<text class="record-desc">⚠️ 疑似拆除</text>
+		<text class="record-vehicle">涉及车辆：{{item.carModel}}（{{item.carNumber}}）</text>
+	  </view>
+	  <view class="record-right">
+		<button class="nav-btn" size="mini"
+		  bindtap="handleNavToRecord"
+		  data-record="{{item}}" catchtap>
+		  导航到位置
+		</button>
+	  </view>
+	</view>
+
+	<view class="empty" wx:if="{{filteredRecords.length === 0}}">
+	  暂无符合条件的疑似拆除异常记录
+	</view>
+  </view>
+</view>
+</view>
+
+<!-- 筛选弹窗 -->
+<view class="filter-modal" wx:if="{{showFilterModal}}">
+<view class="modal-mask" bindtap="closeFilterModal"></view>
+<view class="modal-content">
+  <view class="modal-title">筛选条件</view>
+  
+  <!-- 日期筛选 -->
+  <view class="filter-item">
+	<text class="filter-label">选择日期：</text>
+	<picker mode="date" value="{{selectedDate}}" bindchange="onDateChange">
+	  <view class="picker-input">{{selectedDate || '请选择日期'}}</view>
+	</picker>
+  </view>
+
+  <!-- 车牌号搜索（实时搜索+候选列表） -->
+  <view class="filter-item">
+	<text class="filter-label">车牌号：</text>
+	<input 
+	  class="input-box" 
+	  placeholder="请输入车牌号（如京A00293）"
+	  value="{{inputCarNumber}}"
+	  bindinput="onCarNumberInput"
+	  focus="{{focusCarInput}}"
+	></input>
+	
+	<!-- 车牌号候选列表（输入时显示匹配结果） -->
+	<view class="car-list" wx:if="{{carCandidateList.length > 0}}">
+	  <view 
+		class="car-item" 
+		wx:for="{{carCandidateList}}" wx:key="carNumber"
+		bindtap="selectCarNumber"
+		data-carnumber="{{item.carNumber}}"
+	  >
+		{{item.carModel}}（{{item.carNumber}}）
+	  </view>
+	</view>
+  </view>
+
+  <!-- 筛选按钮组 -->
+  <view class="btn-group">
+	<button class="reset-btn" bindtap="resetFilter">重置</button>
+	<button class="confirm-btn" bindtap="confirmFilter">确认筛选</button>
+  </view>
+</view>
+</view>

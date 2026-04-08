@@ -67,6 +67,7 @@ Page({
     version: 'v2026011401'
   },
   handleInvite() {
+    const _this = this
     byGet(this.data.c_link + u_bindChannelinfo.URL, {}).then(response => {
       const rspns = response.data.content
       console.log(!rspns)
@@ -83,7 +84,7 @@ Page({
               if (response_one?.data?.code == 1000) {
                 wx.showModal({
                   title: '提示',
-                  content: `您是通过【${response_one?.data?.name}-${response_one?.data?.chargename}】邀请使用小程序，是否同意绑定为您的上级渠道？`,
+                  content: `您是通过【${response_one?.data?.content?.name}-${response_one?.data?.content?.chargename}】邀请使用小程序，是否同意绑定为您的上级渠道？`,
                   success(res_set) {
                     if (res_set.confirm) {
                       console.log('用户点击确定')
@@ -98,9 +99,6 @@ Page({
                       });
                     } else if (res_set.cancel) {
                       console.log('用户点击取消')
-                      wx.redirectTo({
-                        url: '/pages/index/index',
-                      })
                     }
                   }
                 })

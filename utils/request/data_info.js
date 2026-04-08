@@ -284,7 +284,12 @@ const u_alarmList = {
   URL: fin3plusUrl + "efenceApi/alarmList",
   
 }
+const u_dismantleAlarmList = {
+  URL: fin3plusUrl + "efenceApi/dismantleAlarmList",
+  
+}
 module.exports = {
+  u_dismantleAlarmList,
   u_alarmList,
   u_getUserlnfo,
   u_channelAgreementList,

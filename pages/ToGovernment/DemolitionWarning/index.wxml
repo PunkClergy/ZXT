@@ -1,10 +1,5 @@
 <view class="page-container">
-  <!-- 顶部标题 + 订阅 -->
-  <view class="header">
-    <button class="subscribe-btn" type="primary" bindtap="handleSubscribeWarning">
-      {{isSubscribed ? '已订阅预警' : '订阅预警通知'}}
-    </button>
-  </view>
+
 
   <!-- 统计卡片 -->
   <view class="stats-card">
@@ -35,9 +30,9 @@
         bindtap="goRecordDetail" data-record="{{item}}"
       >
         <view class="record-left">
-          <text class="record-time">{{item.warningTime}}</text>
+          <text class="record-time">{{item.alarmtime}}</text>
           <text class="record-desc">⚠️ 疑似拆除</text>
-          <text class="record-vehicle">涉及车辆：{{item.carModel}}（{{item.carNumber}}）</text>
+          <text class="record-vehicle">涉及车辆：{{item.vehicleSerialName}}{{item.vehicleModeName}}（{{item.platenumber}}）</text>
         </view>
         <view class="record-right">
           <button class="nav-btn" size="mini"
@@ -86,9 +81,9 @@
           class="car-item" 
           wx:for="{{carCandidateList}}" wx:key="carNumber"
           bindtap="selectCarNumber"
-          data-carnumber="{{item.carNumber}}"
+          data-carnumber="{{item.platenumber}}"
         >
-          {{item.carModel}}（{{item.carNumber}}）
+          {{item.vehicleSerialName}}{{item.vehicleModeName}}（{{item.platenumber}}）
         </view>
       </view>
     </view>

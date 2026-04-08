@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "超出围栏报警",
+  "usingComponents": {
+    "custom-header": "/components/CustomHeader/index"
+  },
+  "disableScroll": true
+}
+

@@ -21,8 +21,8 @@ Page({
         recordId: "REC001",
         warningTime: "2026-03-02 09:23:45",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "大众高尔夫",
-        platenumber: "京A00293",
+        carModel: "大众高尔夫",
+        carNumber: "京A00293",
         latitude: 30.58804,
         longitude: 114.30554
       },
@@ -30,8 +30,8 @@ Page({
         recordId: "REC002",
         warningTime: "2026-03-02 08:15:30",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "丰田凯美瑞",
-        platenumber: "沪B88765",
+        carModel: "丰田凯美瑞",
+        carNumber: "沪B88765",
         latitude: 30.58921,
         longitude: 114.30687
       },
@@ -39,8 +39,8 @@ Page({
         recordId: "REC003",
         warningTime: "2026-03-01 16:40:12",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "本田CR-V",
-        platenumber: "粤C67890",
+        carModel: "本田CR-V",
+        carNumber: "粤C67890",
         latitude: 30.59015,
         longitude: 114.30723
       },
@@ -48,8 +48,8 @@ Page({
         recordId: "REC004",
         warningTime: "2026-03-01 14:10:55",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "宝马3系",
-        platenumber: "苏D12345",
+        carModel: "宝马3系",
+        carNumber: "苏D12345",
         latitude: 30.58762,
         longitude: 114.30498
       },
@@ -57,8 +57,8 @@ Page({
         recordId: "REC005",
         warningTime: "2026-02-29 11:05:20",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "特斯拉Model 3",
-        platenumber: "浙E98765",
+        carModel: "特斯拉Model 3",
+        carNumber: "浙E98765",
         latitude: 30.58889,
         longitude: 114.30812
       },
@@ -67,8 +67,8 @@ Page({
         recordId: "REC006",
         warningTime: "2026-03-02 10:30:18",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "比亚迪汉",
-        platenumber: "京A12345",
+        carModel: "比亚迪汉",
+        carNumber: "京A12345",
         latitude: 30.58854,
         longitude: 114.30584
       },
@@ -76,8 +76,8 @@ Page({
         recordId: "REC007",
         warningTime: "2026-03-02 11:15:42",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "吉利星越L",
-        platenumber: "沪B23456",
+        carModel: "吉利星越L",
+        carNumber: "沪B23456",
         latitude: 30.58981,
         longitude: 114.30717
       },
@@ -85,8 +85,8 @@ Page({
         recordId: "REC008",
         warningTime: "2026-03-02 12:20:33",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "哈弗H6",
-        platenumber: "粤C34567",
+        carModel: "哈弗H6",
+        carNumber: "粤C34567",
         latitude: 30.59065,
         longitude: 114.30753
       },
@@ -94,8 +94,8 @@ Page({
         recordId: "REC009",
         warningTime: "2026-03-02 13:45:10",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "长安UNI-V",
-        platenumber: "苏D45678",
+        carModel: "长安UNI-V",
+        carNumber: "苏D45678",
         latitude: 30.58812,
         longitude: 114.30528
       },
@@ -103,8 +103,8 @@ Page({
         recordId: "REC010",
         warningTime: "2026-03-02 14:50:25",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "五菱宏光MINI",
-        platenumber: "浙E56789",
+        carModel: "五菱宏光MINI",
+        carNumber: "浙E56789",
         latitude: 30.58939,
         longitude: 114.30842
       },
@@ -112,8 +112,8 @@ Page({
         recordId: "REC011",
         warningTime: "2026-03-01 09:10:15",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "奥迪A4L",
-        platenumber: "京A67890",
+        carModel: "奥迪A4L",
+        carNumber: "京A67890",
         latitude: 30.58794,
         longitude: 114.30474
       },
@@ -121,8 +121,8 @@ Page({
         recordId: "REC012",
         warningTime: "2026-03-01 10:25:40",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "奔驰C级",
-        platenumber: "沪B78901",
+        carModel: "奔驰C级",
+        carNumber: "沪B78901",
         latitude: 30.58911,
         longitude: 114.30667
       },
@@ -130,8 +130,8 @@ Page({
         recordId: "REC013",
         warningTime: "2026-03-01 11:30:55",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "日产轩逸",
-        platenumber: "粤C89012",
+        carModel: "日产轩逸",
+        carNumber: "粤C89012",
         latitude: 30.59045,
         longitude: 114.30783
       },
@@ -139,8 +139,8 @@ Page({
         recordId: "REC014",
         warningTime: "2026-03-01 15:15:30",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "朗逸",
-        platenumber: "苏D90123",
+        carModel: "朗逸",
+        carNumber: "苏D90123",
         latitude: 30.58772,
         longitude: 114.30518
       },
@@ -148,8 +148,8 @@ Page({
         recordId: "REC015",
         warningTime: "2026-03-01 16:20:18",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "卡罗拉",
-        platenumber: "浙E01234",
+        carModel: "卡罗拉",
+        carNumber: "浙E01234",
         latitude: 30.58899,
         longitude: 114.30832
       },
@@ -157,8 +157,8 @@ Page({
         recordId: "REC016",
         warningTime: "2026-02-29 08:30:45",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "迈腾",
-        platenumber: "京A88888",
+        carModel: "迈腾",
+        carNumber: "京A88888",
         latitude: 30.58824,
         longitude: 114.30564
       },
@@ -166,8 +166,8 @@ Page({
         recordId: "REC017",
         warningTime: "2026-02-29 09:45:20",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "帕萨特",
-        platenumber: "沪B99999",
+        carModel: "帕萨特",
+        carNumber: "沪B99999",
         latitude: 30.58951,
         longitude: 114.30697
       },
@@ -175,8 +175,8 @@ Page({
         recordId: "REC018",
         warningTime: "2026-02-29 10:50:10",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "雅阁",
-        platenumber: "粤C77777",
+        carModel: "雅阁",
+        carNumber: "粤C77777",
         latitude: 30.59075,
         longitude: 114.30743
       },
@@ -184,8 +184,8 @@ Page({
         recordId: "REC019",
         warningTime: "2026-02-29 14:15:55",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "思域",
-        platenumber: "苏D66666",
+        carModel: "思域",
+        carNumber: "苏D66666",
         latitude: 30.58782,
         longitude: 114.30508
       },
@@ -193,8 +193,8 @@ Page({
         recordId: "REC020",
         warningTime: "2026-02-29 15:30:30",
         warningDesc: "疑似拆除",
-        vehicleSerialName: "雷凌",
-        platenumber: "浙E55555",
+        carModel: "雷凌",
+        carNumber: "浙E55555",
         latitude: 30.58919,
         longitude: 114.30822
       }
@@ -219,15 +219,10 @@ Page({
   },
   // 请求数据列表
   handle() {
-    const _this = this
     byGet(`${getApp().data.k1swUrl}${u_dismantleAlarmList.URL}`, {}).then(response => {
       if (response.data.code == 1000) {
         this.setData({
-          // warningRecords: response.data.content, 后期打开
-        }, () => {
-          this.setData({
-            filteredRecords: [..._this.data.warningRecords]
-          });
+          objectList: response.data.content,
         });
       }
     })
@@ -264,25 +259,21 @@ Page({
     });
 
     if (!inputVal) {
-      this.setData({
-        carCandidateList: []
-      });
+      this.setData({ carCandidateList: [] });
       return;
     }
 
-    const {
-      warningRecords
-    } = this.data;
+    const { warningRecords } = this.data;
     const candidateList = warningRecords.filter(item => {
-      return item.platenumber.toUpperCase().includes(inputVal) ||
-        item.vehicleSerialName.includes(inputVal);
+      return item.carNumber.toUpperCase().includes(inputVal) ||
+        item.carModel.includes(inputVal);
     }).map(item => ({
-      vehicleSerialName: item.vehicleSerialName, 
-      platenumber: item.platenumber 
+      carModel: item.carModel,
+      carNumber: item.carNumber
     }));
 
-    const uniqueList = Array.from(new Set(candidateList.map(item => item.platenumber)))
-      .map(platenumber => candidateList.find(item => item.platenumber === platenumber));
+    const uniqueList = Array.from(new Set(candidateList.map(item => item.carNumber)))
+      .map(carNumber => candidateList.find(item => item.carNumber === carNumber));
 
     this.setData({
       carCandidateList: uniqueList
@@ -292,7 +283,7 @@ Page({
   // 选中候选列表中的车牌号
   selectCarNumber(e) {
     const selectedCarNum = e.currentTarget.dataset.carnumber;
-    const targetCar = this.data.warningRecords.find(item => item.platenumber === selectedCarNum);
+    const targetCar = this.data.warningRecords.find(item => item.carNumber === selectedCarNum);
 
     this.setData({
       inputCarNumber: selectedCarNum,
@@ -312,11 +303,7 @@ Page({
 
   // 确认筛选
   confirmFilter() {
-    const {
-      warningRecords,
-      selectedDate,
-      inputCarNumber
-    } = this.data;
+    const { warningRecords, selectedDate, inputCarNumber } = this.data;
     let result = [...warningRecords];
 
     if (selectedDate) {
@@ -329,7 +316,7 @@ Page({
     if (inputCarNumber) {
       const carNum = inputCarNumber.trim().toUpperCase();
       result = result.filter(item => {
-        return item.platenumber.toUpperCase().includes(carNum);
+        return item.carNumber.toUpperCase().includes(carNum);
       });
     }
 
@@ -347,7 +334,6 @@ Page({
 
   // 进入记录详情页
   goRecordDetail(e) {
-    console.log(e)
     const record = e.currentTarget.dataset.record;
     wx.navigateTo({
       url: `/pages/recordDetail/recordDetail?recordId=${record.recordId}`,
@@ -357,19 +343,13 @@ Page({
   // 导航到异常记录位置
   handleNavToRecord(e) {
     const record = e.currentTarget.dataset.record;
-    const {
-      latitude,
-      longitude,
-      vehicleSerialName,
-      vehicleModeName,
-      platenumber
-    } = record;
+    const { latitude, longitude, carModel, carNumber } = record;
 
     wx.openLocation({
       latitude: latitude,
       longitude: longitude,
-      name: `${vehicleSerialName}${vehicleModeName}（${platenumber}）疑似拆除`,
-      address: `${vehicleSerialName}${vehicleModeName}（${platenumber}）疑似拆除异常位置`,
+      name: `${carModel}（${carNumber}）疑似拆除`,
+      address: `${carModel}（${carNumber}）疑似拆除异常位置`,
       scale: 18,
       success: () => {
         console.log('打开地图导航成功');
@@ -378,7 +358,7 @@ Page({
         console.error('导航失败：', err);
         wx.showModal({
           title: '导航失败',
-          content: `无法打开地图，位置：${vehicleSerialName}${vehicleModeName}（${platenumber}）（纬度${latitude}，经度${longitude}）`,
+          content: `无法打开地图，位置：${carModel}（${carNumber}）（纬度${latitude}，经度${longitude}）`,
           showCancel: false,
           confirmText: '知道了'
         });

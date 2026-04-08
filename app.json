@@ -163,7 +163,8 @@
         "DemolitionWarning/index",
         "maintain/index",
         "carDetail/carDetail",
-        "returnRec/index"
+        "returnRec/index",
+        "FenceAlarm/index"
       ]
     }
   ],
