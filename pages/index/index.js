@@ -99,6 +99,7 @@ Page({
                       });
                     } else if (res_set.cancel) {
                       console.log('用户点击取消')
+                      wx.removeStorageSync('invite')
                     }
                   }
                 })
