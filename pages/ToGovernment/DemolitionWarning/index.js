@@ -6,6 +6,9 @@ const {
   u_dismantleAlarmList
 
 } = require('../../../utils/request/data_info')
+const {
+  showToast
+} = require('../../../utils/Inspect/tips')
 Page({
   data: {
     isSubscribed: false,
@@ -64,10 +67,15 @@ Page({
 
   // 打开筛选弹窗
   openFilterModal() {
-    this.setData({
-      showFilterModal: true,
-      focusCarInput: true
-    });
+    if (this.data.filteredRecords.length > 0) {
+      this.setData({
+        showFilterModal: true,
+        focusCarInput: true
+      });
+    } else {
+      showToast('无报警数据')
+    }
+
   },
 
   // 关闭筛选弹窗

@@ -25,7 +25,7 @@
 			</view>
 
 			<!-- 纯异常记录（全部红色样式） -->
-			<view class="record-item" wx:for="{{1}}" wx:key="recordId" bindtap="goRecordDetail" data-record="{{item}}">
+			<view class="record-item" wx:for="{{filteredRecords}}" wx:key="recordId" bindtap="goRecordDetail" data-record="{{item}}">
 				<view class="record-left">
 					<text>{{item.efencename}}</text>
 					<text class="record-time">{{item.alarmtime}}</text>
