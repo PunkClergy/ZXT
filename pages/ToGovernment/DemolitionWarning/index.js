@@ -12,8 +12,8 @@ const {
 Page({
   data: {
     isSubscribed: false,
-    totalCount: 20, // 异常记录总数（新增后20条）
-    todayCount: 8, // 今日新增异常
+    totalCount: 0, // 异常记录总数（新增后20条）
+    todayCount: 0, // 今日新增异常
     // 原始异常记录数据（新增至20条）
     warningRecords: [],
     // 筛选相关数据
