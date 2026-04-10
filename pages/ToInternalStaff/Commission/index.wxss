@@ -2,18 +2,18 @@
 page {
 	background-color: #f5f7fa;
 	padding-bottom: 40rpx;
-  }
-  
-  /* 搜索区域 */
-  .search-box {
+}
+
+/* 搜索区域 */
+.search-box {
 	background: #ffffff;
 	border-radius: 16rpx;
 	padding: 24rpx;
 	margin: 20rpx;
 	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
-  }
-  
-  .search-item {
+}
+
+.search-item {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -24,20 +24,20 @@ page {
 	margin-bottom: 16rpx;
 	font-size: 28rpx;
 	color: #333;
-  }
-  
-  .search-item text:first-child {
+}
+
+.search-item text:first-child {
 	color: #666;
-  }
-  
-  .search-input-box {
+}
+
+.search-input-box {
 	display: flex;
 	align-items: center;
 	gap: 16rpx;
 	margin-top: 8rpx;
-  }
-  
-  .search-input-box input {
+}
+
+.search-input-box input {
 	flex: 1;
 	height: 80rpx;
 	padding: 0 20rpx;
@@ -45,77 +45,78 @@ page {
 	border-radius: 10rpx;
 	font-size: 28rpx;
 	border: none;
-  }
-  
-  .search-input-box button {
+	outline: none;
+}
+
+.search-input-box button {
 	height: 80rpx;
 	line-height: 80rpx;
 	border-radius: 10rpx;
 	padding: 0 28rpx;
 	font-size: 28rpx;
-  }
-  
-  /* 列表卡片 */
-  .list-container {
+}
+
+/* 列表卡片 */
+.list-container {
 	padding: 0 20rpx;
-  }
-  
-  .list-item {
+}
+
+.list-item {
 	background: #fff;
 	border-radius: 16rpx;
 	padding: 28rpx;
 	margin-bottom: 20rpx;
 	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
-  }
-  
-  /* 一行显示两列字段 */
-  .item-row {
+}
+
+/* 一行显示两列字段 */
+.item-row {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 20rpx;
 	margin-bottom: 20rpx;
-  }
-  
-  .item-col {
+}
+
+.item-col {
 	flex: 1;
 	min-width: 200rpx;
 	display: flex;
 	align-items: center;
 	font-size: 26rpx;
-  }
-  
-  .item-row:last-of-type {
+}
+
+.item-row:last-of-type {
 	margin-bottom: 0;
-  }
-  
-  .label {
+}
+
+.label {
 	color: #8c8c8c;
 	margin-right: 8rpx;
 	white-space: nowrap;
-  }
-  
-  .content {
+}
+
+.content {
 	color: #333;
 	font-weight: 500;
 	word-break: break-all;
-  }
-  
-  .file-path {
+}
+
+.file-path {
 	color: #2b85e6;
 	font-weight: 500;
 	text-decoration: underline;
-  }
-  
-  /* 空数据 */
-  .empty {
+}
+
+/* 空数据 */
+.empty {
 	text-align: center;
 	padding: 120rpx 0;
 	color: #bbb;
 	font-size: 28rpx;
-  }
-  
-  /* PDF弹窗 */
-  .pdf-modal {
+}
+
+/* PDF弹窗 */
+.pdf-modal {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -124,13 +125,13 @@ page {
 	background: rgba(0, 0, 0, 0.6);
 	display: none;
 	z-index: 9999;
-  }
-  
-  .pdf-modal.show {
+}
+
+.pdf-modal.show {
 	display: block;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
 	position: absolute;
 	top: 8%;
 	left: 5%;
@@ -140,9 +141,9 @@ page {
 	border-radius: 20rpx;
 	overflow: hidden;
 	box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.2);
-  }
-  
-  .modal-header {
+}
+
+.modal-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -151,19 +152,45 @@ page {
 	font-size: 32rpx;
 	font-weight: 500;
 	color: #333;
-  }
-  
-  .close-btn {
+}
+
+.close-btn {
 	font-size: 44rpx;
 	color: #666;
 	line-height: 1;
-  }
-  
-  .pdf-body {
+}
+
+.pdf-body {
 	height: calc(100% - 88rpx);
-  }
-  
-  web-view {
+}
+
+web-view {
 	width: 100%;
 	height: 100%;
+}
+/* 统计条 */
+.stats-bar {
+	background: #fff;
+	border-radius: 12rpx;
+	padding: 24rpx;
+	margin: 0 20rpx 20rpx;
+	box-shadow: 0 1rpx 6rpx rgba(0,0,0,0.04);
+  }
+  /* 每行样式 */
+  .stats-row {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 20rpx;
+	margin-bottom: 16rpx;
+	font-size: 24rpx;
+	color: #666;
+  }
+  .stats-row:last-child {
+	margin-bottom: 0;
+  }
+  /* 数字颜色 */
+  .stats-row .num {
+	color: #ff6b35;
+	font-weight: bold;
   }

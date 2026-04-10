@@ -18,7 +18,7 @@
         <view class="content-item-head">
           <view class="head-left">
             <view class="left-category">
-              <text>客户名称:{{item.customername||'-'}}</text>
+              <text>客户名称:{{item.name||'-'}}</text>
             </view>
           </view>
         </view>
@@ -32,7 +32,7 @@
             <text>{{item.chargemobile||'-'}}</text>
           </view>
           <view class="info-item {{item.createdate.length > 8 ? 'long-info-item' : ''}}">
-            <label>创建时间 ：</label>
+            <label>绑定时间 ：</label>
             <text>{{item.createdate}}</text>
           </view>
 

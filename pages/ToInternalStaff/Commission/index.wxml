@@ -14,6 +14,33 @@
     <button bindtap="onSearch" type="primary" size="mini">搜索</button>
   </view>
 </view>
+<view class="stats-bar">
+  <!-- 总佣金 独占一行 -->
+  <view class="stats-row">
+    <text>总佣金</text>
+    <text class="num">￥{{sumCommissionTatol}}</text>
+  </view>
+
+  <!-- 数量 一行 -->
+  <view class="stats-row">
+    <text>MCCK设备</text>
+    <text class="num">{{deviceCountTotal}}台</text>
+    <text>失联保障</text>
+    <text class="num">{{shutInsuranceCountTatol}}单</text>
+    <text>停运无忧</text>
+    <text class="num">{{shutInsuranceCountTotal}}单</text>
+  </view>
+
+  <!-- 钱数 一行 -->
+  <view class="stats-row">
+    <text>MCCK佣金</text>
+    <text class="num">￥{{deviceAmountTatol}}</text>
+    <text>失联佣金</text>
+    <text class="num">￥{{shutInsuranceAmountTatol}}</text>
+    <text>停运佣金</text>
+    <text class="num">￥{{shutInsuranceAmountTatol}}</text>
+  </view>
+</view>
 
 <!-- 列表区域 -->
 <view class="list-container">
@@ -42,21 +69,31 @@
 
       <view class="item-row">
         <view class="item-col">
-          <text class="label">停运险单数：</text>
+          <text class="label">停运无忧单数：</text>
           <text class="content">{{item.shutInsuranceCount||''}}</text>
         </view>
         <view class="item-col">
-          <text class="label">停运险返佣：</text>
+          <text class="label">停运无忧返佣：</text>
           <text class="content">{{item.shutCommission}}</text>
         </view>
       </view>
       <view class="item-row">
         <view class="item-col">
-          <text class="label">失联险单数：</text>
+          <text class="label">失联保障单数：</text>
           <text class="content">{{item.loseInsuranceCount||''}}</text>
         </view>
         <view class="item-col">
-          <text class="label">失联险返佣：</text>
+          <text class="label">失联保障返佣：</text>
+          <text class="content">{{item.loseCommission}}</text>
+        </view>
+      </view>
+      <view class="item-row">
+        <view class="item-col">
+          <text class="label">MCCK设备台数：</text>
+          <text class="content">{{item.loseInsuranceCount||''}}</text>
+        </view>
+        <view class="item-col">
+          <text class="label">MCCK设备返佣：</text>
           <text class="content">{{item.loseCommission}}</text>
         </view>
       </view>
