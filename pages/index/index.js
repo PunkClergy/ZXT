@@ -67,6 +67,7 @@ Page({
     version: 'v2026011401'
   },
   handleInvite() {
+    if (!isLogin()) return
     const _this = this
     byGet(this.data.c_link + u_bindChannelinfo.URL, {}).then(response => {
       const rspns = response.data.content

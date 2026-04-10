@@ -145,74 +145,68 @@ Page({
       app.data.reflag = 1;
       console.log(response?.data, '3332232323')
       // 1判断此账号是否是否已绑定
-      byGet(this.data.c_link + u_bindChannelinfo.URL, {}).then(response => {
-        const rspns = response.data.content
-        console.log(!rspns)
-        if (response?.data?.code != 1000) {
-          // 2判断是否有邀请码
-          wx.getStorage({
-            key: 'invite',
-            success: res => {
-              // 3搜索此邀请码所属主体
-              byGet(_this.data.c_link + u_channelInfo.URL, {
-                inviteCode: res?.data
-              }).then(response_one => {
-                console.log(response_one)
-                if (response_one?.data?.code == 1000) {
-                  wx.showModal({
-                    title: '提示',
-                    content: `您是通过【${response_one?.data?.name}-${response_one?.data?.chargename}】邀请使用小程序，是否同意绑定为您的上级渠道？`,
-                    success(res_set) {
-                      if (res_set.confirm) {
-                        console.log('用户点击确定')
-                        // 绑定此渠道
-                        byPost(_this.data.c_link + u_confirmBindChannel.URL, {
-                          inviteCode: res?.data
-                        }, (res_bid) => {
-                          if (res_bid?.data?.code == 1000) {
-                            wx.showToast(res?.data.msg)
-                            wx.redirectTo({
-                              url: '/pages/index/index',
-                            })
-                          }
+      // byGet(this.data.c_link + u_bindChannelinfo.URL, {}).then(response => {
+      //   const rspns = response.data.content
+      //   console.log(!rspns)
+      //   if (response?.data?.code != 1000) {
+      //     // 2判断是否有邀请码
+      //     wx.getStorage({
+      //       key: 'invite',
+      //       success: res => {
+      //         // 3搜索此邀请码所属主体
+      //         byGet(_this.data.c_link + u_channelInfo.URL, {
+      //           inviteCode: res?.data
+      //         }).then(response_one => {
+      //           console.log(response_one)
+      //           if (response_one?.data?.code == 1000) {
+      //             wx.showModal({
+      //               title: '提示',
+      //               content: `您是通过【${response_one?.data?.name}-${response_one?.data?.chargename}】邀请使用小程序，是否同意绑定为您的上级渠道？`,
+      //               success(res_set) {
+      //                 if (res_set.confirm) {
+      //                   console.log('用户点击确定')
+      //                   // 绑定此渠道
+      //                   byPost(_this.data.c_link + u_confirmBindChannel.URL, {
+      //                     inviteCode: res?.data
+      //                   }, (res_bid) => {
+      //                     if (res_bid?.data?.code == 1000) {
+      //                       wx.showToast(res?.data.msg)
+      //                       wx.redirectTo({
+      //                         url: '/pages/index/index',
+      //                       })
+      //                     }
 
-                        });
-                      } else if (res_set.cancel) {
-                        console.log('用户点击取消')
-                        wx.redirectTo({
-                          url: '/pages/index/index',
-                        })
-                      }
-                    }
-                  })
-                } else {
-                  wx.redirectTo({
-                    url: '/pages/index/index',
-                  })
-                }
-              })
-            },
-            fail: () => {
-              wx.redirectTo({
-                url: '/pages/index/index',
-              })
-            }
-          })
-        } else {
-          wx.redirectTo({
-            url: '/pages/index/index',
-          })
-        }
-      })
-      // 1.判断是否有邀请码
-      // 2.判断此账号是否是否已绑定
-      // 3.搜索此邀请码所属主体
-      // 4.绑定此邀请公司
-
-      // wx.navigateBack({ delta: 1 });
-      // wx.redirectTo({
-      //   url: '/pages/index/index',
+      //                   });
+      //                 } else if (res_set.cancel) {
+      //                   console.log('用户点击取消')
+      //                   wx.redirectTo({
+      //                     url: '/pages/index/index',
+      //                   })
+      //                 }
+      //               }
+      //             })
+      //           } else {
+      //             wx.redirectTo({
+      //               url: '/pages/index/index',
+      //             })
+      //           }
+      //         })
+      //       },
+      //       fail: () => {
+      //         wx.redirectTo({
+      //           url: '/pages/index/index',
+      //         })
+      //       }
+      //     })
+      //   } else {
+      //     wx.redirectTo({
+      //       url: '/pages/index/index',
+      //     })
+      //   }
       // })
+      wx.redirectTo({
+        url: '/pages/index/index',
+      })
 
       return
     } catch (error) {

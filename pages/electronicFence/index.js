@@ -259,8 +259,8 @@ Page({
 
           // 定义坐标解析函数，避免重复代码
           const parsePoints = (pointStr) => {
-            return pointStr.split(',').map(pair => {
-              const [longitude, latitude] = pair.split('|');
+            return pointStr.split('|').map(pair => {
+              const [longitude, latitude] = pair.split(',');
               // 增加类型转换的容错处理
               return {
                 latitude: Number(latitude) || 0,

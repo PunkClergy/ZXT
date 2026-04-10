@@ -274,21 +274,26 @@ const u_willingkey = {
 }
 const u_getMyCoupon = {
   URL: fin3plusUrl + "accountapi/getMyCoupon",
-  
+
 }
 const u_getUserlnfo = {
   URL: fin3plusUrl + "deskapi/getUserInfo",
-  
+
 }
 const u_alarmList = {
   URL: fin3plusUrl + "efenceApi/alarmList",
-  
+
 }
 const u_dismantleAlarmList = {
   URL: fin3plusUrl + "efenceApi/dismantleAlarmList",
-  
+
+}
+const u_efenceAlarmList = {
+  URL: fin3plusUrl + "efenceApi/efenceAlarmList",
+
 }
 module.exports = {
+  u_efenceAlarmList,
   u_dismantleAlarmList,
   u_alarmList,
   u_getUserlnfo,
