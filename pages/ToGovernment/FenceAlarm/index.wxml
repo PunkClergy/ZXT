@@ -13,7 +13,7 @@
 		</view>
 	</view>
 
-	<!-- 异常记录列表（新增滚动容器） -->
+	<!-- 异常记录列表（新增滚动容器） --> 
 	<view class="record-list-container">
 		<view class="record-list">
 			<view class="list-title">
@@ -40,7 +40,7 @@
 			</view>
 
 			<view class="empty" wx:if="{{filteredRecords.length === 0}}">
-				暂无符合条件的疑似拆除异常记录
+				暂无符合条件的异常记录
 			</view>
 		</view>
 	</view>

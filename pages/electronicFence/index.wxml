@@ -26,8 +26,8 @@
             </view>
             <view class="content-item-info">
               <view class="info-item  {{item.username.length > 15 ? 'long-info-item' : ''}}">
-                <label>控制类型 ：</label>
-                <text>{{item.alarmtype ==1?'入区报警':'出区报警'}}</text>
+                <label>报警类型 ：</label>
+                <text>{{item.alarmtype ==0?'全部':(item.alarmtype ==1?'入区报警':'出区报警')}}</text>
               </view>
               <view class="info-item  {{item.roleName.length > 15 ? 'long-info-item' : ''}}">
                 <label>状态 ：</label>
@@ -108,10 +108,11 @@
             </view>
             <!-- 控制类型 -->
             <view class="card-info-item">
-              <label>控制类型<text>*</text></label>
+              <label>报警类型<text>*</text></label>
               <block>
                 <view class="card-info-item-tabs">
                   <view class="card-info-item-tabs-btn">
+                    <text class="{{batterylift == 0?'tabs-active':''}}" data-item="0" bindtap="handleBatterylift">全部</text>
                     <text class="{{batterylift == 1?'tabs-active':''}}" data-item="1" bindtap="handleBatterylift">入区报警</text>
                     <text class="{{batterylift == '2'?'tabs-active':''}}" data-item="2" bindtap="handleBatterylift">出区报警</text>
                   </view>
@@ -128,10 +129,10 @@
       <block wx:else>
         <view class="map-container-bar">
           <view class="map-left-group">
-          
+
             <picker class="map-button" mode="multiSelector" range="{{multiArray}}" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}">
-              <view >
-              {{province_temp||'请选择省市'}}{{province_temp}}
+              <view>
+                {{province_temp||'请选择省市'}}{{province_temp}}
                 <!-- {{multiArray[0][multiIndex[0]]||'请选择省市'}}{{multiArray[1][multiIndex[1]]}} -->
               </view>
             </picker>
