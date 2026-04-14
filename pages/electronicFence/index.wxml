@@ -27,7 +27,7 @@
             <view class="content-item-info">
               <view class="info-item  {{item.username.length > 15 ? 'long-info-item' : ''}}">
                 <label>报警类型 ：</label>
-                <text>{{item.alarmtype ==0?'全部':(item.alarmtype ==1?'入区报警':'出区报警')}}</text>
+                <text>{{item.alarmtype == 0?'全部':(item.alarmtype ==1?'入区报警':'出区报警')}}</text>
               </view>
               <view class="info-item  {{item.roleName.length > 15 ? 'long-info-item' : ''}}">
                 <label>状态 ：</label>
@@ -149,7 +149,7 @@
             <text class="map-submit" bindtap="handleSumit">保存</text>
           </view>
         </view>
-        <block wx:if="{{map_type == 2}}">
+        <block wx:if="{{map_type == 3}}">
           <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="6" show-location polygons="{{polygons}}" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;">
             <view class="map-bottom-buttons">
               <text class="map-button" bindtap="handleClear">清空</text>

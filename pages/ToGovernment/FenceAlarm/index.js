@@ -32,7 +32,7 @@ Page({
   handleCarList(inputCarNumber, selectedDate) {
     const _this = this
     const temp = {
-      comParam: inputCarNumber || '',
+      plateNumber: inputCarNumber || '',
       startDate: selectedDate || ''
     }
     byGet(`${getApp().data.k1swUrl}${u_efenceAlarmList.URL}`, {
@@ -66,14 +66,12 @@ Page({
 
   // 打开筛选弹窗
   openFilterModal() {
-    if(this.data.filteredRecords.length>0){
+   
       this.setData({
         showFilterModal: true,
         focusCarInput: true
       });
-    }else{
-      showToast('无报警数据')
-    }
+   
 
   },
 
@@ -94,7 +92,7 @@ Page({
 
   // 车牌号实时输入搜索
   onCarNumberInput(e) {
-    const inputVal = e.detail.value.trim().toUpperCase();
+    const inputVal = e.detail.value?.trim()?.toUpperCase();
     this.setData({
       inputCarNumber: inputVal
     });
@@ -110,7 +108,7 @@ Page({
       warningRecords
     } = this.data;
     const candidateList = warningRecords.filter(item => {
-      return item.platenumber.toUpperCase().includes(inputVal) ||
+      return item.platenumber?.toUpperCase()?.includes(inputVal) ||
         item.vehicleSerialName.includes(inputVal);
     }).map(item => ({
       vehicleSerialName: item.vehicleSerialName,

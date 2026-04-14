@@ -49,7 +49,7 @@ Page({
     longitude: 116.4074, // 初始中心经度（北京）
     latitude: 39.9042,   // 初始中心纬度
     temp: {},//基础内容
-    map_type: 2,
+    map_type: 3,
     scale: 14,             // 地图缩放级别
     radius: 100,          // 默认半径（米）
     circles: [],         // 圆形区域数组
@@ -269,7 +269,7 @@ Page({
             });
           };
 
-          if (type == 2) { // 矩形/多边形
+          if (type == 3) { // 矩形/多边形
             // 遍历所有分组，动态生成多边形数组（支持任意数量）
             const polygons = groupArray.map(pointGroup => ({
               ...POLYGON_STYLE,
@@ -333,12 +333,14 @@ Page({
   // 修改管控
   handleEdit(evt) {
     const info = evt.currentTarget.dataset.item
+    console.log(info)
     this.setData({
       c_activeTab: 2,
       id: info?.id,
       params: info,
       startdate: info?.startdate,
-      enddate: info?.enddate
+      enddate: info?.enddate,
+      batterylift:info?.alarmtype
     })
   },
   // 切换tabs标签
@@ -488,12 +490,12 @@ Page({
   handleSumit() {
     const { map_type } = this.data;
     let pointsData, validation;
-    if (map_type === 2) {
+    if (map_type === 3) {
       const formatPolygonPoints = (points = []) => {
         if (points.length < 3) return null;
         return points
-          .map(point => `${parseFloat(point.longitude)}|${parseFloat(point.latitude)}`)
-          .join();
+          .map(point => `${parseFloat(point.longitude)},${parseFloat(point.latitude)}`)
+          .join('|');
       };
 
 
