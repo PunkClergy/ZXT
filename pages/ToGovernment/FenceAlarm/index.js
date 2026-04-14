@@ -176,10 +176,10 @@ Page({
     } = record;
 
     wx.openLocation({
-      latitude: latitude,
-      longitude: longitude,
-      name: `${vehicleSerialName}${vehicleModeName}（${platenumber}）疑似拆除`,
-      address: `${vehicleSerialName}${vehicleModeName}（${platenumber}）疑似拆除异常位置`,
+      latitude: Number(latitude),
+      longitude: Number(longitude),
+      name: `${vehicleSerialName}${vehicleModeName}（${platenumber}）数据异常`,
+      address: `${vehicleSerialName}${vehicleModeName}（${platenumber}）数据异常位置`,
       scale: 18,
       success: () => {
         console.log('打开地图导航成功');

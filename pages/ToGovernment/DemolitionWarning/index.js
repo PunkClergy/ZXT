@@ -177,8 +177,8 @@ Page({
     } = record;
 
     wx.openLocation({
-      latitude: latitude,
-      longitude: longitude,
+      latitude: Number(latitude),
+      longitude: Number(longitude),
       name: `${vehicleSerialName}${vehicleModeName}（${platenumber}）疑似拆除`,
       address: `${vehicleSerialName}${vehicleModeName}（${platenumber}）疑似拆除异常位置`,
       scale: 18,
