@@ -1,0 +1,34 @@
+<!-- OTA 列表页面 -->
+<view class="container">
+	<!-- 头部标题 -->
+	<view class="header">
+		<text class="title">OTA 平台管理</text>
+		<text class="desc">默认所有车辆对OTA平台开启共享</text>
+	</view>
+
+	<!-- 列表加载状态 -->
+	<view wx:if="{{loading}}" class="loading">
+		<text>加载中...</text>
+	</view>
+
+	<!-- OTA 列表 -->
+	<view wx:else class="list">
+		<view wx:for="{{otaList}}" wx:key="id" class="list-item">
+			<!-- 左侧公司信息 -->
+			<view class="item-info">
+				<text class="company-name">{{item.name}}</text>
+				<text class="company-desc">ID: {{item.id}}</text>
+			</view>
+
+			<!-- 右侧开关按钮 -->
+			<view class="switch-btn {{item.shared ? 'unshared' : 'shared'}}" bindtap="handleToggleShare" data-id="{{item.id}}" data-shared="{{item.shared}}">
+				{{item.shared ? '取消共享' : '共享'}}
+			</view>
+		</view>
+	</view>
+
+	<!-- 空数据 -->
+	<view wx:if="{{!loading && otaList.length === 0}}" class="empty">
+		<text>暂无 OTA 公司数据</text>
+	</view>
+</view>

@@ -1,0 +1,104 @@
+/* 全局容器 */
+.container {
+	padding: 20rpx;
+	background-color: #f5f5f5;
+	min-height: 100vh;
+}
+
+/* 头部 */
+.header {
+	background: #fff;
+	border-radius: 16rpx;
+	padding: 30rpx;
+	margin-bottom: 20rpx;
+	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.title {
+	font-size: 36rpx;
+	font-weight: bold;
+	color: #333;
+	display: block;
+	margin-bottom: 12rpx;
+}
+
+.desc {
+	font-size: 26rpx;
+	color: #999;
+}
+
+/* 加载 */
+.loading {
+	text-align: center;
+	padding: 60rpx;
+	color: #666;
+	font-size: 28rpx;
+}
+
+/* 列表 */
+.list {
+	background: #fff;
+	border-radius: 16rpx;
+	overflow: hidden;
+	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.list-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #f0f0f0;
+}
+
+.list-item:last-child {
+	border-bottom: none;
+}
+
+/* 公司信息 */
+.item-info {
+	flex: 1;
+}
+
+.company-name {
+	font-size: 32rpx;
+	color: #333;
+	font-weight: 500;
+	display: block;
+	margin-bottom: 8rpx;
+}
+
+.company-desc {
+	font-size: 24rpx;
+	color: #999;
+}
+
+/* 开关按钮 */
+.switch-btn {
+	width: 120rpx;
+	height: 50rpx;
+	border-radius: 35rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 22rpx;
+	color: #fff;
+}
+
+/* 已共享 - 绿色 */
+.shared {
+	background-color: #07c160;
+}
+
+/* 取消共享 - 红色 */
+.unshared {
+	background-color: #fa5151;
+}
+
+/* 空数据 */
+.empty {
+	text-align: center;
+	padding: 80rpx;
+	color: #999;
+	font-size: 28rpx;
+}

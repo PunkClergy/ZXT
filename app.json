@@ -164,7 +164,8 @@
         "maintain/index",
         "carDetail/carDetail",
         "returnRec/index",
-        "FenceAlarm/index"
+        "FenceAlarm/index",
+        "OTA/index"
       ]
     }
   ],

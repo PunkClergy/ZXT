@@ -292,7 +292,19 @@ const u_efenceAlarmList = {
   URL: fin3plusUrl + "efenceApi/efenceAlarmList",
 
 }
+const u_OTAApiList = {
+  URL: fin3plusUrl + "shareCarApi/otaList",
+}
+const u_shareToOta = {
+  URL: fin3plusUrl + "shareCarApi/shareToOta",
+}
+const u_cancalShareToOta = {
+  URL: fin3plusUrl + "shareCarApi/cancalShareToOta",
+}
 module.exports = {
+  u_shareToOta,
+  u_cancalShareToOta,
+  u_OTAApiList,
   u_efenceAlarmList,
   u_dismantleAlarmList,
   u_alarmList,
