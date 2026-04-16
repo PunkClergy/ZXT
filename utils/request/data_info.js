@@ -301,7 +301,21 @@ const u_shareToOta = {
 const u_cancalShareToOta = {
   URL: fin3plusUrl + "shareCarApi/cancalShareToOta",
 }
+const u_getCarList = {
+  URL: fin3plusUrl + "shareCarApi/getCarList",
+}
+const u_cancalShareCarToOta = {
+  URL: fin3plusUrl + "shareCarApi/cancalShareCarToOta",
+}
+const u_shareCarToOta = {
+  URL: fin3plusUrl + "shareCarApi/shareCarToOta",
+}
+
+
 module.exports = {
+  u_shareCarToOta,
+  u_cancalShareCarToOta,
+  u_getCarList,
   u_shareToOta,
   u_cancalShareToOta,
   u_OTAApiList,

@@ -1,7 +1,7 @@
 const {
   byPost,
   byGet
-} = require('../../../utils//request/http')
+} = require('../../../utils/request/http')
 const {
   u_OTAApiList,
   u_shareToOta,
@@ -14,7 +14,6 @@ Page({
     loading: true,
     // OTA 公司列表
     otaList: [],
-
     isOperating: false, // 防重复点击
     clink: 'http://192.168.10.100:8689/'
   },

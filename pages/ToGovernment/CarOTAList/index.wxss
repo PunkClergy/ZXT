@@ -1,0 +1,102 @@
+page {
+	background-color: #f5f7fa;
+  }
+  .container {
+	padding: 0 22rpx;
+	box-sizing: border-box;
+  }
+  
+  .page-header {
+	margin: 28rpx 0;
+  }
+  .main-title {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #333;
+  }
+  .sub-title {
+	font-size: 24rpx;
+	color: #999;
+	margin-top: 8rpx;
+	display: block;
+  }
+  
+  .car-scroll {
+	height: calc(100vh - 160rpx);
+  }
+  
+  .car-card {
+	background: #fff;
+	border-radius: 16rpx;
+	padding: 28rpx;
+	margin-bottom: 16rpx;
+	box-shadow: 0 1rpx 6rpx rgba(0,0,0,0.04);
+  }
+  
+  .car-info-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20rpx;
+  }
+  .car-info {
+	display: flex;
+	flex-direction: column;
+	gap: 6rpx;
+  }
+  .car-name {
+	font-size: 30rpx;
+	font-weight: 500;
+	color: #333;
+  }
+  .car-plate {
+	font-size: 22rpx;
+	color: #888;
+  }
+  
+  /* 全部OTA按钮 */
+  .all-ota-btn {
+	width: 140rpx;
+	height: 54rpx;
+	border-radius: 27rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 23rpx;
+	color: #fff;
+  }
+  .all-ota-btn.on {
+	background-color: #07c160;
+  }
+  .all-ota-btn.off {
+	background-color: #c8c9cc;
+  }
+  
+  /* OTA  youhua */
+  .ota-switch-group {
+	display: flex;
+	flex-direction: column;
+	gap: 12rpx;
+	padding-top: 10rpx;
+  }
+  .ota-switch-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+  }
+  .ota-name {
+	font-size: 24rpx;
+	color: #666;
+  }
+  
+  /* 超小开关 */
+  switch {
+	transform: scale(0.65);
+  }
+  
+  .empty {
+	text-align: center;
+	padding: 80rpx 0;
+	color: #999;
+	font-size: 24rpx;
+  }
