@@ -166,7 +166,8 @@
         "returnRec/index",
         "FenceAlarm/index",
         "OTA/index",
-        "CarOTAList/index"
+        "CarOTAList/index",
+        "OTAShareRecords/index"
       ]
     }
   ],

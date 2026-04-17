@@ -1,0 +1,95 @@
+page {
+	background: #f5f7fa;
+}
+
+.container {
+	padding: 0 24rpx;
+}
+
+/* 头部 */
+.page-header {
+	margin: 32rpx 0;
+}
+
+.title {
+	font-size: 38rpx;
+	font-weight: 600;
+	color: #222;
+}
+
+.tip {
+	font-size: 24rpx;
+	color: #999;
+	margin-top: 8rpx;
+	display: block;
+}
+
+.record-scroll {
+	height: calc(100vh - 160rpx);
+}
+
+/* 记录卡片 */
+.record-item {
+	margin-bottom: 20rpx;
+}
+
+.record-box {
+	border-radius: 16rpx;
+	padding: 28rpx;
+	background: #fff;
+	box-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.04);
+}
+
+/* 共享类型 */
+.share-tag {
+	/* background: #07c160; */
+	color: #333;
+	font-weight: bold;
+}
+
+/* 控制类型 */
+.control-tag {
+	/* background: #3B82F6; */
+	color: #333;
+	font-weight: bold;
+}
+
+.tag {
+	/* color: #fff; */
+	font-size: 24rpx;
+	padding: 0rpx 0rpx;
+	border-radius: 50rpx;
+	margin-bottom: 20rpx;
+	display: inline-block;
+}
+
+.info-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12rpx;
+}
+
+.info-row {
+	font-size: 25rpx;
+	color: #333;
+}
+
+.time-row {
+	color: #999;
+	margin-top: 8rpx;
+}
+
+.empty {
+	text-align: center;
+	padding: 100rpx 0;
+	font-size: 26rpx;
+	color: #999;
+}
+
+/* 加载更多 */
+.loading, .no-more {
+	text-align: center;
+	padding: 30rpx 0;
+	font-size: 26rpx;
+	color: #999;
+}

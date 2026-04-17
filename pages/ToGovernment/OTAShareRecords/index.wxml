@@ -1,0 +1,65 @@
+<view class="container">
+	<!-- 头部 -->
+	<view class="page-header">
+		<text class="title">全部操作记录</text>
+		<text class="tip">OTA共享、车辆控制记录</text>
+	</view>
+
+	<!-- 增加 scrolltolower 触底加载 -->
+	<scroll-view class="record-scroll" scroll-y bindscrolltolower="loadMore">
+		<view class="record-item" wx:for="{{recordList}}" wx:key="id">
+			<!-- OTA 共享类型 → 绿色系 -->
+			<view wx:if="{{item.type == 1}}" class="record-box share-box">
+				<view class="tag share-tag">OTA 共享操作</view>
+				<view class="info-list">
+					<view class="info-row">
+						<text>车辆：{{item.platenumber||'-'}}</text>
+					</view>
+					<view class="info-row">
+						<text>OTA平台:{{item.otaname}}</text>
+					</view>
+					<view class="info-row">
+						<text>操作：{{item.operate}}</text>
+					</view>
+					<view class="info-row">
+						<text>操作人：{{item.createuserName}}</text>
+					</view>
+					<view class="info-row time-row">
+						<text>操作时间：{{item.createdate}}</text>
+					</view>
+				</view>
+			</view>
+
+			<!-- 车辆控制类型 → 蓝色系 -->
+			<view wx:if="{{item.type == 2}}" class="record-box control-box">
+				<view class="tag control-tag">车辆控制操作</view>
+				<view class="info-list">
+					<view class="info-row">
+						<text>车辆：{{item.platenumber||'-'}}</text>
+					</view>
+					<view class="info-row">
+						<text>操作：{{item.operate}}</text>
+					</view>
+					<view class="info-row">
+						<text>操作人：{{item.createuserName}}</text>
+					</view>
+					<view class="info-row time-row">
+						<text>操作时间：{{item.createdate}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<!-- 加载中提示 -->
+		<view class="loading" wx:if="{{loading && recordList.length > 0}}">
+			<text>加载中...</text>
+		</view>
+		<!-- 没有更多数据 -->
+		<view class="no-more" wx:if="{{noMore}}">
+			<text>已加载全部数据</text>
+		</view>
+
+		<!-- 空状态 -->
+		<view class="empty" wx:if="{{recordList.length === 0 && !loading}}">暂无操作记录</view>
+	</scroll-view>
+</view>
