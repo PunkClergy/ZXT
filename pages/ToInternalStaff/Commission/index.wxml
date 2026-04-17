@@ -26,7 +26,7 @@
     <text>MCCK设备</text>
     <text class="num">{{deviceCountTotal}}台</text>
     <text>失联保障</text>
-    <text class="num">{{shutInsuranceCountTatol}}单</text>
+    <text class="num">{{loseInsuranceCountTatol}}单</text>
     <text>停运无忧</text>
     <text class="num">{{shutInsuranceCountTotal}}单</text>
   </view>
@@ -36,9 +36,9 @@
     <text>MCCK佣金</text>
     <text class="num">￥{{deviceAmountTatol}}</text>
     <text>失联佣金</text>
-    <text class="num">￥{{shutInsuranceAmountTatol}}</text>
+    <text class="num">￥{{loseCommissionTatol}}</text>
     <text>停运佣金</text>
-    <text class="num">￥{{shutInsuranceAmountTatol}}</text>
+    <text class="num">￥{{shutCommissionTatol}}</text>
   </view>
 </view>
 
@@ -90,11 +90,11 @@
       <view class="item-row">
         <view class="item-col">
           <text class="label">MCCK设备台数：</text>
-          <text class="content">{{item.loseInsuranceCount||''}}</text>
+          <text class="content">{{item.deviceCount||0}}</text>
         </view>
         <view class="item-col">
           <text class="label">MCCK设备返佣：</text>
-          <text class="content">{{item.loseCommission}}</text>
+          <text class="content">{{item.deviceCommission||0}}</text>
         </view>
       </view>
     </view>

@@ -30,11 +30,11 @@ Page({
     currentPdfPath: '',
     deviceCountTotal: 0, //设备单数
     shutInsuranceCountTotal: 0, //停运险
-    shutInsuranceCountTatol: 0, //失联险
+    loseInsuranceCountTatol: 0, //失联险
     sumCommissionTatol: 0, //佣金合计
     deviceAmountTatol: 0,//设备金额
-    shutInsuranceAmountTatol: 0,//停运险金额
-    loseInsuranceAmountTatol: 0,//失联险金额
+    shutCommissionTatol: 0,//停运险金额
+    loseCommissionTatol: 0,//失联险金额
   },
 
   /**
@@ -89,22 +89,22 @@ Page({
    
         const deviceCountTotal = this.getTotal(list, 'deviceCount');
         const shutInsuranceCountTotal = this.getTotal(list, 'shutInsuranceCount');
-        const shutInsuranceCountTatol = this.getTotal(list, 'shutInsuranceCount');
+        const loseInsuranceCountTatol = this.getTotal(list, 'loseInsuranceCount');
         const sumCommissionTatol = this.getTotal(list, 'sumCommission');
         const deviceAmountTotal = this.getTotal(list, 'deviceAmount');
-        const shutInsuranceAmountTatol = this.getTotal(list, 'shutInsuranceAmount');
-        const loseInsuranceAmountTatol = this.getTotal(list, 'loseInsuranceAmount');
+        const shutCommissionTatol = this.getTotal(list, 'shutCommission');
+        const loseCommissionTatol = this.getTotal(list, 'loseCommission');
 
         this.setData({
           list,
           g_total: total.toLocaleString(),
           deviceCountTotal,
           shutInsuranceCountTotal,
-          shutInsuranceCountTatol,
+          loseInsuranceCountTatol,
           sumCommissionTatol,
           deviceAmountTotal,
-          shutInsuranceAmountTatol,
-          loseInsuranceAmountTatol
+          shutCommissionTatol,
+          loseCommissionTatol
         });
       } else {
         showToast('请求失败，请稍后再试');
