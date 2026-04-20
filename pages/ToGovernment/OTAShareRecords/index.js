@@ -9,7 +9,7 @@ Page({
   data: {
     recordList: [],
     loading: false,
-    clink: 'http://192.168.10.100:8689/',
+    clink: 'https://k1sw.wiselink.net.cn/',
     // 分页参数
     page: 1, // 页码（后端一般从0或1开始，这里默认0）
     size: 10, // 每页20条

@@ -12,7 +12,7 @@ Page({
   data: {
     carList: [],
     isOperating: false,
-    clink: 'http://192.168.10.100:8689/',
+    clink: 'https://k1sw.wiselink.net.cn/',
     loading: false
   },
 
