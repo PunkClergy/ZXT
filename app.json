@@ -146,7 +146,6 @@
       "root": "pages/ToInternalStaff",
       "name": "ToInternalStaff",
       "pages": [
-        "ChannelAgreement/index",
         "CustomerReporting/index",
         "CustomerReporting/scanCodeAdd/index",
         "Communicate/index",
