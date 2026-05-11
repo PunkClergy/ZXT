@@ -55,6 +55,14 @@ const u_getnotice = {
 const u_getHomeArea = {
   URL: 'deskapi/homeArea',
 }
+// 首页专区现实所有专区
+const u_leveOneMenu = {
+  URL: 'deskapi/leveOneMenu',
+}
+// 自定义改变专区数量现实
+const u_setHomeMenu = {
+  URL: 'deskapi/setHomeMenu',
+}
 // 底部导航目录
 const u_navlist20 = {
   URL: 'deskapi/navlist20',
@@ -111,6 +119,8 @@ const u_booklist = {
   URL: "deskapi/booklist",
 }
 module.exports = {
+  u_setHomeMenu,
+  u_leveOneMenu,
   u_bannerlist20,
   u_getnotice,
   u_getposter,

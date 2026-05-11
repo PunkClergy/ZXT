@@ -8,7 +8,8 @@ const {
   u_getposter,
   u_getnotice,
   u_termialList,
-
+  u_leveOneMenu,
+  u_setHomeMenu,
   u_bindChannelinfo,
   u_channelInfo,
   u_confirmBindChannel,
@@ -30,6 +31,7 @@ Page({
     currentTab: 0,
     // 原始链接
     c_link: 'https://k1sw.wiselink.net.cn/',
+    // c_link:'http://192.168.10.100:8689/',
     // 头部轮播图数据
     g_banner_image: [],
     // 头部轮播图动态高度
@@ -64,7 +66,66 @@ Page({
     // 日志弹窗是否显示
     JournalFlag: false,
     // 版本号
-    version: 'v2026011401'
+    version: 'v2026011401',
+    // 复选框列表数据（可自己改）
+    regionList: [],
+    selectedIds: [], // 选中的ID数组
+    regionShow: false
+  },
+  async handleShowPopupRegion() {
+    if (!isLogin()) {
+      wx.showToast({
+        title: '请登录后再试',
+        icon: 'none'
+      })
+      return
+    }
+    const {
+      statusCode,
+      data: {
+        content = []
+      } = {}
+    } = await byGet(`${this.data.c_link}${u_leveOneMenu.URL}`, {});
+    if (statusCode !== 200 || !content.length) return;
+    const checkedIds = content.filter(item => item.checked).map(item => item.id);
+    this.setData({
+      regionShow: true,
+      selectedIds: checkedIds,
+      regionList: content
+    })
+  },
+  handleHidePopup() {
+    this.setData({
+      regionShow: false
+    }, () => {
+      this.initZoneInfo()
+    })
+  },
+  // 复选框选择变化
+  handleOnCheckboxChange(e) {
+    this.setData({
+      selectedIds: e.detail.value
+    });
+  },
+
+  // 确定选择
+  handleOnConfirm() {
+    const {
+      selectedIds
+    } = this.data;
+
+    byPost(this.data.c_link + u_setHomeMenu.URL, {
+      menuIds: selectedIds
+    }, (res_bid) => {
+      console.log(res_bid, '2222')
+      if (res_bid?.data?.code == 1000) {
+        wx.showToast({
+          title: res_bid?.data.msg,
+          icon: 'none'
+        })
+        this.handleHidePopup()
+      }
+    });
   },
   handleInvite() {
     if (!isLogin()) return
@@ -652,9 +713,10 @@ Page({
           JournalFlag: false
         })
       }
-    });
+    });   
   },
   onShow() {
+    getApp().data.funAreaId = '';
     this.heartbeatDetection();
     // 更新日志是否显示
     this.handleVersion()

@@ -19,7 +19,7 @@
                 </view>
 
                 <view class="left-model" wx:if="{{!item.bluetoothKey}}">
-                  {{item.vehicleSerialName||'-'}}{{item.vehicleModeName||''}}111
+                  {{item.vehicleSerialName||'-'}}{{item.vehicleModeName||''}}
                 </view>
               </view>
             </view>

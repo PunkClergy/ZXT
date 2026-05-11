@@ -47,8 +47,10 @@
         <image src="/assets/images/index/useGuideIcon.png" />
         <text>功能专区</text>
       </view>
-      <view wx:if="{{longPress}}" bindtap="handleCancelSettings" style="font-size: 28rpx;color: cornflowerblue;">取消</view>
-      <view wx:else bindtap="handleLongPress" style="font-size: 28rpx;color: cornflowerblue;">设置</view>
+      <!-- 暂时注释下面两行代码 20260428 -->
+      <!-- <view wx:if="{{longPress}}" bindtap="handleCancelSettings" style="font-size: 28rpx;color: cornflowerblue;">取消</view>
+      <view wx:else bindtap="handleLongPress" style="font-size: 28rpx;color: cornflowerblue;">设置</view> -->
+      <view bindtap="handleShowPopupRegion" style="font-size: 28rpx;color: cornflowerblue;">更多专区</view>
     </view>
     <!-- 第三块：专区入口区域（一行两列布局） -->
     <view class="special-zone">
@@ -86,7 +88,7 @@
   </scroll-view>
 
   <!-- 固定底部导航栏区域：使用tabbar样式，高度自适应 -->
-  <view class="tabbar" style="height: {{tabBarHeight}}px;">
+  <view class="tabbar" style="height: {{tabBarHeight}}px;" wx:if="{{!regionShow}}">
     <view class="tab-item {{currentTab === index ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="handleSwitchTabNavigation" data-index="{{index}}">
       <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.selectedIconPath}}" class="tab-icon" mode="widthFix" wx:if="{{currentTab === index}}" />
       <image src="{{'https://k1sw.wiselink.net.cn/img/' + item.iconPath}}" class="tab-icon" mode="widthFix" wx:else />
@@ -119,7 +121,7 @@
   </view>
 </view>
 <!-- 点击咨询入群 -->
-<view class="float-button">
+<view class="float-button" wx:if="{{!regionShow}}">
   <!-- bindtap="handleShowContact" -->
   <button open-type="contact" show-message-card="{{true}}" send-message-title="我想咨询问题" send-message-path="/pages/index/index" class="hidden-contact-btn" bindcontact="handleContact"></button>
   <image src="https://k1sw.wiselink.net.cn/img/app2.0/desk/consulting.png" />
@@ -136,7 +138,7 @@
     </view>
   </view>
 </view>
-<!-- 更新日志 -->
+<!-- 更新日志弹窗 -->
 <view class="mask-container" wx:if="{{JournalFlag}}" style="display: none;">
   <!-- 更新日志弹窗 -->
   <view class="updateLog">
@@ -165,5 +167,24 @@
         </view>
       </view>
     </view>
+  </view>
+</view>
+
+<!-- 更多选项弹窗 -->
+<view class="mask" wx:if="{{regionShow}}" bindtap="handleHidePopup"></view>
+<view class="popup" wx:if="{{regionShow}}">
+  <view class="popup-title">请选择您想要显示的专区</view>
+  <view class="checkbox-list">
+    <checkbox-group bindchange="handleOnCheckboxChange">
+      <label class="checkbox-item" wx:for="{{regionList}}" wx:key="id">
+        <checkbox value="{{item.id}}" checked="{{item.checked}}" />
+        <text>{{item.name}}</text>
+      </label>
+    </checkbox-group>
+  </view>
+
+  <view class="popup-buttons">
+    <button bindtap="handleHidePopup" class="btn cancel">取消</button>
+    <button bindtap="handleOnConfirm" class="btn confirm">确定</button>
   </view>
 </view>
