@@ -30,9 +30,10 @@
         bindtap="goRecordDetail" data-record="{{item}}"
       >
         <view class="record-left">
-          <text class="record-time">{{item.alarmtime}}</text>
+          <text class="record-time">{{item.platenumber}}【SN:{{item.sn}}】</text>
           <text class="record-desc">⚠️ 疑似拆除</text>
-          <text class="record-vehicle">涉及车辆：{{item.vehicleSerialName}}{{item.vehicleModeName}}（{{item.platenumber}}）</text>
+          <text class="record-vehicle">{{item.vehicleSerialName}}{{item.vehicleModeName}}</text>
+          <text class="record-vehicle">{{item.alarmtime}}</text>
         </view>
         <view class="record-right">
           <button class="nav-btn" size="mini"

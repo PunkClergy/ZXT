@@ -13,7 +13,7 @@
 		</view>
 	</view>
 
-	<!-- 异常记录列表（新增滚动容器） --> 
+	<!-- 异常记录列表（新增滚动容器） -->
 	<view class="record-list-container">
 		<view class="record-list">
 			<view class="list-title">
@@ -27,11 +27,11 @@
 			<!-- 纯异常记录（全部红色样式） -->
 			<view class="record-item" wx:for="{{filteredRecords}}" wx:key="recordId" bindtap="goRecordDetail" data-record="{{item}}">
 				<view class="record-left">
-					<text>{{item.efencename}}</text>
-					<text class="record-time">{{item.alarmtime}}</text>
+					<text class="record-time">{{item.platenumber}}【SN:{{item.sn}}】</text>
 					<text class="record-desc">⚠️ {{item.efencestateName}}</text>
-					<text class="record-vehicle">涉及车辆：{{item.vehicleSerialName}}{{item.vehicleModeName}}（{{item.platenumber}}）</text>
-				</view> 
+					<text class="record-vehicle">{{item.vehicleSerialName}}{{item.vehicleModeName}}</text>
+					<text class="record-vehicle">{{item.alarmtime}}</text>
+				</view>
 				<view class="record-right">
 					<button class="nav-btn" size="mini" bindtap="handleNavToRecord" data-record="{{item}}" catchtap>
 						导航到位置
