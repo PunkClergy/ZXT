@@ -44,6 +44,7 @@
       <view class="special-zone" wx:for="{{groupedZoneList}}" wx:key="serial_number" style="--item-count: {{item.list.length}};">
         <view class="zone-item" wx:for="{{item.list}}" wx:for-item="zoneItem" wx:key="index">
           <view class="zone-out" style="background-color: {{zoneItem.bgcolor}};" data-info="{{zoneItem}}" bindtap="handleGetMenuList">
+            <text class="card-tips" wx:if="{{item.unreadNum}}">{{item.unreadNum}}</text>
             <image class="zone-img" src="{{'https://k1sw.wiselink.net.cn/img/' + zoneItem.icon}}" />
             <view class="zone-text-area">
               <view class="zone-name">{{zoneItem.name}}</view>

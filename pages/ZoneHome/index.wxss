@@ -142,6 +142,21 @@
   box-sizing: border-box;
   padding: 0 10rpx; /* 减少内边距，适配小尺寸 */
   border: 1rpx solid #f1f1f1;
+  position: relative;
+}
+
+/* 卡片右上角tips */
+.card-tips {
+  position: absolute;
+  top: 12rpx;
+  right: 16rpx;
+  background-color: #FF3A3A;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 10rpx;
+  border-radius: 8rpx;
+  z-index: 10;
+  line-height: 1.2;
 }
 
 /* 图标：超过3个时缩小尺寸 */
