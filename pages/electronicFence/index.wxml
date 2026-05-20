@@ -12,12 +12,7 @@
     <view class="search-wrapper" wx:if="{{c_activeTab == 1}}">
       <view class="search-box">
         <image src="/assets/images/home/search.png" class="search-icon" />
-        <input 
-          placeholder="请输入围栏名称搜索" 
-          value="{{searchKey}}" 
-          bindinput="onSearchInput"
-          class="search-input"
-        />
+        <input placeholder="请输入围栏名称搜索" value="{{searchKey}}" bindinput="onSearchInput" class="search-input" />
       </view>
     </view>
 
@@ -180,35 +175,35 @@
     <!-- 搜索 -->
     <view class="car-search-wrapper">
       <view class="car-search-box">
-        <image src="/assets/images/home/search.png" class="search-icon"/>
-        <input placeholder="搜索车牌号/设备号" value="{{carSearchKey}}" bindinput="onCarSearchInput"/>
+        <image src="/assets/images/home/search.png" class="search-icon" />
+        <input placeholder="搜索车牌号/设备号" value="{{carSearchKey}}" bindinput="onCarSearchInput" />
       </view>
     </view>
 
     <!-- 全选（修复对齐） -->
     <view class="car-check-all-row">
       <view class="check-all-item">
-        <checkbox checked="{{allCarChecked}}" bindtap="handleCarAllCheck"/>
+        <checkbox checked="{{allCarChecked}}" bindtap="handleCarAllCheck" />
         <text>全选</text>
       </view>
       <text>已选择：{{checkedCarIds.length}} 辆</text>
     </view>
 
     <!-- 车辆列表 -->
-    <scroll-view class="car-list-scroll" scroll-y>
+    <scroll-view class="car-list-scroll" scroll-y style="height: 400rpx;">
       <view class="car-item" wx:for="{{carList}}" wx:key="id">
         <view class="car-item-left">
-          <image src="/assets/images/home/car_icon.png" class="car-icon"/>
+          <image src="/assets/images/home/car_icon.png" class="car-icon" />
           <text class="car-plate">{{item.platenumber}}</text>
         </view>
-        <checkbox data-item="{{item}}" checked="{{item.checked}}" bindtap="handleCarCheckChange"/>
+        <checkbox data-item="{{item}}" checked="{{item.checked}}" bindtap="handleCarCheckChange" />
       </view>
     </scroll-view>
 
     <!-- 底部按钮 -->
     <view class="car-modal-footer">
-      <view class="btn-cancel" bindtap="closeBindCarModal">取消</view>
-      <view class="btn-confirm" bindtap="confirmBindCar">确认绑定</view>
+      <button class="btn-cancel" bindtap="closeBindCarModal">取消</button>
+      <button class="btn-confirm" bindtap="confirmBindCar">确认绑定</button>
     </view>
   </view>
 </view>
