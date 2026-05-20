@@ -70,7 +70,17 @@ Page({
     // 原始省市数据（包含行政区划代码）
     provinceCityData: [],
     province_temp: '',
-    city_temp: ''
+    city_temp: '',
+    searchKey:''
+  },
+  onSearchInput(e) {
+    const searchKey = e.detail.value.trim()
+      this.setData({
+        searchKey:searchKey
+      },()=>{
+        this.initList()
+      })
+
   },
   // 更改围栏半径
   handlePickerChangeRadius(evt) {
@@ -168,7 +178,7 @@ Page({
   },
   // 围栏列表
   initList() {
-    byGet(`${getApp().data.k1swUrl}${u_efenceList.URL}`, { page: this.data.g_page }).then(response => {
+    byGet(`${getApp().data.k1swUrl}${u_efenceList.URL}`, { page: this.data.g_page,efencename:this.data.searchKey }).then(response => {
       if (response.data.code == 1000) {
         this.setData({
           g_items: response.data.content || [],
