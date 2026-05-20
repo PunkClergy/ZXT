@@ -71,35 +71,36 @@ Page({
     city_temp: '',
     searchKey: '',
 
-    // ================== 绑定车辆弹窗新增字段 ==================
+    // 绑定车辆弹窗
     showBindCarModal: false,
     currentFenceId: '',
-    currentFenceVehIds: [], // 已绑定车辆ID
+    currentFenceVehIds: [],
     carList: [],
     carSearchKey: '',
     checkedCarIds: [],
-    allCarChecked: false
+    allCarChecked: false,
+
+    // 【新增】查看已绑定车辆弹窗
+    showViewBoundCarModal: false,
+    currentViewFenceId: '',
+    boundCarList: []
   },
 
-  // ================== 弹窗：打开 / 关闭 ==================
+  // ================== 绑定车辆弹窗 ==================
   openBindCarModal(e) {
     const fenceItem = e.currentTarget.dataset.item
     const fenceId = fenceItem.id
-    
-    // 取出当前围栏已绑定的车辆ID数组
     const boundIds = (fenceItem.vehList || []).map(i => i.cusid || i.id)
-    
     this.setData({
       showBindCarModal: true,
       currentFenceId: fenceId,
-      currentFenceVehIds: boundIds, // 保存已绑定ID
+      currentFenceVehIds: boundIds,
       carSearchKey: '',
       checkedCarIds: []
     }, () => {
       this.loadCarList()
     })
   },
-
   closeBindCarModal() {
     this.setData({
       showBindCarModal: false,
@@ -107,8 +108,6 @@ Page({
       checkedCarIds: []
     })
   },
-
-  // ================== 加载车辆列表 ==================
   loadCarList() {
     showLoading()
     byGet(getApp().data.k1swUrl + u_carList.URL, {
@@ -120,16 +119,12 @@ Page({
       if (res.data.code === 1000) {
         let list = res.data.content || []
         const { currentFenceVehIds } = this.data
-        
-        // 自动勾选已绑定车辆
         list = list.map(i => ({
           ...i,
           checked: currentFenceVehIds.includes(i.id)
         }))
-        
         const ids = list.filter(i => i.checked).map(i => i.id)
         const allChecked = list.length > 0 && list.every(i => i.checked)
-        
         this.setData({
           carList: list,
           checkedCarIds: ids,
@@ -140,50 +135,37 @@ Page({
       hideLoading()
     })
   },
-
-  // ================== 车辆搜索 ==================
   onCarSearchInput(e) {
     this.setData({ carSearchKey: e.detail.value }, () => {
       this.loadCarList()
     })
   },
-
-  // ================== 单选 ==================
   handleCarCheckChange(e) {
     const item = e.currentTarget.dataset.item
     const { carList } = this.data
-    
     const newList = carList.map(i => {
       if (i.id === item.id) i.checked = !i.checked
       return i
     })
-    
     const ids = newList.filter(i => i.checked).map(i => i.id)
     const allChecked = newList.length > 0 && newList.every(i => i.checked)
-    
     this.setData({
       carList: newList,
       checkedCarIds: ids,
       allCarChecked: allChecked
     })
   },
-
-  // ================== 全选 ==================
   handleCarAllCheck() {
     const { carList, allCarChecked } = this.data
     const target = !allCarChecked
-    
     const newList = carList.map(i => ({ ...i, checked: target }))
     const ids = target ? newList.map(i => i.id) : []
-    
     this.setData({
       carList: newList,
       checkedCarIds: ids,
       allCarChecked: target
     })
   },
-
-  // ================== 确认绑定 ==================
   confirmBindCar() {
     const { currentFenceId, checkedCarIds } = this.data
     if (checkedCarIds.length === 0) {
@@ -191,12 +173,10 @@ Page({
       return
     }
     showLoading()
-    
     let param = {
       eid: currentFenceId,
       vehIds: checkedCarIds.join(',')
     }
-  
     byPost(`${getApp().data.k1swUrl}${u_efenceBindVeh.URL}`, param, (response) => {
       hideLoading()
       if (response.data.code == 1000) {
@@ -209,14 +189,55 @@ Page({
     });
   },
 
-  // ================== 以下是你原有方法，全部保留 ==================
+  // ================== 【新增】查看已绑定车辆弹窗 ==================
+  openViewBoundCarModal(e) {
+    const item = e.currentTarget.dataset.item
+    this.setData({
+      showViewBoundCarModal: true,
+      currentViewFenceId: item.id,
+      boundCarList: item.vehList || []
+    })
+  },
+  closeViewBoundCarModal() {
+    this.setData({
+      showViewBoundCarModal: false,
+      boundCarList: []
+    })
+  },
+  unbindSingleFromViewModal(e) {
+    const car = e.currentTarget.dataset.item
+    const fenceId = e.currentTarget.dataset.fenceid
+    wx.showModal({
+      title: '提示',
+      content: '确定要解绑该车辆吗？',
+      success: (res) => {
+        if (res.confirm) {
+          showLoading()
+          byPost(`${getApp().data.k1swUrl}${u_efenceUnbindVeh.URL}`, {
+            eid: fenceId,
+            vehIds: car.cusid || car.id
+          }, (resp) => {
+            hideLoading()
+            if (resp.data.code == 1000) {
+              showToast('解绑成功')
+              this._refreshList()
+              this.closeViewBoundCarModal()
+            } else {
+              showToast(resp.data.msg || '解绑失败')
+            }
+          })
+        }
+      }
+    })
+  },
+
+  // ================== 原有方法 ==================
   onSearchInput(e) {
     const searchKey = e.detail.value.trim()
     this.setData({ searchKey }, () => {
       this.initList()
     })
   },
-
   handlePickerChangeRadius(evt) {
     this.setData({
       radius_array_index: evt.detail.value,
@@ -227,19 +248,11 @@ Page({
       }
     })
   },
-
   handleMapType(evt) {
     const map_type = evt?.currentTarget?.dataset?.item
     this.setData({ map_type })
   },
-
   handleCurrentDate() {
-    const formatDate = (date) => {
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
-    };
     const formatTime = (date) => {
       const hours = date.getHours();
       const minutes = date.getMinutes();
@@ -249,13 +262,11 @@ Page({
     const currentTime = formatTime(now);
     this.setData({ startdate: currentTime, enddate: currentTime });
   },
-
   bindTimeChange(evt) {
     const category = evt.currentTarget.dataset.index
     const value = evt.detail.value
     this.setData({ [category]: value })
   },
-
   initialiImageBaseConversion() {
     const _this = this;
     const imageMap = [
@@ -281,7 +292,6 @@ Page({
       _this.setData(dataToUpdate);
     });
   },
-
   initList() {
     byGet(`${getApp().data.k1swUrl}${u_efenceList.URL}`, {
       page: this.data.g_page,
@@ -295,18 +305,15 @@ Page({
       }
     })
   },
-
   handleBindinput(evt) {
     const { params } = this.data
     params[evt.currentTarget.dataset.item] = evt.detail.value
     this.setData({ params: { ...params } })
   },
-
   handleBatterylift(evt) {
     const batterylift = evt.currentTarget.dataset.item
     this.setData({ batterylift })
   },
-
   handleSwitchChange(evt) {
     const id = evt?.currentTarget?.dataset?.item?.id
     const isenable = evt?.currentTarget?.dataset?.item?.isenable
@@ -323,7 +330,6 @@ Page({
       this.setData({ g_items: [], g_page: 1 }, () => { this.initList() })
     });
   },
-
   handleSubmit() {
     const { params, id, startdate, enddate, batterylift } = this.data;
     wx.showLoading({ title: '提交中...', mask: true });
@@ -345,14 +351,12 @@ Page({
       }
     );
   },
-
   handleEdit(evt) {
     const info = evt.currentTarget.dataset.item
     this.setData({
       c_activeTab: 2, id: info?.id, params: info, startdate: info?.startdate, enddate: info?.enddate, batterylift: info?.alarmtype
     })
   },
-
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
     if (flag == '围栏列表') {
@@ -366,7 +370,6 @@ Page({
       }
     }
   },
-
   handleDelete(evt) {
     const id = evt?.currentTarget.dataset.id
     const params = { eid: id }
@@ -380,7 +383,6 @@ Page({
       }
     );
   },
-
   handleUnbind(evt, isUnbindAll = false) {
     const item = evt?.currentTarget.dataset?.item;
     const params = { eid: item?.id };
@@ -390,11 +392,9 @@ Page({
     }
     this._sendUnbindRequest(params);
   },
-
   handleUnbindAll(evt) {
     this.handleUnbind(evt, true);
   },
-
   _sendUnbindRequest(params) {
     const url = `${getApp().data.k1swUrl}${u_efenceUnbindVeh.URL}`;
     showLoading();
@@ -413,11 +413,9 @@ Page({
       showToast('提交失败，请稍后重试');
     });
   },
-
   _refreshList() {
     this.setData({ g_page: 1, g_items: [] }, () => { this.initList(); });
   },
-
   getLocation() {
     wx.getLocation({
       type: 'gcj02',
@@ -427,17 +425,14 @@ Page({
       fail: () => { wx.showToast({ title: '获取位置失败', icon: 'none' }); }
     });
   },
-
   handleClear() {
     this.updatePolygon([]);
   },
-
   updatePolygon(points) {
     this.setData({
       polygons: [{ points, strokeWidth: 3, strokeColor: '#FF0000FF', fillColor: '#FF000033' }]
     });
   },
-
   handleSumit() {
     const { map_type } = this.data;
     let pointsData;
@@ -476,18 +471,15 @@ Page({
       }
     );
   },
-
   updateListState() {
     this.setData({ add_type: 1, c_activeTab: 1, g_items: [], g_page: 1 }, this.initList);
   },
-
   handleSelectJump(evt) {
     let temp = { id: evt?.currentTarget?.dataset?.item?.id }
     wx.navigateTo({
       url: `/pages/carManager/carList/carList?source=/pages/electronicFence/index&flagMulti=1&info=${JSON.stringify(temp)}`
     })
   },
-
   initCarryParams(evt) {
     if (evt?.info && evt?.black) {
       let param = {
@@ -506,12 +498,10 @@ Page({
       this.initList()
     }
   },
-
   handleMapTap(e) {
     const { latitude, longitude } = e.detail;
     this.setData({ latitude, longitude }, () => { this.initCircle(); });
   },
-
   initCircle() {
     const circle = {
       latitude: this.data.latitude,
@@ -523,7 +513,6 @@ Page({
     };
     this.setData({ circles: [circle] });
   },
-
   onLoad(options) {
     this.setData({ provinceCityData: provinceOptionList }, () => {
       this.initPickerData();
@@ -531,18 +520,15 @@ Page({
     this.initCarryParams(options)
     this.getLocation();
   },
-
   onShow() {
     this.initialiImageBaseConversion()
     this.handleCurrentDate()
   },
-
   initPickerData() {
     const provinceNames = this.data.provinceCityData.map(item => item.name);
     const firstCityNames = this.data.provinceCityData[0].cities.map(item => item.name);
     this.setData({ multiArray: [provinceNames, firstCityNames] });
   },
-
   bindMultiPickerColumnChange(e) {
     const columnIndex = e.detail.column;
     const rowIndex = e.detail.value;
@@ -562,7 +548,6 @@ Page({
       this.setData({ multiIndex: newMultiIndex, selectedCode: currentCity.code });
     }
   },
-
   bindMultiPickerChange(e) {
     const [provinceIdx, cityIdx] = e.detail.value;
     const { multiArray, provinceCityData } = this.data;
@@ -578,7 +563,6 @@ Page({
     });
     this.handleRetrievePoint(selectedCode);
   },
-
   convertTencentPolygonToPoints(polygonData) {
     let rawPolygon = [];
     if (Array.isArray(polygonData)) {
@@ -609,7 +593,6 @@ Page({
     }
     return allPoints;
   },
-
   handleRetrievePoint(evt) {
     wx.request({
       url: 'https://apis.map.qq.com/ws/district/v1/search',

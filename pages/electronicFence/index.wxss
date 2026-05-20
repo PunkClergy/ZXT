@@ -30,8 +30,6 @@
   color: #f1f1f1;
 }
 
-
-
 .container {
   height: 100vh;
   padding: 10rpx 4rpx;
@@ -156,10 +154,7 @@
 
 .long-info-item {
   flex-basis: 100% !important;
-  /* 长内容时占满整行 */
 }
-
-/* alarm-add.wxss （保持相同） */
 
 .form-item {
   margin-bottom: 10rpx;
@@ -228,7 +223,6 @@
   position: relative;
 }
 
-/* 主要内容容器 */
 .content-container {
   background-color: #fff;
   position: absolute;
@@ -240,7 +234,6 @@
   border-radius: 10rpx;
   display: flex;
   flex-direction: column;
-  /* 子元素垂直排列 */
 }
 
 .card-head {
@@ -359,10 +352,8 @@
 }
 
 .card-footer {
-  /* position: absolute; */
   text-align: center;
   margin: 20rpx 0;
-  /* bottom: 120rpx; */
   width: 100%;
   display: flex;
   justify-content: center;
@@ -381,7 +372,6 @@
   border-radius: 36rpx;
 }
 
-/* index.wxss */
 .tree-container {
   padding: 0rpx;
 }
@@ -480,7 +470,6 @@
   color: #FFFFFF;
 }
 
-/* 弹窗蒙版 */
 .modal-mask {
   position: fixed;
   top: 0;
@@ -788,7 +777,6 @@ button {
   line-height: 1.8;
 }
 
-/* 地图 */
 .map-container-bar {
   width: 100%;
   height: 100rpx;
@@ -829,7 +817,7 @@ button {
   border-radius: 10rpx;
   color: #fff;
 }
-/* 搜索框样式 */
+
 .search-wrapper {
   padding: 20rpx 24rpx;
   background: #fff;
@@ -856,7 +844,7 @@ button {
   font-size: 26rpx;
   color: #333;
 }
-/* ================== 绑定车辆弹窗样式（优化版） ================== */
+
 .car-modal-mask {
   position: fixed;
   top: 0;
@@ -879,7 +867,7 @@ button {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 10rpx 30rpx rgba(0,0,0,0.2);
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.2);
 }
 
 .car-modal-header {
@@ -899,11 +887,11 @@ button {
   line-height: 1;
 }
 
-/* 搜索栏 */
 .car-search-wrapper {
   padding: 20rpx 24rpx;
   background: #fafbfc;
 }
+
 .car-search-box {
   display: flex;
   align-items: center;
@@ -913,18 +901,19 @@ button {
   border: 1rpx solid #eee;
   border-radius: 36rpx;
 }
+
 .car-search-box .search-icon {
   width: 28rpx;
   height: 28rpx;
   margin-right: 16rpx;
 }
+
 .car-search-box input {
   flex: 1;
   font-size: 26rpx;
   color: #333;
 }
 
-/* 全选行（修复对齐） */
 .car-check-all-row {
   display: flex;
   align-items: center;
@@ -934,52 +923,60 @@ button {
   color: #333;
   border-bottom: 1rpx solid #f0f0f0;
 }
+
 .check-all-item {
   display: flex;
   align-items: center;
   gap: 12rpx;
 }
+
 .check-all-item checkbox {
   transform: scale(0.9);
 }
 
-/* 车辆列表 */
 .car-list-scroll {
   flex: 1;
   padding: 0 24rpx;
   width: 96%;
 }
+
 .car-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 28rpx 0;
+  padding: 20rpx 0;
+  width: 90%;
+  margin: auto;
   border-bottom: 1rpx solid #f7f7f7;
 }
+
 .car-item-left {
   display: flex;
   align-items: center;
   gap: 20rpx;
 }
+
 .car-icon {
   width: 40rpx;
   height: 36rpx;
 }
+
 .car-plate {
   font-size: 28rpx;
   font-weight: 500;
   color: #222;
 }
+
 .car-item checkbox {
   transform: scale(0.9);
 }
 
-/* 底部按钮 */
 .car-modal-footer {
   display: flex;
   height: 96rpx;
   border-top: 1rpx solid #eee;
 }
+
 .car-modal-footer .btn-cancel {
   flex: 1;
   display: flex;
@@ -989,6 +986,7 @@ button {
   color: #666;
   background: #f8f9fa;
 }
+
 .car-modal-footer .btn-confirm {
   flex: 1;
   display: flex;
