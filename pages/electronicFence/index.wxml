@@ -29,7 +29,7 @@
             <view class="content-item-head">
               <view class="head-left">
                 <view class="left-category">
-                  <text>{{item.efencename}}<text style="font-size: 22rpx;padding: 4rpx; border-radius: 6rpx;background: #f0f0f0; color: #575656;margin-left: 20rpx;" wx:if="{{item.acquiescent}}">超级管理员</text></text>
+                  <text>{{item.efencename}}<text style="font-size: 22rpx;padding: 4rpx; border-radius: 6rpx;background: #f0f0f0; color: #575656;margin-left: 20rpx;" wx:if="{{item.province}}">{{item.province}}·{{item.city}}</text></text>
                 </view>
               </view>
               <view class="head-right">
@@ -66,7 +66,8 @@
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSwitchChange">
                   <text>{{item.isenable == 1?'停用':'启用'}}</text>
                 </view>
-                <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump">
+                <!-- 绑定车辆 → 点击弹出弹窗 -->
+                <view class="footer-right-btn" data-item="{{item}}" bindtap="openBindCarModal">
                   <text>绑定车辆</text>
                 </view>
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="handleUnbindAll">
@@ -166,5 +167,48 @@
         </block>
       </block>
     </block>
+  </view>
+
+  <!-- ================== 优化后的绑定车辆弹窗 ================== -->
+  <view class="car-modal-mask" wx:if="{{showBindCarModal}}"></view>
+  <view class="car-modal-content" wx:if="{{showBindCarModal}}">
+    <view class="car-modal-header">
+      <text>绑定车辆</text>
+      <view class="car-modal-close" bindtap="closeBindCarModal">×</view>
+    </view>
+
+    <!-- 搜索 -->
+    <view class="car-search-wrapper">
+      <view class="car-search-box">
+        <image src="/assets/images/home/search.png" class="search-icon"/>
+        <input placeholder="搜索车牌号/设备号" value="{{carSearchKey}}" bindinput="onCarSearchInput"/>
+      </view>
+    </view>
+
+    <!-- 全选（修复对齐） -->
+    <view class="car-check-all-row">
+      <view class="check-all-item">
+        <checkbox checked="{{allCarChecked}}" bindtap="handleCarAllCheck"/>
+        <text>全选</text>
+      </view>
+      <text>已选择：{{checkedCarIds.length}} 辆</text>
+    </view>
+
+    <!-- 车辆列表 -->
+    <scroll-view class="car-list-scroll" scroll-y>
+      <view class="car-item" wx:for="{{carList}}" wx:key="id">
+        <view class="car-item-left">
+          <image src="/assets/images/home/car_icon.png" class="car-icon"/>
+          <text class="car-plate">{{item.platenumber}}</text>
+        </view>
+        <checkbox data-item="{{item}}" checked="{{item.checked}}" bindtap="handleCarCheckChange"/>
+      </view>
+    </scroll-view>
+
+    <!-- 底部按钮 -->
+    <view class="car-modal-footer">
+      <view class="btn-cancel" bindtap="closeBindCarModal">取消</view>
+      <view class="btn-confirm" bindtap="confirmBindCar">确认绑定</view>
+    </view>
   </view>
 </view>
