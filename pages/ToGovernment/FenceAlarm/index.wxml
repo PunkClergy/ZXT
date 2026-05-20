@@ -34,7 +34,7 @@
 				</view>
 				<view class="record-right">
 					<button class="nav-btn" size="mini" bindtap="handleNavToRecord" data-record="{{item}}" catchtap>
-						导航到位置
+						查看位置
 					</button>
 				</view>
 			</view>
