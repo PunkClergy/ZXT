@@ -118,7 +118,9 @@ Page({
       hideLoading()
       if (res.data.code === 1000) {
         let list = res.data.content || []
-        const { currentFenceVehIds } = this.data
+        const {
+          currentFenceVehIds
+        } = this.data
         list = list.map(i => ({
           ...i,
           checked: currentFenceVehIds.includes(i.id)
@@ -136,13 +138,17 @@ Page({
     })
   },
   onCarSearchInput(e) {
-    this.setData({ carSearchKey: e.detail.value }, () => {
+    this.setData({
+      carSearchKey: e.detail.value
+    }, () => {
       this.loadCarList()
     })
   },
   handleCarCheckChange(e) {
     const item = e.currentTarget.dataset.item
-    const { carList } = this.data
+    const {
+      carList
+    } = this.data
     const newList = carList.map(i => {
       if (i.id === item.id) i.checked = !i.checked
       return i
@@ -156,9 +162,15 @@ Page({
     })
   },
   handleCarAllCheck() {
-    const { carList, allCarChecked } = this.data
+    const {
+      carList,
+      allCarChecked
+    } = this.data
     const target = !allCarChecked
-    const newList = carList.map(i => ({ ...i, checked: target }))
+    const newList = carList.map(i => ({
+      ...i,
+      checked: target
+    }))
     const ids = target ? newList.map(i => i.id) : []
     this.setData({
       carList: newList,
@@ -167,7 +179,10 @@ Page({
     })
   },
   confirmBindCar() {
-    const { currentFenceId, checkedCarIds } = this.data
+    const {
+      currentFenceId,
+      checkedCarIds
+    } = this.data
     if (checkedCarIds.length === 0) {
       showToast('请选择车辆')
       return
@@ -234,7 +249,9 @@ Page({
   // ================== 原有方法 ==================
   onSearchInput(e) {
     const searchKey = e.detail.value.trim()
-    this.setData({ searchKey }, () => {
+    this.setData({
+      searchKey
+    }, () => {
       this.initList()
     })
   },
@@ -250,7 +267,9 @@ Page({
   },
   handleMapType(evt) {
     const map_type = evt?.currentTarget?.dataset?.item
-    this.setData({ map_type })
+    this.setData({
+      map_type
+    })
   },
   handleCurrentDate() {
     const formatTime = (date) => {
@@ -260,21 +279,40 @@ Page({
     };
     const now = new Date();
     const currentTime = formatTime(now);
-    this.setData({ startdate: currentTime, enddate: currentTime });
+    this.setData({
+      startdate: currentTime,
+      enddate: currentTime
+    });
   },
   bindTimeChange(evt) {
     const category = evt.currentTarget.dataset.index
     const value = evt.detail.value
-    this.setData({ [category]: value })
+    this.setData({
+      [category]: value
+    })
   },
   initialiImageBaseConversion() {
     const _this = this;
-    const imageMap = [
-      { path: '/assets/images/home/car-bg.png', key: 's_background_picture_of_the_front_page' },
-      { path: '/assets/images/home/1-1.png', key: 's_background_tabs_1' },
-      { path: '/assets/images/home/2-1.png', key: 's_background_tabs_active_1' },
-      { path: '/assets/images/home/1-2.png', key: 's_background_tabs_2' },
-      { path: '/assets/images/home/2-2.png', key: 's_background_tabs_active_2' },
+    const imageMap = [{
+        path: '/assets/images/home/car-bg.png',
+        key: 's_background_picture_of_the_front_page'
+      },
+      {
+        path: '/assets/images/home/1-1.png',
+        key: 's_background_tabs_1'
+      },
+      {
+        path: '/assets/images/home/2-1.png',
+        key: 's_background_tabs_active_1'
+      },
+      {
+        path: '/assets/images/home/1-2.png',
+        key: 's_background_tabs_2'
+      },
+      {
+        path: '/assets/images/home/2-2.png',
+        key: 's_background_tabs_active_2'
+      },
     ];
     const promises = imageMap.map(item =>
       new Promise((resolve) => {
@@ -282,13 +320,18 @@ Page({
           filePath: item.path,
           encoding: 'base64',
           success: (res) => {
-            resolve({ [item.key]: `data:image/png;base64,${res.data}` });
+            resolve({
+              [item.key]: `data:image/png;base64,${res.data}`
+            });
           }
         });
       })
     );
     Promise.all(promises).then(results => {
-      const dataToUpdate = results.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+      const dataToUpdate = results.reduce((acc, curr) => ({
+        ...acc,
+        ...curr
+      }), {});
       _this.setData(dataToUpdate);
     });
   },
@@ -306,13 +349,21 @@ Page({
     })
   },
   handleBindinput(evt) {
-    const { params } = this.data
+    const {
+      params
+    } = this.data
     params[evt.currentTarget.dataset.item] = evt.detail.value
-    this.setData({ params: { ...params } })
+    this.setData({
+      params: {
+        ...params
+      }
+    })
   },
   handleBatterylift(evt) {
     const batterylift = evt.currentTarget.dataset.item
-    this.setData({ batterylift })
+    this.setData({
+      batterylift
+    })
   },
   handleSwitchChange(evt) {
     const id = evt?.currentTarget?.dataset?.item?.id
@@ -320,72 +371,136 @@ Page({
     const efencename = evt?.currentTarget?.dataset?.item?.efencename
     byPost(
       `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`, {
-      eid: id, isenable: isenable == 1 ? 0 : 1, efencename
-    }, (response) => {
-      hideLoading();
-      if (response?.data?.code != 1000) {
-        showToast(response?.msg); return;
-      }
-      showToast(response?.data?.msg);
-      this.setData({ g_items: [], g_page: 1 }, () => { this.initList() })
-    });
+        eid: id,
+        isenable: isenable == 1 ? 0 : 1,
+        efencename
+      }, (response) => {
+        hideLoading();
+        if (response?.data?.code != 1000) {
+          showToast(response?.msg);
+          return;
+        }
+        showToast(response?.data?.msg);
+        this.setData({
+          g_items: [],
+          g_page: 1
+        }, () => {
+          this.initList()
+        })
+      });
   },
   handleSubmit() {
-    const { params, id, startdate, enddate, batterylift } = this.data;
-    wx.showLoading({ title: '提交中...', mask: true });
-    const postData = { ...params, eid: id, startdate, enddate, alarmtype: batterylift };
+    const {
+      params,
+      id,
+      startdate,
+      enddate,
+      batterylift
+    } = this.data;
+    wx.showLoading({
+      title: '提交中...',
+      mask: true
+    });
+    const postData = {
+      ...params,
+      eid: id,
+      startdate,
+      enddate,
+      alarmtype: batterylift
+    };
     byPost(
       `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`, postData, (response) => {
         wx.hideLoading();
         if (response?.data?.code !== 1000) {
-          wx.showToast({ title: response?.msg || '操作失败', icon: 'none' });
+          wx.showToast({
+            title: response?.msg || '操作失败',
+            icon: 'none'
+          });
           return;
         }
-        wx.showToast({ title: response.data.msg || '操作成功', icon: 'none' });
+        wx.showToast({
+          title: response.data.msg || '操作成功',
+          icon: 'none'
+        });
         this.setData({
-          add_type: 2, g_items: [], g_page: 1, temp: { ...params, eid: id || response?.data.content?.id, startdate, enddate, alarmtype: batterylift }
+          add_type: 2,
+          g_items: [],
+          g_page: 1,
+          temp: {
+            ...params,
+            eid: id || response?.data.content?.id,
+            startdate,
+            enddate,
+            alarmtype: batterylift
+          }
         }, this.initList);
       }, (error) => {
         wx.hideLoading();
-        wx.showToast({ title: '提交失败，请稍后重试', icon: 'none' });
+        wx.showToast({
+          title: '提交失败，请稍后重试',
+          icon: 'none'
+        });
       }
     );
   },
   handleEdit(evt) {
     const info = evt.currentTarget.dataset.item
     this.setData({
-      c_activeTab: 2, id: info?.id, params: info, startdate: info?.startdate, enddate: info?.enddate, batterylift: info?.alarmtype
+      c_activeTab: 2,
+      id: info?.id,
+      params: info,
+      startdate: info?.startdate,
+      enddate: info?.enddate,
+      batterylift: info?.alarmtype
     })
   },
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
     if (flag == '围栏列表') {
       this.setData({
-        c_activeTab: 1, btnState: '新增', params: {}, id: '', circles: [], polygons: [], add_type: 1
+        c_activeTab: 1,
+        btnState: '新增',
+        params: {},
+        id: '',
+        circles: [],
+        polygons: [],
+        add_type: 1
       })
     }
     if (flag == '新增围栏') {
       if (this.data.c_activeTab != 2) {
-        this.setData({ c_activeTab: 2 })
+        this.setData({
+          c_activeTab: 2
+        })
       }
     }
   },
   handleDelete(evt) {
     const id = evt?.currentTarget.dataset.id
-    const params = { eid: id }
+    const params = {
+      eid: id
+    }
     byPost(
       `${getApp().data.k1swUrl}${u_deleteEfence.URL}`, params, (response) => {
         if (response?.data?.code != 1000) {
-          showToast(response?.msg); return;
+          showToast(response?.msg);
+          return;
         }
         showToast(response?.data?.msg);
-        this.setData({ g_page: 1, g_items: [] }, () => { this.initList() })
+        this.setData({
+          g_page: 1,
+          g_items: []
+        }, () => {
+          this.initList()
+        })
       }
     );
   },
   handleUnbind(evt, isUnbindAll = false) {
     const item = evt?.currentTarget.dataset?.item;
-    const params = { eid: item?.id };
+    const params = {
+      eid: item?.id
+    };
     if (!isUnbindAll) {
       const gitem = evt?.currentTarget.dataset?.gitem;
       params.vehIds = gitem?.cusid;
@@ -414,15 +529,28 @@ Page({
     });
   },
   _refreshList() {
-    this.setData({ g_page: 1, g_items: [] }, () => { this.initList(); });
+    this.setData({
+      g_page: 1,
+      g_items: []
+    }, () => {
+      this.initList();
+    });
   },
   getLocation() {
     wx.getLocation({
       type: 'gcj02',
       success: (res) => {
-        this.setData({ longitude: res.longitude, latitude: res.latitude });
+        this.setData({
+          longitude: res.longitude,
+          latitude: res.latitude
+        });
       },
-      fail: () => { wx.showToast({ title: '获取位置失败', icon: 'none' }); }
+      fail: () => {
+        wx.showToast({
+          title: '获取位置失败',
+          icon: 'none'
+        });
+      }
     });
   },
   handleClear() {
@@ -430,52 +558,80 @@ Page({
   },
   updatePolygon(points) {
     this.setData({
-      polygons: [{ points, strokeWidth: 3, strokeColor: '#FF0000FF', fillColor: '#FF000033' }]
+      polygons: [{
+        points,
+        strokeWidth: 3,
+        strokeColor: '#FF0000FF',
+        fillColor: '#FF000033'
+      }]
     });
   },
   handleSumit() {
-    const { map_type } = this.data;
+    const {
+      map_type
+    } = this.data;
     let pointsData;
     if (map_type === 3) {
       const formatPolygonPoints = (points = []) => {
         if (points.length < 3) return null;
         return points.map(p => `${parseFloat(p.longitude)},${parseFloat(p.latitude)}`).join('|');
       };
-      const { polygons = [] } = this.data;
+      const {
+        polygons = []
+      } = this.data;
       const validPointsList = polygons.map(p => formatPolygonPoints(p?.points)).filter(Boolean);
       pointsData = validPointsList.join('&');
     } else {
       const circles = this.data.circles;
       pointsData = circles.length >= 1 ? `${circles[0].longitude},${circles[0].latitude}|${circles[0].radius}` : null;
     }
-    wx.showLoading({ title: '提交中...', mask: true });
+    wx.showLoading({
+      title: '提交中...',
+      mask: true
+    });
     const requestData = {
       ...this.data.temp,
       efencetype: this.data.map_type,
       efencepoints: pointsData,
-      province: this.data.province_temp || (this.data.multiArray[0]?.[this.data.multiIndex[0]]),
-      city: this.data.city_temp || (this.data.multiArray[1]?.[this.data.multiIndex[1]])
+      province: this.data.map_type == 1 ? '' : this.data.province_temp || (this.data.multiArray[0]?.[this.data.multiIndex[0]]),
+      city: this.data.map_type == 1 ? '' : this.data.city_temp || (this.data.multiArray[1]?.[this.data.multiIndex[1]])
     };
     byPost(
       `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`, requestData, (res) => {
         wx.hideLoading();
         if (res?.data?.code !== 1000) {
-          wx.showToast({ title: res?.msg || '操作失败', icon: 'none' });
+          wx.showToast({
+            title: res?.msg || '操作失败',
+            icon: 'none'
+          });
           return;
         }
-        wx.showToast({ title: res.data.msg || '操作成功', icon: 'none' });
+        wx.showToast({
+          title: res.data.msg || '操作成功',
+          icon: 'none'
+        });
         this.updateListState();
       }, (err) => {
         wx.hideLoading();
-        wx.showToast({ title: '提交失败，请稍后重试', icon: 'none' });
+        wx.showToast({
+          title: '提交失败，请稍后重试',
+          icon: 'none'
+        });
       }
     );
   },
   updateListState() {
-    this.setData({ add_type: 1, c_activeTab: 1, g_items: [], g_page: 1 }, this.initList);
+    this.setData({
+      add_type: 1,
+      c_activeTab: 1,
+      g_items: [],
+      g_page: 1
+    }, this.initList);
   },
   handleSelectJump(evt) {
-    let temp = { id: evt?.currentTarget?.dataset?.item?.id }
+    let temp = {
+      id: evt?.currentTarget?.dataset?.item?.id
+    }
     wx.navigateTo({
       url: `/pages/carManager/carList/carList?source=/pages/electronicFence/index&flagMulti=1&info=${JSON.stringify(temp)}`
     })
@@ -488,7 +644,12 @@ Page({
       }
       byPost(`${getApp().data.k1swUrl}${u_efenceBindVeh.URL}`, param, (response) => {
         if (response.data.code == 1000) {
-          this.setData({ g_items: [], g_page: 1 }, () => { this.initList() })
+          this.setData({
+            g_items: [],
+            g_page: 1
+          }, () => {
+            this.initList()
+          })
           showToast(response.data.msg)
         } else {
           showToast(response.data.msg)
@@ -499,8 +660,16 @@ Page({
     }
   },
   handleMapTap(e) {
-    const { latitude, longitude } = e.detail;
-    this.setData({ latitude, longitude }, () => { this.initCircle(); });
+    const {
+      latitude,
+      longitude
+    } = e.detail;
+    this.setData({
+      latitude,
+      longitude
+    }, () => {
+      this.initCircle();
+    });
   },
   initCircle() {
     const circle = {
@@ -511,10 +680,14 @@ Page({
       strokeWidth: 2,
       strokeColor: '#FF0000FF'
     };
-    this.setData({ circles: [circle] });
+    this.setData({
+      circles: [circle]
+    });
   },
   onLoad(options) {
-    this.setData({ provinceCityData: provinceOptionList }, () => {
+    this.setData({
+      provinceCityData: provinceOptionList
+    }, () => {
       this.initPickerData();
     })
     this.initCarryParams(options)
@@ -527,7 +700,9 @@ Page({
   initPickerData() {
     const provinceNames = this.data.provinceCityData.map(item => item.name);
     const firstCityNames = this.data.provinceCityData[0].cities.map(item => item.name);
-    this.setData({ multiArray: [provinceNames, firstCityNames] });
+    this.setData({
+      multiArray: [provinceNames, firstCityNames]
+    });
   },
   bindMultiPickerColumnChange(e) {
     const columnIndex = e.detail.column;
@@ -545,13 +720,27 @@ Page({
       const currentCity = this.data.provinceCityData[provinceIndex].cities[rowIndex];
       const newMultiIndex = [...this.data.multiIndex];
       newMultiIndex[column] = rowIndex;
-      this.setData({ multiIndex: newMultiIndex, selectedCode: currentCity.code });
+      this.setData({
+        multiIndex: newMultiIndex,
+        selectedCode: currentCity.code
+      });
     }
   },
   bindMultiPickerChange(e) {
     const [provinceIdx, cityIdx] = e.detail.value;
-    const { multiArray, provinceCityData } = this.data;
-    const { code: provinceCode, cities: { [cityIdx]: { code: selectedCode, name: cityName } } } = provinceCityData[provinceIdx];
+    const {
+      multiArray,
+      provinceCityData
+    } = this.data;
+    const {
+      code: provinceCode,
+      cities: {
+        [cityIdx]: {
+          code: selectedCode,
+          name: cityName
+        }
+      }
+    } = provinceCityData[provinceIdx];
     const provinceName = multiArray[0][provinceIdx];
     this.setData({
       province_temp: provinceName,
@@ -580,7 +769,10 @@ Page({
         const longitude = coreCoordinates[i];
         const latitude = coreCoordinates[i + 1];
         if (typeof longitude === 'number' && typeof latitude === 'number') {
-          allPoints.push({ longitude, latitude });
+          allPoints.push({
+            longitude,
+            latitude
+          });
         }
       }
     }
@@ -588,7 +780,10 @@ Page({
       const firstPoint = allPoints[0];
       const lastPoint = allPoints[allPoints.length - 1];
       if (firstPoint.longitude !== lastPoint.longitude || firstPoint.latitude !== lastPoint.latitude) {
-        allPoints.push({ longitude: firstPoint.longitude, latitude: firstPoint.latitude });
+        allPoints.push({
+          longitude: firstPoint.longitude,
+          latitude: firstPoint.latitude
+        });
       }
     }
     return allPoints;
@@ -616,12 +811,18 @@ Page({
             longitude: res?.data?.result?.[0]?.[0]?.location?.lng || this.data.longitude
           });
         } else {
-          wx.showToast({ title: res.data.message, icon: 'none' });
+          wx.showToast({
+            title: res.data.message,
+            icon: 'none'
+          });
         }
       },
       fail: err => {
         console.error('请求失败：', err);
-        wx.showToast({ title: '边界数据获取失败', icon: 'none' });
+        wx.showToast({
+          title: '边界数据获取失败',
+          icon: 'none'
+        });
       }
     });
   },
