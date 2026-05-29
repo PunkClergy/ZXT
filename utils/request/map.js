@@ -50,7 +50,12 @@ const u_getAllCarPoisiton = {
 const u_verifyControlcode = {
   URL: fin3plusUrl + "renterApi/verifyControlcode",
 }
+const u_getBluetoothKey = {
+  URL: fin3plusUrl + "rentKeyApi/getBluetoothKey",
+  
+}
 module.exports = {
+  u_getBluetoothKey,
   u_verifyControlcode,
   u_getCarPoisitonDesk,
   u_getCarStatus,

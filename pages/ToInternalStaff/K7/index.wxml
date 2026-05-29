@@ -1,0 +1,131 @@
+<!-- 页面根容器：设备检测全流程主页面 -->
+<view class="device-check-page">
+  <!-- 内容主体区域：表单 + 上传 + 功能检测 -->
+  <view class="content-wrapper">
+    <!-- 主内容卡片：统一视觉容器 -->
+    <view class="main-content-card">
+
+      <!-- ==================== 1. 设备信息绑定模块 ==================== -->
+      <view class="device-bind-section">
+        <view class="form-item">
+          <text class="form-label">设备号：</text>
+          <input value="{{checkForm.idc}}" class="form-input" placeholder="请输入设备号(SN)" bindinput="inputIdc" />
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">检验码：</text>
+          <input value="{{checkForm.code}}" class="form-input" placeholder="请输入检验码(CODE)" bindinput="inputCode" />
+        </view>
+
+        <!-- 绑定设备按钮：未输入完整/已绑定时禁用 -->
+        <button class="bind-device-btn" disabled="{{!checkForm.idc || !checkForm.code || isDeviceBound}}" bindtap="handleDeviceBind">
+          开始检测
+        </button>
+      </view>
+
+      <!-- 模块分隔线 -->
+      <view class="section-divider"></view>
+
+      <!-- ==================== 2. 现场图片上传模块 ==================== -->
+      <view class="image-upload-section">
+        <view class="upload-title">现场图片上传</view>
+        <view class="upload-tip">
+          请拍照上传：车辆名牌、ACC、常火、打铁、主机及回避器、安装位置（最少4张，可多传）
+        </view>
+
+        <!-- 图片列表滚动容器 -->
+        <scroll-view scroll-y class="upload-scroll-container">
+          <view class="image-list">
+            <!-- 已上传图片 -->
+            <view class="image-item" wx:for="{{selectedImageList}}" wx:key="index">
+              <image src="{{item}}" mode="aspectFill" class="preview-image"></image>
+            </view>
+
+            <!-- 添加图片按钮 -->
+            <view class="add-image-btn" bindtap="handleChooseImage">
+              <text class="add-icon">+</text>
+            </view>
+          </view>
+        </scroll-view>
+
+        <!-- 确认上传按钮 -->
+        <button class="confirm-upload-btn" disabled="{{!isDeviceBound || selectedImageList.length < 4 || isImageUploaded || isUploading}}" bindtap="handleBatchUploadImages">
+          确认上传图片
+        </button>
+      </view>
+
+      <view class="section-divider"></view>
+
+      <!-- ==================== 3. 网络模式功能检测 ==================== -->
+      <view class="network-check-section">
+        <view class="section-title">
+          <text class="title-text {{isNetworkTestFinished ? 'finished' : ''}}">
+            网络模式检测
+          </text>
+        </view>
+
+        <!-- 网络检测操作区 -->
+        <view class="network-test-container" style="pointer-events: {{isNetworkTestFinished ? 'none' : 'auto'}}">
+          <view class="test-header">
+            <text>网络模式操作</text>
+            <text class="finish-tip" wx:if="{{isNetworkTestFinished}}">✅ 已完成</text>
+          </view>
+
+          <view class="test-btn-group">
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="lock">
+              <text>开锁</text>
+              <text class="test-status {{networkTestStatus.lockStatus}}">
+                {{getTestStatusText(networkTestStatus.lockStatus)}}
+              </text>
+            </view>
+
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="unlock">
+              <text>关锁</text>
+              <text class="test-status {{networkTestStatus.unlockStatus}}">
+                {{getTestStatusText(networkTestStatus.unlockStatus)}}
+              </text>
+            </view>
+
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="findCar">
+              <text>寻车</text>
+              <text class="test-status {{networkTestStatus.findCarStatus}}">
+                {{getTestStatusText(networkTestStatus.findCarStatus)}}
+              </text>
+            </view>
+
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="risk">
+              <text>风控拦截</text>
+              <text class="test-status {{networkTestStatus.riskStatus}}">
+                {{getTestStatusText(networkTestStatus.riskStatus)}}
+              </text>
+            </view>
+
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="cancelRisk">
+              <text>取消拦截</text>
+              <text class="test-status {{networkTestStatus.cancelRiskStatus}}">
+                {{getTestStatusText(networkTestStatus.cancelRiskStatus)}}
+              </text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ==================== 实时日志展示模块 ==================== -->
+  <view class="test-log-section">
+    <view class="log-title">测试日志</view>
+    <scroll-view scroll-y class="log-content-container">
+      <view class="log-item" wx:for="{{testLogList}}" wx:key="index">
+        {{item}}
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- ==================== 底部固定提交按钮 ==================== -->
+  <view class="fixed-submit-bar">
+    <button class="submit-check-btn" disabled="{{!canSubmitFinalCheck}}" bindtap="handleSubmitFinalCheck">
+      提交检测
+    </button>
+  </view>
+</view>

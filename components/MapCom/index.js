@@ -281,12 +281,14 @@ Component({
         }));
 
         const processMain = () => {
+          console.log(111)
           if (evt) {
             byPost(
               `${_this.data.c_k1sw_link}${u_getCarPoisiton.URL}`, {
               [u_getCarPoisiton.sn]: evt
             },
               (mainRes) => {
+                console.log(mainRes)
                 if (mainRes?.data.code !== 1000) {
                   return handleError('主车辆数据异常');
                 }
