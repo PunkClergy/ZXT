@@ -142,6 +142,11 @@ page {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: inherit;
+}
+.weidu{
+  font-size: 26rpx;
+  color: #333;
 }
 .nav-btn {
   background: #fa4143; /* 红色导航按钮 */

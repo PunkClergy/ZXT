@@ -288,6 +288,7 @@ Page({
     });
   },
   onShow() {
+    this.initZoneInfo()
     // 获取系统头部各区域高度
     this.initSystemInfo()
     // 获取是否显示温馨提示

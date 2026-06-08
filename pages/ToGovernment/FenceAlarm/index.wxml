@@ -36,6 +36,7 @@
 					<button class="nav-btn" size="mini" bindtap="handleNavToRecord" data-record="{{item}}" catchtap>
 						查看位置
 					</button>
+					<text class="weidu">{{item.state ==1?'已读':'未读'}}</text>
 				</view>
 			</view>
 
