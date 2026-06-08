@@ -165,7 +165,7 @@ Page({
   // 导航到异常记录位置
   handleNavToRecord(e) {
     const record = e.currentTarget.dataset.record;
-    wx.redirectTo({
+    wx.navigateTo({
       url: `/pages/riskControl/GPSPosition/index?datails=${JSON.stringify(record)}`
     })
     return

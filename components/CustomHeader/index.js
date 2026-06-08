@@ -84,15 +84,17 @@ Component({
           delta: 1,
           success: () => { },
           fail: (err) => {
-            wx.switchTab({
-              url: '/pages/index/index'
-            });
+            wx.navigateBack()
+            // wx.switchTab({
+            //   url: '/pages/index/index'
+            // });
           }
         });
       } else {
-        wx.reLaunch({
-          url: '/pages/index/index'
-        });
+        wx.navigateBack()
+        // wx.reLaunch({
+        //   url: '/pages/index/index'
+        // });
       }
     },
 
