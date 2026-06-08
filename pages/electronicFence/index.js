@@ -70,6 +70,8 @@ Page({
     province_temp: '',
     city_temp: '',
     searchKey: '',
+    // 新增：存储行政区轮廓点位字符串
+    areaPointsData: '',
 
     // 绑定车辆弹窗
     showBindCarModal: false,
@@ -80,7 +82,7 @@ Page({
     checkedCarIds: [],
     allCarChecked: false,
 
-    // 【新增】查看已绑定车辆弹窗
+    // 查看已绑定车辆弹窗
     showViewBoundCarModal: false,
     currentViewFenceId: '',
     boundCarList: []
@@ -204,7 +206,7 @@ Page({
     });
   },
 
-  // ================== 【新增】查看已绑定车辆弹窗 ==================
+  // ================== 查看已绑定车辆弹窗 ==================
   openViewBoundCarModal(e) {
     const item = e.currentTarget.dataset.item
     this.setData({
@@ -246,7 +248,7 @@ Page({
     })
   },
 
-  // ================== 原有方法 ==================
+  // ================== 通用基础方法 ==================
   onSearchInput(e) {
     const searchKey = e.detail.value.trim()
     this.setData({
@@ -259,18 +261,25 @@ Page({
     this.setData({
       radius_array_index: evt.detail.value,
       radius: this.data.radius_array[evt.detail.value]
-    }, () => {
-      if (this.data.circles.length > 0) {
-        this.initCircle();
-      }
     })
   },
+
+  // 切换圆形/多边形：清空原有标记点、清空行政区点位
   handleMapType(evt) {
     const map_type = evt?.currentTarget?.dataset?.item
     this.setData({
-      map_type
+      map_type,
+      circles: [],
+      polygons: [{
+        points: [],
+        strokeWidth: 3,
+        strokeColor: '#FF0000FF',
+        fillColor: '#FF000033'
+      }],
+      areaPointsData: ''
     })
   },
+
   handleCurrentDate() {
     const formatTime = (date) => {
       const hours = date.getHours();
@@ -349,14 +358,10 @@ Page({
     })
   },
   handleBindinput(evt) {
-    const {
-      params
-    } = this.data
+    const { params } = this.data
     params[evt.currentTarget.dataset.item] = evt.detail.value
     this.setData({
-      params: {
-        ...params
-      }
+      params: { ...params }
     })
   },
   handleBatterylift(evt) {
@@ -389,13 +394,16 @@ Page({
         })
       });
   },
+
+  // 下一步：efencepoints 空值改为空字符串
   handleSubmit() {
     const {
       params,
       id,
       startdate,
       enddate,
-      batterylift
+      batterylift,
+      map_type
     } = this.data;
     wx.showLoading({
       title: '提交中...',
@@ -431,7 +439,9 @@ Page({
             eid: id || response?.data.content?.id,
             startdate,
             enddate,
-            alarmtype: batterylift
+            alarmtype: batterylift,
+            efencetype: map_type,
+            efencepoints: params.efencepoints || ''
           }
         }, this.initList);
       }, (error) => {
@@ -443,38 +453,91 @@ Page({
       }
     );
   },
+
+  // 编辑按钮：进入表单页，预加载点位
   handleEdit(evt) {
     const info = evt.currentTarget.dataset.item
     this.setData({
       c_activeTab: 2,
+      add_type: 1,
       id: info?.id,
-      params: info,
-      startdate: info?.startdate,
-      enddate: info?.enddate,
-      batterylift: info?.alarmtype
+      params: { ...info },
+      startdate: info?.startdate || '19:00',
+      enddate: info?.enddate || '19:00',
+      batterylift: info?.alarmtype ?? 1,
+      province_temp: info.province || '',
+      city_temp: info.city || '',
+      areaPointsData: ''
     })
+
+    const efenceType = Number(info.efencetype || 1)
+    const pointsStr = info.efencepoints || ''
+    this.setData({ map_type: efenceType })
+
+    if (efenceType === 1 && pointsStr) {
+      const [latLngStr, radiusStr] = pointsStr.split('|')
+      const [lng, lat] = latLngStr.split(',')
+      const radius = Number(radiusStr) || 100
+      const radiusIndex = this.data.radius_array.findIndex(item => item === radius)
+      this.setData({
+        longitude: Number(lng) || 116.4074,
+        latitude: Number(lat) || 39.9042,
+        radius: radius,
+        radius_array_index: radiusIndex > -1 ? radiusIndex : 0
+      }, () => this.initCircle())
+    } else if (efenceType === 3 && pointsStr) {
+      const pointGroups = pointsStr.split('&').filter(Boolean)
+      const polygons = []
+      pointGroups.forEach(group => {
+        const pointArr = group.split('|').filter(Boolean)
+        const points = pointArr.map(p => {
+          const [lng, lat] = p.split(',')
+          return { longitude: Number(lng), latitude: Number(lat) }
+        })
+        polygons.push({
+          points,
+          strokeWidth: 3,
+          strokeColor: '#FF0000FF',
+          fillColor: '#FF000033'
+        })
+      })
+      this.setData({ polygons })
+    }
   },
+
+  // 标签切换：点击新增围栏 → 全部清空
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
     if (flag == '围栏列表') {
-      this.setData({
-        c_activeTab: 1,
-        btnState: '新增',
-        params: {},
-        id: '',
-        circles: [],
-        polygons: [],
-        add_type: 1
-      })
+      this.setData({ c_activeTab: 1 })
     }
     if (flag == '新增围栏') {
-      if (this.data.c_activeTab != 2) {
-        this.setData({
-          c_activeTab: 2
-        })
-      }
+      this.setData({
+        c_activeTab: 2,
+        add_type: 1,
+        id: '',
+        params: {},
+        temp: {},
+        batterylift: 1,
+        startdate: '19:00',
+        enddate: '19:00',
+        map_type: 3,
+        circles: [],
+        polygons: [{
+          points: [],
+          strokeWidth: 3,
+          strokeColor: '#FF0000FF',
+          fillColor: '#FF000033'
+        }],
+        province_temp: '',
+        city_temp: '',
+        radius: 100,
+        radius_array_index: 0,
+        areaPointsData: ''
+      })
     }
   },
+
   handleDelete(evt) {
     const id = evt?.currentTarget.dataset.id
     const params = {
@@ -486,7 +549,7 @@ Page({
           showToast(response?.msg);
           return;
         }
-        showToast(response?.data?.msg);
+        showToast(response?.msg);
         this.setData({
           g_page: 1,
           g_items: []
@@ -555,6 +618,8 @@ Page({
   },
   handleClear() {
     this.updatePolygon([]);
+    // 清空手动绘制 + 行政区点位
+    this.setData({ areaPointsData: '' })
   },
   updatePolygon(points) {
     this.setData({
@@ -566,31 +631,45 @@ Page({
       }]
     });
   },
+
+  // 【重点】保存逻辑：优先取行政区点位，再取手动绘制点位
   handleSumit() {
-    const {
-      map_type
-    } = this.data;
-    let pointsData;
-    if (map_type === 3) {
+    const { map_type, areaPointsData } = this.data;
+    let pointsData = '';
+
+    // 1. 优先使用选择区域生成的点位数据
+    if (areaPointsData) {
+      pointsData = areaPointsData;
+    } else if (map_type === 3) {
+      // 2. 无区域点位，取手动绘制多边形
       const formatPolygonPoints = (points = []) => {
-        if (points.length < 3) return null;
+        if (points.length < 3) return '';
         return points.map(p => `${parseFloat(p.longitude)},${parseFloat(p.latitude)}`).join('|');
       };
-      const {
-        polygons = []
-      } = this.data;
+      const { polygons = [] } = this.data;
       const validPointsList = polygons.map(p => formatPolygonPoints(p?.points)).filter(Boolean);
       pointsData = validPointsList.join('&');
     } else {
+      // 3. 圆形围栏
       const circles = this.data.circles;
-      pointsData = circles.length >= 1 ? `${circles[0].longitude},${circles[0].latitude}|${circles[0].radius}` : null;
+      if (circles.length >= 1) {
+        pointsData = `${circles[0].longitude},${circles[0].latitude}|${circles[0].radius}`;
+      }
     }
+
+    // 点位为空拦截提交
+    if (!pointsData) {
+      showToast('请先选择区域或绘制围栏点位');
+      return;
+    }
+
     wx.showLoading({
       title: '提交中...',
       mask: true
     });
     const requestData = {
       ...this.data.temp,
+      ...this.data.params,
       efencetype: this.data.map_type,
       efencepoints: pointsData,
       province: this.data.map_type == 1 ? '' : this.data.province_temp || (this.data.multiArray[0]?.[this.data.multiIndex[0]]),
@@ -600,7 +679,7 @@ Page({
       `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`, requestData, (res) => {
         wx.hideLoading();
         if (res?.data?.code !== 1000) {
-          wx.showToast({
+          showToast({
             title: res?.msg || '操作失败',
             icon: 'none'
           });
@@ -625,7 +704,8 @@ Page({
       add_type: 1,
       c_activeTab: 1,
       g_items: [],
-      g_page: 1
+      g_page: 1,
+      areaPointsData: ''
     }, this.initList);
   },
   handleSelectJump(evt) {
@@ -660,15 +740,14 @@ Page({
     }
   },
   handleMapTap(e) {
-    const {
-      latitude,
-      longitude
-    } = e.detail;
+    const { latitude, longitude } = e.detail;
     this.setData({
       latitude,
       longitude
     }, () => {
       this.initCircle();
+      // 点击地图手动画圆，清空行政区点位
+      this.setData({ areaPointsData: '' })
     });
   },
   initCircle() {
@@ -704,6 +783,8 @@ Page({
       multiArray: [provinceNames, firstCityNames]
     });
   },
+
+  // 切换省市列：清空点位 + 清空行政区数据
   bindMultiPickerColumnChange(e) {
     const columnIndex = e.detail.column;
     const rowIndex = e.detail.value;
@@ -713,25 +794,39 @@ Page({
       this.setData({
         multiIndex: [rowIndex, 0],
         multiArray: [this.data.multiArray[0], cityNames],
-        selectedCode: currentProvince.cities[0].code
+        selectedCode: currentProvince.cities[0].code,
+        circles: [],
+        polygons: [{
+          points: [],
+          strokeWidth: 3,
+          strokeColor: '#FF0000FF',
+          fillColor: '#FF000033'
+        }],
+        areaPointsData: ''
       });
     } else {
       const provinceIndex = this.data.multiIndex[0];
       const currentCity = this.data.provinceCityData[provinceIndex].cities[rowIndex];
       const newMultiIndex = [...this.data.multiIndex];
-      newMultiIndex[column] = rowIndex;
+      newMultiIndex[columnIndex] = rowIndex;
       this.setData({
         multiIndex: newMultiIndex,
-        selectedCode: currentCity.code
+        selectedCode: currentCity.code,
+        circles: [],
+        polygons: [{
+          points: [],
+          strokeWidth: 3,
+          strokeColor: '#FF0000FF',
+          fillColor: '#FF000033'
+        }],
+        areaPointsData: ''
       });
     }
   },
+
   bindMultiPickerChange(e) {
     const [provinceIdx, cityIdx] = e.detail.value;
-    const {
-      multiArray,
-      provinceCityData
-    } = this.data;
+    const { multiArray, provinceCityData } = this.data;
     const {
       code: provinceCode,
       cities: {
@@ -750,8 +845,11 @@ Page({
       selectedCode,
       provinceCode
     });
+    // 请求行政区轮廓，并拼接成围栏格式存入 areaPointsData
     this.handleRetrievePoint(selectedCode);
   },
+
+  // 坐标格式转换：腾讯地图轮廓 → 项目规定的 points 字符串格式
   convertTencentPolygonToPoints(polygonData) {
     let rawPolygon = [];
     if (Array.isArray(polygonData)) {
@@ -759,35 +857,30 @@ Page({
     } else if (polygonData && polygonData.result && Array.isArray(polygonData.result) && polygonData.result[0] && polygonData.result[0][0] && Array.isArray(polygonData.result[0][0].polygon)) {
       rawPolygon = polygonData.result[0][0].polygon;
     } else {
-      return [];
+      return '';
     }
-    if (!rawPolygon.length) return [];
-    const allPoints = [];
-    for (const coreCoordinates of rawPolygon) {
-      if (!Array.isArray(coreCoordinates)) continue;
-      for (let i = 0; i < coreCoordinates.length; i += 2) {
-        const longitude = coreCoordinates[i];
-        const latitude = coreCoordinates[i + 1];
-        if (typeof longitude === 'number' && typeof latitude === 'number') {
-          allPoints.push({
-            longitude,
-            latitude
-          });
+    if (!rawPolygon.length) return '';
+
+    // 按项目格式拼接：多区域用 & 分隔，单区域坐标用 | 分隔
+    const areaList = [];
+    rawPolygon.forEach(area => {
+      if (!Array.isArray(area)) return;
+      const pointArr = [];
+      for (let i = 0; i < area.length; i += 2) {
+        const lng = area[i];
+        const lat = area[i + 1];
+        if (typeof lng === 'number' && typeof lat === 'number') {
+          pointArr.push(`${lng},${lat}`);
         }
       }
-    }
-    if (allPoints.length >= 1) {
-      const firstPoint = allPoints[0];
-      const lastPoint = allPoints[allPoints.length - 1];
-      if (firstPoint.longitude !== lastPoint.longitude || firstPoint.latitude !== lastPoint.latitude) {
-        allPoints.push({
-          longitude: firstPoint.longitude,
-          latitude: firstPoint.latitude
-        });
+      if (pointArr.length >= 3) {
+        areaList.push(pointArr.join('|'));
       }
-    }
-    return allPoints;
+    });
+    return areaList.join('&');
   },
+
+  // 获取行政区轮廓，自动赋值给 areaPointsData
   handleRetrievePoint(evt) {
     wx.request({
       url: 'https://apis.map.qq.com/ws/district/v1/search',
@@ -800,12 +893,15 @@ Page({
       success: res => {
         if (res.data.status === 0) {
           const polygon = res.data.result[0][0].polygon;
+          // 转换格式并赋值
+          const areaStr = this.convertTencentPolygonToPoints(polygon);
           this.setData({
+            areaPointsData: areaStr,
             polygons: (polygon || []).map(item => ({
               strokeWidth: 1,
               strokeColor: '#FF0000FF',
               fillColor: '#FF000033',
-              points: this.convertTencentPolygonToPoints([item])
+              points: this.transRawToMapPoints(item)
             })),
             latitude: res?.data?.result?.[0]?.[0]?.location?.lat || this.data.latitude,
             longitude: res?.data?.result?.[0]?.[0]?.location?.lng || this.data.longitude
@@ -815,6 +911,7 @@ Page({
             title: res.data.message,
             icon: 'none'
           });
+          this.setData({ areaPointsData: '' });
         }
       },
       fail: err => {
@@ -823,7 +920,22 @@ Page({
           title: '边界数据获取失败',
           icon: 'none'
         });
+        this.setData({ areaPointsData: '' });
       }
     });
   },
+
+  // 轮廓原始数组 → 地图组件可用的 points 数组
+  transRawToMapPoints(arr) {
+    const points = [];
+    if (!Array.isArray(arr)) return points;
+    for (let i = 0; i < arr.length; i += 2) {
+      const lng = arr[i];
+      const lat = arr[i + 1];
+      if (typeof lng === 'number' && typeof lat === 'number') {
+        points.push({ longitude: lng, latitude: lat });
+      }
+    }
+    return points;
+  }
 })

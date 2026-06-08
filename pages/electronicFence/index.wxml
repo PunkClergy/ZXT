@@ -2,13 +2,13 @@
   <custom-header title="电子围栏" />
 
   <view class="record-container" style="height: {{c_screen_height-(navBarHeight + statusBarHeight)}}px;margin-top: {{navBarHeight + statusBarHeight}}px;">
-    <!-- 切换部分 -->
+    <!-- 顶部标签切换 -->
     <view class="record-tabs" bindtap="handleSwitchTab">
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 1?s_background_tabs_active_1:s_background_tabs_1}}');">围栏列表</view>
       <view class="record-tabs-item" style="background-image: url('{{c_activeTab == 2?s_background_tabs_2:s_background_tabs_active_2}}');">新增围栏</view>
     </view>
 
-    <!-- 搜索框 -->
+    <!-- 搜索区域 -->
     <view class="search-wrapper" wx:if="{{c_activeTab == 1}}">
       <view class="search-box">
         <image src="/assets/images/home/search.png" class="search-icon" />
@@ -16,7 +16,7 @@
       </view>
     </view>
 
-    <!-- 围栏列表 -->
+    <!-- 围栏列表页面 -->
     <block wx:if="{{c_activeTab == 1}}">
       <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50 + 80)}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
         <block wx:for="{{g_items}}" wx:key="index">
@@ -49,7 +49,6 @@
                 <label>绑定车辆 ：</label>
                 <text style="color: #1677ff;" bindtap="openViewBoundCarModal" data-item="{{item}}">点击查看已绑定车辆({{item.vehList.length}})</text>
               </view>
-
             </view>
             <view class="content-item-footer">
               <view class="footer-left"></view>
@@ -57,7 +56,6 @@
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSwitchChange">
                   <text>{{item.isenable == 1?'停用':'启用'}}</text>
                 </view>
-                <!-- 绑定车辆 → 点击弹出弹窗 -->
                 <view class="footer-right-btn" data-item="{{item}}" bindtap="openBindCarModal">
                   <text>绑定车辆</text>
                 </view>
@@ -71,54 +69,45 @@
       </scroll-view>
     </block>
 
-    <!-- 新增围栏 -->
+    <!-- 新增/编辑围栏 页面 -->
     <block wx:if="{{c_activeTab == 2}}">
+      <!-- 基础信息表单页（名称、时间、报警类型） -->
       <block wx:if="{{add_type==1}}">
         <scroll-view scroll-y style="height:{{c_screen_height-(navBarHeight + statusBarHeight + 10 + 50)}}px;">
           <view class="card-info">
             <view class="card-info-item">
               <label>围栏名称<text>*</text></label>
-              <block>
-                <view class="card-info-item-input">
-                  <input placeholder="请输入围栏名称" value="{{params.efencename}}" data-item="efencename" bindinput="handleBindinput" />
-                </view>
-              </block>
+              <view class="card-info-item-input">
+                <input placeholder="请输入围栏名称" value="{{params.efencename}}" data-item="efencename" bindinput="handleBindinput" />
+              </view>
             </view>
             <view class="card-info-item">
               <label>监控开始时间<text>*</text></label>
-              <block>
-                <view class="card-info-item-input" style="display: flex;gap: 20rpx;">
-                  <picker mode="time" data-index="startdate" bindchange="bindTimeChange">
-                    <view class="form-item-text">
-                      <text>{{startdate}}</text>
-                    </view>
-                  </picker>
-                </view>
-              </block>
+              <view class="card-info-item-input" style="display: flex;gap: 20rpx;">
+                <picker mode="time" data-index="startdate" bindchange="bindTimeChange">
+                  <view class="form-item-text">
+                    <text>{{startdate}}</text>
+                  </view>
+                </picker>
+              </view>
             </view>
             <view class="card-info-item">
               <label>监控结束时间<text>*</text></label>
-              <block>
-                <view class="card-info-item-input" style="display: flex;gap: 20rpx;">
-                  <picker mode="time" data-index="enddate" bindchange="bindTimeChange">
-                    <view class="form-item-text">
-                      <text>{{enddate}}</text>
-                    </view>
-                  </picker>
-                </view>
-              </block>
+              <view class="card-info-item-input" style="display: flex;gap: 20rpx;">
+                <picker mode="time" data-index="enddate" bindchange="bindTimeChange">
+                  <view class="form-item-text">
+                    <text>{{enddate}}</text>
+                  </view>
+                </picker>
+              </view>
             </view>
             <view class="card-info-item">
               <label>报警类型<text>*</text></label>
-              <block>
-                <view class="card-info-item-tabs">
-                  <view class="card-info-item-tabs-btn">
-                    <text class="{{batterylift == 0?'tabs-active':''}}" data-item="0" bindtap="handleBatterylift">全部</text>
-                    <text class="{{batterylift == 1?'tabs-active':''}}" data-item="1" bindtap="handleBatterylift">入区报警</text>
-                    <text class="{{batterylift == '2'?'tabs-active':''}}" data-item="2" bindtap="handleBatterylift">出区报警</text>
-                  </view>
-                </view>
-              </block>
+              <view class="card-info-item-tabs-btn">
+                <text class="{{batterylift == 0?'tabs-active':''}}" data-item="0" bindtap="handleBatterylift">全部</text>
+                <text class="{{batterylift == 1?'tabs-active':''}}" data-item="1" bindtap="handleBatterylift">入区报警</text>
+                <text class="{{batterylift == 2?'tabs-active':''}}" data-item="2" bindtap="handleBatterylift">出区报警</text>
+              </view>
             </view>
           </view>
           <view class="card-footer">
@@ -127,10 +116,11 @@
         </scroll-view>
       </block>
 
+      <!-- 地图选择页 -->
       <block wx:else>
         <view class="map-container-bar">
           <view class="map-left-group">
-            <picker class="map-button" mode="multiSelector" range="{{multiArray}}" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}">
+            <picker class="map-button" bindtap="handleMapType" data-item="3" mode="multiSelector" range="{{multiArray}}" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}">
               <view>{{province_temp||'请选择省市'}}</view>
             </picker>
             <text bindtap="handleMapType" data-item="1" class="map-button" style="color: {{map_type==1?'#fff':'#333'}};background: {{map_type == 1?'cornflowerblue':''}};">圆形</text>
@@ -145,6 +135,7 @@
             <text class="map-submit" bindtap="handleSumit">保存</text>
           </view>
         </view>
+        <!-- 多边形地图 -->
         <block wx:if="{{map_type == 3}}">
           <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="6" show-location polygons="{{polygons}}" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;">
             <view class="map-bottom-buttons">
@@ -152,6 +143,7 @@
             </view>
           </map>
         </block>
+        <!-- 圆形地图 -->
         <block wx:else>
           <map id="myMap" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;" show-location longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" circles="{{circles}}" bindtap="handleMapTap">
           </map>
@@ -160,7 +152,7 @@
     </block>
   </view>
 
-  <!-- ================== 绑定车辆弹窗 ================== -->
+  <!-- 绑定车辆弹窗 -->
   <view class="car-modal-mask" wx:if="{{showBindCarModal}}"></view>
   <view class="car-modal-content" wx:if="{{showBindCarModal}}">
     <view class="car-modal-header">
@@ -195,7 +187,7 @@
     </view>
   </view>
 
-  <!-- ================== 【新增】查看已绑定车辆弹窗 ================== -->
+  <!-- 查看已绑定车辆弹窗 -->
   <view class="car-modal-mask" wx:if="{{showViewBoundCarModal}}"></view>
   <view class="car-modal-content" wx:if="{{showViewBoundCarModal}}">
     <view class="car-modal-header">
@@ -208,9 +200,7 @@
           <image src="/assets/images/home/car_icon.png" class="car-icon" />
           <text class="car-plate">{{item.plateNumber || item.platenumber}}</text>
         </view>
-        <text style="color: #1677ff;" bindtap="unbindSingleFromViewModal" data-item="{{item}}" data-fenceid="{{currentViewFenceId}}">
-          解绑
-        </text>
+        <text style="color: #1677ff;" bindtap="unbindSingleFromViewModal" data-item="{{item}}" data-fenceid="{{currentViewFenceId}}">解绑</text>
       </view>
     </scroll-view>
     <view class="car-modal-footer">
