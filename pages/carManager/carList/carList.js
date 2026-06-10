@@ -278,70 +278,76 @@ Page({
       });
   },
   // 管控列表数据
-  initList() {
-    const param = {
-      [u_carList.page]: this.data.g_page,
-      pageSize: 1000,
-      comParam: this.data?.comParam || ""
-    };
+ // 管控列表数据
+initList() {
+  const param = {
+    [u_carList.page]: this.data.g_page,
+    pageSize: 10, // 👈 改为 10 条/页
+    comParam: this.data?.comParam || ""
+  };
 
-    byGet(getApp().data.k1swUrl + u_carList.URL, param).then(response => {
-      if (response.statusCode == 200) {
-        if (this.data.g_page > 1 && response.data.content.length === 0) {
-          showToast(`已加载全部数据：共${this.data.g_items.length}条`);
-        }
-
-        this.setData({
-          g_items: this.data.g_items.concat(response.data.content),
-          g_total: Number(response.data.count || 0).toLocaleString()
-        }, () => {
-          hideLoading();
-          const vehList = this?.data?.desc ? JSON.parse(this?.data?.desc)?.vehList : [];
-          const g_items = this.data.g_items || [];
-          const vehSnSet = new Set();
-          vehList.forEach(item => {
-            if (item && item.sn) {
-              vehSnSet.add(item.sn);
-            }
-          });
-          const updatedGItems = g_items.map(item => {
-            const newItem = { ...item };
-            newItem.checked = !!(newItem && newItem.sn && vehSnSet.has(newItem.sn));
-            return newItem;
-          });
-
-          const isAllChecked = updatedGItems.length > 0
-            ? updatedGItems.every(item => item?.checked === true)
-            : false;
-
-          const checkedVehicles = updatedGItems.filter(item => item.checked === true);
-          const g_black = checkedVehicles.map(item => item.id).filter(Boolean);
-          const g_platenumbers = checkedVehicles.map(item => item.platenumber).filter(Boolean);
-          this.setData({
-            g_items: updatedGItems,
-            all_c: isAllChecked,
-            g_black: g_black,
-            g_platenumbers: g_platenumbers
-          });
-        });
-      } else {
-        showToast('请求失败，请稍后再试');
-        hideLoading();
+  byGet(getApp().data.k1swUrl + u_carList.URL, param).then(response => {
+    if (response.statusCode == 200) {
+      const newList = response.data.content || [];
+      
+      // 无更多数据提示
+      if (this.data.g_page > 1 && newList.length === 0) {
+        showToast(`已加载全部数据：共${this.data.g_items.length}条`);
+        return;
       }
-    }).catch(error => {
-      console.error('列表初始化失败：', error);
+
+      this.setData({
+        g_items: this.data.g_items.concat(newList),
+        g_total: Number(response.data.count || 0).toLocaleString()
+      }, () => {
+        hideLoading();
+        const vehList = this?.data?.desc ? JSON.parse(this?.data?.desc)?.vehList : [];
+        const g_items = this.data.g_items || [];
+        const vehSnSet = new Set();
+        vehList.forEach(item => {
+          if (item && item.sn) {
+            vehSnSet.add(item.sn);
+          }
+        });
+        const updatedGItems = g_items.map(item => {
+          const newItem = { ...item };
+          newItem.checked = !!(newItem && newItem.sn && vehSnSet.has(newItem.sn));
+          return newItem;
+        });
+
+        const isAllChecked = updatedGItems.length > 0
+          ? updatedGItems.every(item => item?.checked === true)
+          : false;
+
+        const checkedVehicles = updatedGItems.filter(item => item.checked === true);
+        const g_black = checkedVehicles.map(item => item.id).filter(Boolean);
+        const g_platenumbers = checkedVehicles.map(item => item.platenumber).filter(Boolean);
+        this.setData({
+          g_items: updatedGItems,
+          all_c: isAllChecked,
+          g_black: g_black,
+          g_platenumbers: g_platenumbers
+        });
+      });
+    } else {
       showToast('请求失败，请稍后再试');
       hideLoading();
-    });
-  },
-  // 触底请求
-  handleLower() {
-    // this.setData({
-    //   g_page: this.data.g_page + 1
-    // }, () => {
-    //   this.initList();
-    // });
-  },
+    }
+  }).catch(error => {
+    console.error('列表初始化失败：', error);
+    showToast('请求失败，请稍后再试');
+    hideLoading();
+  });
+},
+
+// 触底请求（打开注释即可）
+handleLower() {
+  this.setData({
+    g_page: this.data.g_page + 1
+  }, () => {
+    this.initList();
+  });
+},
   // 下拉刷新
   handleRefresh() {
     this.setData({
