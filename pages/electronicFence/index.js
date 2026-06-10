@@ -358,10 +358,14 @@ Page({
     })
   },
   handleBindinput(evt) {
-    const { params } = this.data
+    const {
+      params
+    } = this.data
     params[evt.currentTarget.dataset.item] = evt.detail.value
     this.setData({
-      params: { ...params }
+      params: {
+        ...params
+      }
     })
   },
   handleBatterylift(evt) {
@@ -461,7 +465,9 @@ Page({
       c_activeTab: 2,
       add_type: 1,
       id: info?.id,
-      params: { ...info },
+      params: {
+        ...info
+      },
       startdate: info?.startdate || '19:00',
       enddate: info?.enddate || '19:00',
       batterylift: info?.alarmtype ?? 1,
@@ -472,7 +478,9 @@ Page({
 
     const efenceType = Number(info.efencetype || 1)
     const pointsStr = info.efencepoints || ''
-    this.setData({ map_type: efenceType })
+    this.setData({
+      map_type: efenceType
+    })
 
     if (efenceType === 1 && pointsStr) {
       const [latLngStr, radiusStr] = pointsStr.split('|')
@@ -492,7 +500,10 @@ Page({
         const pointArr = group.split('|').filter(Boolean)
         const points = pointArr.map(p => {
           const [lng, lat] = p.split(',')
-          return { longitude: Number(lng), latitude: Number(lat) }
+          return {
+            longitude: Number(lng),
+            latitude: Number(lat)
+          }
         })
         polygons.push({
           points,
@@ -501,7 +512,9 @@ Page({
           fillColor: '#FF000033'
         })
       })
-      this.setData({ polygons })
+      this.setData({
+        polygons
+      })
     }
   },
 
@@ -509,7 +522,9 @@ Page({
   handleSwitchTab(e) {
     const flag = e._relatedInfo.anchorTargetText
     if (flag == '围栏列表') {
-      this.setData({ c_activeTab: 1 })
+      this.setData({
+        c_activeTab: 1
+      })
     }
     if (flag == '新增围栏') {
       this.setData({
@@ -619,7 +634,9 @@ Page({
   handleClear() {
     this.updatePolygon([]);
     // 清空手动绘制 + 行政区点位
-    this.setData({ areaPointsData: '' })
+    this.setData({
+      areaPointsData: ''
+    })
   },
   updatePolygon(points) {
     this.setData({
@@ -634,7 +651,10 @@ Page({
 
   // 【重点】保存逻辑：优先取行政区点位，再取手动绘制点位
   handleSumit() {
-    const { map_type, areaPointsData } = this.data;
+    const {
+      map_type,
+      areaPointsData
+    } = this.data;
     let pointsData = '';
 
     // 1. 优先使用选择区域生成的点位数据
@@ -646,7 +666,9 @@ Page({
         if (points.length < 3) return '';
         return points.map(p => `${parseFloat(p.longitude)},${parseFloat(p.latitude)}`).join('|');
       };
-      const { polygons = [] } = this.data;
+      const {
+        polygons = []
+      } = this.data;
       const validPointsList = polygons.map(p => formatPolygonPoints(p?.points)).filter(Boolean);
       pointsData = validPointsList.join('&');
     } else {
@@ -740,14 +762,19 @@ Page({
     }
   },
   handleMapTap(e) {
-    const { latitude, longitude } = e.detail;
+    const {
+      latitude,
+      longitude
+    } = e.detail;
     this.setData({
       latitude,
       longitude
     }, () => {
       this.initCircle();
       // 点击地图手动画圆，清空行政区点位
-      this.setData({ areaPointsData: '' })
+      this.setData({
+        areaPointsData: ''
+      })
     });
   },
   initCircle() {
@@ -826,7 +853,10 @@ Page({
 
   bindMultiPickerChange(e) {
     const [provinceIdx, cityIdx] = e.detail.value;
-    const { multiArray, provinceCityData } = this.data;
+    const {
+      multiArray,
+      provinceCityData
+    } = this.data;
     const {
       code: provinceCode,
       cities: {
@@ -888,7 +918,7 @@ Page({
         keyword: evt.trim(),
         get_polygon: 1,
         level: 'province',
-        key: 'K76BZ-TR46T-ACQXY-LSLAP-S3JUO-WFFKD'
+        key: 'HCMBZ-DQVLQ-BFX5B-BQ3ZU-KS57H-AGBSM'
       },
       success: res => {
         if (res.data.status === 0) {
@@ -911,7 +941,9 @@ Page({
             title: res.data.message,
             icon: 'none'
           });
-          this.setData({ areaPointsData: '' });
+          this.setData({
+            areaPointsData: ''
+          });
         }
       },
       fail: err => {
@@ -920,7 +952,9 @@ Page({
           title: '边界数据获取失败',
           icon: 'none'
         });
-        this.setData({ areaPointsData: '' });
+        this.setData({
+          areaPointsData: ''
+        });
       }
     });
   },
@@ -933,7 +967,10 @@ Page({
       const lng = arr[i];
       const lat = arr[i + 1];
       if (typeof lng === 'number' && typeof lat === 'number') {
-        points.push({ longitude: lng, latitude: lat });
+        points.push({
+          longitude: lng,
+          latitude: lat
+        });
       }
     }
     return points;
