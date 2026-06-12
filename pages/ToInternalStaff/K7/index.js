@@ -368,7 +368,7 @@ Page({
     try {
       const res = await new Promise((resolve, reject) => {
         wx.request({
-          url: 'http://fin3.wiselink.net.cn/fin/deviceTes/saveResult',
+          url: 'https://fin3.wiselink.net.cn/fin/deviceTest/saveResult',
           method: 'GET',
           data: {
             idc,
@@ -384,7 +384,7 @@ Page({
       })
   
       // 解析接口返回数据
-      const resData = res || {}
+      const resData = res?.data || {}
       if (resData.code === 1000) {
         wx.showModal({
           title: '提交成功',
