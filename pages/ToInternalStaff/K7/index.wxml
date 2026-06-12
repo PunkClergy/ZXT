@@ -75,35 +75,45 @@
             <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="lock">
               <text>开锁</text>
               <text class="test-status {{networkTestStatus.lockStatus}}">
-                {{getTestStatusText(networkTestStatus.lockStatus)}}
+                <text wx:if="{{networkTestStatus.lockStatus =='success'}}">成功</text>
+                <text wx:if="{{networkTestStatus.lockStatus =='testing'}}">测试中</text>
+                <text wx:if="{{networkTestStatus.lockStatus =='fail'}}">失败</text>
               </text>
             </view>
 
             <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="unlock">
               <text>关锁</text>
               <text class="test-status {{networkTestStatus.unlockStatus}}">
-                {{getTestStatusText(networkTestStatus.unlockStatus)}}
+                <text wx:if="{{networkTestStatus.unlockStatus =='success'}}">成功</text>
+                <text wx:if="{{networkTestStatus.unlockStatus =='testing'}}">测试中</text>
+                <text wx:if="{{networkTestStatus.unlockStatus =='fail'}}">失败</text>
               </text>
             </view>
 
             <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="findCar">
               <text>寻车</text>
               <text class="test-status {{networkTestStatus.findCarStatus}}">
-                {{getTestStatusText(networkTestStatus.findCarStatus)}}
+                <text wx:if="{{networkTestStatus.findCarStatus =='success'}}">成功</text>
+                <text wx:if="{{networkTestStatus.findCarStatus =='testing'}}">测试中</text>
+                <text wx:if="{{networkTestStatus.findCarStatus =='fail'}}">失败</text>
               </text>
             </view>
 
             <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="risk">
               <text>风控拦截</text>
               <text class="test-status {{networkTestStatus.riskStatus}}">
-                {{getTestStatusText(networkTestStatus.riskStatus)}}
+                <text wx:if="{{networkTestStatus.riskStatus =='success'}}">成功</text>
+                <text wx:if="{{networkTestStatus.riskStatus =='testing'}}">测试中</text>
+                <text wx:if="{{networkTestStatus.riskStatus =='fail'}}">失败</text>
               </text>
             </view>
 
             <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="cancelRisk">
               <text>取消拦截</text>
               <text class="test-status {{networkTestStatus.cancelRiskStatus}}">
-                {{getTestStatusText(networkTestStatus.cancelRiskStatus)}}
+                <text wx:if="{{networkTestStatus.cancelRiskStatus =='success'}}">成功</text>
+                <text wx:if="{{networkTestStatus.cancelRiskStatus =='testing'}}">测试中</text>
+                <text wx:if="{{networkTestStatus.cancelRiskStatus =='fail'}}">失败</text>
               </text>
             </view>
           </view>

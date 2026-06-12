@@ -3,6 +3,10 @@
 const {
   u_operation
 } = require('../../../utils/request/map')
+const {
+  byGet,
+  byPost
+} = require('../../../utils/request/http')
 
 Page({
   data: {
@@ -283,7 +287,7 @@ executeNetworkTestAction(command, testType) {
   const { deviceInfo, checkForm, c_k1sw_link } = this.data
   const actionName = this.getTestActionText(command)
 
-  if (!deviceInfo?.sn || !deviceInfo?.code) {
+  if (!deviceInfo?.sn) {
     this.appendTestLog(`❌【网络】${actionName} 失败：设备信息缺失`)
     return
   }
@@ -304,8 +308,10 @@ executeNetworkTestAction(command, testType) {
     wx.hideLoading()
     try {
       const resData = response.data || {}
-      if (resData.code === 200) {
+      if (resData.code === 1000) {
+        console.log(command, actionName)
         if (command === 8 || command === 6) {
+          console.log(command, actionName)
           this.showRiskConfirmModal(command, actionName)
         } else {
           this.setTestStatus(command, 'success')
@@ -329,6 +335,7 @@ executeNetworkTestAction(command, testType) {
 },
 
   showRiskConfirmModal(command, actionName) {
+      console.log(command, actionName)
     wx.showModal({
       title: '请确认车辆启动状态',
       content: `${actionName}指令已执行，请启动车辆后选择实际状态`,
