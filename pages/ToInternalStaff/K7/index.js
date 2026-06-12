@@ -1,5 +1,4 @@
 // 仅外部引入 u_operation
-
 const {
   u_operation
 } = require('../../../utils/request/map')
@@ -35,26 +34,30 @@ Page({
     c_k1sw_link: 'https://k1sw.wiselink.net.cn/', //域名
   },
 
-  observers: {
-    'networkTestStatus.**': function () {
-      const status = this.data.networkTestStatus
-      const allFinish = status.lockStatus === 'success' &&
-        status.unlockStatus === 'success' &&
-        status.findCarStatus === 'success' &&
-        status.riskStatus === 'success' &&
-        status.cancelRiskStatus === 'success'
-      this.setData({
-        isNetworkTestFinished: allFinish
-      })
+  // 统一校验：判断是否满足提交条件
+  checkCanSubmit() {
+    const { networkTestStatus, isDeviceBound, isImageUploaded } = this.data
+    const { lockStatus, unlockStatus, findCarStatus, riskStatus, cancelRiskStatus } = networkTestStatus
 
-      if (allFinish) {
-        this.appendTestLog('🎉 网络模式全部检测完成！可提交检测')
-      }
+    // 五项检测全部完成
+    const allTestFinish = lockStatus === 'success'
+      && unlockStatus === 'success'
+      && findCarStatus === 'success'
+      && riskStatus === 'success'
+      && cancelRiskStatus === 'success'
 
-      const canSubmit = this.data.isDeviceBound && this.data.isImageUploaded && allFinish
-      this.setData({
-        canSubmitFinalCheck: canSubmit
-      })
+    this.setData({
+      isNetworkTestFinished: allTestFinish
+    })
+
+    // 全部条件满足：绑定 + 传图 + 检测完成
+    const canSubmit = isDeviceBound && isImageUploaded && allTestFinish
+    this.setData({
+      canSubmitFinalCheck: canSubmit
+    })
+
+    if (allTestFinish) {
+      this.appendTestLog('🎉 网络模式全部检测完成！可提交检测')
     }
   },
 
@@ -140,6 +143,8 @@ Page({
           isDeviceBound: true,
           deviceInfo: res.content || {}
         })
+        // 绑定完成后重新校验提交状态
+        this.checkCanSubmit()
         this.appendTestLog('✅ 设备绑定成功，可进行图片上传')
         wx.showToast({
           title: '绑定成功',
@@ -216,6 +221,8 @@ Page({
       this.setData({
         isImageUploaded: true
       })
+      // 图片上传完成后重新校验提交状态
+      this.checkCanSubmit()
       this.appendTestLog('✅ 图片全部上传成功！可开始功能检测')
       wx.showToast({
         title: '上传成功',
@@ -278,83 +285,54 @@ Page({
     this.executeNetworkTestAction(command, testType)
   },
 
- /**
- * 执行网络测试指令（增强版：带Loading + 超时提示）
- * @param {Number} command 指令码
- * @param {String} testType 操作类型
- */
-executeNetworkTestAction(command, testType) {
-  const { deviceInfo, checkForm, c_k1sw_link } = this.data
-  const actionName = this.getTestActionText(command)
+  /**
+   * 执行网络测试指令（增强版：带Loading + 超时提示）
+   * @param {Number} command 指令码
+   * @param {String} testType 操作类型
+   */
+  executeNetworkTestAction(command, testType) {
+    const { deviceInfo, checkForm, c_k1sw_link } = this.data
+    const actionName = this.getTestActionText(command)
 
-  if (!deviceInfo?.sn) {
-    this.appendTestLog(`❌【网络】${actionName} 失败：设备信息缺失`)
-    return
-  }
+    if (!deviceInfo?.sn) {
+      this.appendTestLog(`❌【网络】${actionName} 失败：设备信息缺失`)
+      return
+    }
 
-  this.setTestStatus(command, 'testing')
-  this.appendTestLog(`🚗【网络】开始${actionName} → 设备号：${checkForm.idc}`)
-  wx.showLoading({ title: '指令执行中...' })
+    this.setTestStatus(command, 'testing')
+    this.appendTestLog(`🚗【网络】开始${actionName} → 设备号：${checkForm.idc}`)
+    wx.showLoading({ title: '指令执行中...' })
 
-  const reqUrl = `${c_k1sw_link}${u_operation.URL}`
-  const reqData = {
-    sn: deviceInfo.sn,
-    operationType: command,
-    code: deviceInfo.code,
-    _timestamp: Date.now()
-  }
+    const reqUrl = `${c_k1sw_link}${u_operation.URL}`
+    const reqData = {
+      sn: deviceInfo.sn,
+      operationType: command,
+      code: deviceInfo.code,
+      _timestamp: Date.now()
+    }
 
-  byPost(reqUrl, reqData, (response) => {
-    wx.hideLoading()
-    try {
-      const resData = response.data || {}
-      if (resData.code === 1000) {
-        console.log(command, actionName)
-        if (command === 8 || command === 6) {
-          console.log(command, actionName)
-          this.showRiskConfirmModal(command, actionName)
-        } else {
+    byPost(reqUrl, reqData, (response) => {
+      wx.hideLoading()
+      try {
+        const resData = response.data || {}
+        if (resData.code === 1000) {
           this.setTestStatus(command, 'success')
           this.appendTestLog(`✅【网络】${actionName} 成功`)
+        } else {
+          this.setTestStatus(command, 'fail')
+          this.appendTestLog(`❌【网络】${actionName} 失败：${resData.msg || '未知原因'}`)
         }
-      } else {
+      } catch (error) {
+        console.error('指令执行解析异常：', error)
         this.setTestStatus(command, 'fail')
-        this.appendTestLog(`❌【网络】${actionName} 失败：${resData.msg || '未知原因'}`)
-      }
-    } catch (error) {
-      _handleControlError(error)
-      this.setTestStatus(command, 'fail')
-      this.appendTestLog(`❌【网络】${actionName} 数据解析异常`)
-    }
-  })
-
-  // 可选：超时兜底
-  setTimeout(() => {
-    wx.hideLoading()
-  }, 8000)
-},
-
-  showRiskConfirmModal(command, actionName) {
-      console.log(command, actionName)
-    wx.showModal({
-      title: '请确认车辆启动状态',
-      content: `${actionName}指令已执行，请启动车辆后选择实际状态`,
-      confirmText: '已正常启动',
-      cancelText: '无法启动',
-      success: (res) => {
-        if (res.confirm) {
-          const status = command === 8 ? 'fail' : 'success'
-          const logMsg = command === 8 ? '车辆启动成功 → 检测失败' : '车辆启动成功 → 检测成功'
-          this.appendTestLog(`${status === 'success' ? '✅' : '❌'}【网络】${actionName} ${logMsg}`)
-          this.setTestStatus(command, status)
-        } else if (res.cancel) {
-          const status = command === 8 ? 'success' : 'fail'
-          const logMsg = command === 8 ? '车辆无法启动 → 检测成功' : '车辆无法启动 → 检测失败'
-          this.appendTestLog(`${status === 'success' ? '✅' : '❌'}【网络】${actionName} ${logMsg}`)
-          this.setTestStatus(command, status)
-        }
+        this.appendTestLog(`❌【网络】${actionName} 数据解析异常`)
       }
     })
+
+    // 超时兜底
+    setTimeout(() => {
+      wx.hideLoading()
+    }, 8000)
   },
 
   setTestStatus(command, status) {
@@ -370,17 +348,20 @@ executeNetworkTestAction(command, testType) {
       let update = {}
       update[`networkTestStatus.${key}`] = status
       this.setData(update)
+      // 每次状态更新后，主动校验提交条件
+      this.checkCanSubmit()
     }
   },
 
   async handleSubmitFinalCheck() {
-    const {
-      checkForm
-    } = this.data
+    const { checkForm } = this.data
     const idc = checkForm.idc
     const checkType = 1
     const checkState = 1
-
+    // 从缓存 userKey 读取 token
+    const userInfo = wx.getStorageSync('userKey') || {}
+    const token = userInfo.token || ''
+  
     wx.showLoading({
       title: '提交检测结果中...'
     })
@@ -394,24 +375,39 @@ executeNetworkTestAction(command, testType) {
             checkType,
             checkState
           },
+          header: {
+            token: token
+          },
           success: resolve,
           fail: reject
         })
       })
-      wx.showModal({
-        title: '提交成功',
-        content: '设备全流程检测已完成！',
-        showCancel: false,
-        success: () => {
-          wx.redirectTo({
-            url: '/pages/index/index'
-          })
-        }
-      })
+  
+      // 解析接口返回数据
+      const resData = res || {}
+      if (resData.code === 1000) {
+        wx.showModal({
+          title: '提交成功',
+          content: '设备全流程检测已完成！',
+          showCancel: false,
+          success: () => {
+            wx.redirectTo({
+              url: '/pages/index/index'
+            })
+          }
+        })
+      } else {
+        // 接口返回业务失败
+        wx.showToast({
+          title: resData.msg || '提交失败',
+          icon: 'none'
+        })
+        this.appendTestLog(`❌ 提交失败：${resData.msg || '未知错误'}`)
+      }
     } catch (err) {
       console.error('提交检测结果失败：', err)
       wx.showToast({
-        title: '提交失败，请重试',
+        title: '请求异常，请重试',
         icon: 'none'
       })
       this.appendTestLog('❌ 检测结果提交失败：网络或接口异常')
