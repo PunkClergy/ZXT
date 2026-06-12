@@ -46,8 +46,8 @@ Page({
     user_text: '新增',
     add_type: 1,
     batterylift: 1,
-    startdate: '19:00',
-    enddate: '19:00',
+    startdate: '00:00',
+    enddate: '23:59',
     longitude: 116.4074,
     latitude: 39.9042,
     temp: {},
@@ -534,8 +534,8 @@ Page({
         params: {},
         temp: {},
         batterylift: 1,
-        startdate: '19:00',
-        enddate: '19:00',
+        startdate: '00:00',
+        enddate: '23:59',
         map_type: 3,
         circles: [],
         polygons: [{
@@ -586,7 +586,20 @@ Page({
     this._sendUnbindRequest(params);
   },
   handleUnbindAll(evt) {
-    this.handleUnbind(evt, true);
+    // 二次确认弹窗
+    wx.showModal({
+      title: '提示',
+      content: '确定全部解除绑定？', // 你要的文案
+      confirmText: '确定',
+      cancelText: '取消',
+      success: (res) => {
+        // 用户点击确定才执行解绑
+        if (res.confirm) {
+          this.handleUnbind(evt, true);
+        }
+        // 点击取消则什么都不做
+      }
+    });
   },
   _sendUnbindRequest(params) {
     const url = `${getApp().data.k1swUrl}${u_efenceUnbindVeh.URL}`;
