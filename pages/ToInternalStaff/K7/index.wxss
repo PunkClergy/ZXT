@@ -74,8 +74,59 @@
 .upload-tip {
 	font-size: 24rpx;
 	color: #fa8c16;
-	margin-bottom: 20rpx;
+	margin-bottom: 10rpx;
 	line-height: 1.4;
+}
+
+/* 查看示例按钮 */
+.show-demo-btn {
+	font-size: 24rpx;
+	color: #007aff;
+	display: inline-block;
+	margin-bottom: 10rpx;
+}
+
+/* 图片示例区域 默认隐藏 */
+.demo-img-wrap {
+	margin: 10rpx 0 20rpx;
+	display: none;
+}
+.demo-img-wrap.show {
+	display: block;
+}
+
+.demo-txt {
+	font-size: 24rpx;
+	color: #666;
+	display: block;
+	margin-bottom: 12rpx;
+}
+/* 示例整体横向排列 */
+.demo-img-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20rpx;
+}
+/* 单张示例+文字容器 */
+.demo-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 140rpx;
+}
+.demo-img {
+	width: 120rpx;
+	height: 120rpx;
+	border-radius: 8rpx;
+	border: 1rpx solid #eee;
+}
+/* 图片描述文字 */
+.demo-desc {
+	font-size: 22rpx;
+	color: #666;
+	margin-top: 6rpx;
+	text-align: center;
+	line-height: 1.2;
 }
 
 /* 图片上传滚动容器 */
@@ -97,8 +148,8 @@
 }
 
 .image-item {
-	width: 150rpx;
-	height: 150rpx;
+	width: 145rpx;
+	height: 145rpx;
 	border-radius: 12rpx;
 	overflow: hidden;
 	box-shadow: 0 3rpx 8rpx rgba(0, 0, 0, 0.1);
@@ -111,8 +162,8 @@
 
 /* 添加图片按钮 */
 .add-image-btn {
-	width: 150rpx;
-	height: 150rpx;
+	width: 145rpx;
+	height: 145rpx;
 	border: 2rpx dashed #ccc;
 	border-radius: 12rpx;
 	display: flex;
@@ -229,7 +280,7 @@ button[disabled] {
 
 /* 日志外层容器 - 固定整体高度 */
 .test-log-section {
-	height: 350rpx;
+	height: 300rpx;
 	background-color: #fff;
 	border-radius: 16rpx;
 	padding: 20rpx;
@@ -238,7 +289,6 @@ button[disabled] {
 	display: flex;
 	flex-direction: column;
 	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
-	/* 禁止内容溢出撑开容器 */
 	overflow: hidden;
 }
 
@@ -249,10 +299,9 @@ button[disabled] {
 	flex-shrink: 0;
 }
 
-/* 关键：给滚动容器设置固定高度，滚动才会生效 */
+/* 滚动容器固定高度，保证滚动生效 */
 .log-content-container {
 	width: 100%;
-	/* 总高300rpx - 上下padding - 标题高度 = 实际滚动区高度 */
 	height: 220rpx;
 	box-sizing: border-box;
 	background-color: #f9f9f9;

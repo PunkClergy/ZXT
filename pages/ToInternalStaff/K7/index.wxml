@@ -32,6 +32,37 @@
         <view class="upload-tip">
           请拍照上传：车辆名牌、ACC、常火、打铁、主机及回避器、安装位置（最少4张，可多传）
         </view>
+        <!-- 切换示例显示/隐藏按钮 -->
+        <view class="show-demo-btn" bindtap="toggleDemo">
+          {{isShowDemo ? '收起示例' : '查看示例'}}
+        </view>
+
+        <!-- 图片示例区域：默认隐藏，点击按钮展示 + 每张图带描述 -->
+        <view class="demo-img-wrap {{isShowDemo ? 'show' : ''}}">
+          <text class="demo-txt">参考示例：</text>
+          <view class="demo-img-list">
+            <!-- 第1张示例 -->
+            <view class="demo-item">
+              <image class="demo-img" src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Nameplate.png" mode="aspectFill" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Nameplate.png"></image>
+              <text class="demo-desc">车辆名牌</text>
+            </view>
+            <!-- 第2张示例 -->
+            <view class="demo-item">
+              <image class="demo-img" src="https://k1sw.wiselink.net.cn/img/app2.0/k7/ACC.png" mode="aspectFill" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/ACC.png"></image>
+              <text class="demo-desc">ACC接口</text>
+            </view>
+            <!-- 第3张示例 -->
+            <view class="demo-item">
+              <image class="demo-img" src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Constant.png" mode="aspectFill" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Constant.png"></image>
+              <text class="demo-desc">常火线路</text>
+            </view>
+            <!-- 第4张示例 -->
+            <view class="demo-item">
+              <image class="demo-img" src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Ground.png" mode="aspectFill" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Ground.png"></image>
+              <text class="demo-desc">打铁部位</text>
+            </view>
+          </view>
+        </view>
 
         <!-- 图片列表滚动容器 -->
         <scroll-view scroll-y class="upload-scroll-container">

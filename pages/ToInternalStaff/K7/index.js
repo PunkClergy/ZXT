@@ -36,26 +36,51 @@ Page({
     testLogList: [],
     isNetworkTestFinished: false,
     canSubmitFinalCheck: false,
-    c_k1sw_link: 'https://k1sw.wiselink.net.cn/', //域名
+    c_k1sw_link: 'https://k1sw.wiselink.net.cn/',
+    // 示例图片默认不显示
+    isShowDemo: false
+  },
+
+  // 切换示例显示/隐藏
+  toggleDemo() {
+    this.setData({
+      isShowDemo: !this.data.isShowDemo
+    })
+  },
+
+  // 点击示例图 预览大图
+  previewDemoImg(e) {
+    const src = e.currentTarget.dataset.src;
+    wx.previewImage({
+      urls: [src]
+    })
   },
 
   // 统一校验：判断是否满足提交条件
   checkCanSubmit() {
-    const { networkTestStatus, isDeviceBound, isImageUploaded } = this.data
-    const { lockStatus, unlockStatus, findCarStatus, riskStatus, cancelRiskStatus } = networkTestStatus
+    const {
+      networkTestStatus,
+      isDeviceBound,
+      isImageUploaded
+    } = this.data
+    const {
+      lockStatus,
+      unlockStatus,
+      findCarStatus,
+      riskStatus,
+      cancelRiskStatus
+    } = networkTestStatus
 
-    // 五项检测全部完成
-    const allTestFinish = lockStatus === 'success'
-      && unlockStatus === 'success'
-      && findCarStatus === 'success'
-      && riskStatus === 'success'
-      && cancelRiskStatus === 'success'
+    const allTestFinish = lockStatus === 'success' &&
+      unlockStatus === 'success' &&
+      findCarStatus === 'success' &&
+      riskStatus === 'success' &&
+      cancelRiskStatus === 'success'
 
     this.setData({
       isNetworkTestFinished: allTestFinish
     })
 
-    // 全部条件满足：绑定 + 传图 + 检测完成
     const canSubmit = isDeviceBound && isImageUploaded && allTestFinish
     this.setData({
       canSubmitFinalCheck: canSubmit
@@ -109,7 +134,7 @@ Page({
   },
 
   /**
-   * 设备绑定接口：本地内部实现，不外部引入
+   * 设备绑定接口
    */
   async handleDeviceBind() {
     const userInfo = wx.getStorageSync('userKey') || {}
@@ -148,33 +173,37 @@ Page({
           isDeviceBound: true,
           deviceInfo: res.content || {}
         })
-        // 绑定完成后重新校验提交状态
         this.checkCanSubmit()
         this.appendTestLog('✅ 设备绑定成功，可进行图片上传')
-        wx.showToast({
-          title: '绑定成功',
-          icon: 'none'
+        wx.showModal({
+          title: '结果',
+          content: '绑定成功！',
+          showCancel: false // 隐藏取消按钮
         })
       } else {
-        wx.showToast({
-          title: res.msg || '设备绑定失败',
-          icon: 'none'
+        wx.showModal({
+          title: '结果',
+          content: res.msg || '设备绑定失败',
+          showCancel: false // 隐藏取消按钮
         })
       }
     } catch (error) {
       console.error('设备绑定接口异常：', error)
-      wx.showToast({
-        title: '绑定请求异常',
-        icon: 'none'
+      wx.showModal({
+        title: '结果',
+        content: '绑定请求异常',
+        showCancel: false // 隐藏取消按钮
       })
     } finally {
       wx.hideLoading()
     }
   },
 
-  // 【修复】图片选择：追加图片，不覆盖原有图片
+  // 图片选择：追加不覆盖
   handleChooseImage() {
-    const { selectedImageList } = this.data;
+    const {
+      selectedImageList
+    } = this.data;
     const remain = MAX_IMAGE_COUNT - selectedImageList.length;
     if (remain <= 0) {
       wx.showToast({
@@ -184,11 +213,10 @@ Page({
       return;
     }
     wx.chooseImage({
-      count: remain, // 剩余可选择数量
+      count: remain,
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        // 数组拼接，追加到末尾
         const newList = selectedImageList.concat(res.tempFilePaths);
         this.setData({
           selectedImageList: newList
@@ -238,7 +266,6 @@ Page({
       this.setData({
         isImageUploaded: true
       })
-      // 图片上传完成后重新校验提交状态
       this.checkCanSubmit()
       this.appendTestLog('✅ 图片全部上传成功！可开始功能检测')
       wx.showToast({
@@ -302,13 +329,12 @@ Page({
     this.executeNetworkTestAction(command, testType)
   },
 
-  /**
-   * 执行网络测试指令（增强版：带Loading + 超时提示）
-   * @param {Number} command 指令码
-   * @param {String} testType 操作类型
-   */
   executeNetworkTestAction(command, testType) {
-    const { deviceInfo, checkForm, c_k1sw_link } = this.data
+    const {
+      deviceInfo,
+      checkForm,
+      c_k1sw_link
+    } = this.data
     const actionName = this.getTestActionText(command)
 
     if (!deviceInfo?.sn) {
@@ -318,7 +344,9 @@ Page({
 
     this.setTestStatus(command, 'testing')
     this.appendTestLog(`🚗【网络】开始${actionName} → 设备号：${checkForm.idc}`)
-    wx.showLoading({ title: '指令执行中...' })
+    wx.showLoading({
+      title: '指令执行中...'
+    })
 
     const reqUrl = `${c_k1sw_link}${u_operation.URL}`
     const reqData = {
@@ -346,7 +374,6 @@ Page({
       }
     })
 
-    // 超时兜底
     setTimeout(() => {
       wx.hideLoading()
     }, 8000)
@@ -365,17 +392,17 @@ Page({
       let update = {}
       update[`networkTestStatus.${key}`] = status
       this.setData(update)
-      // 每次状态更新后，主动校验提交条件
       this.checkCanSubmit()
     }
   },
 
   async handleSubmitFinalCheck() {
-    const { checkForm } = this.data
+    const {
+      checkForm
+    } = this.data
     const idc = checkForm.idc
     const checkType = 1
     const checkState = 1
-    // 从缓存 userKey 读取 token
     const userInfo = wx.getStorageSync('userKey') || {}
     const token = userInfo.token || ''
 
@@ -400,7 +427,6 @@ Page({
         })
       })
 
-      // 解析接口返回数据
       const resData = res?.data || {}
       if (resData.code === 1000) {
         wx.showModal({
@@ -414,7 +440,6 @@ Page({
           }
         })
       } else {
-        // 接口返回业务失败
         wx.showToast({
           title: resData.msg || '提交失败',
           icon: 'none'
@@ -453,12 +478,11 @@ Page({
     return map[command] || command
   },
 
-  // 追加日志 + 自动滚动到顶部 + 限制最大条数
+  // 追加日志 + 自动置顶 + 条数限制
   appendTestLog(content) {
     const time = new Date().toLocaleTimeString()
     let logList = [`[${time}] ${content}`, ...this.data.testLogList]
 
-    // 截断数组，只保留最新 MAX_LOG_COUNT 条，防止无限增加
     if (logList.length > MAX_LOG_COUNT) {
       logList = logList.slice(0, MAX_LOG_COUNT)
     }
@@ -466,7 +490,6 @@ Page({
     this.setData({
       testLogList: logList
     }, () => {
-      // 视图更新完成后自动置顶
       wx.createSelectorQuery()
         .select('#logScroll')
         .node()
