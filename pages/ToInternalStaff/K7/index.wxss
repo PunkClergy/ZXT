@@ -1,60 +1,60 @@
 /* 页面根容器 */
 .device-check-page {
 	width: 100vw;
-	height: 100vh;
+	height: 98vh;
 	display: flex;
 	flex-direction: column;
 	background-color: #f5f7fa;
 	box-sizing: border-box;
 	padding-bottom: 100rpx;
-  }
-  
-  /* 内容主体 */
-  .content-wrapper {
+}
+
+/* 内容主体 */
+.content-wrapper {
 	flex: 0 0 70%;
 	overflow-y: auto;
 	padding: 30rpx 20rpx 0;
-  }
-  
-  /* 主内容卡片 */
-  .main-content-card {
+}
+
+/* 主内容卡片 */
+.main-content-card {
 	background-color: #fff;
 	border-radius: 20rpx;
 	padding: 40rpx;
 	box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.08);
-  }
-  
-  /* 模块分隔线 */
-  .section-divider {
+}
+
+/* 模块分隔线 */
+.section-divider {
 	height: 1rpx;
 	background-color: #f0f0f0;
 	margin: 40rpx 0;
-  }
-  
-  /* 表单项目 */
-  .form-item {
+}
+
+/* 表单项目 */
+.form-item {
 	display: flex;
 	align-items: center;
 	margin-bottom: 24rpx;
-  }
-  
-  .form-label {
+}
+
+.form-label {
 	width: 150rpx;
 	font-size: 28rpx;
 	color: #333;
-  }
-  
-  .form-input {
+}
+
+.form-input {
 	flex: 1;
 	height: 70rpx;
 	border: 2rpx solid #eee;
 	border-radius: 10rpx;
 	padding: 0 20rpx;
 	font-size: 28rpx;
-  }
-  
-  /* 绑定设备按钮 */
-  .bind-device-btn {
+}
+
+/* 绑定设备按钮 */
+.bind-device-btn {
 	width: 100%;
 	background-color: #007aff;
 	color: #fff;
@@ -62,24 +62,24 @@
 	font-size: 28rpx;
 	padding: 14rpx 0;
 	margin-top: 10rpx;
-  }
-  
-  /* 图片上传模块 */
-  .upload-title {
+}
+
+/* 图片上传模块 */
+.upload-title {
 	font-size: 30rpx;
 	font-weight: bold;
 	margin-bottom: 8rpx;
-  }
-  
-  .upload-tip {
+}
+
+.upload-tip {
 	font-size: 24rpx;
 	color: #fa8c16;
 	margin-bottom: 20rpx;
 	line-height: 1.4;
-  }
-  
-  /* 图片上传滚动容器 */
-  .upload-scroll-container {
+}
+
+/* 图片上传滚动容器 */
+.upload-scroll-container {
 	max-height: 380rpx;
 	background-color: #fafbfc;
 	border-radius: 12rpx;
@@ -87,30 +87,30 @@
 	margin-bottom: 24rpx;
 	box-shadow: inset 0 2rpx 6rpx rgba(0, 0, 0, 0.05);
 	border: 1rpx solid #eee;
-  }
-  
-  /* 图片列表 */
-  .image-list {
+}
+
+/* 图片列表 */
+.image-list {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 16rpx;
-  }
-  
-  .image-item {
+}
+
+.image-item {
 	width: 150rpx;
 	height: 150rpx;
 	border-radius: 12rpx;
 	overflow: hidden;
 	box-shadow: 0 3rpx 8rpx rgba(0, 0, 0, 0.1);
-  }
-  
-  .preview-image {
+}
+
+.preview-image {
 	width: 100%;
 	height: 100%;
-  }
-  
-  /* 添加图片按钮 */
-  .add-image-btn {
+}
+
+/* 添加图片按钮 */
+.add-image-btn {
 	width: 150rpx;
 	height: 150rpx;
 	border: 2rpx dashed #ccc;
@@ -119,53 +119,53 @@
 	align-items: center;
 	justify-content: center;
 	background-color: #fff;
-  }
-  
-  .add-icon {
+}
+
+.add-icon {
 	font-size: 40rpx;
 	color: #999;
-  }
-  
-  /* 确认上传按钮 */
-  .confirm-upload-btn {
+}
+
+/* 确认上传按钮 */
+.confirm-upload-btn {
 	width: 100%;
 	background-color: #07c160;
 	color: #fff;
 	border-radius: 10rpx;
 	font-size: 28rpx;
 	padding: 14rpx 0;
-  }
-  
-  /* 按钮禁用状态 */
-  button[disabled] {
+}
+
+/* 按钮禁用状态 */
+button[disabled] {
 	background-color: #ccc !important;
 	color: #fff !important;
-  }
-  
-  /* 网络检测模块标题 */
-  .section-title {
+}
+
+/* 网络检测模块标题 */
+.section-title {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 24rpx;
 	font-size: 30rpx;
 	font-weight: bold;
-  }
-  
-  .title-text {
+}
+
+.title-text {
 	color: #333;
-  }
-  
-  .title-text.finished {
+}
+
+.title-text.finished {
 	color: #00b42a;
-  }
-  
-  /* 网络检测容器 */
-  .network-test-container {
+}
+
+/* 网络检测容器 */
+.network-test-container {
 	margin-bottom: 24rpx;
-  }
-  
-  .test-header {
+}
+
+.test-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -173,22 +173,22 @@
 	font-weight: bold;
 	margin-bottom: 16rpx;
 	color: #007aff;
-  }
-  
-  .finish-tip {
+}
+
+.finish-tip {
 	font-size: 24rpx;
 	color: #999;
 	font-weight: normal;
-  }
-  
-  /* 检测按钮组 */
-  .test-btn-group {
+}
+
+/* 检测按钮组 */
+.test-btn-group {
 	display: flex;
 	flex-direction: column;
 	gap: 20rpx;
-  }
-  
-  .test-btn-item {
+}
+
+.test-btn-item {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -196,40 +196,40 @@
 	background-color: #fafafa;
 	border-radius: 12rpx;
 	box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.04);
-  }
-  
-  .click-effect:active {
+}
+
+.click-effect:active {
 	background-color: #eee;
 	transform: scale(0.98);
-  }
-  
-  /* 检测状态标签 */
-  .test-status {
+}
+
+/* 检测状态标签 */
+.test-status {
 	padding: 8rpx 16rpx;
 	border-radius: 8rpx;
 	font-size: 24rpx;
 	min-width: 100rpx;
 	text-align: center;
-  }
-  
-  .test-status.testing {
+}
+
+.test-status.testing {
 	background-color: #fff7e6;
 	color: #fa8c16;
-  }
-  
-  .test-status.success {
+}
+
+.test-status.success {
 	background-color: #e6ffed;
 	color: #00b42a;
-  }
-  
-  .test-status.fail {
+}
+
+.test-status.fail {
 	background-color: #fff2f0;
 	color: #ff4d4f;
-  }
-  
-  /* 日志模块 */
-  .test-log-section {
-	flex: 0 0 25%;
+}
+
+/* 日志外层容器 - 固定整体高度 */
+.test-log-section {
+	height: 350rpx;
 	background-color: #fff;
 	border-radius: 16rpx;
 	padding: 20rpx;
@@ -238,25 +238,30 @@
 	display: flex;
 	flex-direction: column;
 	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
-  }
-  
-  .log-title {
+	/* 禁止内容溢出撑开容器 */
+	overflow: hidden;
+}
+
+.log-title {
 	font-size: 28rpx;
 	font-weight: bold;
 	margin-bottom: 12rpx;
-  }
-  
-  .log-content-container {
-	flex: 1;
+	flex-shrink: 0;
+}
+
+/* 关键：给滚动容器设置固定高度，滚动才会生效 */
+.log-content-container {
 	width: 100%;
+	/* 总高300rpx - 上下padding - 标题高度 = 实际滚动区高度 */
+	height: 220rpx;
 	box-sizing: border-box;
 	background-color: #f9f9f9;
 	border-radius: 10rpx;
 	padding: 16rpx;
 	box-shadow: inset 0 2rpx 5rpx rgba(0, 0, 0, 0.05);
-  }
-  
-  .log-item {
+}
+
+.log-item {
 	width: 100%;
 	box-sizing: border-box;
 	font-size: 24rpx;
@@ -264,10 +269,10 @@
 	line-height: 1.5;
 	margin-bottom: 6rpx;
 	word-break: break-all;
-  }
-  
-  /* 底部固定提交栏 */
-  .fixed-submit-bar {
+}
+
+/* 底部固定提交栏 */
+.fixed-submit-bar {
 	position: fixed;
 	bottom: 0;
 	left: 0;
@@ -281,9 +286,9 @@
 	align-items: center;
 	justify-content: center;
 	z-index: 999;
-  }
-  
-  .submit-check-btn {
+}
+
+.submit-check-btn {
 	width: 100%;
 	height: 70rpx;
 	background-color: #007aff;
@@ -291,8 +296,8 @@
 	font-size: 28rpx;
 	font-weight: bold;
 	border-radius: 12rpx;
-  }
-  
-  .submit-check-btn[disabled] {
+}
+
+.submit-check-btn[disabled] {
 	background-color: #ccc !important;
-  }
+}

@@ -125,7 +125,7 @@
   <!-- ==================== 实时日志展示模块 ==================== -->
   <view class="test-log-section">
     <view class="log-title">测试日志</view>
-    <scroll-view scroll-y class="log-content-container">
+    <scroll-view scroll-y class="log-content-container" id="logScroll">
       <view class="log-item" wx:for="{{testLogList}}" wx:key="index">
         {{item}}
       </view>

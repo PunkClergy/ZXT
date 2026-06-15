@@ -7,6 +7,11 @@ const {
   byPost
 } = require('../../../utils/request/http')
 
+// 日志最大保留条数，避免数据过多卡顿
+const MAX_LOG_COUNT = 50;
+// 图片最大选择数量
+const MAX_IMAGE_COUNT = 9;
+
 Page({
   data: {
     checkForm: {
@@ -167,14 +172,26 @@ Page({
     }
   },
 
+  // 【修复】图片选择：追加图片，不覆盖原有图片
   handleChooseImage() {
+    const { selectedImageList } = this.data;
+    const remain = MAX_IMAGE_COUNT - selectedImageList.length;
+    if (remain <= 0) {
+      wx.showToast({
+        title: '最多上传9张图片',
+        icon: 'none'
+      })
+      return;
+    }
     wx.chooseImage({
-      count: 9,
+      count: remain, // 剩余可选择数量
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
+        // 数组拼接，追加到末尾
+        const newList = selectedImageList.concat(res.tempFilePaths);
         this.setData({
-          selectedImageList: res.tempFilePaths
+          selectedImageList: newList
         })
       },
       fail: (err) => {
@@ -361,7 +378,7 @@ Page({
     // 从缓存 userKey 读取 token
     const userInfo = wx.getStorageSync('userKey') || {}
     const token = userInfo.token || ''
-  
+
     wx.showLoading({
       title: '提交检测结果中...'
     })
@@ -382,7 +399,7 @@ Page({
           fail: reject
         })
       })
-  
+
       // 解析接口返回数据
       const resData = res?.data || {}
       if (resData.code === 1000) {
@@ -436,11 +453,29 @@ Page({
     return map[command] || command
   },
 
+  // 追加日志 + 自动滚动到顶部 + 限制最大条数
   appendTestLog(content) {
     const time = new Date().toLocaleTimeString()
-    const logList = [`[${time}] ${content}`, ...this.data.testLogList]
+    let logList = [`[${time}] ${content}`, ...this.data.testLogList]
+
+    // 截断数组，只保留最新 MAX_LOG_COUNT 条，防止无限增加
+    if (logList.length > MAX_LOG_COUNT) {
+      logList = logList.slice(0, MAX_LOG_COUNT)
+    }
+
     this.setData({
       testLogList: logList
+    }, () => {
+      // 视图更新完成后自动置顶
+      wx.createSelectorQuery()
+        .select('#logScroll')
+        .node()
+        .exec(res => {
+          const scrollView = res[0].node
+          if (scrollView) {
+            scrollView.scrollTo(0, 0)
+          }
+        })
     })
   }
 })
