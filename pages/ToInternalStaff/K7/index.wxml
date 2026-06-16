@@ -1,172 +1,153 @@
-<!-- 页面根容器：设备检测全流程主页面 -->
+<!-- 页面根容器 -->
 <view class="device-check-page">
-  <!-- 内容主体区域：表单 + 上传 + 功能检测 -->
   <view class="content-wrapper">
-    <!-- 主内容卡片：统一视觉容器 -->
     <view class="main-content-card">
 
-      <!-- ==================== 1. 设备信息绑定模块 ==================== -->
+      <!-- ===== 设备绑定 ===== -->
       <view class="device-bind-section">
         <view class="form-item">
           <text class="form-label">设备号：</text>
           <input value="{{checkForm.idc}}" class="form-input" placeholder="请输入设备号(SN)" bindinput="inputIdc" />
         </view>
-
         <view class="form-item">
           <text class="form-label">检验码：</text>
           <input value="{{checkForm.code}}" class="form-input" placeholder="请输入检验码(CODE)" bindinput="inputCode" />
         </view>
-
-        <!-- 绑定设备按钮：未输入完整/已绑定时禁用 -->
-        <button class="bind-device-btn" disabled="{{!checkForm.idc || !checkForm.code || isDeviceBound}}" bindtap="handleDeviceBind">
-          开始检测
-        </button>
+        <button class="bind-device-btn" disabled="{{!checkForm.idc || !checkForm.code || isDeviceBound}}" bindtap="handleDeviceBind">开始检测</button>
       </view>
 
-      <!-- 模块分隔线 -->
       <view class="section-divider"></view>
 
-      <!-- ==================== 2. 现场图片上传模块 ==================== -->
+      <!-- ===== 图片上传 ===== -->
       <view class="image-upload-section">
         <view class="upload-title">现场图片上传</view>
-        <view class="upload-tip">
-          请拍照上传：车辆名牌、ACC、常火、打铁、主机及回避器、安装位置（最少4张，可多传）
-        </view>
-        <!-- 切换示例显示/隐藏按钮 -->
-        <view class="show-demo-btn" bindtap="toggleDemo">
-          {{isShowDemo ? '收起示例' : '查看示例'}}
-        </view>
+        <view class="upload-tip">请按分类上传：车辆名牌、ACC、常火、打铁 至少各1张，每组可上传多张</view>
 
-        <!-- 图片示例区域：默认隐藏，点击按钮展示 + 每张图带描述 -->
-        <view class="demo-img-wrap {{isShowDemo ? 'show' : ''}}">
-          <text class="demo-txt">参考示例：</text>
-          <view class="demo-img-list">
-            <!-- 第1张示例 -->
-            <view class="demo-item">
-              <image class="demo-img" src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Nameplate.png" mode="aspectFill" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Nameplate.png"></image>
-              <text class="demo-desc">车辆名牌</text>
+        <!-- 分类上传区（每个分类前固定示例图） -->
+        <view class="category-upload-wrapper">
+          <!-- 1. 车辆名牌 -->
+          <view class="upload-item">
+            <view class="upload-label">车辆名牌（必传）</view>
+            <view class="image-list">
+              <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Nameplate.png">
+                <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Nameplate.png" class="preview-image"></image>
+                <view class="demo-badge">示例</view>
+              </view>
+              <view class="image-item" wx:for="{{imageGroups.namePlate}}" wx:key="index">
+                <image src="{{item}}" class="preview-image" bindtap="previewUploadImg" data-url="{{item}}"></image>
+                <view class="delete-btn" catchtap="deleteImage" data-group="namePlate" data-index="{{index}}">×</view>
+              </view>
+              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="namePlate" data-max="9">
+                <text class="add-icon">+</text>
+              </view>
             </view>
-            <!-- 第2张示例 -->
-            <view class="demo-item">
-              <image class="demo-img" src="https://k1sw.wiselink.net.cn/img/app2.0/k7/ACC.png" mode="aspectFill" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/ACC.png"></image>
-              <text class="demo-desc">ACC接口</text>
+          </view>
+
+          <!-- 2. ACC接口 -->
+          <view class="upload-item">
+            <view class="upload-label">ACC接口（必传）</view>
+            <view class="image-list">
+              <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/ACC.png">
+                <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/ACC.png" class="preview-image"></image>
+                <view class="demo-badge">示例</view>
+              </view>
+              <view class="image-item" wx:for="{{imageGroups.acc}}" wx:key="index">
+                <image src="{{item}}" class="preview-image" bindtap="previewUploadImg" data-url="{{item}}"></image>
+                <view class="delete-btn" catchtap="deleteImage" data-group="acc" data-index="{{index}}">×</view>
+              </view>
+              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="acc" data-max="9">
+                <text class="add-icon">+</text>
+              </view>
             </view>
-            <!-- 第3张示例 -->
-            <view class="demo-item">
-              <image class="demo-img" src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Constant.png" mode="aspectFill" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Constant.png"></image>
-              <text class="demo-desc">常火线路</text>
+          </view>
+
+          <!-- 3. 常火线路 -->
+          <view class="upload-item">
+            <view class="upload-label">常火线路（必传）</view>
+            <view class="image-list">
+              <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Constant.png">
+                <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Constant.png" class="preview-image"></image>
+                <view class="demo-badge">示例</view>
+              </view>
+              <view class="image-item" wx:for="{{imageGroups.constant}}" wx:key="index">
+                <image src="{{item}}" class="preview-image" bindtap="previewUploadImg" data-url="{{item}}"></image>
+                <view class="delete-btn" catchtap="deleteImage" data-group="constant" data-index="{{index}}">×</view>
+              </view>
+              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="constant" data-max="9">
+                <text class="add-icon">+</text>
+              </view>
             </view>
-            <!-- 第4张示例 -->
-            <view class="demo-item">
-              <image class="demo-img" src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Ground.png" mode="aspectFill" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Ground.png"></image>
-              <text class="demo-desc">打铁部位</text>
+          </view>
+
+          <!-- 4. 打铁部位 -->
+          <view class="upload-item">
+            <view class="upload-label">打铁部位（必传）</view>
+            <view class="image-list">
+              <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Ground.png">
+                <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Ground.png" class="preview-image"></image>
+                <view class="demo-badge">示例</view>
+              </view>
+              <view class="image-item" wx:for="{{imageGroups.ground}}" wx:key="index">
+                <image src="{{item}}" class="preview-image" bindtap="previewUploadImg" data-url="{{item}}"></image>
+                <view class="delete-btn" catchtap="deleteImage" data-group="ground" data-index="{{index}}">×</view>
+              </view>
+              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="ground" data-max="9">
+                <text class="add-icon">+</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 5. 其他 -->
+          <view class="upload-item">
+            <view class="upload-label">其他安装图片（可选）</view>
+            <view class="image-list">
+              <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Nameplate.png">
+                <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/Nameplate.png" class="preview-image"></image>
+                <view class="demo-badge">示例</view>
+              </view>
+              <view class="image-item" wx:for="{{imageGroups.other}}" wx:key="index">
+                <image src="{{item}}" class="preview-image" bindtap="previewUploadImg" data-url="{{item}}"></image>
+                <view class="delete-btn" catchtap="deleteImage" data-group="other" data-index="{{index}}">×</view>
+              </view>
+              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="other" data-max="9">
+                <text class="add-icon">+</text>
+              </view>
             </view>
           </view>
         </view>
 
-        <!-- 图片列表滚动容器 -->
-        <scroll-view scroll-y class="upload-scroll-container">
-          <view class="image-list">
-            <!-- 已上传图片 -->
-            <view class="image-item" wx:for="{{selectedImageList}}" wx:key="index">
-              <image src="{{item}}" mode="aspectFill" class="preview-image"></image>
-            </view>
-
-            <!-- 添加图片按钮 -->
-            <view class="add-image-btn" bindtap="handleChooseImage">
-              <text class="add-icon">+</text>
-            </view>
-          </view>
-        </scroll-view>
-
-        <!-- 确认上传按钮 -->
-        <button class="confirm-upload-btn" disabled="{{!isDeviceBound || selectedImageList.length < 4 || isImageUploaded || isUploading}}" bindtap="handleBatchUploadImages">
-          确认上传图片
-        </button>
+        <button class="confirm-upload-btn" disabled="{{!isDeviceBound || !allRequiredImgReady || isImageUploaded || isUploading}}" bindtap="handleBatchUploadImages">确认上传图片</button>
       </view>
 
       <view class="section-divider"></view>
 
-      <!-- ==================== 3. 网络模式功能检测 ==================== -->
+      <!-- ===== 网络检测 ===== -->
       <view class="network-check-section">
-        <view class="section-title">
-          <text class="title-text {{isNetworkTestFinished ? 'finished' : ''}}">
-            网络模式检测
-          </text>
-        </view>
-
-        <!-- 网络检测操作区 -->
+        <view class="section-title"><text class="title-text {{isNetworkTestFinished ? 'finished' : ''}}">网络模式检测</text></view>
         <view class="network-test-container" style="pointer-events: {{isNetworkTestFinished ? 'none' : 'auto'}}">
-          <view class="test-header">
-            <text>网络模式操作</text>
-            <text class="finish-tip" wx:if="{{isNetworkTestFinished}}">✅ 已完成</text>
-          </view>
-
+          <view class="test-header"><text>网络模式操作</text><text class="finish-tip" wx:if="{{isNetworkTestFinished}}">✅ 已完成</text></view>
           <view class="test-btn-group">
-            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="lock">
-              <text>开锁</text>
-              <text class="test-status {{networkTestStatus.lockStatus}}">
-                <text wx:if="{{networkTestStatus.lockStatus =='success'}}">成功</text>
-                <text wx:if="{{networkTestStatus.lockStatus =='testing'}}">测试中</text>
-                <text wx:if="{{networkTestStatus.lockStatus =='fail'}}">失败</text>
-              </text>
-            </view>
-
-            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="unlock">
-              <text>关锁</text>
-              <text class="test-status {{networkTestStatus.unlockStatus}}">
-                <text wx:if="{{networkTestStatus.unlockStatus =='success'}}">成功</text>
-                <text wx:if="{{networkTestStatus.unlockStatus =='testing'}}">测试中</text>
-                <text wx:if="{{networkTestStatus.unlockStatus =='fail'}}">失败</text>
-              </text>
-            </view>
-
-            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="findCar">
-              <text>寻车</text>
-              <text class="test-status {{networkTestStatus.findCarStatus}}">
-                <text wx:if="{{networkTestStatus.findCarStatus =='success'}}">成功</text>
-                <text wx:if="{{networkTestStatus.findCarStatus =='testing'}}">测试中</text>
-                <text wx:if="{{networkTestStatus.findCarStatus =='fail'}}">失败</text>
-              </text>
-            </view>
-
-            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="risk">
-              <text>风控拦截</text>
-              <text class="test-status {{networkTestStatus.riskStatus}}">
-                <text wx:if="{{networkTestStatus.riskStatus =='success'}}">成功</text>
-                <text wx:if="{{networkTestStatus.riskStatus =='testing'}}">测试中</text>
-                <text wx:if="{{networkTestStatus.riskStatus =='fail'}}">失败</text>
-              </text>
-            </view>
-
-            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="cancelRisk">
-              <text>取消拦截</text>
-              <text class="test-status {{networkTestStatus.cancelRiskStatus}}">
-                <text wx:if="{{networkTestStatus.cancelRiskStatus =='success'}}">成功</text>
-                <text wx:if="{{networkTestStatus.cancelRiskStatus =='testing'}}">测试中</text>
-                <text wx:if="{{networkTestStatus.cancelRiskStatus =='fail'}}">失败</text>
-              </text>
-            </view>
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="lock"><text>开锁</text><text class="test-status {{networkTestStatus.lockStatus}}"><text wx:if="{{networkTestStatus.lockStatus =='success'}}">成功</text><text wx:if="{{networkTestStatus.lockStatus =='testing'}}">测试中</text><text wx:if="{{networkTestStatus.lockStatus =='fail'}}">失败</text></text></view>
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="unlock"><text>关锁</text><text class="test-status {{networkTestStatus.unlockStatus}}"><text wx:if="{{networkTestStatus.unlockStatus =='success'}}">成功</text><text wx:if="{{networkTestStatus.unlockStatus =='testing'}}">测试中</text><text wx:if="{{networkTestStatus.unlockStatus =='fail'}}">失败</text></text></view>
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="findCar"><text>寻车</text><text class="test-status {{networkTestStatus.findCarStatus}}"><text wx:if="{{networkTestStatus.findCarStatus =='success'}}">成功</text><text wx:if="{{networkTestStatus.findCarStatus =='testing'}}">测试中</text><text wx:if="{{networkTestStatus.findCarStatus =='fail'}}">失败</text></text></view>
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="risk"><text>风控拦截</text><text class="test-status {{networkTestStatus.riskStatus}}"><text wx:if="{{networkTestStatus.riskStatus =='success'}}">成功</text><text wx:if="{{networkTestStatus.riskStatus =='testing'}}">测试中</text><text wx:if="{{networkTestStatus.riskStatus =='fail'}}">失败</text></text></view>
+            <view class="test-btn-item click-effect" bindtap="handleNetworkTest" data-type="cancelRisk"><text>取消拦截</text><text class="test-status {{networkTestStatus.cancelRiskStatus}}"><text wx:if="{{networkTestStatus.cancelRiskStatus =='success'}}">成功</text><text wx:if="{{networkTestStatus.cancelRiskStatus =='testing'}}">测试中</text><text wx:if="{{networkTestStatus.cancelRiskStatus =='fail'}}">失败</text></text></view>
           </view>
         </view>
       </view>
     </view>
   </view>
 
-  <!-- ==================== 实时日志展示模块 ==================== -->
+  <!-- ===== 日志 ===== -->
   <view class="test-log-section">
     <view class="log-title">测试日志</view>
     <scroll-view scroll-y class="log-content-container" id="logScroll">
-      <view class="log-item" wx:for="{{testLogList}}" wx:key="index">
-        {{item}}
-      </view>
+      <view class="log-item" wx:for="{{testLogList}}" wx:key="index">{{item}}</view>
     </scroll-view>
   </view>
 
-  <!-- ==================== 底部固定提交按钮 ==================== -->
+  <!-- ===== 底部提交 ===== -->
   <view class="fixed-submit-bar">
-    <button class="submit-check-btn" disabled="{{!canSubmitFinalCheck}}" bindtap="handleSubmitFinalCheck">
-      提交检测
-    </button>
+    <button class="submit-check-btn" disabled="{{!canSubmitFinalCheck}}" bindtap="handleSubmitFinalCheck">提交检测</button>
   </view>
 </view>

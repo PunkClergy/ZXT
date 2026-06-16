@@ -7,54 +7,44 @@
 	background-color: #f5f7fa;
 	box-sizing: border-box;
 	padding-bottom: 100rpx;
-}
-
-/* 内容主体 */
-.content-wrapper {
+  }
+  .content-wrapper {
 	flex: 0 0 70%;
 	overflow-y: auto;
 	padding: 30rpx 20rpx 0;
-}
-
-/* 主内容卡片 */
-.main-content-card {
+  }
+  .main-content-card {
 	background-color: #fff;
 	border-radius: 20rpx;
 	padding: 40rpx;
 	box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.08);
-}
-
-/* 模块分隔线 */
-.section-divider {
+  }
+  .section-divider {
 	height: 1rpx;
 	background-color: #f0f0f0;
 	margin: 40rpx 0;
-}
-
-/* 表单项目 */
-.form-item {
+  }
+  
+  /* 表单 */
+  .form-item {
 	display: flex;
 	align-items: center;
 	margin-bottom: 24rpx;
-}
-
-.form-label {
+  }
+  .form-label {
 	width: 150rpx;
 	font-size: 28rpx;
 	color: #333;
-}
-
-.form-input {
+  }
+  .form-input {
 	flex: 1;
 	height: 70rpx;
 	border: 2rpx solid #eee;
 	border-radius: 10rpx;
 	padding: 0 20rpx;
 	font-size: 28rpx;
-}
-
-/* 绑定设备按钮 */
-.bind-device-btn {
+  }
+  .bind-device-btn {
 	width: 100%;
 	background-color: #007aff;
 	color: #fff;
@@ -62,106 +52,149 @@
 	font-size: 28rpx;
 	padding: 14rpx 0;
 	margin-top: 10rpx;
-}
-
-/* 图片上传模块 */
-.upload-title {
+  }
+  
+  /* 图片上传 */
+  .upload-title {
 	font-size: 30rpx;
 	font-weight: bold;
 	margin-bottom: 8rpx;
-}
-
-.upload-tip {
+  }
+  .upload-tip {
 	font-size: 24rpx;
 	color: #fa8c16;
 	margin-bottom: 10rpx;
 	line-height: 1.4;
-}
-
-/* 查看示例按钮 */
-.show-demo-btn {
+  }
+  .show-demo-btn {
 	font-size: 24rpx;
 	color: #007aff;
 	display: inline-block;
 	margin-bottom: 10rpx;
-}
-
-/* 图片示例区域 默认隐藏 */
-.demo-img-wrap {
+  }
+  
+  /* 顶部示例区域 */
+  .demo-img-wrap {
 	margin: 10rpx 0 20rpx;
 	display: none;
-}
-.demo-img-wrap.show {
+  }
+  .demo-img-wrap.show {
 	display: block;
-}
-
-.demo-txt {
+  }
+  .demo-txt {
 	font-size: 24rpx;
 	color: #666;
 	display: block;
 	margin-bottom: 12rpx;
-}
-/* 示例整体横向排列 */
-.demo-img-list {
+  }
+  .demo-img-list {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 20rpx;
-}
-/* 单张示例+文字容器 */
-.demo-item {
+  }
+  .demo-item {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	width: 140rpx;
-}
-.demo-img {
+  }
+  .demo-img {
 	width: 120rpx;
 	height: 120rpx;
 	border-radius: 8rpx;
 	border: 1rpx solid #eee;
-}
-/* 图片描述文字 */
-.demo-desc {
+  }
+  .demo-desc {
 	font-size: 22rpx;
 	color: #666;
 	margin-top: 6rpx;
 	text-align: center;
 	line-height: 1.2;
-}
-
-/* 图片上传滚动容器 */
-.upload-scroll-container {
-	max-height: 380rpx;
-	background-color: #fafbfc;
-	border-radius: 12rpx;
-	padding: 20rpx;
-	margin-bottom: 24rpx;
-	box-shadow: inset 0 2rpx 6rpx rgba(0, 0, 0, 0.05);
-	border: 1rpx solid #eee;
-}
-
-/* 图片列表 */
-.image-list {
+  }
+  
+  /* 分类上传容器 */
+  .category-upload-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 24rpx;
+	margin-bottom: 30rpx;
+  }
+  .upload-item {
+	display: flex;
+	flex-direction: column;
+	gap: 12rpx;
+  }
+  .upload-label {
+	font-size: 26rpx;
+	font-weight: 500;
+	color: #333;
+	padding-left: 8rpx;
+  }
+  
+  /* 图片列表 */
+  .image-list {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 16rpx;
-}
-
-.image-item {
+	align-items: flex-start;
+  }
+  .image-item {
 	width: 145rpx;
 	height: 145rpx;
 	border-radius: 12rpx;
 	overflow: hidden;
 	box-shadow: 0 3rpx 8rpx rgba(0, 0, 0, 0.1);
-}
-
-.preview-image {
+	flex-shrink: 0;
+	position: relative;
+  }
+  .preview-image {
 	width: 100%;
 	height: 100%;
-}
-
-/* 添加图片按钮 */
-.add-image-btn {
+	display: block;
+  }
+  
+  /* 示例图片特殊样式 */
+  .demo-image-item {
+	border: 2rpx solid #1890ff;
+	box-sizing: border-box;
+  }
+  .demo-badge {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: rgba(24, 144, 255, 0.85);
+	color: #fff;
+	font-size: 20rpx;
+	padding: 4rpx 12rpx;
+	border-radius: 0 0 0 12rpx;
+	line-height: 1.4;
+	pointer-events: none;
+	z-index: 1;
+  }
+  
+  /* 删除按钮（用户图片右上角） */
+  .delete-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 40rpx;
+	height: 40rpx;
+	background-color: rgba(255, 0, 0, 0.75);
+	color: #fff;
+	font-size: 30rpx;
+	line-height: 40rpx;
+	text-align: center;
+	border-radius: 0 12rpx 0 12rpx;
+	z-index: 2;
+	pointer-events: auto;
+  }
+  /* 示例图片不显示删除按钮（demo-image-item 下的 .delete-btn 隐藏） */
+  .demo-image-item .delete-btn {
+	display: none;
+  }
+  
+  /* 添加按钮 */
+  .add-image-btn {
 	width: 145rpx;
 	height: 145rpx;
 	border: 2rpx dashed #ccc;
@@ -170,53 +203,46 @@
 	align-items: center;
 	justify-content: center;
 	background-color: #fff;
-}
-
-.add-icon {
+	flex-shrink: 0;
+  }
+  .add-icon {
 	font-size: 40rpx;
 	color: #999;
-}
-
-/* 确认上传按钮 */
-.confirm-upload-btn {
+  }
+  
+  /* 确认上传按钮 */
+  .confirm-upload-btn {
 	width: 100%;
 	background-color: #07c160;
 	color: #fff;
 	border-radius: 10rpx;
 	font-size: 28rpx;
 	padding: 14rpx 0;
-}
-
-/* 按钮禁用状态 */
-button[disabled] {
+  }
+  button[disabled] {
 	background-color: #ccc !important;
 	color: #fff !important;
-}
-
-/* 网络检测模块标题 */
-.section-title {
+  }
+  
+  /* 网络检测 */
+  .section-title {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 24rpx;
 	font-size: 30rpx;
 	font-weight: bold;
-}
-
-.title-text {
+  }
+  .title-text {
 	color: #333;
-}
-
-.title-text.finished {
+  }
+  .title-text.finished {
 	color: #00b42a;
-}
-
-/* 网络检测容器 */
-.network-test-container {
+  }
+  .network-test-container {
 	margin-bottom: 24rpx;
-}
-
-.test-header {
+  }
+  .test-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -224,22 +250,18 @@ button[disabled] {
 	font-weight: bold;
 	margin-bottom: 16rpx;
 	color: #007aff;
-}
-
-.finish-tip {
+  }
+  .finish-tip {
 	font-size: 24rpx;
 	color: #999;
 	font-weight: normal;
-}
-
-/* 检测按钮组 */
-.test-btn-group {
+  }
+  .test-btn-group {
 	display: flex;
 	flex-direction: column;
 	gap: 20rpx;
-}
-
-.test-btn-item {
+  }
+  .test-btn-item {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -247,39 +269,33 @@ button[disabled] {
 	background-color: #fafafa;
 	border-radius: 12rpx;
 	box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.04);
-}
-
-.click-effect:active {
+  }
+  .click-effect:active {
 	background-color: #eee;
 	transform: scale(0.98);
-}
-
-/* 检测状态标签 */
-.test-status {
+  }
+  .test-status {
 	padding: 8rpx 16rpx;
 	border-radius: 8rpx;
 	font-size: 24rpx;
 	min-width: 100rpx;
 	text-align: center;
-}
-
-.test-status.testing {
+  }
+  .test-status.testing {
 	background-color: #fff7e6;
 	color: #fa8c16;
-}
-
-.test-status.success {
+  }
+  .test-status.success {
 	background-color: #e6ffed;
 	color: #00b42a;
-}
-
-.test-status.fail {
+  }
+  .test-status.fail {
 	background-color: #fff2f0;
 	color: #ff4d4f;
-}
-
-/* 日志外层容器 - 固定整体高度 */
-.test-log-section {
+  }
+  
+  /* 日志 */
+  .test-log-section {
 	height: 300rpx;
 	background-color: #fff;
 	border-radius: 16rpx;
@@ -290,17 +306,14 @@ button[disabled] {
 	flex-direction: column;
 	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
 	overflow: hidden;
-}
-
-.log-title {
+  }
+  .log-title {
 	font-size: 28rpx;
 	font-weight: bold;
 	margin-bottom: 12rpx;
 	flex-shrink: 0;
-}
-
-/* 滚动容器固定高度，保证滚动生效 */
-.log-content-container {
+  }
+  .log-content-container {
 	width: 100%;
 	height: 220rpx;
 	box-sizing: border-box;
@@ -308,9 +321,8 @@ button[disabled] {
 	border-radius: 10rpx;
 	padding: 16rpx;
 	box-shadow: inset 0 2rpx 5rpx rgba(0, 0, 0, 0.05);
-}
-
-.log-item {
+  }
+  .log-item {
 	width: 100%;
 	box-sizing: border-box;
 	font-size: 24rpx;
@@ -318,10 +330,10 @@ button[disabled] {
 	line-height: 1.5;
 	margin-bottom: 6rpx;
 	word-break: break-all;
-}
-
-/* 底部固定提交栏 */
-.fixed-submit-bar {
+  }
+  
+  /* 底部提交 */
+  .fixed-submit-bar {
 	position: fixed;
 	bottom: 0;
 	left: 0;
@@ -335,9 +347,8 @@ button[disabled] {
 	align-items: center;
 	justify-content: center;
 	z-index: 999;
-}
-
-.submit-check-btn {
+  }
+  .submit-check-btn {
 	width: 100%;
 	height: 70rpx;
 	background-color: #007aff;
@@ -345,8 +356,7 @@ button[disabled] {
 	font-size: 28rpx;
 	font-weight: bold;
 	border-radius: 12rpx;
-}
-
-.submit-check-btn[disabled] {
+  }
+  .submit-check-btn[disabled] {
 	background-color: #ccc !important;
-}
+  }
