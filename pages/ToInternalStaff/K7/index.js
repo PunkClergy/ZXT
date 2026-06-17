@@ -155,7 +155,7 @@ Page({
       // const fieldName = index === 0 ? 'installImgs' : `installImgs${index}`;
       
       // 方式二：无规律预定义列表（示例）
-      const customNames = ['installImgs1', 'install', 'installImgsaaa', 'installImgsfff', 'installImgslll'];
+      const customNames = ['carModelImgs', 'accInterfaceImgs', 'constantLiveWireImgs', 'anvilFaceImgs', 'otherImgs'];
       // 如果索引超出列表长度，则回退为递增
       const fieldName = customNames[index] || `installImgs${index}`;
       
