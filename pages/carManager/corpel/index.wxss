@@ -29,11 +29,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  /* 使内容靠左对齐 */
   padding-left: 16px;
-  /* 可选：增加一些左边距 */
   box-sizing: border-box;
-  /* 确保padding不会影响总宽度 */
 }
 
 /* 标题容器 */
@@ -58,61 +55,6 @@
   line-height: 30rpx;
 }
 
-/* 搜索框容器 */
-.search-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 30rpx;
-}
-
-.search-drop {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 90%;
-}
-
-/* 搜索框 */
-.search-box {
-  display: flex;
-  align-items: center;
-  background-color: #ffffff;
-  border-radius: 200rpx;
-  padding: 8px 12px;
-  width: 90%;
-}
-
-/* 搜索图标 */
-.search-icon {
-  margin-right: 8px;
-  /* 图标与输入框之间留出间距 */
-}
-
-/* 输入框 */
-.search-input {
-  flex: 1;
-  border: none;
-  background-color: transparent;
-  outline: none;
-  font-size: 16px;
-}
-
-.search-count {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 90%;
-}
-
-.search-count text {
-  font-family: PingFang SC;
-  font-weight: 500;
-  font-size: 22rpx;
-  color: #7B7C7C;
-}
-
 /* 主要内容容器 */
 .content-container {
   position: absolute;
@@ -120,8 +62,6 @@
   left: 0;
   right: 0;
   overflow-y: auto;
-  /* 当内容超出高度时显示滚动条 */
-
 }
 
 /* 内容项 */
@@ -156,48 +96,12 @@
   gap: 10rpx;
 }
 
-.left-category image {
-  width: 43rpx;
-  height: 35rpx;
-}
-
-.left-split_line {
-  width: 1rpx;
-  height: 28rpx;
-  border-left: 1px solid #797979;
-}
-
-.left-brand {
-  font-family: PingFang SC;
-  font-weight: 500;
-  font-size: 24rpx;
-  color: #4587FD;
-  border: 1px solid #4587FD;
-  border-radius: 8rpx;
-  padding: 0 15rpx;
-}
-
 .left-model {
   font-family: PingFang SC;
   font-weight: 500;
   font-size: 24rpx;
   color: #333333;
 }
-
-.head-right {
-  display: flex;
-  flex-direction: row;
-  gap: 20rpx;
-  align-items: center;
-  justify-content: center;
-}
-
-.head-right image {
-  width: 30rpx;
-  height: 30rpx;
-}
-
-
 
 .content-item-info {
   display: flex;
@@ -217,25 +121,16 @@
   font-weight: 500;
   font-size: 24rpx;
   color: #333333;
-
 }
 
 .long-info-item {
   flex-basis: 100% !important;
-  /* 长内容时占满整行 */
 }
 
 .content-item-footer {
   display: flex;
   padding: 15rpx;
   justify-content: space-between;
-}
-
-.footer-left {
-  font-family: PingFang SC;
-  font-weight: bold;
-  font-size: 26rpx;
-  color: #333333;
 }
 
 .footer-right {
@@ -257,25 +152,138 @@
   padding: 4rpx 15rpx;
 }
 
-.levitation-button {
-  position: absolute;
-  bottom: 50rpx;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+.pop-car-text {
+  color: #1B64B1;
+  margin-left: 10rpx;
 }
 
-.levitation-button text {
+/* 弹窗通用样式 */
+.popup-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 75rpx;
-  width: 40%;
-  background: linear-gradient(88deg, #1576DC, #1B64B1);
-  box-shadow: 0rpx 1rpx 13rpx 0rpx rgba(51, 63, 92, 0.31);
-  border-radius: 36rpx;
-  font-family: PingFang SC;
+}
+.popup-wrap {
+  width: 85%;
+  max-height: 75vh;
+  background: #fff;
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.popup-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+.popup-title {
+  font-size: 30rpx;
   font-weight: bold;
-  font-size: 32rpx;
-  color: #FFFFFF;
+  color: #333;
+}
+.popup-close {
+  font-size: 40rpx;
+  color: #999;
+}
+.popup-scroll {
+  width: 90%;
+  flex: 1;
+  padding: 0 30rpx;
+  overflow-y: auto;
+}
+.scroll-bottom-placeholder {
+  height: 140rpx;
+  width: 100%;
+}
+.empty-tip {
+  text-align: center;
+  padding: 80rpx 0;
+  font-size: 26rpx;
+  color: #999;
+}
+.popup-bottom {
+  flex-shrink: 0;
+  padding: 25rpx 30rpx;
+  padding-bottom: calc(25rpx + env(safe-area-inset-bottom));
+  border-top: 1rpx solid #eee;
+}
+
+/* 查看弹窗车辆条目 */
+.car-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.plate {
+  font-size: 28rpx;
+  color: #333;
+}
+.unbind-btn {
+  font-size: 24rpx;
+  color: #d9534f;
+  padding: 6rpx 16rpx;
+  border: 1rpx solid #d9534f;
+  border-radius: 6rpx;
+  flex-shrink: 0;
+}
+.unbind-all-btn {
+  width: 100%;
+  text-align: center;
+  background: #d9534f;
+  color: #fff;
+  font-size: 28rpx;
+  padding: 20rpx 0;
+  border-radius: 10rpx;
+}
+
+/* 绑定弹窗复选框 */
+.car-check-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+  gap: 20rpx;
+}
+.checkbox {
+  width: 36rpx;
+  height: 36rpx;
+  border: 1rpx solid #ccc;
+  border-radius: 6rpx;
+  flex-shrink: 0;
+  position: relative;
+}
+.checkbox.checked {
+  background: #1B64B1;
+  border-color: #1B64B1;
+}
+.checkbox.checked::after {
+  content: "✓";
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24rpx;
+}
+.bind-confirm-btn {
+  width: 100%;
+  text-align: center;
+  background: #1B64B1;
+  color: #fff;
+  font-size: 28rpx;
+  padding: 20rpx 0;
+  border-radius: 10rpx;
 }

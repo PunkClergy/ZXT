@@ -22,7 +22,7 @@
             "list": [
                 {
                     "name": "desk",
-                    "pathName": "pages/ToInternalStaff/K7/index",
+                    "pathName": "pages/index/index",
                     "query": "",
                     "scene": null,
                     "launchMode": "default"

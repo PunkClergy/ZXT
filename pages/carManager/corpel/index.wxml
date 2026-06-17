@@ -1,17 +1,6 @@
 <view class="container" style="background-image: url('{{s_background_picture_of_the_front_page}}');height: {{c_screen_height}}px;">
   <custom-header title="{{title_name == '车务人员'?'车务人员清单及配置电子钥匙':'三方风控人员清单及配置电子钥匙'}}" />
 
-  <!-- 搜索框 -->
-  <!-- <view class="search-container" style="height:{{c_searchBarHeight}}px;margin-top: {{c_totalNavHeight}}px;">
-    <view class="search-box">
-      <icon type="search" size="16" class="search-icon" />
-      <input placeholder="搜索车务人员" bindblur="handleBlur" class="search-input" />
-    </view>
-    <view class="search-count">
-      <text>共有{{g_total}}人员</text>
-    </view>
-  </view> -->
-
   <!-- 主要内容区域 -->
   <scroll-view class="content-container" scroll-y="true" style="top:{{c_statusBarHeight + c_navBarHeight +2}}px;" bindscrolltolower="handleLower" bindrefresherrefresh="handleRefresh" refresher-enabled="true" refresher-triggered="{{g_triggered}}">
     <block wx:for="{{g_items}}" wx:key="index">
@@ -34,17 +23,16 @@
             <label>联系电话 ：</label>
             <text>{{item.mobile||'-' }}</text>
           </view>
-          <view class="info-item  long-info-item" wx:if="{{type}}">
-            <label>已绑定车辆 ：<text data-all="all" data-item="{{item.vehList}}" data-id="{{item.id}}" bindtap="handleUnbind">解绑所有车辆</text></label>
-            <block wx:for="{{item.vehList}}" wx:key="index" wx:for-item="g_item">
-              <view><text>{{g_item.platenumber}}</text>{{' '}}<text data-item="{{g_item}}" data-id="{{item.id}}" bindtap="handleUnbind">解绑</text></view>
-            </block>
+          <view class="info-item long-info-item" wx:if="{{type}}">
+            <label>已绑定车辆：
+              <text class="pop-car-text" data-item="{{item}}" bindtap="openCarPopup">共{{item.vehList.length}}辆，点击查看</text>
+            </label>
           </view>
         </view>
         <view class="content-item-footer" wx:if="{{type}}">
           <view class="footer-left"></view>
           <view class="footer-right">
-            <view class="footer-right-btn" data-item="{{item}}" bindtap="handleSelectJump">
+            <view class="footer-right-btn" data-item="{{item}}" bindtap="openBindCarPopup">
               <text>绑定车辆</text>
             </view>
           </view>
@@ -53,8 +41,49 @@
     </block>
   </scroll-view>
 
-  <!-- 一键操作按钮 -->
-  <!-- <view class="levitation-button" wx:if="{{!g_source}}" bindtap="handleJumpInfo">
-    <text>新增人员</text>
-  </view> -->
+  <!-- 查看已绑定车辆弹窗 -->
+  <view wx:if="{{showCarPopup}}" class="popup-mask" bindtap="closeCarPopup">
+    <view class="popup-wrap" catchtap="">
+      <view class="popup-header">
+        <text class="popup-title">已绑定车辆列表</text>
+        <text class="popup-close" bindtap="closeCarPopup">×</text>
+      </view>
+      <scroll-view class="popup-scroll" scroll-y>
+        <view wx:if="{{currentVehList.length === 0}}" class="empty-tip">暂无绑定车辆</view>
+        <block wx:for="{{currentVehList}}" wx:key="id" wx:for-item="car">
+          <view class="car-item">
+            <text class="plate">{{car.platenumber}}</text>
+            <text class="unbind-btn" data-item="{{car}}" data-id="{{currentUserInfo.id}}" bindtap="handleUnbind">解绑</text>
+          </view>
+        </block>
+        <view class="scroll-bottom-placeholder"></view>
+      </scroll-view>
+      <view wx:if="{{currentVehList.length > 0}}" class="popup-bottom">
+        <view class="unbind-all-btn" data-all="all" data-item="{{currentVehList}}" data-id="{{currentUserInfo.id}}" bindtap="handleUnbind">解绑所有车辆</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 绑定车辆多选弹窗（修复勾选） -->
+  <view wx:if="{{showBindCarPopup}}" class="popup-mask" bindtap="closeBindCarPopup">
+    <view class="popup-wrap" catchtap="">
+      <view class="popup-header">
+        <text class="popup-title">选择绑定车辆</text>
+        <text class="popup-close" bindtap="closeBindCarPopup">×</text>
+      </view>
+      <scroll-view class="popup-scroll" scroll-y>
+        <view wx:if="{{allCarList.length === 0}}" class="empty-tip">暂无车辆数据</view>
+        <!-- ★ 使用 car.checked 控制样式，catchtap 阻止冒泡 -->
+        <block wx:for="{{allCarList}}" wx:key="id" wx:for-item="car">
+          <view class="car-check-item" catchtap="toggleCarCheck" data-id="{{car.id}}">
+            <view class="checkbox {{car.checked ? 'checked' : ''}}"></view>
+            <text class="plate">{{car.platenumber}}</text>
+          </view>
+        </block>
+      </scroll-view>
+      <view class="popup-bottom">
+        <view class="bind-confirm-btn" bindtap="confirmBindCar">确认绑定(已选{{selectedCarIds.length}}辆)</view>
+      </view>
+    </view>
+  </view>
 </view>
