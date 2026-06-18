@@ -306,17 +306,17 @@
             </view>
 
           </view>
-          <view class="middle-form-item">
+          <!-- <view class="middle-form-item">
             <label>打开方式</label>
             <view class="modal-form-region">
               <radio-group class="radio-group" bindchange="handleOnRadioChange">
-                <!-- 开启（是）选项 -->
+               
                 <label class="radio-item">
                   <radio value="1" checked="{{radioValue ==1}}" />
                   <text class="radio-label">智车钥</text>
                 </label>
 
-                <!-- 关闭（否）选项 -->
+            
                 <label class="radio-item">
                   <radio value="0" checked="{{radioValue ==0}}" />
                   <text class="radio-label">智信通</text>
@@ -324,7 +324,7 @@
               </radio-group>
             </view>
 
-          </view>
+          </view> -->
           <view class="middle-form-item">
             <label>备注</label>
             <view class="modal-form-region">
