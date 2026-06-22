@@ -4,6 +4,10 @@
     <text>{{g_leaseTime.startDate}} 至 {{g_leaseTime.endDate}}</text>
     <text>无网络时，点右上角「···」刷新，进入紧急页面临时开关锁</text>
   </view>
+  <view class="time-frame" wx:if="{{source=='carDetail'}}">
+    <text>温馨提示:</text>
+    <text>租车人旅游目的地如果信号不好 请务必放置原车钥匙</text>
+  </view>
   <view class="container-head">
     <view class="head-bg" id="-4" bindtap="handleControl">
       <image src="{{currentSelectControlType=='-4'?'/assets/images/home/wifi_1.png':'/assets/images/home/wifi.png'}}" />

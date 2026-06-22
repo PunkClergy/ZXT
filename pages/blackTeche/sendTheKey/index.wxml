@@ -127,12 +127,14 @@
 <block>
   <view class="modal-mask" wx:if="{{c_send_key_show_momal}}" bindtap="handleHideSengKeyModal"></view>
   <view class="modal-base-map" wx:if="{{c_send_key_show_momal}}" style="bottom: {{flag_item_state?250:0}}rpx;">
+
     <form bindsubmit="handleFormSubmit">
       <view class="modal-container">
         <view class="modal-container-head">
           <text>发送电子钥匙</text>
           <image src="/assets/images/home/right_1.png" bindtap="handleHideSengKeyModal" />
         </view>
+        <text style="color: #E53E3E; font-size: 28rpx; font-weight: bold; text-align: center; display: block; margin: 16rpx 0; padding: 12rpx; background: #FFF5F5; border-radius: 8rpx; border: 1rpx solid #FED7D7;">租车人旅游目的地如果信号不好 请务必放置原车钥匙</text>
         <view class="modal-container-middle">
           <view class="middle-form-item">
             <label>车牌号</label>
@@ -245,6 +247,7 @@
           <text>修改</text>
           <image src="/assets/images/home/right_1.png" bindtap="handleHideEditKeyModal" />
         </view>
+        <text style="color: #E53E3E; font-size: 28rpx; font-weight: bold; text-align: center; display: block; margin: 16rpx 0; padding: 12rpx; background: #FFF5F5; border-radius: 8rpx; border: 1rpx solid #FED7D7;">租车人旅游目的地如果信号不好 请务必放置原车钥匙</text>
         <view class="modal-container-middle">
           <view class="middle-form-item">
             <label>车牌号</label>
@@ -311,7 +314,7 @@
             <view class="modal-form-region">
               <radio-group class="radio-group" bindchange="handleOnRadioChange">
                
-                <label class="radio-item">
+                <label class="radio-item"> 
                   <radio value="1" checked="{{radioValue ==1}}" />
                   <text class="radio-label">智车钥</text>
                 </label>

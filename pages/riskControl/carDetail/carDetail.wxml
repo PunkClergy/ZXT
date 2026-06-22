@@ -49,7 +49,6 @@
       </view>
     </view>
   </block>
-
   <!-- 原有部分 -->
   <view style=" margin: 15rpx;flex: 1;">
     <map-com cellData="{{cellData}}" sn="{{cellData.sn}}" flagSource="added" source="carDetail" bindmyMethod="handleChildEvent" />
