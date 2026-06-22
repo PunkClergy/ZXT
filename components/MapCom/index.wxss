@@ -305,12 +305,13 @@ map {
   position: fixed;
   left: 55%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(255, 255, 255,1);
   /* 黑色背景，50% 透明 */
-  color: #fff;
-  padding: 5rpx 20rpx;
+  color: red;
+  padding: 10rpx 20rpx;
   border-radius: 8rpx;
-  font-size: 24rpx;
+  font-size: 26rpx;
+  font-weight: bold;
   margin-top: 20rpx;
   display: flex;
   flex-direction: column;
