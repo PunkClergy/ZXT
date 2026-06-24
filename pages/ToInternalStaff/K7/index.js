@@ -1,13 +1,24 @@
-const { u_operation } = require('../../../utils/request/map')
-const { byGet, byPost } = require('../../../utils/request/http')
+const {
+  u_operation
+} = require('../../../utils/request/map')
+const {
+  byGet,
+  byPost
+} = require('../../../utils/request/http')
 
 const MAX_LOG_COUNT = 50;
 
 Page({
   data: {
-    checkForm: { idc: '', code: '' },
+    checkForm: {
+      idc: '',
+      code: ''
+    },
     isDeviceBound: false,
-    deviceInfo: { sn: '', code: '' },
+    deviceInfo: {
+      sn: '',
+      code: ''
+    },
     imageGroups: {
       namePlate: [],
       acc: [],
@@ -29,25 +40,36 @@ Page({
     isNetworkTestFinished: false,
     canSubmitFinalCheck: false,
     c_k1sw_link: 'https://k1sw.wiselink.net.cn/',
-    isShowDemo: false
+    isShowDemo: false,
+    isSubmitting: false
   },
 
   // ---------- 示例图片 ----------
   toggleDemo() {
-    this.setData({ isShowDemo: !this.data.isShowDemo })
+    this.setData({
+      isShowDemo: !this.data.isShowDemo
+    })
   },
   previewDemoImg(e) {
     const src = e.currentTarget.dataset.src;
-    wx.previewImage({ urls: [src] })
+    wx.previewImage({
+      urls: [src]
+    })
   },
   previewUploadImg(e) {
     const url = e.currentTarget.dataset.url;
-    wx.previewImage({ urls: [url], current: url })
+    wx.previewImage({
+      urls: [url],
+      current: url
+    })
   },
 
   // ---------- 删除图片 ----------
   deleteImage(e) {
-    const { group, index } = e.currentTarget.dataset;
+    const {
+      group,
+      index
+    } = e.currentTarget.dataset;
     const currentList = this.data.imageGroups[group];
     const newList = currentList.filter((_, i) => i !== index);
     this.setData({
@@ -56,7 +78,9 @@ Page({
       this.updateImgReadyState();
       // 如果已经标记为上传完成，删除后重置
       if (this.data.isImageUploaded) {
-        this.setData({ isImageUploaded: false });
+        this.setData({
+          isImageUploaded: false
+        });
       }
       this.checkCanSubmit();
     });
@@ -64,20 +88,30 @@ Page({
 
   // ---------- 图片分组管理 ----------
   updateImgReadyState() {
-    const { imageGroups } = this.data;
+    const {
+      imageGroups
+    } = this.data;
     const ready = imageGroups.namePlate.length > 0 &&
-                  imageGroups.acc.length > 0 &&
-                  imageGroups.constant.length > 0 &&
-                  imageGroups.ground.length > 0;
-    this.setData({ allRequiredImgReady: ready });
+      imageGroups.acc.length > 0 &&
+      imageGroups.constant.length > 0 &&
+      imageGroups.ground.length > 0;
+    this.setData({
+      allRequiredImgReady: ready
+    });
   },
 
   chooseGroupImage(e) {
-    const { group, max } = e.currentTarget.dataset;
+    const {
+      group,
+      max
+    } = e.currentTarget.dataset;
     const current = this.data.imageGroups[group];
     const remain = max - current.length;
     if (remain <= 0) {
-      wx.showToast({ title: `该分类最多上传${max}张`, icon: 'none' })
+      wx.showToast({
+        title: `该分类最多上传${max}张`,
+        icon: 'none'
+      })
       return;
     }
     wx.chooseImage({
@@ -91,7 +125,9 @@ Page({
         }, () => {
           this.updateImgReadyState();
           if (this.data.isImageUploaded) {
-            this.setData({ isImageUploaded: false });
+            this.setData({
+              isImageUploaded: false
+            });
           }
         });
       }
@@ -100,18 +136,31 @@ Page({
 
   // ---------- 批量上传（字段名自定义） ----------
   async handleBatchUploadImages() {
-    const { imageGroups, deviceInfo } = this.data;
+    const {
+      imageGroups,
+      deviceInfo
+    } = this.data;
     if (!this.checkAllRequiredImages()) {
-      wx.showToast({ title: '四类必传图片每类至少上传一张', icon: 'none' })
+      wx.showToast({
+        title: '四类必传图片每类至少上传一张',
+        icon: 'none'
+      })
       return;
     }
     if (!deviceInfo?.sn) {
-      wx.showToast({ title: '设备信息异常，请重新绑定', icon: 'none' })
+      wx.showToast({
+        title: '设备信息异常，请重新绑定',
+        icon: 'none'
+      })
       return;
     }
 
-    this.setData({ isUploading: true });
-    wx.showLoading({ title: '开始上传图片...' });
+    this.setData({
+      isUploading: true
+    });
+    wx.showLoading({
+      title: '开始上传图片...'
+    });
 
     try {
       // 收集所有图片（保持顺序）
@@ -125,22 +174,34 @@ Page({
       const total = allImages.length;
 
       for (let i = 0; i < total; i++) {
-        wx.showLoading({ title: `正在上传第 ${i + 1}/${total} 张` });
+        wx.showLoading({
+          title: `正在上传第 ${i + 1}/${total} 张`
+        });
         await this.uploadSingleImage(allImages[i], i);
       }
 
-      this.setData({ isImageUploaded: true }, () => {
+      this.setData({
+        isImageUploaded: true
+      }, () => {
         this.updateImgReadyState();
         this.checkCanSubmit();
       });
       this.appendTestLog('✅ 图片全部上传成功！可开始功能检测');
-      wx.showToast({ title: '上传成功', icon: 'none' });
+      wx.showToast({
+        title: '上传成功',
+        icon: 'none'
+      });
     } catch (error) {
       this.appendTestLog(`❌ 图片上传失败：${error}`);
-      wx.showToast({ title: '上传失败，请重试', icon: 'none' });
+      wx.showToast({
+        title: '上传失败，请重试',
+        icon: 'none'
+      });
     } finally {
       wx.hideLoading();
-      this.setData({ isUploading: false });
+      this.setData({
+        isUploading: false
+      });
     }
   },
 
@@ -149,23 +210,16 @@ Page({
     return new Promise((resolve, reject) => {
       const userInfo = wx.getStorageSync('userKey') || {};
       const token = userInfo.token || '';
-
-      // ★★★★★ 字段名生成规则（您可在此完全自定义） ★★★★★
-      // 方式一：按索引递增（默认）
-      // const fieldName = index === 0 ? 'installImgs' : `installImgs${index}`;
-      
-      // 方式二：无规律预定义列表（示例）
-      const customNames = ['carModelImgs', 'accInterfaceImgs', 'constantLiveWireImgs', 'anvilFaceImgs', 'otherImgs'];
+      const customNames = ['vehicle_nameplate', 'key_welding_diagram', 'risk_control_wiring', 'avoider_diagram', 'acc_wiring_diagram','constant_power_wiring','emergency_sensing_area'];
       // 如果索引超出列表长度，则回退为递增
       const fieldName = customNames[index] || `installImgs${index}`;
-      
-      // 您也可以根据分组、文件类型等其他信息生成，只需在此处返回最终字符串即可。
-
       wx.uploadFile({
         url: 'https://k1sw.wiselink.net.cn/k7Api/uploadInstallImg',
         filePath: filePath,
         name: fieldName,
-        header: { token },
+        header: {
+          token
+        },
         formData: {
           sn: this.data.deviceInfo.sn
         },
@@ -188,90 +242,210 @@ Page({
     return this.data.allRequiredImgReady;
   },
   checkCanSubmit() {
-    const { networkTestStatus, isDeviceBound, isImageUploaded } = this.data;
-    const { lockStatus, unlockStatus, findCarStatus, riskStatus, cancelRiskStatus } = networkTestStatus;
+    const {
+      networkTestStatus,
+      isDeviceBound,
+      isImageUploaded
+    } = this.data;
+    const {
+      lockStatus,
+      unlockStatus,
+      findCarStatus,
+      riskStatus,
+      cancelRiskStatus
+    } = networkTestStatus;
     const allTestFinish = lockStatus === 'success' && unlockStatus === 'success' &&
-                          findCarStatus === 'success' && riskStatus === 'success' &&
-                          cancelRiskStatus === 'success';
-    this.setData({ isNetworkTestFinished: allTestFinish });
+      findCarStatus === 'success' && riskStatus === 'success' &&
+      cancelRiskStatus === 'success';
+    this.setData({
+      isNetworkTestFinished: allTestFinish
+    });
     const canSubmit = isDeviceBound && isImageUploaded && allTestFinish;
-    this.setData({ canSubmitFinalCheck: canSubmit });
+    this.setData({
+      canSubmitFinalCheck: canSubmit
+    });
     if (allTestFinish) {
       this.appendTestLog('🎉 网络模式全部检测完成！可提交检测');
     }
   },
   inputIdc(e) {
-    this.setData({ 'checkForm.idc': e.detail.value });
+    this.setData({
+      'checkForm.idc': e.detail.value
+    });
   },
   inputCode(e) {
-    this.setData({ 'checkForm.code': e.detail.value });
+    this.setData({
+      'checkForm.code': e.detail.value
+    });
   },
   validateBeforeOperate() {
-    const { checkForm, isDeviceBound, isImageUploaded } = this.data;
+    const {
+      checkForm,
+      isDeviceBound,
+      isImageUploaded
+    } = this.data;
     if (!checkForm.idc || !checkForm.code) {
-      wx.showToast({ title: '请先输入设备号和检验码', icon: 'none' });
+      wx.showToast({
+        title: '请先输入设备号和检验码',
+        icon: 'none'
+      });
       return false;
     }
     if (!isDeviceBound) {
-      wx.showToast({ title: '请先绑定设备', icon: 'none' });
+      wx.showToast({
+        title: '请先绑定设备',
+        icon: 'none'
+      });
       return false;
     }
     if (!isImageUploaded) {
-      wx.showToast({ title: '请先上传现场图片', icon: 'none' });
+      wx.showToast({
+        title: '请先上传现场图片',
+        icon: 'none'
+      });
       return false;
     }
     return true;
   },
   async handleDeviceBind() {
-    const userInfo = wx.getStorageSync('userKey') || {};
-    const token = userInfo.token || '';
-    const { checkForm } = this.data;
-    if (!checkForm.idc || !checkForm.code) {
-      wx.showToast({ title: '请输入完整的设备号和检验码', icon: 'none' });
-      return;
-    }
-    wx.showLoading({ title: '设备绑定中...' });
+    // 接口地址常量，仅函数内使用不拆分出去
+    const CHECK_URL = 'https://k1sw.wiselink.net.cn/k7Api/isIdcCheck';
+    const BIND_URL = 'https://k1sw.wiselink.net.cn/rentKeyApi/getBluetoothKey';
+
+    const {
+      isSubmitting,
+      checkForm
+    } = this.data;
+    // 防重复点击
+    if (isSubmitting) return;
+    this.setData({
+      isSubmitting: true
+    });
+
     try {
-      const res = await new Promise((resolve, reject) => {
+      const userInfo = wx.getStorageSync('userKey') || {};
+      const token = userInfo.token || '';
+      const {
+        idc,
+        code
+      } = checkForm || {};
+
+      // 表单校验
+      if (!idc || !code) {
+        wx.showToast({
+          title: '请输入完整的设备号和检验码',
+          icon: 'none'
+        });
+        return;
+      }
+
+      // 第一层：设备校验接口 Promise化
+      const checkRes = await new Promise((resolve, reject) => {
         wx.request({
-          url: 'https://k1sw.wiselink.net.cn/rentKeyApi/getBluetoothKey',
+          url: CHECK_URL,
           method: 'GET',
-          data: { sn: checkForm.idc, code: checkForm.code },
-          header: { token },
+          data: {
+            idc
+          },
+          header: {
+            token
+          },
+          success: res => resolve(res),
+          fail: err => reject(err)
+        });
+      });
+
+      // ========== 核心逻辑修改 ==========
+      // 返回1000弹窗，直接终止；非1000才继续执行绑定接口
+      if (checkRes?.data?.code === 1000) {
+        wx.showModal({
+          title: '结果',
+          content: checkRes?.data?.msg || '校验返回1000，终止绑定流程',
+          showCancel: false
+        });
+        return;
+      }
+      // ==================================
+
+      wx.showLoading({
+        title: '设备绑定中...',
+        mask: true
+      });
+
+      // 第二层：绑定设备接口 Promise化
+      const bindResult = await new Promise((resolve, reject) => {
+        wx.request({
+          url: BIND_URL,
+          method: 'GET',
+          data: {
+            sn: idc,
+            code
+          },
+          header: {
+            token
+          },
           success: res => resolve(res.data),
           fail: err => reject(err)
         });
       });
-      if (res.code === 1000) {
+
+      // 绑定业务处理
+      if (bindResult.code === 1000) {
         this.setData({
           isDeviceBound: true,
-          deviceInfo: res.content || {}
+          deviceInfo: bindResult.content || {}
         }, () => {
           this.updateImgReadyState();
           this.checkCanSubmit();
         });
         this.appendTestLog('✅ 设备绑定成功，可进行图片上传');
-        wx.showModal({ title: '结果', content: '绑定成功！', showCancel: false });
+        wx.showModal({
+          title: '结果',
+          content: '绑定成功！',
+          showCancel: false
+        });
       } else {
-        wx.showModal({ title: '结果', content: res.msg || '设备绑定失败', showCancel: false });
+        wx.showModal({
+          title: '结果',
+          content: bindResult.msg || '设备绑定失败',
+          showCancel: false
+        });
       }
     } catch (error) {
-      console.error('设备绑定接口异常：', error);
-      wx.showModal({ title: '结果', content: '绑定请求异常', showCancel: false });
+      console.error('设备绑定全流程异常：', error);
+      wx.showModal({
+        title: '结果',
+        content: '绑定请求异常，请检查网络后重试',
+        showCancel: false
+      });
     } finally {
+      // 无论成功失败都执行
       wx.hideLoading();
+      this.setData({
+        isSubmitting: false
+      });
     }
   },
   handleNetworkTest(e) {
     if (!this.validateBeforeOperate()) return;
     const testType = e.currentTarget.dataset.type;
-    const commandMap = { lock: 3, unlock: 1, findCar: 5, risk: 8, cancelRisk: 6 };
+    const commandMap = {
+      lock: 3,
+      unlock: 1,
+      findCar: 5,
+      risk: 8,
+      cancelRisk: 6
+    };
     const command = commandMap[testType];
     if (!command) return;
     this.executeNetworkTestAction(command, testType);
   },
   executeNetworkTestAction(command, testType) {
-    const { deviceInfo, checkForm, c_k1sw_link } = this.data;
+    const {
+      deviceInfo,
+      checkForm,
+      c_k1sw_link
+    } = this.data;
     const actionName = this.getTestActionText(command);
     if (!deviceInfo?.sn) {
       this.appendTestLog(`❌【网络】${actionName} 失败：设备信息缺失`);
@@ -279,10 +453,17 @@ Page({
     }
     this.setTestStatus(command, 'testing');
     this.appendTestLog(`🚗【网络】开始${actionName} → 设备号：${checkForm.idc}`);
-    wx.showLoading({ title: '指令执行中...' });
+    wx.showLoading({
+      title: '指令执行中...'
+    });
 
     const reqUrl = `${c_k1sw_link}${u_operation.URL}`;
-    const reqData = { sn: deviceInfo.sn, operationType: command, code: deviceInfo.code, _timestamp: Date.now() };
+    const reqData = {
+      sn: deviceInfo.sn,
+      operationType: command,
+      code: deviceInfo.code,
+      _timestamp: Date.now()
+    };
 
     byPost(reqUrl, reqData, (response) => {
       wx.hideLoading();
@@ -302,10 +483,18 @@ Page({
       }
     });
 
-    setTimeout(() => { wx.hideLoading(); }, 8000);
+    setTimeout(() => {
+      wx.hideLoading();
+    }, 8000);
   },
   setTestStatus(command, status) {
-    const statusKeyMap = { 3: 'lockStatus', 1: 'unlockStatus', 5: 'findCarStatus', 8: 'riskStatus', 6: 'cancelRiskStatus' };
+    const statusKeyMap = {
+      3: 'lockStatus',
+      1: 'unlockStatus',
+      5: 'findCarStatus',
+      8: 'riskStatus',
+      6: 'cancelRiskStatus'
+    };
     const key = statusKeyMap[command];
     if (key) {
       let update = {};
@@ -315,20 +504,32 @@ Page({
     }
   },
   async handleSubmitFinalCheck() {
-    const { checkForm } = this.data;
+    const {
+      checkForm
+    } = this.data;
     const idc = checkForm.idc;
-    const checkType = 1, checkState = 1;
+    const checkType = 1,
+      checkState = 1;
     const userInfo = wx.getStorageSync('userKey') || {};
     const token = userInfo.token || '';
 
-    wx.showLoading({ title: '提交检测结果中...' });
+    wx.showLoading({
+      title: '提交检测结果中...'
+    });
     try {
       const res = await new Promise((resolve, reject) => {
         wx.request({
           url: 'https://fin3.wiselink.net.cn/fin/deviceTest/saveResult',
           method: 'GET',
-          data: { idc, checkType, checkState },
-          header: { token },
+          data: {
+            idc,
+            checkType,
+            checkState,
+            test: 'wiselink'
+          },
+          header: {
+            token
+          },
           success: resolve,
           fail: reject
         });
@@ -339,26 +540,46 @@ Page({
           title: '提交成功',
           content: '设备全流程检测已完成！',
           showCancel: false,
-          success: () => { wx.redirectTo({ url: '/pages/index/index' }); }
+          success: () => {
+            wx.redirectTo({
+              url: '/pages/index/index'
+            });
+          }
         });
       } else {
-        wx.showToast({ title: resData.msg || '提交失败', icon: 'none' });
+        wx.showToast({
+          title: resData.msg || '提交失败',
+          icon: 'none'
+        });
         this.appendTestLog(`❌ 提交失败：${resData.msg || '未知错误'}`);
       }
     } catch (err) {
       console.error('提交检测结果失败：', err);
-      wx.showToast({ title: '请求异常，请重试', icon: 'none' });
+      wx.showToast({
+        title: '请求异常，请重试',
+        icon: 'none'
+      });
       this.appendTestLog('❌ 检测结果提交失败：网络或接口异常');
     } finally {
       wx.hideLoading();
     }
   },
   getTestStatusText(status) {
-    const map = { testing: '测试中', success: '成功', fail: '失败' };
+    const map = {
+      testing: '测试中',
+      success: '成功',
+      fail: '失败'
+    };
     return map[status] || '';
   },
   getTestActionText(command) {
-    const map = { 3: '开锁', 1: '关锁', 5: '寻车', 8: '风控拦截', 6: '取消拦截' };
+    const map = {
+      3: '开锁',
+      1: '关锁',
+      5: '寻车',
+      8: '风控拦截',
+      6: '取消拦截'
+    };
     return map[command] || command;
   },
   appendTestLog(content) {
@@ -367,7 +588,9 @@ Page({
     if (logList.length > MAX_LOG_COUNT) {
       logList = logList.slice(0, MAX_LOG_COUNT);
     }
-    this.setData({ testLogList: logList }, () => {
+    this.setData({
+      testLogList: logList
+    }, () => {
       wx.createSelectorQuery().select('#logScroll').node().exec(res => {
         const scrollView = res[0]?.node;
         if (scrollView) scrollView.scrollTo(0, 0);
