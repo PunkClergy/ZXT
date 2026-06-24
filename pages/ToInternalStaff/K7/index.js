@@ -19,12 +19,15 @@ Page({
       sn: '',
       code: ''
     },
+    // 修复：7个独立分组，一一对应7张必填图片，不再共用other
     imageGroups: {
-      namePlate: [],
-      acc: [],
-      constant: [],
-      ground: [],
-      other: []
+      namePlate: [],       // 1.车辆铭牌 vehicle_nameplate
+      acc: [],              // 2.钥匙焊接图 key_welding_diagram
+      constant: [],         // 3.风控线束图 risk_control_wiring
+      ground: [],           // 4.回避器图 avoider_diagram
+      accWiring: [],        // 5.ACC接线图 acc_wiring_diagram
+      constantPower: [],    // 6.常火接线图 constant_power_wiring
+      emergencyArea: []     // 7.应急感应区域 emergency_sensing_area
     },
     allRequiredImgReady: false,
     isImageUploaded: false,
@@ -86,15 +89,19 @@ Page({
     });
   },
 
-  // ---------- 图片分组管理 ----------
+  // ---------- 图片分组管理【关键修复：7组全部校验不为空】 ----------
   updateImgReadyState() {
     const {
       imageGroups
     } = this.data;
+    // 7个分类每一组必须至少有一张图片才满足必填条件
     const ready = imageGroups.namePlate.length > 0 &&
       imageGroups.acc.length > 0 &&
       imageGroups.constant.length > 0 &&
-      imageGroups.ground.length > 0;
+      imageGroups.ground.length > 0 &&
+      imageGroups.accWiring.length > 0 &&
+      imageGroups.constantPower.length > 0 &&
+      imageGroups.emergencyArea.length > 0;
     this.setData({
       allRequiredImgReady: ready
     });
@@ -142,7 +149,7 @@ Page({
     } = this.data;
     if (!this.checkAllRequiredImages()) {
       wx.showToast({
-        title: '四类必传图片每类至少上传一张',
+        title: '7类图片每类至少上传一张',
         icon: 'none'
       })
       return;
@@ -163,13 +170,15 @@ Page({
     });
 
     try {
-      // 收集所有图片（保持顺序）
+      // 修复：收集顺序和customNames数组严格一一对应7个必填项
       const allImages = [
         ...imageGroups.namePlate,
         ...imageGroups.acc,
         ...imageGroups.constant,
         ...imageGroups.ground,
-        ...imageGroups.other
+        ...imageGroups.accWiring,
+        ...imageGroups.constantPower,
+        ...imageGroups.emergencyArea
       ];
       const total = allImages.length;
 
@@ -210,8 +219,16 @@ Page({
     return new Promise((resolve, reject) => {
       const userInfo = wx.getStorageSync('userKey') || {};
       const token = userInfo.token || '';
-      const customNames = ['vehicle_nameplate', 'key_welding_diagram', 'risk_control_wiring', 'avoider_diagram', 'acc_wiring_diagram','constant_power_wiring','emergency_sensing_area'];
-      // 如果索引超出列表长度，则回退为递增
+      // 7个字段与页面7个分类顺序完全匹配
+      const customNames = [
+        'vehicle_nameplate',
+        'key_welding_diagram',
+        'risk_control_wiring',
+        'avoider_diagram',
+        'acc_wiring_diagram',
+        'constant_power_wiring',
+        'emergency_sensing_area'
+      ];
       const fieldName = customNames[index] || `installImgs${index}`;
       wx.uploadFile({
         url: 'https://k1sw.wiselink.net.cn/k7Api/uploadInstallImg',
@@ -237,7 +254,7 @@ Page({
     });
   },
 
-  // ---------- 以下为原有方法（保持不变，仅列出函数名，内容同之前） ----------
+  // ---------- 以下原有逻辑无修改 ----------
   checkAllRequiredImages() {
     return this.data.allRequiredImgReady;
   },
@@ -308,7 +325,6 @@ Page({
     return true;
   },
   async handleDeviceBind() {
-    // 接口地址常量，仅函数内使用不拆分出去
     const CHECK_URL = 'https://k1sw.wiselink.net.cn/k7Api/isIdcCheck';
     const BIND_URL = 'https://k1sw.wiselink.net.cn/rentKeyApi/getBluetoothKey';
 
@@ -316,7 +332,6 @@ Page({
       isSubmitting,
       checkForm
     } = this.data;
-    // 防重复点击
     if (isSubmitting) return;
     this.setData({
       isSubmitting: true
@@ -330,7 +345,6 @@ Page({
         code
       } = checkForm || {};
 
-      // 表单校验
       if (!idc || !code) {
         wx.showToast({
           title: '请输入完整的设备号和检验码',
@@ -339,7 +353,6 @@ Page({
         return;
       }
 
-      // 第一层：设备校验接口 Promise化
       const checkRes = await new Promise((resolve, reject) => {
         wx.request({
           url: CHECK_URL,
@@ -355,8 +368,6 @@ Page({
         });
       });
 
-      // ========== 核心逻辑修改 ==========
-      // 返回1000弹窗，直接终止；非1000才继续执行绑定接口
       if (checkRes?.data?.code === 1000) {
         wx.showModal({
           title: '结果',
@@ -365,14 +376,12 @@ Page({
         });
         return;
       }
-      // ==================================
 
       wx.showLoading({
         title: '设备绑定中...',
         mask: true
       });
 
-      // 第二层：绑定设备接口 Promise化
       const bindResult = await new Promise((resolve, reject) => {
         wx.request({
           url: BIND_URL,
@@ -389,7 +398,6 @@ Page({
         });
       });
 
-      // 绑定业务处理
       if (bindResult.code === 1000) {
         this.setData({
           isDeviceBound: true,
@@ -419,7 +427,6 @@ Page({
         showCancel: false
       });
     } finally {
-      // 无论成功失败都执行
       wx.hideLoading();
       this.setData({
         isSubmitting: false
@@ -597,4 +604,4 @@ Page({
       });
     });
   }
-});
+})

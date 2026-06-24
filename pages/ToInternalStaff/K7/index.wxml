@@ -21,13 +21,13 @@
       <!-- ===== 图片上传 ===== -->
       <view class="image-upload-section">
         <view class="upload-title">现场图片上传</view>
-        <view class="upload-tip">请按分类上传:车辆铭牌、钥匙焊接图、风控线束图、回避器图、ACC接线图、常火接线图、应急感应区域图至少各1张,每组可上传多张</view>
+        <view class="upload-tip">7类图片全部必填：车辆铭牌、钥匙焊接图、风控线束图、回避器图、ACC接线图、常火接线图、应急感应区域图，每组至少上传1张，每组可上传多张</view>
 
-        <!-- 分类上传区（每个分类前固定示例图） -->
+        <!-- 分类上传区（7个独立分组，一一对应后端7个字段） -->
         <view class="category-upload-wrapper">
           <!-- 1. 车辆名牌 -->
           <view class="upload-item">
-            <view class="upload-label">车辆名牌（必传）</view>
+            <view class="upload-label">车辆名牌（必填）</view>
             <view class="image-list">
               <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/vehicle_nameplate.png">
                 <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/vehicle_nameplate.png" class="preview-image"></image>
@@ -43,9 +43,9 @@
             </view>
           </view>
 
-          <!-- 2. ACC接口 -->
+          <!-- 2. 钥匙焊接图 -->
           <view class="upload-item">
-            <view class="upload-label">钥匙焊接图（必传）</view>
+            <view class="upload-label">钥匙焊接图（必填）</view>
             <view class="image-list">
               <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/key_welding_diagram.png">
                 <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/key_welding_diagram.png" class="preview-image"></image>
@@ -61,9 +61,9 @@
             </view>
           </view>
 
-          <!-- 3. 常火线路 -->
+          <!-- 3. 风控线束图 -->
           <view class="upload-item">
-            <view class="upload-label">风控线束图（必传）</view>
+            <view class="upload-label">风控线束图（必填）</view>
             <view class="image-list">
               <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/risk_control_wiring.png">
                 <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/risk_control_wiring.png" class="preview-image"></image>
@@ -79,9 +79,9 @@
             </view>
           </view>
 
-          <!-- 4. 打铁部位 -->
+          <!-- 4. 回避器图 -->
           <view class="upload-item">
-            <view class="upload-label">回避器图（必传）</view>
+            <view class="upload-label">回避器图（必填）</view>
             <view class="image-list">
               <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/avoider_diagram.png">
                 <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/avoider_diagram.png" class="preview-image"></image>
@@ -97,7 +97,7 @@
             </view>
           </view>
 
-          <!-- 5. ACC接线图 -->
+          <!-- 5. ACC接线图 独立分组 accWiring -->
           <view class="upload-item">
             <view class="upload-label">ACC接线图（必填）</view>
             <view class="image-list">
@@ -105,16 +105,17 @@
                 <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/acc_wiring_diagram.png" class="preview-image"></image>
                 <view class="demo-badge">示例</view>
               </view>
-              <view class="image-item" wx:for="{{imageGroups.other}}" wx:key="index">
+              <view class="image-item" wx:for="{{imageGroups.accWiring}}" wx:key="index">
                 <image src="{{item}}" class="preview-image" bindtap="previewUploadImg" data-url="{{item}}"></image>
-                <view class="delete-btn" catchtap="deleteImage" data-group="other" data-index="{{index}}">×</view>
+                <view class="delete-btn" catchtap="deleteImage" data-group="accWiring" data-index="{{index}}">×</view>
               </view>
-              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="other" data-max="9">
+              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="accWiring" data-max="9">
                 <text class="add-icon">+</text>
               </view>
             </view>
           </view>
-          <!-- 6. 常火接线图 -->
+
+          <!-- 6. 常火接线图 独立分组 constantPower -->
           <view class="upload-item">
             <view class="upload-label">常火接线图（必填）</view>
             <view class="image-list">
@@ -122,28 +123,29 @@
                 <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/constant_power_wiring.png" class="preview-image"></image>
                 <view class="demo-badge">示例</view>
               </view>
-              <view class="image-item" wx:for="{{imageGroups.other}}" wx:key="index">
+              <view class="image-item" wx:for="{{imageGroups.constantPower}}" wx:key="index">
                 <image src="{{item}}" class="preview-image" bindtap="previewUploadImg" data-url="{{item}}"></image>
-                <view class="delete-btn" catchtap="deleteImage" data-group="other" data-index="{{index}}">×</view>
+                <view class="delete-btn" catchtap="deleteImage" data-group="constantPower" data-index="{{index}}">×</view>
               </view>
-              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="other" data-max="9">
+              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="constantPower" data-max="9">
                 <text class="add-icon">+</text>
               </view>
             </view>
           </view>
-            <!-- 6. 应急感应区域 -->
-            <view class="upload-item">
+
+          <!-- 7. 应急感应区域图 独立分组 emergencyArea -->
+          <view class="upload-item">
             <view class="upload-label">应急感应区域图（必填）</view>
             <view class="image-list">
               <view class="image-item demo-image-item" bindtap="previewDemoImg" data-src="https://k1sw.wiselink.net.cn/img/app2.0/k7/emergency_sensing_area.png">
                 <image src="https://k1sw.wiselink.net.cn/img/app2.0/k7/emergency_sensing_area.png" class="preview-image"></image>
                 <view class="demo-badge">示例</view>
               </view>
-              <view class="image-item" wx:for="{{imageGroups.other}}" wx:key="index">
+              <view class="image-item" wx:for="{{imageGroups.emergencyArea}}" wx:key="index">
                 <image src="{{item}}" class="preview-image" bindtap="previewUploadImg" data-url="{{item}}"></image>
-                <view class="delete-btn" catchtap="deleteImage" data-group="other" data-index="{{index}}">×</view>
+                <view class="delete-btn" catchtap="deleteImage" data-group="emergencyArea" data-index="{{index}}">×</view>
               </view>
-              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="other" data-max="9">
+              <view class="add-image-btn" bindtap="chooseGroupImage" data-group="emergencyArea" data-max="9">
                 <text class="add-icon">+</text>
               </view>
             </view>
