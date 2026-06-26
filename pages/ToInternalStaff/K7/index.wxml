@@ -10,8 +10,8 @@
           <input value="{{checkForm.idc}}" class="form-input" placeholder="请输入设备号(SN)" bindinput="inputIdc" />
         </view>
         <view class="form-item">
-          <text class="form-label">检验码：</text>
-          <input value="{{checkForm.code}}" class="form-input" placeholder="请输入检验码(CODE)" bindinput="inputCode" />
+          <text class="form-label">CODE：</text>
+          <input value="{{checkForm.code}}" class="form-input" placeholder="请输入CODE码(CODE)" bindinput="inputCode" />
         </view>
         <button class="bind-device-btn" disabled="{{!checkForm.idc || !checkForm.code || isDeviceBound}}" bindtap="handleDeviceBind">开始检测</button>
       </view>
@@ -185,5 +185,5 @@
   <!-- ===== 底部提交 ===== -->
   <view class="fixed-submit-bar">
     <button class="submit-check-btn" disabled="{{!canSubmitFinalCheck}}" bindtap="handleSubmitFinalCheck">提交检测</button>
-  </view>
+  </view> 
 </view>
