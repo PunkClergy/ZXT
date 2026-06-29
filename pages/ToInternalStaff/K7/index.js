@@ -326,7 +326,7 @@ Page({
   },
   async handleDeviceBind() {
     const CHECK_URL = 'https://k1sw.wiselink.net.cn/k7Api/isIdcCheck';
-    const BIND_URL = 'https://k1sw.wiselink.net.cn/rentKeyApi/getBluetoothKey';
+    const BIND_URL = 'https://k1sw.wiselink.net.cn/k7Api/getBluetoothKey';
 
     const {
       isSubmitting,
@@ -409,7 +409,7 @@ Page({
         this.appendTestLog('✅ 设备绑定成功，可进行图片上传');
         wx.showModal({
           title: '结果',
-          content: '绑定成功！',
+          content: bindResult?.msg,
           showCancel: false
         });
       } else {
