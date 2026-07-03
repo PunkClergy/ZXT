@@ -49,6 +49,8 @@ Page({
     startTime: '19:00', //历史轨迹查询时间
     endDate: '2025-03-20', //历史轨迹查询时间
     endTime: '19:00', //历史轨迹查询时间
+    // ========== 新增自定义弹窗控制字段 ==========
+    showDisclaimerModal: false
   },
   bindblurSea(evt) {
     this.setData({
@@ -184,13 +186,13 @@ Page({
     } = this.data;
     const formData = evt.detail.value;
     const validations = [{
-      field: formData.personName,
-      message: '请输入使用人'
-    },
-    {
-      field: formData.mobile,
-      message: '请输入手机号'
-    }
+        field: formData.personName,
+        message: '请输入使用人'
+      },
+      {
+        field: formData.mobile,
+        message: '请输入手机号'
+      }
     ];
 
     const validationError = validations.find(({
@@ -249,7 +251,9 @@ Page({
   // 解绑司机
   handleUnBindDriver(evt) {
     const driverId = evt?.currentTarget?.dataset?.item?.id || ''
-    byPost(getApp().data.k1swUrl + u_unBindDriver.URL, { driverId }, (response) => {
+    byPost(getApp().data.k1swUrl + u_unBindDriver.URL, {
+      driverId
+    }, (response) => {
       if (response?.data.code == 1000) {
         showToast('解绑成功')
         this.setData({
@@ -280,7 +284,7 @@ Page({
     }, {
       path: '/assets/images/home/2-2.png',
       key: 's_background_tabs_active_2'
-    },];
+    }, ];
     const promises = imageMap.map(item =>
       new Promise((resolve, reject) => {
         wx.getFileSystemManager().readFile({
@@ -378,18 +382,18 @@ Page({
     })
   },
   //提交内容
-  handleSubmit() {
+  handleSubmit(evt) {
     const apiUrls = {
       getCarStatus: getApp().data.k1swUrl + u_addOrUpdateCar.URL
     };
     const param = {
       id: this.data?.id || '',
       ...this.data.params,
+      isDirectReg: evt == 1 ? 1 : '',
       batterylift: this.data.batterylift,
       carOwnerName: this.data.carOwnerName == '智信通' ? this.data.carOwnerName : this.data.carOwnerNameValue
     };
-    const validations = [
-      {
+    const validations = [{
         field: 'platenumber',
         message: '请填写车牌号'
       },
@@ -404,9 +408,9 @@ Page({
     ];
 
     for (const {
-      field,
-      message
-    } of validations) {
+        field,
+        message
+      } of validations) {
       if (!param[field]?.trim()) {
         showToast(message);
         return;
@@ -432,6 +436,11 @@ Page({
           }, () => {
             getApp().data.reflag = 1
             this.initList()
+          })
+        } else if (response.data.code === 7000) {
+          // 【关键改造】替换wx.showModal，打开自定义弹窗
+          this.setData({
+            showDisclaimerModal: true
           })
         } else {
           showToast(response.data.msg)
@@ -496,4 +505,23 @@ Page({
   onReady() {
     this.handleCurrentDate()
   },
+  // ========== 自定义弹窗事件 ==========
+  // 关闭弹窗
+  closeDisclaimerModal() {
+    this.setData({
+      showDisclaimerModal: false
+    })
+  },
+  // 点击【去检测】
+  modalGoCheck() {
+    this.closeDisclaimerModal()
+    wx.redirectTo({
+      url: '/pages/ToInternalStaff/K7/index'
+    })
+  },
+  // 点击【免检注册】
+  modalSkipCheck() {
+    this.closeDisclaimerModal()
+    this.handleSubmit(1)
+  }
 })

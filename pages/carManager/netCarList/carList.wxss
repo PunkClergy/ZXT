@@ -888,3 +888,69 @@
   color: #fff !important;
   /* 对勾白色 */
 }
+/* 自定义免责弹窗样式 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-wrap {
+  width: 82%;
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 30rpx 20rpx 10rpx;
+  color: #333;
+}
+
+.modal-content {
+  padding: 20rpx 30rpx;
+  font-size: 24rpx;
+  /* 小号正文，满足字号更小需求 */
+  color: #555;
+  line-height: 1.7;
+}
+
+.warn-text {
+  display: block;
+  margin-top: 16rpx;
+  color: #f53f3f;
+}
+
+.modal-buttons {
+  display: flex;
+  border-top: 1rpx solid #eee;
+}
+
+.btn-cancel,
+.btn-confirm {
+  flex: 1;
+  text-align: center;
+  height: 90rpx;
+  line-height: 90rpx;
+  font-size: 30rpx;
+}
+
+.btn-cancel {
+  color: #666;
+  border-right: 1rpx solid #eee;
+}
+
+.btn-confirm {
+  color: #1b64b1;
+  font-weight: 500;
+}

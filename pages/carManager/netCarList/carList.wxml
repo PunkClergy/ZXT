@@ -267,3 +267,27 @@
     </form>
   </view>
 </block>
+<!-- 自定义免责弹窗 -->
+<view class="modal-mask" wx:if="{{showDisclaimerModal}}" bindtap="closeDisclaimerModal">
+  <view class="modal-wrap" bindtap="stopPropagation">
+    <!-- 弹窗标题 -->
+    <view class="modal-title">免责条款</view>
+    <!-- 正文 小号字体 -->
+    <view class="modal-content">
+      设备安装完成后，建议您使用 K7 模块做基础预检，检测记录会留存存档，后续设备出现问题时，能帮助我们更快排查维修，给您更完善的售后保障～
+
+      <text>
+        若您选择【免检注册】，将会跳过本次 K7 预检流程。
+      </text>
+
+      <text class="warn-text">
+        温馨小提示：如果未完成预检就注册设备，后续设备产生故障，我们将无法提供售后排查与维修服务，相关损失需要您自行承担，还请您仔细考虑后再确认哦。
+      </text>
+    </view>
+    <!-- 双按钮 -->
+    <view class="modal-buttons">
+      <view class="btn-cancel" bindtap="modalGoCheck">去检测</view>
+      <view class="btn-confirm" bindtap="modalSkipCheck">免检注册</view>
+    </view>
+  </view>
+</view>
