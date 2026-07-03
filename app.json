@@ -126,7 +126,10 @@
     "pages/myPersonalCenter/index",
     "pages/zoneCenter/index",
     "pages/zw/index",
-    "pages/video/index"
+    "pages/video/index",
+    "pages/oneClickOrdering/oneClickOrdering",
+    "pages/workOrderList/workOrderList",
+    "pages/workOrderEdit/workOrderEdit"
   ],
   "subpackages": [
     {

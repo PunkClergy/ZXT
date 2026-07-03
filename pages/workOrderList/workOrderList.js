@@ -228,7 +228,7 @@ Page({
     });
   },
   handleOneClickOrdering() {
-    wx.switchTab({
+    wx.navigateTo({
       url: '/pages/oneClickOrdering/oneClickOrdering',
     })
   },
