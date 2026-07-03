@@ -942,6 +942,12 @@ Page({
       },
       'wxf2c0e435976f0ca6': {
         needToken: false
+      },
+      'wx0799b275fa1960b0': {
+        needToken: false
+      },
+      'wx4837cf27dea80349': {
+        needToken: false
       }
     };
     if (this.isMiniProgramAppid(path) && miniProgramConfig[path]) {
