@@ -21,13 +21,13 @@ Page({
     },
     // 修复：7个独立分组，一一对应7张必填图片，不再共用other
     imageGroups: {
-      namePlate: [],       // 1.车辆铭牌 vehicle_nameplate
-      acc: [],              // 2.钥匙焊接图 key_welding_diagram
-      constant: [],         // 3.风控线束图 risk_control_wiring
-      ground: [],           // 4.回避器图 avoider_diagram
-      accWiring: [],        // 5.ACC接线图 acc_wiring_diagram
-      constantPower: [],    // 6.常火接线图 constant_power_wiring
-      emergencyArea: []     // 7.应急感应区域 emergency_sensing_area
+      namePlate: [], // 1.车辆铭牌 vehicle_nameplate
+      acc: [], // 2.钥匙焊接图 key_welding_diagram
+      constant: [], // 3.风控线束图 risk_control_wiring
+      ground: [], // 4.回避器图 avoider_diagram
+      accWiring: [], // 5.ACC接线图 acc_wiring_diagram
+      constantPower: [], // 6.常火接线图 constant_power_wiring
+      emergencyArea: [] // 7.应急感应区域 emergency_sensing_area
     },
     allRequiredImgReady: false,
     isImageUploaded: false,
@@ -142,6 +142,7 @@ Page({
   },
 
   // ---------- 批量上传（字段名自定义） ----------
+  // ---------- 批量上传（按组上传，同组同名）【已修复】 ----------
   async handleBatchUploadImages() {
     const {
       imageGroups,
@@ -151,14 +152,14 @@ Page({
       wx.showToast({
         title: '7类图片每类至少上传一张',
         icon: 'none'
-      })
+      });
       return;
     }
     if (!deviceInfo?.sn) {
       wx.showToast({
         title: '设备信息异常，请重新绑定',
         icon: 'none'
-      })
+      });
       return;
     }
 
@@ -170,23 +171,29 @@ Page({
     });
 
     try {
-      // 修复：收集顺序和customNames数组严格一一对应7个必填项
-      const allImages = [
-        ...imageGroups.namePlate,
-        ...imageGroups.acc,
-        ...imageGroups.constant,
-        ...imageGroups.ground,
-        ...imageGroups.accWiring,
-        ...imageGroups.constantPower,
-        ...imageGroups.emergencyArea
+      // 定义7个上传组（顺序可自定义）
+      const groups = [
+        'namePlate',
+        'acc',
+        'constant',
+        'ground',
+        'accWiring',
+        'constantPower',
+        'emergencyArea'
       ];
-      const total = allImages.length;
 
-      for (let i = 0; i < total; i++) {
-        wx.showLoading({
-          title: `正在上传第 ${i + 1}/${total} 张`
-        });
-        await this.uploadSingleImage(allImages[i], i);
+      // 按组依次上传
+      for (const groupKey of groups) {
+        const imgList = this.data.imageGroups[groupKey];
+        if (!imgList || imgList.length === 0) continue;
+
+        // 同一组内所有图片，使用同一个name上传
+        for (const filePath of imgList) {
+          wx.showLoading({
+            title: `正在上传...`
+          });
+          await this.uploadSingleImage(filePath, groupKey);
+        }
       }
 
       this.setData({
@@ -215,25 +222,34 @@ Page({
   },
 
   // ---------- 单张上传（字段名可自由定制） ----------
-  uploadSingleImage(filePath, index) {
+  // ---------- 单张上传（同组图片使用相同name）【已修复】 ----------
+  uploadSingleImage(filePath, groupKey) {
     return new Promise((resolve, reject) => {
       const userInfo = wx.getStorageSync('userKey') || {};
       const token = userInfo.token || '';
-      // 7个字段与页面7个分类顺序完全匹配
-      const customNames = [
-        'vehicle_nameplate',
-        'key_welding_diagram',
-        'risk_control_wiring',
-        'avoider_diagram',
-        'acc_wiring_diagram',
-        'constant_power_wiring',
-        'emergency_sensing_area'
-      ];
-      const fieldName = customNames[index] || `installImgs${index}`;
+
+      // 7个分组 与 后端name 一一对应
+      const groupNameMap = {
+        namePlate: 'vehicle_nameplate', // 车辆铭牌（固定name）
+        acc: 'key_welding_diagram', // 钥匙焊接图（固定name）
+        constant: 'risk_control_wiring', // 风控线束图（固定name）
+        ground: 'avoider_diagram', // 回避器图（固定name）
+        accWiring: 'acc_wiring_diagram', // ACC接线图（固定name）
+        constantPower: 'constant_power_wiring', // 常火接线图（固定name）
+        emergencyArea: 'emergency_sensing_area' // 应急感应区域（固定name）
+      };
+
+      // 拿到当前组固定的name ✅
+      const fieldName = groupNameMap[groupKey];
+      if (!fieldName) {
+        reject('分组异常');
+        return;
+      }
+
       wx.uploadFile({
         url: 'https://k1sw.wiselink.net.cn/k7Api/uploadInstallImg',
         filePath: filePath,
-        name: fieldName,
+        name: fieldName, // 同组所有图用同一个name
         header: {
           token
         },
