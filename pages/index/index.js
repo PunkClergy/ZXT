@@ -713,9 +713,84 @@ Page({
           JournalFlag: false
         })
       }
-    });   
+    });
   },
+  // async handle() {
+  //   console.log(22222);
+  //   console.log(areaData);
+  
+  //   const codeList = areaData.flatMap(item => {
+  //     const childCodes = item.children?.map(child => child.code) ?? [];
+  //     return [item.code, ...childCodes];
+  //   }).filter(Boolean);
+  
+  //   console.log(codeList, '全部编码数组');
+  
+  //   // 逐条间隔1秒串行请求
+  //   for (const code of codeList) {
+  //     // 等待1秒
+  //     await new Promise(resolve => setTimeout(resolve, 1000));
+  //     try {
+  //       // 第一个接口：腾讯地图行政区查询
+  //       const res1 = await new Promise((resolve, reject) => {
+  //         wx.request({
+  //           url: 'https://apis.map.qq.com/ws/district/v1/search',
+  //           method: 'GET',
+  //           data: {
+  //             keyword: code,
+  //             get_polygon: 1,
+  //             level: 'province',
+  //             key: 'HCMBZ-DQVLQ-BFX5B-BQ3ZU-KS57H-AGBSM'
+  //           },
+  //           success: resolve,
+  //           fail: reject
+  //         })
+  //       })
+  //       console.log('腾讯地图接口返回：', res1.data);
+  //       // 取接口返回行政区数据 result[0][0]
+  //       const districtInfo = res1.data.result[0][0];
+  
+  //       // 组装参数对象
+  //       const postParams = {
+  //         address: districtInfo.address,
+  //         fullname: districtInfo.fullname,
+  //         id: districtInfo.id,
+  //         level: districtInfo.level,
+  //         location: JSON.stringify(districtInfo.location), // 对象转字符串，表单无法传对象
+  //         name: districtInfo.name,
+  //         pinyin: districtInfo.pinyin,
+  //         polygon: JSON.stringify(districtInfo.polygon || []) // 数组序列化
+  //       };
+  
+  //       // ===== 改为Form表单提交 start =====
+  //       // 拼接 urlencoded 字符串
+  //       const formDataStr = Object.entries(postParams)
+  //         .map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
+  //         .join('&');
+  
+  //       const res2 = await new Promise((resolve, reject) => {
+  //         wx.request({
+  //           url: 'https://k1sw.wiselink.net.cn/efenceApi/saveCityBoundary',
+  //           method: 'POST',
+  //           header: {
+  //             'content-type': 'application/x-www-form-urlencoded', // form表单类型
+  //             'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjg4MTgzMDU4MTg2LCJ1c2VyIjoie1wiYWNxdWllc2NlbnRcIjoxLFwiYnR5cGVcIjowLFwiY29tcGFueUlkXCI6MTIxMDIsXCJjb21wYW55TmFtZVwiOlwiMTM2ODMxODcwMzlcIixcImZpbjNDb21wYW55SWRcIjo0NDYyLFwiaWRcIjo2NjgyLFwiaW52aXRlQ29kZVwiOlwiQlJKRElcIixcIm1vYmlsZVwiOlwiMTM2ODMxODcwMzlcIixcInBlcnNvbkludml0ZUNvZGVcIjpcIkJSSkRJXCIsXCJ1c2VybmFtZVwiOlwiMTM2ODMxODcwMzlcIixcInhjeE9wZW5JZFwiOlwib3ZYVzg2M1hBUGpGMWZlYVhoT215Z0NKOGw0Y1wifSIsImlhdCI6MTc4MzA1ODE4Nn0.N_VrssQI7CDzJrgV97AshC4yFV7lDvtyRTyXvYjEow8'
+  //           },
+  //           data: formDataStr, // 传拼接好的表单字符串
+  //           success: resolve,
+  //           fail: reject
+  //         })
+  //       })
+  //       // ===== 改为Form表单提交 end =====
+  //       console.log(`编码${code}保存完成`, res2.data);
+  //     } catch (err) {
+  //       console.error(`编码${code}请求异常`, err);
+  //     }
+  //   }
+  // },
   onShow() {
+
+    // this.handle()
     getApp().data.funAreaId = '';
     this.heartbeatDetection();
     // 更新日志是否显示
