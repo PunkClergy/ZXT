@@ -7,7 +7,8 @@ const {
   u_saveOrUpdateEfence,
   u_efenceList,
   u_efenceBindVeh,
-  u_efenceUnbindVeh
+  u_efenceUnbindVeh,
+  u_getCityBoundary
 } = require('../../utils/request/data_info')
 const {
   u_carList
@@ -925,6 +926,33 @@ Page({
 
   // 获取行政区轮廓，自动赋值给 areaPointsData
   handleRetrievePoint(evt) {
+    u_getCityBoundary
+    byGet(getApp().data.k1swUrl + u_getCityBoundary.URL, {
+      id: evt
+    }).then(res => {
+      if (res.data.code === 1000) {
+        const response = res?.data?.content
+        const areaStr = this.convertTencentPolygonToPoints(JSON.parse(response?.polygon));
+        this.setData({
+          areaPointsData: areaStr,
+          polygons: (JSON.parse(response?.polygon) || []).map(item => ({
+            strokeWidth: 1,
+            strokeColor: '#FF0000FF',
+            fillColor: '#FF000033',
+            points: this.transRawToMapPoints(item)
+          })),
+          latitude: JSON.parse(response?.location)?.lat || this.data.latitude,
+          longitude: JSON.parse(response?.location).lng || this.data.longitude
+        });
+      } else {
+        wx.showToast({
+          title: res.data.msg,
+          icon: 'none'
+        });
+      }
+
+    })
+    return
     wx.request({
       url: 'https://apis.map.qq.com/ws/district/v1/search',
       data: {
@@ -938,6 +966,7 @@ Page({
           const polygon = res.data.result[0][0].polygon;
           // 转换格式并赋值
           const areaStr = this.convertTencentPolygonToPoints(polygon);
+          console.log(areaStr)
           this.setData({
             areaPointsData: areaStr,
             polygons: (polygon || []).map(item => ({

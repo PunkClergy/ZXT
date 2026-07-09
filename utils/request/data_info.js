@@ -313,9 +313,12 @@ const u_shareCarToOta = {
 const u_shareRecord = {
   URL: fin3plusUrl + "shareCarApi/shareRecord",
 }
-
+const u_getCityBoundary = {
+  URL: fin3plusUrl + "efenceApi/getCityBoundary",
+}
 
 module.exports = {
+  u_getCityBoundary,
   u_shareRecord,
   u_shareCarToOta,
   u_cancalShareCarToOta,
