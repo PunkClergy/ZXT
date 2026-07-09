@@ -899,7 +899,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 998;
 }
 
 .modal-wrap {
@@ -949,7 +949,7 @@
   color: #666;
   border-right: 1rpx solid #eee;
 }
-
+ 
 .btn-confirm {
   color: #1b64b1;
   font-weight: 500;
