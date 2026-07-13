@@ -582,6 +582,7 @@ Component({
           hideLoading();
         },
         [bleManager.DEFAULT_BLUETOOTH_STATE.BLUETOOTH_NOT_FOUND]: () => {
+          showToast('未发现设备');
           // this.isAndroid6((isAndroid) => {
           //   const message = isAndroid ?
           //     '请确定已经打开手机定位和微信定位权限!' :
