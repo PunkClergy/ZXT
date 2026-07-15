@@ -353,7 +353,8 @@ Page({
       if (response.data.code == 1000) {
         this.setData({
           g_items: response.data.content || [],
-          g_total: Number(response.data.count || 0).toLocaleString()
+          g_total: Number(response.data.count || 0).toLocaleString(),
+          g_triggered: false
         });
       }
     })
