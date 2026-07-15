@@ -137,7 +137,7 @@
         </view>
         <!-- 多边形地图 -->
         <block wx:if="{{map_type == 3}}">
-          <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="6" show-location polygons="{{polygons}}" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;">
+          <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="6" show-location polygons="{{polygons}}" style="width: 100%;height: {{c_screen_height-statusBarHeight-160}}px;">
             <view class="map-bottom-buttons">
               <text class="map-button" bindtap="handleClear">清空</text>
             </view>
@@ -145,7 +145,7 @@
         </block>
         <!-- 圆形地图 -->
         <block wx:else>
-          <map id="myMap" style="width: 100%;height: {{c_screen_height-statusBarHeight -100-50-navBarHeight}}px;" show-location longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" circles="{{circles}}" bindtap="handleMapTap">
+          <map id="myMap" style="width: 100%;height: {{c_screen_height-statusBarHeight-160}}px;" show-location longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" circles="{{circles}}" bindtap="handleMapTap">
           </map>
         </block>
       </block>
