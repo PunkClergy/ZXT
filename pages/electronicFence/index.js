@@ -380,25 +380,39 @@ Page({
     const id = evt?.currentTarget?.dataset?.item?.id
     const isenable = evt?.currentTarget?.dataset?.item?.isenable
     const efencename = evt?.currentTarget?.dataset?.item?.efencename
-    byPost(
-      `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`, {
-        eid: id,
-        isenable: isenable == 1 ? 0 : 1,
-        efencename
-      }, (response) => {
-        hideLoading();
-        if (response?.data?.code != 1000) {
-          showToast(response?.msg);
-          return;
+    const targetStatus = isenable == 1 ? 0 : 1
+    const tipText = targetStatus === 1 ? '确定要启用该电子围栏吗？' : '确定要禁用该电子围栏吗？'
+
+    wx.showModal({
+      title: '提示',
+      content: tipText,
+      confirmText: '确定',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          showLoading();
+          byPost(
+            `${getApp().data.k1swUrl}${u_saveOrUpdateEfence.URL}`, {
+              eid: id,
+              isenable: targetStatus,
+              efencename
+            }, (response) => {
+              hideLoading();
+              if (response?.data?.code != 1000) {
+                showToast(response?.msg);
+                return;
+              }
+              showToast(response?.data?.msg);
+              this.setData({
+                g_items: [],
+                g_page: 1
+              }, () => {
+                this.initList()
+              })
+            });
         }
-        showToast(response?.data?.msg);
-        this.setData({
-          g_items: [],
-          g_page: 1
-        }, () => {
-          this.initList()
-        })
-      });
+      }
+    })
   },
 
   // 下一步：efencepoints 空值改为空字符串

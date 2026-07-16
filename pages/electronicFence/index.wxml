@@ -39,7 +39,7 @@
               </view>
               <view class="info-item {{item.roleName.length > 15 ? 'long-info-item' : ''}}">
                 <label>状态 ：</label>
-                <text>{{isEnableName}}</text>
+                <text>{{item.isEnableName}}</text>
               </view>
               <view class="info-item long-info-item">
                 <label>生效时间 ：</label>
