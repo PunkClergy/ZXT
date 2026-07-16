@@ -164,6 +164,10 @@ Page({
   // 查看位置
   handleNavToRecord(e) {
     const record = e.currentTarget.dataset.record;
+    wx.navigateTo({ 
+      url: `/pages/riskControl/GPSPosition/index?datails=${JSON.stringify(record)}`
+    })
+    return
     const {
       latitude,
       longitude,
